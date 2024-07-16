@@ -22,7 +22,9 @@ export interface ThemeProductsResponse {
   };
 }
 
-export interface ProductDetailResponse extends ProductDetailData {}
+export interface ProductDetailResponse {
+  detail: ProductDetailData;
+}
 
 export interface MessageCardTemplatesResponse {
   templates: MessageCardTemplateData[];

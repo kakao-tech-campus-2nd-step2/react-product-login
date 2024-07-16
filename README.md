@@ -278,3 +278,26 @@ react-query는 컴포넌트에서 필요한 데이터를 페치하고 쉽게 관
 
 queryKey는 react-query의 기능들 중 하나인 데이터 캐싱을 위한 key 이다. 데이터 페치가 필요하지 않을 경우 react-query는
 내부 저장소에서 queryKey값을 통해 캐시된 데이터를 가져온다.
+
+## 4주차
+
+### Step 1
+
+- [x] chakra-ui 설치
+- [x] GoodsItem 클릭 시 라우팅 구현
+- [x] 상품의 상세정보를 표시하는 ProductDetailPage 구현
+  - [x] 없는 상품의 경우 메인 페이지로 리디렉션
+  - [x] 상품 결제 시 로그인 여부 체크
+- [x] 결제 페이지 구현 (ProductOrderPage)
+  - [x] 결제 옵션 input 구현
+  - [x] +, - 버튼 구현
+
+### Step 2
+
+- [ ] 상품 상세정보 페이지
+- [ ] 메시지 validation
+- [ ] 현금영수증 번호 validation
+  - [ ] 현금영수증을 신청했을 경우에만 validate
+- [ ] 수량 input 구현
+    - [ ] validation
+

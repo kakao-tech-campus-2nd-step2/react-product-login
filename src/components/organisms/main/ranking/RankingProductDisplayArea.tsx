@@ -4,18 +4,18 @@ import {
 } from '@tanstack/react-query';
 import { QueryKeys } from '@constants/QueryKeys';
 import { fetchProducts } from '@utils/query';
-import GiftDisplaySection from '@components/organisms/gift/GiftDisplaySection';
+import ProductDisplaySection from '@components/organisms/product/ProductDisplaySection';
 import Container from '@components/atoms/container/Container';
 import Button from '@components/atoms/button/Button';
 import { ProductData } from '@/dto';
 import { RankFilter, TargetFilter } from '@/types';
 
-interface RankingGiftDisplayAreaProps {
+interface RankingProductDisplayAreaProps {
   targetFilter: TargetFilter;
   rankFilter: RankFilter;
 }
 
-function RankingGiftDisplayArea({ targetFilter, rankFilter }: RankingGiftDisplayAreaProps) {
+function RankingProductDisplayArea({ targetFilter, rankFilter }: RankingProductDisplayAreaProps) {
   const [isFolded, setIsFolded] = useState(true);
 
   const { data: products = [] } = useSuspenseQuery<ProductData[]>({
@@ -33,7 +33,7 @@ function RankingGiftDisplayArea({ targetFilter, rankFilter }: RankingGiftDisplay
   return (
     <>
       <Container padding="0 0 20px 0">
-        <GiftDisplaySection
+        <ProductDisplaySection
           products={isFolded ? products?.slice(0, DISPLAY_COUNT_WHEN_FOLDED) : products}
           maxColumns={6}
           minColumns={3}
@@ -60,4 +60,4 @@ function RankingGiftDisplayArea({ targetFilter, rankFilter }: RankingGiftDisplay
   );
 }
 
-export default RankingGiftDisplayArea;
+export default RankingProductDisplayArea;

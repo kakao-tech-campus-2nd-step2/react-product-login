@@ -1,6 +1,6 @@
 import ProductSkeletonGrid
   from '@components/molecules/skeleton/ProductSkeletonGrid';
-import GiftDisplaySection from '@components/organisms/gift/GiftDisplaySection';
+import ProductDisplaySection from '@components/organisms/product/ProductDisplaySection';
 import { useEffect, useRef } from 'react';
 import useFetchThemeProducts from '@hooks/useFetchThemeProducts';
 import { css } from '@emotion/react';
@@ -36,7 +36,7 @@ function ThemeProductDisplaySection({ themeKey }: ThemeProductDisplaySectionProp
         const key = `${productDisplayId}-${index}`;
 
         return (
-          <GiftDisplaySection
+          <ProductDisplaySection
             products={page.products}
             maxColumns={4}
             minColumns={2}

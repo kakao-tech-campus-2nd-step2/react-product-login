@@ -1,6 +1,6 @@
-import { axiosInstance } from '@utils/network';
+import { axiosInstance, replacePathParams } from '@utils/network';
 import RequestURLs from '@constants/RequestURLs';
-import { RankingProductsResponse, ThemesResponse } from '@/types/response';
+import { ProductDetailResponse, RankingProductsResponse, ThemesResponse } from '@/types/response';
 import { RankFilter, TargetFilter, ThemeDataRepository } from '@/types';
 
 export const fetchThemes = async () => {
@@ -22,4 +22,11 @@ export const fetchProducts = async (params:
     .get<RankingProductsResponse>(RequestURLs.RANKING_PRODUCTS, { params });
 
   return response.data.products || [];
+};
+
+export const fetchProductDetail = async ({ productId }: { productId: string }) => {
+  const endpoint = replacePathParams(RequestURLs.PRODUCT_DETAILS, { productId });
+  const response = await axiosInstance.get<ProductDetailResponse>(endpoint);
+
+  return response.data.detail;
 };

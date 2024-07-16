@@ -8,8 +8,8 @@ import {
   RankingSectionTitle,
   RankingSectionTitleContainer,
 } from '@components/organisms/main/ranking/RankingSection.styles';
-import RankingGiftDisplayArea
-  from '@components/organisms/main/ranking/RankingGiftDisplayArea';
+import RankingProductDisplayArea
+  from '@components/organisms/main/ranking/RankingProductDisplayArea';
 import ProductSkeletonGrid
   from '@components/molecules/skeleton/ProductSkeletonGrid';
 import ErrorBoundary from '@components/atoms/boundary/ErrorBoundary';
@@ -47,7 +47,7 @@ function RankingSection() {
               <ProductSkeletonGrid columnsDefault={6} itemCount={6} columnsSm={3} />
             }
             >
-              <RankingGiftDisplayArea targetFilter={targetFilter} rankFilter={rankFilter} />
+              <RankingProductDisplayArea targetFilter={targetFilter} rankFilter={rankFilter} />
             </Suspense>
           </ErrorBoundary>
         </Container>

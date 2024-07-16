@@ -39,3 +39,5 @@ export const backgroundColors = {
   primary: '#fee500',
   primaryDark: '#FFD900',
 };
+
+export const defaultBorderColor = 'rgb(237, 237, 237)';

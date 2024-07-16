@@ -1,4 +1,4 @@
-import { RankFilter, TargetFilter } from '@/types';
+import { CashReceiptType, RankFilter, TargetFilter } from '@/types';
 
 export interface RankingProductsRequestQuery {
   targetType?: TargetFilter;
@@ -38,6 +38,6 @@ export interface OrderRequestBody {
   senderId: number;
   receiverId: number;
   hasCashReceipt: boolean;
-  cashReceiptType?: 'PERSONAL' | 'BUSINESS';
+  cashReceiptType?: CashReceiptType;
   cashReceiptNumber?: string;
 }

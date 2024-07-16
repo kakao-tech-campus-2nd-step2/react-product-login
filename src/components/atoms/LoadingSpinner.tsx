@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import Container from '@components/atoms/container/Container';
 
 /**
  * Source: https://loading.io/css/
@@ -48,5 +49,13 @@ const LoadingSpinner = styled.div`
     }
   }
 `;
+
+export function LoadingSpinnerFullWidth() {
+  return (
+    <Container elementSize="full-width" justifyContent="center">
+      <LoadingSpinner />
+    </Container>
+  );
+}
 
 export default LoadingSpinner;

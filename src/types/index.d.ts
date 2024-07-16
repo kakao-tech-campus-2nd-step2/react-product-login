@@ -1,6 +1,7 @@
 import { CSSProperties, InputHTMLAttributes, ReactNode } from 'react';
 import FetchStatus from '@constants/FetchStatus';
-import { ThemeData } from '@/dto';
+import { ProductDetailData, ThemeData } from '@/dto';
+import { CashReceiptOptions } from '@/constants';
 
 export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   elementSize: ElementSize,
@@ -14,6 +15,7 @@ export interface GoodsItemProps {
   subtitle: string,
   title: string,
   amount: number,
+  productId: number,
 }
 
 export interface RankingBadgeProps {
@@ -59,10 +61,17 @@ interface SizedSkeletonProps {
   radius?: string;
 }
 
+interface ProductOrderPageState {
+  productDetails: ProductDetailData;
+  count: number;
+}
+
 export interface FixedSize {
   width: string,
   height: string,
 }
+
+export type CashReceiptType = typeof CashReceiptOptions[string];
 
 export type ThemeDataRepository = { [key: string]: ThemeData };
 
