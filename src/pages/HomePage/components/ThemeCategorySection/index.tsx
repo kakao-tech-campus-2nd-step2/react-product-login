@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 
 import { useThemeCategory } from '@/api/hooks/useThemeCategory';
+import { getDynamicPath } from '@/routes/path';
 import { ThemeCategoryData } from '@/types/themeType';
 
 import { Content } from '@/components/Content';
@@ -34,7 +35,11 @@ export const ThemeCategorySection = () => {
       >
         {themeCategoryList?.map(
           ({ id, key, label, imageURL }: ThemeCategoryData) => (
-            <Link key={id} to={`/theme/${key}`} css={itemContainerStyle}>
+            <Link
+              key={id}
+              to={getDynamicPath.theme(key)}
+              css={itemContainerStyle}
+            >
               <ThemeCategoryItem label={label} imageURL={imageURL} />
             </Link>
           )

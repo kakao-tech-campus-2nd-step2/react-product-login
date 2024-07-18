@@ -16,8 +16,6 @@ export const ThemeErrorFallback = ({ error }: ErrorFallbackProps) => {
   useEffect(() => {
     if (error.message === RENDER_ERROR_MESSAGES.THEME_NOT_FOUND) {
       navigate(ROUTER_PATH.HOME);
-    } else {
-      throw error;
     }
   }, [error, navigate]);
 

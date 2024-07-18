@@ -57,6 +57,12 @@ module.exports = {
       { optionalDependencies: false },
     ],
     'prettier/prettier': 'error',
+    'jsx-a11y/label-has-associated-control': [
+      2,
+      {
+        some: ['nesting', 'id'],
+      },
+    ],
   },
   settings: {
     'import/resolver': {

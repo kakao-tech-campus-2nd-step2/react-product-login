@@ -1,10 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { Input } from '.';
+import { UderLineInput } from '.';
 
-const meta: Meta<typeof Input> = {
-  title: 'Example/Form/Input',
-  component: Input,
+const meta: Meta<typeof UderLineInput> = {
+  title: 'Example/Form/UderLineInput',
+  component: UderLineInput,
   parameters: {
     layout: 'centered',
   },

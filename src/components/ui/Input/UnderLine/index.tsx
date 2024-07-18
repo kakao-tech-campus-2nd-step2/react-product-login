@@ -4,13 +4,13 @@ import { Size } from '@/types/uiTypes';
 
 import { inputStyle } from './styles';
 
-interface InputProps
+interface UnderLineInputProps
   extends Omit<InputHTMLAttributes<HTMLInputElement>, 'size'> {
   size?: Size;
   invalid?: boolean;
 }
 
-const Input = forwardRef<HTMLInputElement, InputProps>(
+const UderLineInput = forwardRef<HTMLInputElement, UnderLineInputProps>(
   ({ size = 'small', invalid = false, disabled = false, ...props }, ref) => {
     return (
       <input
@@ -23,6 +23,6 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
   }
 );
 
-Input.displayName = 'Input';
+UderLineInput.displayName = 'UnderLineInput';
 
-export { Input };
+export { UderLineInput };

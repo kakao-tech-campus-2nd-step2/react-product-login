@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { useInView } from 'react-intersection-observer';
+import { Link } from 'react-router-dom';
 
 import { useInfiniteThemeProducts } from '@/api/hooks/useInfiniteThemeProducts';
 import { ProductData } from '@/types/productType';
@@ -53,8 +54,9 @@ export const ThemeGoodsSection = ({ themeKey }: ThemeGoodsSectionProps) => {
         {themeProducts.map(
           ({ id, imageURL, brandInfo, name, price }: ProductData, index) => {
             return (
-              <div
+              <Link
                 key={id}
+                to={`/products/${id}`}
                 ref={themeProducts.length === index + 1 ? ref : undefined}
               >
                 <GoodsItem
@@ -63,7 +65,7 @@ export const ThemeGoodsSection = ({ themeKey }: ThemeGoodsSectionProps) => {
                   title={name}
                   amount={price.sellingPrice}
                 />
-              </div>
+              </Link>
             );
           }
         )}

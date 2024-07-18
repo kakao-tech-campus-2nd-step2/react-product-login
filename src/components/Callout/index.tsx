@@ -5,7 +5,7 @@ import { Container, ContainerProps } from '@/components/ui/Layout/Container';
 import { calloutStyles } from './styles';
 
 interface ButtonProps extends ContainerProps {
-  theme?: 'kakao' | 'skyblue';
+  theme?: 'kakao' | 'skyblue' | 'lightGray';
   radius?: Radius;
   isActive?: boolean;
 }

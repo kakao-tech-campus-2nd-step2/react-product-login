@@ -7,7 +7,7 @@ const backgroundColor = {
   kakao: colors.yellow[100],
   outline: 'transparent',
   black: colors.black,
-  lightGray: colors.gray[200],
+  lightGray: colors.newGray[200],
   darkGray: colors.gray[400],
 };
 
@@ -15,7 +15,7 @@ const textColor = {
   kakao: colors.gray[500],
   outline: colors.gray[500],
   black: colors.white,
-  lightGray: colors.gray[500],
+  lightGray: colors.newGray[600],
   darkGray: colors.white,
 };
 
@@ -23,7 +23,7 @@ const hoverBackgroundColor = {
   kakao: colors.yellow[200],
   outline: colors.gray[100],
   black: colors.gray[500],
-  lightGray: colors.gray[300],
+  lightGray: colors.newGray[300],
   darkGray: colors.gray[500],
 };
 

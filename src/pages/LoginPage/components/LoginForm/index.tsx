@@ -1,7 +1,7 @@
 import { useLoginForm } from '@/pages/LoginPage/hooks/useLoginForm';
 
 import { Button } from '@/components/ui/Button';
-import { Input } from '@/components/ui/Input';
+import { UderLineInput } from '@/components/ui/Input/UnderLine';
 
 import { buttonStyle, formContainerStyle } from './styles';
 
@@ -10,14 +10,14 @@ export const LoginForm = () => {
 
   return (
     <form onSubmit={handleLogin} css={formContainerStyle}>
-      <Input
+      <UderLineInput
         type="text"
         name="username"
         ref={usernameRef}
         size="response"
         placeholder="이름"
       />
-      <Input
+      <UderLineInput
         type="password"
         name="password"
         ref={passwordRef}

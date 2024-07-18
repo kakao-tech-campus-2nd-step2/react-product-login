@@ -7,6 +7,8 @@ export function getErrorMessage(error: AxiosError): string {
     switch (error.response.status) {
       case 404:
         return API_ERROR_MESSAGES.DATA_NOT_FOUND;
+      case 500:
+        return API_ERROR_MESSAGES.SERVER_ERROR;
       default:
         return API_ERROR_MESSAGES.FETCH_ERROR;
     }
