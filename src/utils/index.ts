@@ -43,3 +43,11 @@ export function throttle(fn: (...args: any) => any, delay: number) {
 
   return closure;
 }
+
+export function isNumericString(value: string) {
+  return /^\d+$/.test(value);
+}
+
+export function isEmptyString(value: string) {
+  return value === '';
+}

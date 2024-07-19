@@ -71,6 +71,15 @@ export interface FixedSize {
   height: string,
 }
 
+interface OrderFormErrorStatus {
+  hasCardMessageError: boolean;
+  cardMessageErrorCaption: string;
+  hasReceiptError: boolean;
+  receiptErrorCaption: string;
+  isMessageModified: boolean;
+  isReceiptNumberModified: boolean;
+}
+
 export type CashReceiptType = typeof CashReceiptOptions[string];
 
 export type ThemeDataRepository = { [key: string]: ThemeData };

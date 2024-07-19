@@ -294,10 +294,9 @@ queryKey는 react-query의 기능들 중 하나인 데이터 캐싱을 위한 ke
 
 ### Step 2
 
-- [ ] 상품 상세정보 페이지
-- [ ] 메시지 validation
-- [ ] 현금영수증 번호 validation
-  - [ ] 현금영수증을 신청했을 경우에만 validate
-- [ ] 수량 input 구현
-    - [ ] validation
+- [x] 상품 상세정보 페이지
+- [x] 메시지 validation
+- [x] 현금영수증 번호 validation
+  - [x] 현금영수증을 신청했을 경우에만 validate
+- [x] 수량 input 구현
 

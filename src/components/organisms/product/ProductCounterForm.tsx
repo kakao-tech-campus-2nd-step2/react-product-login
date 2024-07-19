@@ -18,15 +18,18 @@ interface ProductCounterAreaProps {
 }
 
 function ProductCounterForm({ productDetails }: ProductCounterAreaProps) {
+  const [count, setCount] = useState(1);
+  const loginStatus = useContext(LoginContext);
+  const navigate = useNavigate();
   const { getInputProps, getIncrementButtonProps, getDecrementButtonProps } = useNumberInput({
     step: 1,
     defaultValue: 1,
     min: 1,
     max: 100,
+    onChange: (_valueAsString: string, valueAsNumber: number) => {
+      setCount(valueAsNumber);
+    },
   });
-  const [count, setCount] = useState(1);
-  const loginStatus = useContext(LoginContext);
-  const navigate = useNavigate();
 
   const handleSubmitClick = useCallback(() => {
     if (!loginStatus.isLoggedIn) {
