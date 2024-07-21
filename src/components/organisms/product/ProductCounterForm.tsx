@@ -9,15 +9,17 @@ import {
 } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Paths from '@constants/Paths';
-import { ProductDetailData } from '@/dto';
+import { orderHistoryStorage } from '@utils/storage';
 import { LoginContext } from '@/providers/LoginContextProvider';
-import { ProductOrderPageState } from '@/types';
+import { OrderHistoryData } from '@/types';
 
 interface ProductCounterAreaProps {
-  productDetails: ProductDetailData;
+  productId: number;
+  productName: string;
+  productPrice: number;
 }
 
-function ProductCounterForm({ productDetails }: ProductCounterAreaProps) {
+function ProductCounterForm({ productId, productPrice, productName }: ProductCounterAreaProps) {
   const [count, setCount] = useState(1);
   const loginStatus = useContext(LoginContext);
   const navigate = useNavigate();
@@ -43,12 +45,15 @@ function ProductCounterForm({ productDetails }: ProductCounterAreaProps) {
       return;
     }
 
-    const state: ProductOrderPageState = {
-      productDetails,
-      count,
+    const productHistoryData: OrderHistoryData = {
+      productId,
+      productQuantity: count,
     };
-    navigate(Paths.PRODUCT_ORDER, { state });
-  }, [productDetails, count, navigate, loginStatus]);
+
+    orderHistoryStorage.set(productHistoryData);
+
+    navigate(Paths.PRODUCT_ORDER);
+  }, [productId, count, navigate, loginStatus]);
 
   const handleInputChange = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
@@ -83,7 +88,7 @@ function ProductCounterForm({ productDetails }: ProductCounterAreaProps) {
           display="flex"
           flexDirection="column"
         >
-          <Text fontWeight="bold">{productDetails.name}</Text>
+          <Text fontWeight="bold">{productName}</Text>
           <HStack w="100%" paddingTop="10px">
             <Button {...getDecrementButtonProps()}>-</Button>
             <Input
@@ -107,7 +112,7 @@ function ProductCounterForm({ productDetails }: ProductCounterAreaProps) {
         >
           <Text>총 결제 금액</Text>
           <Text fontWeight="bold" fontSize="lg">
-            {productDetails.price.sellingPrice * count}
+            {productPrice * count}
             원
           </Text>
         </Box>

@@ -13,19 +13,18 @@ import ProductCounterForm from '@components/organisms/product/ProductCounterForm
 import { ProductDetailData } from '@/dto';
 
 interface ProductDetailSectionProps {
-  productId?: string;
+  productId: number;
 }
 
 function ProductDetailDisplaySection({ productId }: ProductDetailSectionProps) {
   const { data: product, error } = useSuspenseQuery<ProductDetailData>({
     queryKey: [QueryKeys.PRODUCT_DETAILS, productId],
-    queryFn: () => fetchProductDetail({ productId: productId as string }),
+    queryFn: () => fetchProductDetail({ productId: productId.toString() }),
   });
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!productId
-      || (error && axios.isAxiosError(error) && error.response?.status === StatusCodes.NOT_FOUND)) {
+    if (error && axios.isAxiosError(error) && error.response?.status === StatusCodes.NOT_FOUND) {
       navigate(Paths.MAIN_PAGE);
     }
   }, [error, navigate, productId]);
@@ -61,7 +60,11 @@ function ProductDetailDisplaySection({ productId }: ProductDetailSectionProps) {
         </Container>
       </Container>
 
-      <ProductCounterForm productDetails={product} />
+      <ProductCounterForm
+        productId={productId}
+        productPrice={product.price.sellingPrice}
+        productName={product.name}
+      />
     </>
   );
 }

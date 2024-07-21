@@ -300,3 +300,8 @@ queryKey는 react-query의 기능들 중 하나인 데이터 캐싱을 위한 ke
   - [x] 현금영수증을 신청했을 경우에만 validate
 - [x] 수량 input 구현
 
+### Step 3
+
+- [x] react hook form을 이용한 리팩토링
+  - [x] validation 로직 추가
+

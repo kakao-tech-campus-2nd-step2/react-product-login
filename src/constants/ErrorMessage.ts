@@ -12,5 +12,6 @@ export const ErrorMessages: { [key: number]: string } = {
 
 export const FormErrorMessages = {
   MESSAGE_CARD_EMPTY: '메시지 카드를 작성해주세요',
-  RECEIPT_NUMBER_NOT_NUMERIC: '숫자를 입력해주세요',
+  RECEIPT_NUMBER_NOT_NUMERIC: '숫자만 입력 가능합니다',
+  RECEIPT_NUMBER_REQUIRED: '현금영수증 번호를 입력해주세요',
 };
