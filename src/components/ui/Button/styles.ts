@@ -67,11 +67,30 @@ export const sizeStyles: {
   },
 };
 
-export const buttonStyle = (theme: Theme, size: Size, width: string) =>
-  css({
+export const buttonStyle = (
+  theme: Theme,
+  size: Size,
+  width: string,
+  disabled: boolean
+) => {
+  const defaultButtonStyle = {
     borderRadius: '0.25rem',
     border: theme === 'outline' ? `1.2px solid ${colors.gray[200]}` : '',
     width,
-    ...themeStyles(theme),
     ...sizeStyles[size],
+  };
+
+  if (disabled) {
+    return css({
+      ...defaultButtonStyle,
+      backgroundColor: colors.newGray[100],
+      color: colors.newGray[300],
+      cursor: 'not-allowed',
+    });
+  }
+
+  return css({
+    ...defaultButtonStyle,
+    ...themeStyles(theme),
   });
+};

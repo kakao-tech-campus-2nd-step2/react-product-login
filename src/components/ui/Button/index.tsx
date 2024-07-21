@@ -16,10 +16,16 @@ export const Button = ({
   theme = 'kakao',
   size = 'small',
   width = '100%',
+  disabled = false,
   ...props
 }: ButtonProps) => {
   return (
-    <button onClick={onClick} css={buttonStyle(theme, size, width)} {...props}>
+    <button
+      disabled={disabled}
+      onClick={onClick}
+      css={buttonStyle(theme, size, width, disabled)}
+      {...props}
+    >
       {children}
     </button>
   );

@@ -11,7 +11,6 @@ import { UpDownDots } from '@/components/Loading/UpDownDots';
 
 import { ProductDetail } from './components/ProductDetail';
 import { ProductForm } from './components/ProductForm';
-import { containerStyle } from './styles';
 
 export const ProductPage = () => {
   const navigate = useNavigate();
@@ -31,7 +30,7 @@ export const ProductPage = () => {
             height="92vh"
             maxWidth="1280px"
             padding="0 3rem"
-            css={containerStyle}
+            css={{ padding: '2rem 0' }}
           >
             <ProductDetail productId={Number(productId)} />
             <ProductForm productId={Number(productId)} />

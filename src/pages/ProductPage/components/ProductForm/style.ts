@@ -1,13 +1,10 @@
 import { css } from '@emotion/react';
 
-export const containerStyle = css({
-  minWidth: '18rem',
-  '@media (min-width: 768px)': {
-    maxWidth: '24rem',
-  },
-});
+import { breakpoint } from '@/styles/variants/breakpoint';
 
-export const buttonStyle = css({
-  height: '3.5rem',
-  fontSize: '1rem',
+export const containerStyle = css({
+  minWidth: '16rem',
+  [`@media (min-width: ${breakpoint.sm})`]: {
+    maxWidth: '22rem',
+  },
 });

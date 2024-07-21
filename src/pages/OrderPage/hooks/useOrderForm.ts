@@ -1,38 +1,41 @@
-import { FormEvent, useState } from 'react';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { useLocation } from 'react-router-dom';
 
-import { OrderFormType } from '@/types/orderType';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
+
+import { OrderSchema } from '@/schema/index';
 
 export const useOrderForm = () => {
-  const [formData, setFormData] = useState<OrderFormType>({
-    productId: 1,
-    productQuantity: 1,
-    gitfMessage: '',
-    isCashChecked: false,
-    cashReceiptType: '개인소득공제',
-    cashReceiptNumber: '',
+  const location = useLocation();
+  const { productId, quantity } = location.state;
+
+  const [alertMessage, setAlertMessage] = useState('');
+
+  const form = useForm<z.infer<typeof OrderSchema>>({
+    resolver: zodResolver(OrderSchema),
+    mode: 'onSubmit',
+    defaultValues: {
+      productId,
+      productQuantity: quantity,
+      gitfMessage: '',
+      isCashChecked: false,
+      cashReceiptType: '개인소득공제',
+      cashReceiptNumber: '',
+    },
   });
 
-  const handleCheckboxChange = (checkboxField: keyof OrderFormType) => {
-    setFormData((prevData) => ({
-      ...prevData,
-      [checkboxField]: !prevData[checkboxField],
-    }));
+  const onSubmit = () => {
+    setAlertMessage('주문이 완료되었습니다.');
   };
 
-  const handleInputChange = (
-    inputField: keyof OrderFormType,
-    value: string
-  ) => {
-    setFormData((prevData) => ({
-      ...prevData,
-      [inputField]: value,
-    }));
-  };
+  const handleSubmit = form.handleSubmit(onSubmit, (errors) => {
+    const errorMessages =
+      Object.values(errors).flatMap((error) => error.message)[0] || '';
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    alert('주문이 완료되었습니다.');
-  };
+    setAlertMessage(errorMessages);
+  });
 
-  return { formData, handleCheckboxChange, handleInputChange, handleSubmit };
+  return { form, handleSubmit, alertMessage, setAlertMessage };
 };

@@ -1,13 +1,12 @@
 import { useLocation } from 'react-router-dom';
 
+import { Heading, Text } from '@chakra-ui/react';
+
 import { useProductDetail } from '@/api/hooks/useProductDetail';
 
 import { Card } from '@/components/Card';
 import { Image } from '@/components/ui/Image/Default';
 import { Container } from '@/components/ui/Layout/Container';
-import { Text } from '@/components/ui/Text';
-
-import { cardStyle, containerStyle, subtitleStyle } from './styles';
 
 export const GiftDetail = () => {
   const location = useLocation();
@@ -15,20 +14,20 @@ export const GiftDetail = () => {
   const { orderProductDetail } = useProductDetail(productId);
 
   return (
-    <Container flexDirection="column" gap="1rem" css={containerStyle}>
-      <Text isBold>선물내역</Text>
-      <Card gap="0.5rem" css={cardStyle}>
+    <Container flexDirection="column" gap="1rem" css={{ padding: '1rem' }}>
+      <Heading size="sm">선물내역</Heading>
+      <Card gap="0.5rem" css={{ padding: '1rem' }}>
         <Image
           src={orderProductDetail.imageURL}
           ratio="square"
-          width="7rem"
+          width="6rem"
           radius={0.2}
         />
-        <Container flexDirection="column">
-          <Text size="sm" css={subtitleStyle}>
+        <Container flexDirection="column" gap="0.2rem">
+          <Text fontSize="sm" color="blackAlpha.600">
             {orderProductDetail.brandName}
           </Text>
-          <Text size="sm">{orderProductDetail.productName}</Text>
+          <Text>{orderProductDetail.productName}</Text>
         </Container>
       </Card>
     </Container>

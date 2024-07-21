@@ -8,7 +8,3 @@ export const containerStyle = css({
     flexDirection: 'row',
   },
 });
-
-export const textContainerStyle = css({
-  paddingTop: '1rem',
-});
