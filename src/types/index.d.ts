@@ -1,7 +1,6 @@
 import { CSSProperties, InputHTMLAttributes, ReactNode } from 'react';
 import FetchStatus from '@constants/FetchStatus';
 import { OrderRequestBody } from '@types/request';
-import { FormErrorMessages } from '@constants/ErrorMessage';
 import { ProductDetailData, ThemeData } from '@/dto';
 import { CashReceiptOptions } from '@/constants';
 

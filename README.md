@@ -305,3 +305,34 @@ queryKey는 react-query의 기능들 중 하나인 데이터 캐싱을 위한 ke
 - [x] react hook form을 이용한 리팩토링
   - [x] validation 로직 추가
 
+### 4주차 질문 답
+
+- 질문 1. 제어 컴포넌트와 비제어 컴포넌트의 차이가 무엇이고 제어 컴포넌트로 Form을 만들어야 하는 경우가 있다면 어떤 경우인지 예시와 함께 설명해주세요.
+
+controlled 컴포넌트는 form input 값을 state를 통해 제어하고, validation과 submit로직 모두 state 값을 이용한다.
+반면 비제어 컴포넌트는 DOM element에 저장된 입력값을 사용하여 validation과 submit을 수행한다.
+제어 컴포넌트로 form을 만들어야 하는 경우는, form 하위에 input값에 종속적인 컴포넌트가 있을 경우, 올바르게 렌더링되도록 state로 입력값을 관리해줘야한다.
+
+예를 들어, 회원 타입에 따라 가입 폼이 달라져야 하는 경우 select option에 따라 서로 다른 컴포넌트를 렌더링해줘야 하고,
+state를 통해 관리하고 있지 않다면 코드가 다소 복잡해질 수 있다.
+
+
+- 질문 2. input type의 종류와 각각 어떤 특징을 가지고 있는지 설명해 주세요.
+
+input type에는 submit, text, password, radio, file, checkbox 등이 있다. submit은 form의 submit 이벤트 트리거를 위한 장치이다.
+
+radio는 여러 값들 중 하나를 선택하도록 하고 싶을 때, checkbox는 boolean으로 체크 여부를 다루거나, 주어진 항목들 중 여러 항목을 중복 선택하고 싶을 때 사용할 수 있다.
+
+file, text, password는 input으로 전달될 수 있는 값의 처리에 관한 내용인데, text는 말그대로 텍스트이고, password는 text와 동일하지만
+미리보기가 마스킹 되어있다. file은 첨부파일 기능을 구현할 때 사용되며, 여러 조건을 통해 보안상 위험한 파일을 차단할 수도 있다.
+
+- 질문 3. label tag는 어떤 역할을 하며 label로 input field를 감싸면 어떻게 동작하는지 설명해 주세요.
+
+label은 주어진 인풋에 대한 텍스트 설명을 나타낼 때 사용하는 태그이다. 물론 그냥 텍스트를 통해 input에 대한 설명을 첨부할 수 있겠지만,
+label로 input에 대한 설명을 첨부할 경우 시각장애인의 접근성 도구 등에서 사용자가 인풋에 입력할 값이 뭔지 쉽게 이해할 수 있도록 할 수 있고,
+label을 클릭해서 연결돤 input에 초점을 맞추거나 활성화할 수 있다(ex. radio의 텍스트를 클릭해도 radio가 선택됨)
+
+label을 input에 연결하려면, input에 name attribute를 지정해주고 해당 값을 label의 for로 전달하면 된다. 또는 label로 input을 감싸서 연결할 수도 있다.
+
+출처: https://developer.mozilla.org/ko/docs/Web/HTML
+
