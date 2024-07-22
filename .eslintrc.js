@@ -1,3 +1,5 @@
+const path = require('path');
+
 module.exports = {
   env: {
     browser: true,
@@ -13,7 +15,8 @@ module.exports = {
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
-    project: './tsconfig.json',
+    project: path.resolve(__dirname, './tsconfig.json'),
+    tsconfigRootDir: path.resolve(__dirname),
     ecmaFeatures: {
       jsx: true,
     },
@@ -50,7 +53,12 @@ module.exports = {
     ],
     '@typescript-eslint/no-use-before-define': ['off'],
   },
-  ignorePatterns: ['**/build/**/*', '.eslintrc.js', 'craco.config.js'],
+  ignorePatterns: [
+    '**/build/**/*',
+    '.eslintrc.js',
+    'craco.config.js',
+    'public/mockServiceWorker.js',
+  ],
   settings: {
     'import/resolver': {
       typescript: {},
