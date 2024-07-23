@@ -2,7 +2,7 @@ import {
   useCallback,
 } from 'react';
 import { axiosInstance, replacePathParams } from '@utils/network';
-import RequestURLs from '@constants/RequestURLs';
+import LegacyRequestURLs from '@constants/LegacyRequestURLs';
 import {
   useSuspenseInfiniteQuery,
 } from '@tanstack/react-query';
@@ -17,7 +17,7 @@ const MAX_RESULTS_PER_PAGE = 20;
 
 function useFetchThemeProducts({ themeKey }: FetchParams) {
   const fetchPage = useCallback(async ({ pageParam = '' }) => {
-    const url = replacePathParams(RequestURLs.THEME_PRODUCTS, { themeKey });
+    const url = replacePathParams(LegacyRequestURLs.THEME_PRODUCTS, { themeKey });
     const params = {
       maxResults: MAX_RESULTS_PER_PAGE,
       nextPageToken: pageParam === '' ? undefined : pageParam,
