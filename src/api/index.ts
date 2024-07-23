@@ -1,5 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import type {
+  GetNextPageParamFunction,
   InfiniteData,
   QueryFunctionContext,
   UseInfiniteQueryOptions,
@@ -34,9 +35,10 @@ function useAxiosQuery<T>(
 }
 
 type UseAxiosQueryWithPageResult<T> = UseInfiniteQueryResult<InfiniteData<T>>;
-function useAxiosQueryWithPage<T extends { nextPageToken: string }>(
+function useAxiosQueryWithPage<T>(
   axiosOptions: AxiosRequestConfig,
   keys: string[],
+  getNextPageParam: (lastPage: T) => string,
   queryOptions?: Omit<
     UseInfiniteQueryOptions<InfiniteData<T>>,
     'queryKey' | 'queryFn' | 'initialPageParam' | 'getNextPageParam'
@@ -51,8 +53,7 @@ function useAxiosQueryWithPage<T extends { nextPageToken: string }>(
         params: { ...axiosOptions.params, pageToken: pageParam },
       }).then((res) => res.data),
     initialPageParam: '0',
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    getNextPageParam: (lastPage: any) => lastPage.nextPageToken,
+    getNextPageParam: getNextPageParam as GetNextPageParamFunction<unknown>,
     ...(queryOptions || {}),
   });
 }
@@ -92,6 +93,7 @@ export function useGetThemesProducts({
       params,
     },
     ['themes', themeKey],
+    (lastPage) => lastPage.nextPageToken,
   );
 }
 
