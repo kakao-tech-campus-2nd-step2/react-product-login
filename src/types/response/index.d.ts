@@ -13,6 +13,8 @@ export interface ThemesResponse {
   themes: ThemeData[];
 }
 
+export type CategoryResponse = ThemeData[];
+
 export interface LegacyThemeProductsResponse {
   products: LegacyProductData[];
   nextPageToken: string | null;

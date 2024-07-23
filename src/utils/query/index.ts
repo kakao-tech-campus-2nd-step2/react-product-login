@@ -1,14 +1,19 @@
 import { axiosInstance, replacePathParams } from '@utils/network';
 import LegacyRequestURLs from '@constants/LegacyRequestURLs';
-import { ProductDetailResponse, RankingProductsResponse, ThemesResponse } from '@/types/response';
+import RequestURLs from '@constants/RequestURLs';
+import {
+  CategoryResponse,
+  ProductDetailResponse,
+  RankingProductsResponse,
+} from '@/types/response';
 import { RankFilter, TargetFilter, ThemeDataRepository } from '@/types';
 
 export const fetchThemes = async () => {
-  const response = await axiosInstance.get<ThemesResponse>(LegacyRequestURLs.THEMES);
+  const response = await axiosInstance.get<CategoryResponse>(RequestURLs.CATEGORY);
   const tmpThemes: ThemeDataRepository = {};
 
-  if (response.data.themes) {
-    response.data.themes.forEach((theme) => {
+  if (response.data) {
+    response.data.forEach((theme) => {
       tmpThemes[theme.key] = theme;
     });
   }
