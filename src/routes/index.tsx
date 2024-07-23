@@ -1,12 +1,12 @@
 import { createBrowserRouter, Navigate, RouterProvider } from 'react-router-dom';
 
 import { Layout } from '@/components/features/Layout';
-import { CategoryPage } from '@/pages/Category';
-import { GoodsDetailPage } from '@/pages/Goods/Detail';
 import { HomePage } from '@/pages/Home';
 import { LoginPage } from '@/pages/Login';
 import { MyAccountPage } from '@/pages/MyAccount';
 import { OrderPage } from '@/pages/Order';
+import { ProductsPage } from '@/pages/Products';
+import { ThemePage } from '@/pages/Theme';
 
 import { PrivateRoute } from './components/PrivateRoute';
 import { RouterPath } from './path';
@@ -21,22 +21,12 @@ const router = createBrowserRouter([
         element: <HomePage />,
       },
       {
-        path: RouterPath.category,
-        element: <CategoryPage />,
+        path: RouterPath.theme,
+        element: <ThemePage />,
       },
       {
-        path: RouterPath.productsDetail,
-        element: <GoodsDetailPage />,
-      },
-      {
-        path: RouterPath.myAccount,
-        element: <PrivateRoute />,
-        children: [
-          {
-            path: RouterPath.myAccount,
-            element: <MyAccountPage />,
-          },
-        ],
+        path: RouterPath.products,
+        element: <ProductsPage />,
       },
       {
         path: RouterPath.order,
@@ -45,6 +35,16 @@ const router = createBrowserRouter([
           {
             path: RouterPath.order,
             element: <OrderPage />,
+          },
+        ],
+      },
+      {
+        path: RouterPath.myAccount,
+        element: <PrivateRoute />,
+        children: [
+          {
+            path: RouterPath.myAccount,
+            element: <MyAccountPage />,
           },
         ],
       },

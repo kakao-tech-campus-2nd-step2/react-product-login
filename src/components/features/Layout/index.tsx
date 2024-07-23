@@ -3,11 +3,9 @@ import { Outlet } from 'react-router-dom';
 
 import { Footer } from './Footer';
 import { Header, HEADER_HEIGHT } from './Header';
-import { ScrollToTop } from './ScrollToTop';
 
 export const Layout = () => (
   <Wrapper>
-    <ScrollToTop />
     <Header />
     <InnerWrapper>
       <Outlet />
