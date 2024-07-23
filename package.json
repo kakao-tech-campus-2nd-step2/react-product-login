@@ -6,7 +6,7 @@
     "start:mock": "cross-env REACT_APP_RUN_MSW=true npm run start",
     "start": "craco start",
     "build": "craco build",
-    "test": "craco test",
+    "test": "jest",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
   },
