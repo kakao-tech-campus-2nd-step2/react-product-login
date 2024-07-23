@@ -1,4 +1,5 @@
-import type { OrderHistory } from '@/types';
+// source: 7월 8일자 라이브 클론코딩 강의
+import { OrderHistoryData } from '@/types';
 
 const initStorage = <T extends keyof StorageKey>(key: T, storage: Storage) => {
   const storageKey = `${key}`;
@@ -9,8 +10,10 @@ const initStorage = <T extends keyof StorageKey>(key: T, storage: Storage) => {
     return JSON.parse(value as string);
   };
   const set = (value: StorageKey[T]) => {
-    if (value == undefined || value == null) {
-      return storage.removeItem(storageKey);
+    if (typeof value === 'undefined' || value === null) {
+      storage.removeItem(storageKey);
+
+      return;
     }
 
     const stringifiedValue = JSON.stringify(value);
@@ -21,10 +24,9 @@ const initStorage = <T extends keyof StorageKey>(key: T, storage: Storage) => {
   return { get, set };
 };
 
-export const authSessionStorage = initStorage('authToken', sessionStorage);
-export const orderHistorySessionStorage = initStorage('orderHistory', sessionStorage);
+// eslint-disable-next-line import/prefer-default-export
+export const orderHistoryStorage = initStorage('orderHistory', sessionStorage);
 
 interface StorageKey {
-  authToken?: string;
-  orderHistory?: OrderHistory;
+  orderHistory?: OrderHistoryData;
 }
