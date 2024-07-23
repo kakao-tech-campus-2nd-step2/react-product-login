@@ -1,14 +1,16 @@
 export const ROUTER_PATH = {
   HOME: '/',
-  THEME: '/theme/:themeKey',
+  CATEGORY: '/category/:categoryId',
   LOGIN: '/login',
   MY_ACCOUNT: '/my-account',
-  PRODUCTS: '/products/:productId',
+  PRODUCTSDETAIL: '/products/:productId',
   ORDER: '/order',
+  NOT_FOUND: '*',
 };
 
 export const getDynamicPath = {
-  theme: (themeKey: string) => ROUTER_PATH.THEME.replace(':themeKey', themeKey),
-  products: (productId: number) =>
-    ROUTER_PATH.PRODUCTS.replace(':productId', productId.toString()),
+  category: (categoryId: string) =>
+    ROUTER_PATH.CATEGORY.replace(':categoryId', categoryId),
+  productsDetail: (productId: number) =>
+    ROUTER_PATH.PRODUCTSDETAIL.replace(':productId', productId.toString()),
 };

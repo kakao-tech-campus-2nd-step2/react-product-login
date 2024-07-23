@@ -1,14 +1,23 @@
 import { BACKEND_API } from '@/api/config';
+import { getProductDetailPath } from '@/api/services/path';
 import { API_ERROR_MESSAGES } from '@/constants/errorMessage';
+import { ProductData } from '@/types/productType';
 
-import { GetProductDetailResponse } from './types';
+export interface ProductDetailRequestParams {
+  productId: string;
+}
 
-export const fetchProductDetail = async (productId: number) => {
+export type ProductDetailResponse = ProductData;
+
+export const fetchProductDetail = async ({
+  productId,
+}: ProductDetailRequestParams) => {
   try {
-    const response = await BACKEND_API.get<GetProductDetailResponse>(
-      `/api/v1/products/${productId}/detail`
+    const response = await BACKEND_API.get<ProductDetailResponse>(
+      getProductDetailPath(productId)
     );
-    return response.data.detail;
+
+    return response.data;
   } catch (error) {
     if (error instanceof Error) {
       throw error;

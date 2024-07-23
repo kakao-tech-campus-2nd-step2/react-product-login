@@ -7,13 +7,15 @@ import { z } from 'zod';
 
 import { OrderSchema } from '@/schema/index';
 
+export type OrderForm = z.infer<typeof OrderSchema>;
+
 export const useOrderForm = () => {
   const location = useLocation();
   const { productId, quantity } = location.state;
 
   const [alertMessage, setAlertMessage] = useState('');
 
-  const form = useForm<z.infer<typeof OrderSchema>>({
+  const form = useForm<OrderForm>({
     resolver: zodResolver(OrderSchema),
     mode: 'onSubmit',
     defaultValues: {

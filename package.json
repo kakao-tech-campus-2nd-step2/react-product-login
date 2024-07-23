@@ -4,6 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "start:mock": "cross-env VITE_RUN_MSW=true pnpm run dev",
     "start": "vite",
     "dev": "vite",
     "build": "tsc -b && vite build",
@@ -51,6 +52,7 @@
     "@typescript-eslint/eslint-plugin": "^7.14.1",
     "@typescript-eslint/parser": "^7.14.1",
     "@vitejs/plugin-react": "^4.3.1",
+    "cross-env": "^7.0.3",
     "eslint": "^8.57.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-airbnb-typescript": "^18.0.0",
@@ -61,10 +63,16 @@
     "eslint-plugin-react-hooks": "^4.6.2",
     "eslint-plugin-react-refresh": "^0.4.7",
     "eslint-plugin-storybook": "^0.8.0",
+    "msw": "^2.3.2",
     "prettier": "3.3.2",
     "storybook": "^8.1.11",
     "typescript": "^5.2.2",
     "vite": "^5.3.4",
     "vite-tsconfig-paths": "^4.3.2"
+  },
+  "msw": {
+    "workerDirectory": [
+      "public"
+    ]
   }
 }

@@ -1,8 +1,8 @@
 import { Link } from 'react-router-dom';
 
-import { useThemeCategory } from '@/api/hooks/useThemeCategory';
+import { useCategories } from '@/api/hooks/useCategories';
 import { getDynamicPath } from '@/routes/path';
-import { ThemeCategoryData } from '@/types/themeType';
+import { CategoryData } from '@/types/categoryType';
 
 import { Content } from '@/components/Content';
 import { UpDownDots } from '@/components/Loading/UpDownDots';
@@ -13,7 +13,7 @@ import { ThemeCategoryItem } from './ThemeCategoryItem';
 import { gridStyle, itemContainerStyle } from './styles';
 
 export const ThemeCategorySection = () => {
-  const { themeCategoryList, status, error } = useThemeCategory();
+  const { data: categories, status, error } = useCategories();
 
   if (error) {
     return <OneTextContainer>{error.message}</OneTextContainer>;
@@ -33,17 +33,15 @@ export const ThemeCategorySection = () => {
         gap={40}
         css={gridStyle}
       >
-        {themeCategoryList?.map(
-          ({ id, key, label, imageURL }: ThemeCategoryData) => (
-            <Link
-              key={id}
-              to={getDynamicPath.theme(key)}
-              css={itemContainerStyle}
-            >
-              <ThemeCategoryItem label={label} imageURL={imageURL} />
-            </Link>
-          )
-        )}
+        {categories?.map(({ id, name, imageUrl }: CategoryData) => (
+          <Link
+            key={id}
+            to={getDynamicPath.category(id.toString())}
+            css={itemContainerStyle}
+          >
+            <ThemeCategoryItem label={name} imageURL={imageUrl} />
+          </Link>
+        ))}
       </Grid>
     </Content>
   );

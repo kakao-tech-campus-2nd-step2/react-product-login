@@ -63,6 +63,11 @@ module.exports = {
         some: ['nesting', 'id'],
       },
     ],
+    'no-use-before-define': 'off',
+    '@typescript-eslint/no-use-before-define': [
+      'error',
+      { variables: false, functions: false, classes: false },
+    ],
   },
   settings: {
     'import/resolver': {

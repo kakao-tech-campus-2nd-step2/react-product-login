@@ -1,30 +1,27 @@
 import { BACKEND_API } from '@/api/config';
-import { API_ERROR_MESSAGES } from '@/constants/errorMessage';
+import { getProductsPath } from '@/api/services/path';
 
-import { GetProductsRequest, GetProductsResponse } from './types';
+import {
+  ProductsRequestParams,
+  ProductsResponse,
+  ProductsResponseRaw,
+} from './types';
 
 export const fetchThemeProduct = async (
-  themeKey: string,
-  pageParam: number,
-  maxResults: number
-) => {
-  try {
-    const params: GetProductsRequest = {
-      pageToken: pageParam.toString(),
-      maxResults,
-    };
+  params: ProductsRequestParams
+): Promise<ProductsResponse> => {
+  const response = await BACKEND_API.get<ProductsResponseRaw>(
+    getProductsPath(params)
+  );
+  const { data } = response;
 
-    const response = await BACKEND_API.get<GetProductsResponse>(
-      `/api/v1/themes/${themeKey}/products`,
-      { params }
-    );
-
-    return response.data;
-  } catch (error) {
-    if (error instanceof Error) {
-      throw error;
-    }
-
-    throw new Error(API_ERROR_MESSAGES.UNKNOWN_ERROR);
-  }
+  return {
+    products: data.content,
+    nextPageToken:
+      data.last === false ? (data.number + 1).toString() : undefined,
+    pageInfo: {
+      totalResults: data.totalElements,
+      resultsPerPage: data.size,
+    },
+  };
 };

@@ -1,14 +1,22 @@
 import { BACKEND_API } from '@/api/config';
+import { getProductOptionsPath } from '@/api/services/path';
+import { ProductDetailRequestParams } from '@/api/services/productDetail';
 import { API_ERROR_MESSAGES } from '@/constants/errorMessage';
+import { ProductOptionsData } from '@/types/productType';
 
-import { GetProductOptionsResponse } from './types';
+export interface ProductOptionsRequestParams
+  extends ProductDetailRequestParams {}
 
-export const fetchProductOptions = async (productId: number) => {
+type ProductOptionsResponse = ProductOptionsData[];
+
+export const fetchProductOptions = async ({
+  productId,
+}: ProductOptionsRequestParams) => {
   try {
-    const response = await BACKEND_API.get<GetProductOptionsResponse>(
-      `/api/v1/products/${productId}/options`
+    const response = await BACKEND_API.get<ProductOptionsResponse>(
+      getProductOptionsPath(productId)
     );
-    return response.data.options;
+    return response.data;
   } catch (error) {
     if (error instanceof Error) {
       throw error;
