@@ -8,10 +8,10 @@ import ResponsiveContainer
 import { BREAKPOINT_SM } from '@styles/size';
 import styled from '@emotion/styled';
 import { useContext } from 'react';
-import { ThemeContext } from '@/providers/ThemeContextProvider';
+import { CategoryContext } from '@/providers/CategoryContextProvider';
 
 interface ThemeItemProps {
-  themeKey: string;
+  categoryId: string;
 }
 
 const ResponsiveThemeCaption = styled.p`
@@ -22,12 +22,12 @@ const ResponsiveThemeCaption = styled.p`
   }
 `;
 
-function MainThemeItem({ themeKey }: ThemeItemProps) {
-  const { themes } = useContext(ThemeContext);
-  const theme = themes[themeKey];
+function MainCategoryItem({ categoryId }: ThemeItemProps) {
+  const { themes } = useContext(CategoryContext);
+  const theme = themes[categoryId];
 
   return (
-    <Link to={Paths.THEME_PAGE(themeKey)}>
+    <Link to={Paths.CATEGORY_PAGE(categoryId)}>
       <Container padding="13px 0px 12px">
         <Container
           elementSize="full-width"
@@ -55,4 +55,4 @@ function MainThemeItem({ themeKey }: ThemeItemProps) {
   );
 }
 
-export default MainThemeItem;
+export default MainCategoryItem;

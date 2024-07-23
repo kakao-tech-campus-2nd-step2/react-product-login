@@ -1,19 +1,18 @@
 import {
   MessageCardTemplateData, MyAccountInfoData,
   LegacyProductData,
-  LegacyProductDetailData,
-  ThemeData, ProductData,
+  ThemeData, ProductData, CategoryData,
 } from '@/dto';
 
 export interface RankingProductsResponse {
   products: LegacyProductData[];
 }
 
-export interface ThemesResponse {
+export interface LegacyThemesResponse {
   themes: ThemeData[];
 }
 
-export type CategoryResponse = ThemeData[];
+export type CategoryResponse = CategoryData[];
 
 export interface LegacyThemeProductsResponse {
   products: LegacyProductData[];
@@ -48,9 +47,7 @@ export interface CategoryProductsResponse {
   empty: boolean;
 }
 
-export interface ProductDetailResponse {
-  detail: LegacyProductDetailData;
-}
+export type ProductDetailResponse = ProductData;
 
 export interface MessageCardTemplatesResponse {
   templates: MessageCardTemplateData[];

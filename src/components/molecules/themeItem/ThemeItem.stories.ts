@@ -11,6 +11,6 @@ type Story = StoryObj<typeof ThemeItem>;
 
 export const ThemeItemTest: Story = {
   args: {
-    themeKey: 'small',
+    categoryId: 'small',
   },
 };

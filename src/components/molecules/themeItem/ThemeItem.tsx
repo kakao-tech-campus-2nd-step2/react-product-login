@@ -4,27 +4,27 @@ import { css } from '@emotion/react';
 import { Link } from 'react-router-dom';
 import Paths from '@constants/Paths';
 import { useContext } from 'react';
-import { ThemeContext } from '@/providers/ThemeContextProvider';
+import { CategoryContext } from '@/providers/CategoryContextProvider';
 
 interface ThemeItemProps {
-  themeKey: string;
+  categoryId: string;
 }
 
-function ThemeItem({ themeKey }: ThemeItemProps) {
-  const { themes } = useContext(ThemeContext);
-  const theme = themes[themeKey];
+function ThemeItem({ categoryId }: ThemeItemProps) {
+  const { themes } = useContext(CategoryContext);
+  const theme = themes[categoryId];
 
   return (
-    <Link to={Paths.THEME_PAGE(themeKey)}>
+    <Link to={Paths.CATEGORY_PAGE(categoryId)}>
       <Container padding="25px 35px 24px">
         <Container elementSize="full-width" flexDirection="column" alignItems="center">
-          <Image src={theme.imageURL} ratio="square" radius={32} />
+          <Image src={theme.imageUrl} ratio="square" radius={32} />
           <p css={css`
           font-size: 16px;
           padding-top: 7px;
         `}
           >
-            {theme.label}
+            {theme.name}
           </p>
         </Container>
       </Container>

@@ -3,12 +3,12 @@ import {
 } from 'react';
 import FetchStatus from '@constants/FetchStatus';
 import { useQuery } from '@tanstack/react-query';
-import { fetchThemes } from '@utils/query';
+import { fetchCategories } from '@utils/query';
 import { QueryKeys } from '@constants/QueryKeys';
-import { FetchStatusType, ThemeDataRepository } from '@/types';
+import { FetchStatusType, CategoryRepository } from '@/types';
 
 interface ThemeContextData {
-  themes: ThemeDataRepository;
+  themes: CategoryRepository;
   fetchStatus: FetchStatusType;
 }
 
@@ -17,22 +17,22 @@ const defaultThemeContextData = {
   fetchStatus: FetchStatus.FETCHING,
 };
 
-export const ThemeContext = createContext<ThemeContextData>(defaultThemeContextData);
+export const CategoryContext = createContext<ThemeContextData>(defaultThemeContextData);
 
-function ThemeContextProvider({ children }: { children: ReactNode }) {
+function CategoryContextProvider({ children }: { children: ReactNode }) {
   const { data: themes = {}, status } = useQuery({
-    queryKey: [QueryKeys.THEMES],
-    queryFn: fetchThemes,
+    queryKey: [QueryKeys.CATEGORIES],
+    queryFn: fetchCategories,
   });
   const value = useMemo<ThemeContextData>(() => ({
     themes, fetchStatus: status,
   }), [themes, status]);
 
   return (
-    <ThemeContext.Provider value={value}>
+    <CategoryContext.Provider value={value}>
       {children}
-    </ThemeContext.Provider>
+    </CategoryContext.Provider>
   );
 }
 
-export default ThemeContextProvider;
+export default CategoryContextProvider;

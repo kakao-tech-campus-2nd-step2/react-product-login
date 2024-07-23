@@ -6,19 +6,20 @@ import {
   ProductDetailResponse,
   RankingProductsResponse,
 } from '@/types/response';
-import { RankFilter, TargetFilter, ThemeDataRepository } from '@/types';
+import { RankFilter, TargetFilter, CategoryRepository } from '@/types';
+import { ProductData } from '@/dto';
 
-export const fetchThemes = async () => {
+export const fetchCategories = async () => {
   const response = await axiosInstance.get<CategoryResponse>(RequestURLs.CATEGORY);
-  const tmpThemes: ThemeDataRepository = {};
+  const tmpCategories: CategoryRepository = {};
 
   if (response.data) {
-    response.data.forEach((theme) => {
-      tmpThemes[theme.key] = theme;
+    response.data.forEach((category) => {
+      tmpCategories[category.id] = category;
     });
   }
 
-  return tmpThemes;
+  return tmpCategories;
 };
 
 export const fetchProducts = async (params:
@@ -30,8 +31,8 @@ export const fetchProducts = async (params:
 };
 
 export const fetchProductDetail = async ({ productId }: { productId: string }) => {
-  const endpoint = replacePathParams(LegacyRequestURLs.PRODUCT_DETAILS, { productId });
+  const endpoint = replacePathParams(RequestURLs.PRODUCT_DETAILS, { productId });
   const response = await axiosInstance.get<ProductDetailResponse>(endpoint);
 
-  return response.data.detail;
+  return response.data as ProductData;
 };

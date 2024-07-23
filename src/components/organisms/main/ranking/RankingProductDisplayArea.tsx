@@ -4,7 +4,6 @@ import {
 } from '@tanstack/react-query';
 import { QueryKeys } from '@constants/QueryKeys';
 import { fetchProducts } from '@utils/query';
-import ProductDisplaySection from '@components/organisms/product/ProductDisplaySection';
 import Container from '@components/atoms/container/Container';
 import Button from '@components/atoms/button/Button';
 import { LegacyProductData } from '@/dto';
@@ -33,12 +32,12 @@ function RankingProductDisplayArea({ targetFilter, rankFilter }: RankingProductD
   return (
     <>
       <Container padding="0 0 20px 0">
-        <ProductDisplaySection
-          products={isFolded ? products?.slice(0, DISPLAY_COUNT_WHEN_FOLDED) : products}
-          maxColumns={6}
-          minColumns={3}
-          indexed
-        />
+        {/* <ProductDisplaySection */}
+        {/*   products={isFolded ? products?.slice(0, DISPLAY_COUNT_WHEN_FOLDED) : products} */}
+        {/*   maxColumns={6} */}
+        {/*   minColumns={3} */}
+        {/*   indexed */}
+        {/* /> */}
       </Container>
       <Container elementSize="full-width" justifyContent="center">
         <Container elementSize="full-width" maxWidth="480px">
