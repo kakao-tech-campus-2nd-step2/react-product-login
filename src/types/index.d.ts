@@ -1,7 +1,7 @@
 import { CSSProperties, InputHTMLAttributes, ReactNode } from 'react';
 import FetchStatus from '@constants/FetchStatus';
 import { OrderRequestBody } from '@types/request';
-import { ProductDetailData, ThemeData } from '@/dto';
+import { LegacyProductDetailData, ThemeData } from '@/dto';
 import { CashReceiptOptions } from '@/constants';
 
 export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
@@ -63,7 +63,7 @@ interface SizedSkeletonProps {
 }
 
 interface ProductOrderPageState {
-  productDetails: ProductDetailData;
+  productDetails: LegacyProductDetailData;
   count: number;
 }
 

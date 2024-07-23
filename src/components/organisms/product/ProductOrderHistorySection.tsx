@@ -2,10 +2,10 @@ import Container from '@components/atoms/container/Container';
 import { Box, Text } from '@chakra-ui/react';
 import { defaultBorderColor, textColors } from '@styles/colors';
 import Image from '@components/atoms/image/Image';
-import { ProductDetailData } from '@/dto';
+import { LegacyProductDetailData } from '@/dto';
 
 interface ProductOrderHistorySectionProps {
-  productDetails: ProductDetailData;
+  productDetails: LegacyProductDetailData;
   count: number;
 }
 

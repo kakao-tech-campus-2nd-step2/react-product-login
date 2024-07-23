@@ -1,20 +1,20 @@
 import {
   MessageCardTemplateData, MyAccountInfoData,
-  ProductData,
-  ProductDetailData,
-  ThemeData,
+  LegacyProductData,
+  LegacyProductDetailData,
+  ThemeData, ProductData,
 } from '@/dto';
 
 export interface RankingProductsResponse {
-  products: ProductData[];
+  products: LegacyProductData[];
 }
 
 export interface ThemesResponse {
   themes: ThemeData[];
 }
 
-export interface ThemeProductsResponse {
-  products: ProductData[];
+export interface LegacyThemeProductsResponse {
+  products: LegacyProductData[];
   nextPageToken: string | null;
   pageInfo: {
     totalResults: number;
@@ -22,8 +22,32 @@ export interface ThemeProductsResponse {
   };
 }
 
+export interface ThemeProductsResponse {
+  content: ProductData[];
+  pageable: {
+    sort: {
+      sorted: boolean;
+      unsorted: boolean;
+      empty: boolean;
+    };
+    pageNumber: number;
+    pageSize: number;
+    offset: number;
+    unpaged: boolean;
+    paged: boolean;
+  };
+  totalPages: number;
+  totalElements: number;
+  last: boolean;
+  number: number;
+  size: number;
+  numberOfElements: number;
+  first: boolean;
+  empty: boolean;
+}
+
 export interface ProductDetailResponse {
-  detail: ProductDetailData;
+  detail: LegacyProductDetailData;
 }
 
 export interface MessageCardTemplatesResponse {
@@ -33,7 +57,7 @@ export interface MessageCardTemplatesResponse {
 export interface MyAccountInfoResponse extends MyAccountInfoData {}
 
 export interface MyWishProductsResponse {
-  products: ProductData[];
+  products: LegacyProductData[];
   nextPageToken: string | null;
   pageInfo: {
     totalResults: number;

@@ -16,14 +16,14 @@ import {
 import { FormErrorMessages } from '@constants/ErrorMessage';
 import { CashReceiptOptions } from '@/constants';
 import { OrderFormData } from '@/types';
-import { ProductDetailData } from '@/dto';
+import { LegacyProductDetailData } from '@/dto';
 
 interface ProductOrderFormProps<T extends FieldValues> {
   register: UseFormRegister<T>,
   errors: FieldErrors<T>,
   clearErrors: UseFormClearErrors<T>,
   watch: UseFormWatch<T>,
-  productDetails: ProductDetailData,
+  productDetails: LegacyProductDetailData,
   control: Control<T>,
   count: number,
 }

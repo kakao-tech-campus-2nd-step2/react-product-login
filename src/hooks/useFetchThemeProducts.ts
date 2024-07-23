@@ -7,7 +7,7 @@ import {
   useSuspenseInfiniteQuery,
 } from '@tanstack/react-query';
 import { QueryKeys } from '@constants/QueryKeys';
-import { ThemeProductsResponse } from '@/types/response';
+import { LegacyThemeProductsResponse } from '@/types/response';
 
 interface FetchParams {
   themeKey: string;
@@ -23,7 +23,7 @@ function useFetchThemeProducts({ themeKey }: FetchParams) {
       nextPageToken: pageParam === '' ? undefined : pageParam,
     };
 
-    const response = await axiosInstance.get<ThemeProductsResponse>(url, {
+    const response = await axiosInstance.get<LegacyThemeProductsResponse>(url, {
       params,
     });
 

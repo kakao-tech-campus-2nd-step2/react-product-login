@@ -5,9 +5,16 @@ export interface RankingProductsRequestQuery {
   rankType?: RankFilter;
 }
 
-export interface ThemeProductsRequestQuery {
+export interface LegacyThemeProductsRequestQuery {
   pageToken?: string;
   maxResults?: number;
+}
+
+export interface ThemeProductsRequestQuery {
+  size: number;
+  page: number;
+  sort: string;
+  categoryId: number;
 }
 
 export interface ThemeProductsRequestPath {

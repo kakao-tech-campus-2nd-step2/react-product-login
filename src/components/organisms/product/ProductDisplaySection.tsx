@@ -3,10 +3,10 @@ import { useRef } from 'react';
 import ResponsiveGrid from '@components/atoms/grid/responsive/ResponsiveGrid';
 import Container from '@components/atoms/container/Container';
 import { generateRandomId, isEmptyList } from '@/utils';
-import { ProductData } from '@/dto';
+import { LegacyProductData } from '@/dto';
 
 interface ProductDisplaySectionProps {
-  products: ProductData[];
+  products: LegacyProductData[];
   indexed?: boolean,
   maxColumns: number,
   minColumns: number,

@@ -10,14 +10,14 @@ import { StatusCodes } from 'http-status-codes';
 import Paths from '@constants/Paths';
 import { useNavigate } from 'react-router-dom';
 import ProductCounterForm from '@components/organisms/product/ProductCounterForm';
-import { ProductDetailData } from '@/dto';
+import { LegacyProductDetailData } from '@/dto';
 
 interface ProductDetailSectionProps {
   productId: number;
 }
 
 function ProductDetailDisplaySection({ productId }: ProductDetailSectionProps) {
-  const { data: product, error } = useSuspenseQuery<ProductDetailData>({
+  const { data: product, error } = useSuspenseQuery<LegacyProductDetailData>({
     queryKey: [QueryKeys.PRODUCT_DETAILS, productId],
     queryFn: () => fetchProductDetail({ productId: productId.toString() }),
   });
