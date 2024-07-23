@@ -37,6 +37,7 @@
       "@pages/*": ["pages/*"],
       "@dto/*": ["dto/*"],
       "@hooks/*": ["hooks/*"],
+      "@mock/*": ["mock/*"],
       "@router": ["router/"]
     },
     "types": ["@emotion/react/types/css-prop"]
