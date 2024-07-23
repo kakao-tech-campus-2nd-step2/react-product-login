@@ -1,9 +1,12 @@
-import { useEffect } from 'react';
+import { Suspense, useEffect } from 'react';
+import { ErrorBoundary } from 'react-error-boundary';
 
 import { useDisclosure } from '@chakra-ui/react';
 
+import { ProductErrorFallback } from '@/api/components/ProductErrorFallback';
 import BaseLayout from '@/layouts/BaseLayout';
 
+import { UpDownDots } from '@/components/Loading/UpDownDots';
 import { Alert } from '@/components/ui/Dialog/Alert';
 
 import { OrderForm } from './components/OrderForm';
@@ -29,10 +32,14 @@ export const OrderPage = () => {
 
   return (
     <BaseLayout>
-      <OrderForm form={form} handleSubmit={handleSubmit} />
-      {isOpen && (
-        <Alert message={alertMessage} isOpen={isOpen} onClose={onClose} />
-      )}
+      <ErrorBoundary FallbackComponent={ProductErrorFallback}>
+        <Suspense fallback={<UpDownDots />}>
+          <OrderForm form={form} handleSubmit={handleSubmit} />
+          {isOpen && (
+            <Alert message={alertMessage} isOpen={isOpen} onClose={onClose} />
+          )}
+        </Suspense>
+      </ErrorBoundary>
     </BaseLayout>
   );
 };
