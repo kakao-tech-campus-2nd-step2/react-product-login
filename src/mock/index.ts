@@ -11,6 +11,10 @@ const handlers = [
     BASE_URL + RequestURLs.CATEGORY_PRODUCTS,
     () => HttpResponse.json(MockData.MOCK_CATEGORY_ITEMS),
   ),
+  http.get(
+    BASE_URL + RequestURLs.PRODUCT_DETAILS,
+    () => HttpResponse.json(MockData.MOCK_PRODUCT_DETAIL),
+  ),
 ];
 
 const worker = setupWorker(...handlers);
