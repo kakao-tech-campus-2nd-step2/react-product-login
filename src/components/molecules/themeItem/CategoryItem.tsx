@@ -6,11 +6,11 @@ import Paths from '@constants/Paths';
 import { useContext } from 'react';
 import { CategoryContext } from '@/providers/CategoryContextProvider';
 
-interface ThemeItemProps {
+interface CategoryItemProps {
   categoryId: string;
 }
 
-function CategoryItem({ categoryId }: ThemeItemProps) {
+function CategoryItem({ categoryId }: CategoryItemProps) {
   const { categories } = useContext(CategoryContext);
   const category = categories[categoryId];
 

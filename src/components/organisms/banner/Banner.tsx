@@ -11,20 +11,20 @@ interface BannerProps {
 
 function Banner({ categoryId }: BannerProps) {
   const { categories } = useContext(CategoryContext);
-  const theme = categories[categoryId];
+  const category = categories[categoryId];
 
   return (
-    <Container backgroundColor={theme?.backgroundColor || backgroundColors.containerDark} elementSize="full-width" justifyContent="center">
+    <Container backgroundColor={category?.color || backgroundColors.containerDark} elementSize="full-width" justifyContent="center">
       <Container maxWidth={MAX_CONTENT_WIDTH} elementSize="full-width" padding="50px 20px">
         <Container flexDirection="column">
           <CategoryName>
-            {theme?.label}
+            {category?.name}
           </CategoryName>
           <CategoryTitle>
-            {theme?.title}
+            {category?.name}
           </CategoryTitle>
           <CategorySubtitle>
-            {theme?.description}
+            {category?.description}
           </CategorySubtitle>
         </Container>
       </Container>

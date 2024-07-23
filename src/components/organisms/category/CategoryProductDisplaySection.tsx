@@ -7,11 +7,11 @@ import { css } from '@emotion/react';
 import useInView from '@hooks/useInView';
 import { generateRandomId } from '@/utils';
 
-interface ThemeProductDisplaySectionProps {
+interface CategoryProductDisplaySectionProps {
   categoryId: number;
 }
 
-function CategoryProductDisplaySection({ categoryId }: ThemeProductDisplaySectionProps) {
+function CategoryProductDisplaySection({ categoryId }: CategoryProductDisplaySectionProps) {
   const productDisplayId = useRef(generateRandomId());
   const {
     productResponse, hasNextPage, fetchNextPage, isFetchingNextPage,

@@ -10,11 +10,11 @@ import styled from '@emotion/styled';
 import { useContext } from 'react';
 import { CategoryContext } from '@/providers/CategoryContextProvider';
 
-interface ThemeItemProps {
+interface CategoryItemProps {
   categoryId: string;
 }
 
-const ResponsiveThemeCaption = styled.p`
+const ResponsiveCategoryCaption = styled.p`
   font-size: 16px;
   padding-top: 7px;
   @media (max-width: ${BREAKPOINT_SM}) {
@@ -22,9 +22,9 @@ const ResponsiveThemeCaption = styled.p`
   }
 `;
 
-function MainCategoryItem({ categoryId }: ThemeItemProps) {
+function MainCategoryItem({ categoryId }: CategoryItemProps) {
   const { categories } = useContext(CategoryContext);
-  const theme = categories[categoryId];
+  const category = categories[categoryId];
 
   return (
     <Link to={Paths.CATEGORY_PAGE(categoryId)}>
@@ -36,7 +36,7 @@ function MainCategoryItem({ categoryId }: ThemeItemProps) {
         >
           <ResponsiveContainer sizeDefault={{ width: '90px', height: '90px' }} sizeSm={{ width: '50px', height: '50px' }}>
             <Image
-              src={theme.imageURL}
+              src={category.imageUrl}
               ratio="square"
               css={css`
                 border-radius: 32px;
@@ -46,9 +46,9 @@ function MainCategoryItem({ categoryId }: ThemeItemProps) {
             `}
             />
           </ResponsiveContainer>
-          <ResponsiveThemeCaption>
-            {theme.label}
-          </ResponsiveThemeCaption>
+          <ResponsiveCategoryCaption>
+            {category.name}
+          </ResponsiveCategoryCaption>
         </Container>
       </Container>
     </Link>

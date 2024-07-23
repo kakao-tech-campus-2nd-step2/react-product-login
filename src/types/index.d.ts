@@ -1,7 +1,7 @@
 import { CSSProperties, InputHTMLAttributes, ReactNode } from 'react';
 import FetchStatus from '@constants/FetchStatus';
 import { OrderRequestBody } from '@types/request';
-import { CategoryData, LegacyProductDetailData, ThemeData } from '@/dto';
+import { CategoryData, LegacyProductDetailData } from '@/dto';
 import { CashReceiptOptions } from '@/constants';
 
 export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {

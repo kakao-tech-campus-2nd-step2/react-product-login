@@ -1,7 +1,10 @@
 import {
-  MessageCardTemplateData, MyAccountInfoData,
+  MessageCardTemplateData,
+  MyAccountInfoData,
   LegacyProductData,
-  ThemeData, ProductData, CategoryData,
+  ThemeData,
+  ProductData,
+  CategoryData,
 } from '@/dto';
 
 export interface RankingProductsResponse {
