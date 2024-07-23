@@ -1,4 +1,6 @@
-module.exports = {
+import { defineConfig } from 'eslint-define-config';
+
+export default defineConfig({
   env: {
     browser: true,
     es2021: true,
@@ -50,10 +52,10 @@ module.exports = {
     ],
     '@typescript-eslint/no-use-before-define': ['off'],
   },
-  ignorePatterns: ['**/build/**/*', '.eslintrc.js', 'craco.config.js'],
+  ignorePatterns: ['**/build/**/*', 'craco.config.js'],
   settings: {
     'import/resolver': {
       typescript: {},
     },
   },
-};
+});
