@@ -14,17 +14,17 @@ import CategoryContextProvider, { CategoryContext } from '@/providers/CategoryCo
 
 function CategoryPage() {
   const { categoryId } = useParams();
-  const { themes, fetchStatus: themeFetchStatus } = useContext(CategoryContext);
+  const { categories, fetchStatus: themeFetchStatus } = useContext(CategoryContext);
 
   const navigate = useNavigate();
 
   useEffect(() => {
     if (themeFetchStatus === FetchStatus.FETCHING) return;
 
-    if (!categoryId || !(categoryId in themes)) {
+    if (!categoryId || !(categoryId in categories)) {
       navigate(-1);
     }
-  }, [navigate, themes, categoryId, themeFetchStatus]);
+  }, [navigate, categories, categoryId, themeFetchStatus]);
 
   return (
     <CategoryContextProvider>

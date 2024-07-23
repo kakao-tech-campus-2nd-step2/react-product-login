@@ -8,7 +8,7 @@ import { QueryKeys } from '@constants/QueryKeys';
 import { FetchStatusType, CategoryRepository } from '@/types';
 
 interface ThemeContextData {
-  themes: CategoryRepository;
+  categories: CategoryRepository;
   fetchStatus: FetchStatusType;
 }
 
@@ -25,7 +25,7 @@ function CategoryContextProvider({ children }: { children: ReactNode }) {
     queryFn: fetchCategories,
   });
   const value = useMemo<ThemeContextData>(() => ({
-    themes, fetchStatus: status,
+    categories: themes, fetchStatus: status,
   }), [themes, status]);
 
   return (

@@ -10,7 +10,7 @@ import FetchStatusBoundary
 import { CategoryContext } from '@/providers/CategoryContextProvider';
 
 function CategorySection() {
-  const { themes, fetchStatus } = useContext(CategoryContext);
+  const { categories, fetchStatus } = useContext(CategoryContext);
 
   return (
     <ResponsiveCategorySection>
@@ -21,7 +21,7 @@ function CategorySection() {
       >
         <FetchStatusBoundary fetchStatus={fetchStatus}>
           <ResponsiveGrid columnsDefault={6} columnsMd={4} gap={0}>
-            {Object.keys(themes).map((themeKey, i) => {
+            {Object.keys(categories).map((themeKey, i) => {
               const key = `$gift-theme-${i}`;
 
               return (

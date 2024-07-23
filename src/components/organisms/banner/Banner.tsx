@@ -10,8 +10,8 @@ interface BannerProps {
 }
 
 function Banner({ categoryId }: BannerProps) {
-  const { themes } = useContext(CategoryContext);
-  const theme = themes[categoryId];
+  const { categories } = useContext(CategoryContext);
+  const theme = categories[categoryId];
 
   return (
     <Container backgroundColor={theme?.backgroundColor || backgroundColors.containerDark} elementSize="full-width" justifyContent="center">

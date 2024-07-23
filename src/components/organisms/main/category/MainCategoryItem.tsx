@@ -23,8 +23,8 @@ const ResponsiveThemeCaption = styled.p`
 `;
 
 function MainCategoryItem({ categoryId }: ThemeItemProps) {
-  const { themes } = useContext(CategoryContext);
-  const theme = themes[categoryId];
+  const { categories } = useContext(CategoryContext);
+  const theme = categories[categoryId];
 
   return (
     <Link to={Paths.CATEGORY_PAGE(categoryId)}>
