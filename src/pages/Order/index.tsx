@@ -1,15 +1,45 @@
-import { AsyncBoundary } from '@/components/common/AsyncBoundary';
-import { LoadingView } from '@/components/common/View/LoadingView';
-import { OrderForm } from '@/components/features/Order/OrderForm';
-import { useHandleOrderHistory } from '@/hooks/useHandleOrderHistory';
+import React from 'react';
+import styled from '@emotion/styled';
+import Layout from '@components/features/Layout';
+import { CenteredContainer } from '@components/common';
+import OrderMessage from '@components/features/Order/OrderMessage';
+import Payment from '@components/features/Order/Payment';
+import { useForm, FormProvider } from 'react-hook-form';
 
-export const OrderPage = () => {
-  const { orderHistory } = useHandleOrderHistory();
+export interface OrderDataFormValues {
+  message: string;
+  hasCashReceipt: boolean;
+  cashReceiptType: string;
+  cashReceiptNumber: string;
+}
 
-  if (!orderHistory) return <LoadingView />;
+export default function Order() {
+  const methods = useForm<OrderDataFormValues>({
+    defaultValues: {
+      message: '',
+      hasCashReceipt: false,
+      cashReceiptType: '개인소득공제',
+      cashReceiptNumber: '',
+    },
+  });
+
   return (
-    <AsyncBoundary pendingFallback={<LoadingView />} rejectedFallback={<div>에러 페이지</div>}>
-      <OrderForm orderHistory={orderHistory} />
-    </AsyncBoundary>
+    <Layout>
+      <CenteredContainer maxWidth="lg">
+        <InnerContainer>
+          <FormProvider {...methods}>
+            <OrderMessage />
+            <Payment />
+          </FormProvider>
+        </InnerContainer>
+      </CenteredContainer>
+    </Layout>
   );
-};
+}
+
+const InnerContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  padding-top: 80px;
+  height: 100vh;
+`;

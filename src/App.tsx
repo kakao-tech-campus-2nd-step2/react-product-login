@@ -1,20 +1,18 @@
-import { ChakraProvider } from '@chakra-ui/react';
-import { QueryClientProvider } from '@tanstack/react-query';
+import React from 'react';
+import { Outlet } from 'react-router-dom';
+import AuthProvider from '@context/auth/AuthProvider';
+import FilterProvider from '@context/filter/FilterProvider';
+import GlobalStyles from '@assets/styles';
 
-import { queryClient } from './api/instance';
-import { AuthProvider } from './provider/Auth';
-import { Routes } from './routes';
-
-const App = () => {
+function App() {
   return (
-    <ChakraProvider>
-      <QueryClientProvider client={queryClient}>
-        <AuthProvider>
-          <Routes />
-        </AuthProvider>
-      </QueryClientProvider>
-    </ChakraProvider>
+    <FilterProvider>
+      <AuthProvider>
+        <GlobalStyles />
+        <Outlet />
+      </AuthProvider>
+    </FilterProvider>
   );
-};
+}
 
 export default App;
