@@ -1,9 +1,10 @@
 import styled from '@emotion/styled';
+import React from 'react';
 
 import { Image } from '@/components/common/Image';
 import { breakpoints } from '@/styles/variants';
 
-type Props = {
+export type Props = {
   image: string;
   label: string;
 } & React.HTMLAttributes<HTMLDivElement>;
