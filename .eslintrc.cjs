@@ -38,6 +38,10 @@ module.exports = {
 
       { blankLine: 'always', prev: 'import', next: '*' },
       { blankLine: 'never', prev: 'import', next: 'import' },
-    ]
+    ],
+    'import/no-extraneous-dependencies': [
+      'error',
+      { devDependencies: ['**/mock/*'] },
+    ],
   }
 }
