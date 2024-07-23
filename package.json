@@ -83,5 +83,10 @@
   },
   "overrides": {
     "react-refresh": "0.11.0"
+  },
+  "jest": {
+    "moduleNameMapper": {
+      "^axios$": "axios/dist/node/axios.cjs"
+    }
   }
 }
