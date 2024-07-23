@@ -18,8 +18,8 @@ dependencies:
     specifier: ^3.9.0
     version: 3.9.0(react-hook-form@7.52.1)
   '@tanstack/react-query':
-    specifier: ^5.51.1
-    version: 5.51.3(react@18.3.1)
+    specifier: ^5.51.11
+    version: 5.51.11(react@18.3.1)
   axios:
     specifier: ^1.7.2
     version: 1.7.2
@@ -3769,16 +3769,16 @@ packages:
       - typescript
     dev: true
 
-  /@tanstack/query-core@5.51.3:
-    resolution: {integrity: sha512-xgncI1B0OPfSsYcdqKHUxb/OF370GrtK7BxswlllDfyTVw6r3+9VdugJWaVVQT2LiSbkIqEwUteFXR2I0m2iqw==}
+  /@tanstack/query-core@5.51.9:
+    resolution: {integrity: sha512-HsAwaY5J19MD18ykZDS3aVVh+bAt0i7m6uQlFC2b77DLV9djo+xEN7MWQAQQTR8IM+7r/zbozTQ7P0xr0bHuew==}
     dev: false
 
-  /@tanstack/react-query@5.51.3(react@18.3.1):
-    resolution: {integrity: sha512-eqg1274A/usLluT4aLXypWKeAQ6LepwCB+303Wjw4o1SAgwJaLL7sWQOA/XA2Y/S4BCmTq95jGl5qnT8tmVcoQ==}
+  /@tanstack/react-query@5.51.11(react@18.3.1):
+    resolution: {integrity: sha512-4Kq2x0XpDlpvSnaLG+8pHNH60zEc3mBvb3B2tOMDjcPCi/o+Du3p/9qpPLwJOTliVxxPJAP27fuIhLrsRdCr7A==}
     peerDependencies:
       react: ^18.0.0
     dependencies:
-      '@tanstack/query-core': 5.51.3
+      '@tanstack/query-core': 5.51.9
       react: 18.3.1
     dev: false
 
