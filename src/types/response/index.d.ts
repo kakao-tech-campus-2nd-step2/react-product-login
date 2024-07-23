@@ -24,7 +24,7 @@ export interface LegacyThemeProductsResponse {
   };
 }
 
-export interface ThemeProductsResponse {
+export interface CategoryProductsResponse {
   content: ProductData[];
   pageable: {
     sort: {
