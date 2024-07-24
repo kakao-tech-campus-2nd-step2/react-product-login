@@ -1,12 +1,19 @@
 # WEEK5
 
-테스트
+jest, test-library, 그리고 MSW와 Mocks를 사용하여 테스트 코드 작성하기
 
-## ✨How to start
+## ✨project 실행
 
 ```
 npm install
 npm run start
+```
+
+## ✨test 실행
+
+```
+npm install
+npm (run) test
 ```
 
 ## STEP1
