@@ -2,6 +2,7 @@ module.exports = {
   env: {
     browser: true,
     es2021: true,
+    module: 'node',
   },
   extends: [
     'plugin:react/recommended',
@@ -17,6 +18,7 @@ module.exports = {
     {
       env: {
         node: true,
+        jest: true,
       },
       files: ['.eslintrc.{js,cjs}'],
       parserOptions: {
@@ -38,11 +40,6 @@ module.exports = {
   ],
   ignorePatterns: ['vite.config.ts'],
   parser: '@typescript-eslint/parser',
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.app.json'],
-  },
   plugins: ['@typescript-eslint', 'react', 'import'],
   rules: {
     'react/react-in-jsx-scope': 'off',
