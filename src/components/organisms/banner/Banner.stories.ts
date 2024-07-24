@@ -11,6 +11,6 @@ type Story = StoryObj<typeof Banner>;
 
 export const DefaultBanner: Story = {
   args: {
-    themeKey: 'small',
+    categoryId: 'small',
   },
 };

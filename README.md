@@ -336,3 +336,20 @@ label을 input에 연결하려면, input에 name attribute를 지정해주고 �
 
 출처: https://developer.mozilla.org/ko/docs/Web/HTML
 
+
+## 5주차
+
+### Step 1
+
+- [ ] API 변경사항 작성
+- [ ] MSW로 Mock 데이터 만들기
+  - [ ] category id products
+  - [ ] product details
+- [ ] 단위 테스트 코드 작성하기
+  - [ ] network/index.ts의 replacePathParams
+- [ ] 통합 테스트 코드 작성하기
+  - [ ] 상품 상세 페이지 테스트 코드 작성
+  - [ ] 결제하기 페이지의 form 테스트 코드 작성
+    - [ ] 체크박스가 false일때 필드 비활성화 여부 체크
+    - [ ] validation 작동 여부 체크
+

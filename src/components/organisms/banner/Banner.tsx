@@ -2,30 +2,30 @@ import Container from '@components/atoms/container/Container';
 import { backgroundColors } from '@styles/colors';
 import { MAX_CONTENT_WIDTH } from '@styles/size';
 import { useContext } from 'react';
-import { ThemeName, ThemeSubtitle, ThemeTitle } from './Banner.styles';
-import { ThemeContext } from '@/providers/ThemeContextProvider';
+import { CategoryName, CategorySubtitle, CategoryTitle } from './Banner.styles';
+import { CategoryContext } from '@/providers/CategoryContextProvider';
 
 interface BannerProps {
-  themeKey: string;
+  categoryId: string;
 }
 
-function Banner({ themeKey }: BannerProps) {
-  const { themes } = useContext(ThemeContext);
-  const theme = themes[themeKey];
+function Banner({ categoryId }: BannerProps) {
+  const { categories } = useContext(CategoryContext);
+  const category = categories[categoryId];
 
   return (
-    <Container backgroundColor={theme?.backgroundColor || backgroundColors.containerDark} elementSize="full-width" justifyContent="center">
+    <Container backgroundColor={category?.color || backgroundColors.containerDark} elementSize="full-width" justifyContent="center">
       <Container maxWidth={MAX_CONTENT_WIDTH} elementSize="full-width" padding="50px 20px">
         <Container flexDirection="column">
-          <ThemeName>
-            {theme?.label}
-          </ThemeName>
-          <ThemeTitle>
-            {theme?.title}
-          </ThemeTitle>
-          <ThemeSubtitle>
-            {theme?.description}
-          </ThemeSubtitle>
+          <CategoryName>
+            {category?.name}
+          </CategoryName>
+          <CategoryTitle>
+            {category?.name}
+          </CategoryTitle>
+          <CategorySubtitle>
+            {category?.description}
+          </CategorySubtitle>
         </Container>
       </Container>
     </Container>

@@ -8,13 +8,13 @@ import ResponsiveContainer
 import { BREAKPOINT_SM } from '@styles/size';
 import styled from '@emotion/styled';
 import { useContext } from 'react';
-import { ThemeContext } from '@/providers/ThemeContextProvider';
+import { CategoryContext } from '@/providers/CategoryContextProvider';
 
-interface ThemeItemProps {
-  themeKey: string;
+interface CategoryItemProps {
+  categoryId: string;
 }
 
-const ResponsiveThemeCaption = styled.p`
+const ResponsiveCategoryCaption = styled.p`
   font-size: 16px;
   padding-top: 7px;
   @media (max-width: ${BREAKPOINT_SM}) {
@@ -22,12 +22,12 @@ const ResponsiveThemeCaption = styled.p`
   }
 `;
 
-function MainThemeItem({ themeKey }: ThemeItemProps) {
-  const { themes } = useContext(ThemeContext);
-  const theme = themes[themeKey];
+function MainCategoryItem({ categoryId }: CategoryItemProps) {
+  const { categories } = useContext(CategoryContext);
+  const category = categories[categoryId];
 
   return (
-    <Link to={Paths.THEME_PAGE(themeKey)}>
+    <Link to={Paths.CATEGORY_PAGE(categoryId)}>
       <Container padding="13px 0px 12px">
         <Container
           elementSize="full-width"
@@ -36,7 +36,7 @@ function MainThemeItem({ themeKey }: ThemeItemProps) {
         >
           <ResponsiveContainer sizeDefault={{ width: '90px', height: '90px' }} sizeSm={{ width: '50px', height: '50px' }}>
             <Image
-              src={theme.imageURL}
+              src={category.imageUrl}
               ratio="square"
               css={css`
                 border-radius: 32px;
@@ -46,13 +46,13 @@ function MainThemeItem({ themeKey }: ThemeItemProps) {
             `}
             />
           </ResponsiveContainer>
-          <ResponsiveThemeCaption>
-            {theme.label}
-          </ResponsiveThemeCaption>
+          <ResponsiveCategoryCaption>
+            {category.name}
+          </ResponsiveCategoryCaption>
         </Container>
       </Container>
     </Link>
   );
 }
 
-export default MainThemeItem;
+export default MainCategoryItem;

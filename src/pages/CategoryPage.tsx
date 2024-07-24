@@ -4,32 +4,32 @@ import Banner from '@components/organisms/banner/Banner';
 import { MAX_CONTENT_WIDTH } from '@styles/size';
 import { Suspense, useContext, useEffect } from 'react';
 import FetchStatus from '@constants/FetchStatus';
-import ThemeProductDisplaySection
-  from '@components/organisms/theme/ThemeProductDisplaySection';
+import CategoryProductDisplaySection
+  from '@components/organisms/category/CategoryProductDisplaySection';
 import Container from '@components/atoms/container/Container';
 import ProductSkeletonGrid
   from '@components/molecules/skeleton/ProductSkeletonGrid';
 import ErrorBoundary from '@components/atoms/boundary/ErrorBoundary';
-import ThemeContextProvider, { ThemeContext } from '@/providers/ThemeContextProvider';
+import CategoryContextProvider, { CategoryContext } from '@/providers/CategoryContextProvider';
 
-function ThemePage() {
-  const { themeKey } = useParams();
-  const { themes, fetchStatus: themeFetchStatus } = useContext(ThemeContext);
+function CategoryPage() {
+  const { categoryId } = useParams();
+  const { categories, fetchStatus: themeFetchStatus } = useContext(CategoryContext);
 
   const navigate = useNavigate();
 
   useEffect(() => {
     if (themeFetchStatus === FetchStatus.FETCHING) return;
 
-    if (!themeKey || !(themeKey in themes)) {
+    if (!categoryId || !(categoryId in categories)) {
       navigate(-1);
     }
-  }, [navigate, themes, themeKey, themeFetchStatus]);
+  }, [navigate, categories, categoryId, themeFetchStatus]);
 
   return (
-    <ThemeContextProvider>
+    <CategoryContextProvider>
       <Page>
-        <Banner themeKey={themeKey as string} />
+        <Banner categoryId={categoryId as string} />
         <Container elementSize="full-width" justifyContent="center">
           <Container
             elementSize="full-width"
@@ -46,16 +46,16 @@ function ThemePage() {
                 <ProductSkeletonGrid columnsDefault={4} itemCount={8} columnsSm={2} />
               }
               >
-                <ThemeProductDisplaySection
-                  themeKey={themeKey as string}
+                <CategoryProductDisplaySection
+                  categoryId={parseInt(categoryId as string, 10)}
                 />
               </Suspense>
             </ErrorBoundary>
           </Container>
         </Container>
       </Page>
-    </ThemeContextProvider>
+    </CategoryContextProvider>
   );
 }
 
-export default ThemePage;
+export default CategoryPage;

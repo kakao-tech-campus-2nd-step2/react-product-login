@@ -1,4 +1,4 @@
-export interface ProductData {
+export interface LegacyProductData {
   id: number;
   name: string;
   imageURL: string;
@@ -18,7 +18,15 @@ export interface ProductData {
   };
 }
 
-export interface ProductDetailData extends ProductData {
+export interface ProductData {
+  id: number;
+  name: string;
+  imageUrl: string;
+  price: number;
+  categoryId: number;
+}
+
+export interface LegacyProductDetailData extends LegacyProductData {
   isAccessableProductPage: boolean;
   review: {
     averageRating: number;
@@ -39,6 +47,14 @@ export interface ProductDetailData extends ProductData {
       description: string;
     }[];
   };
+}
+
+export interface CategoryData {
+  id: number;
+  name: string;
+  color: string;
+  imageUrl: string;
+  description: string;
 }
 
 export interface ThemeData {

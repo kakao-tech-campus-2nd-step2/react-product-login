@@ -1,6 +1,6 @@
 const Paths = {
   MAIN_PAGE: '/',
-  THEME_PAGE: (themeKey: string) => `/theme/${themeKey}`,
+  CATEGORY_PAGE: (categoryId: number | string) => `/category/${categoryId}`,
   LOGIN_PAGE: '/login',
   MYACCOUNT_PAGE: '/my-account',
   PRODUCT_DETAILS: (productId: string) => `/products/${productId}`,

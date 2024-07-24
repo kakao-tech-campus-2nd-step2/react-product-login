@@ -2,10 +2,10 @@ import Container from '@components/atoms/container/Container';
 import { Box, Text } from '@chakra-ui/react';
 import { defaultBorderColor, textColors } from '@styles/colors';
 import Image from '@components/atoms/image/Image';
-import { ProductDetailData } from '@/dto';
+import { ProductData } from '@/dto';
 
 interface ProductOrderHistorySectionProps {
-  productDetails: ProductDetailData;
+  productDetails: ProductData;
   count: number;
 }
 
@@ -23,14 +23,14 @@ function ProductOrderHistorySection({ productDetails, count }: ProductOrderHisto
         <Container elementSize={{ width: '86px', height: 'auto' }}>
           <Image
             ratio="square"
-            src={productDetails.imageURL}
+            src={productDetails.imageUrl}
             style={{
               borderRadius: '3px',
             }}
           />
         </Container>
         <Container flexDirection="column" cssProps={{ flexGrow: 1 }} padding="0 8px">
-          <Text color={textColors.subtitle}>{productDetails.brandInfo.name}</Text>
+          <Text color={textColors.subtitle}>{productDetails.name}</Text>
           <Text>{`${productDetails.name} X ${count}개`}</Text>
         </Container>
       </Box>
