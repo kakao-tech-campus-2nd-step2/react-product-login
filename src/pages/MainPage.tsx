@@ -19,7 +19,6 @@ function MainPage() {
             sizeDefault={{ width: '100%', height: '120px' }}
             sizeSm={{ width: '100%', height: '0px' }}
           />
-          {/* <RankingSection /> */}
         </Container>
       </Page>
     </CategoryContextProvider>
