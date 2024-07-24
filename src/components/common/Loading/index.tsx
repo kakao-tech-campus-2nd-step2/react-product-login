@@ -44,7 +44,7 @@ function Loading({ isLoading, children, error, errorRedirect }: LoadingProps) {
           alignItems: 'center',
         }}
       >
-        <Spinner />
+        <Spinner role="spinner" />
       </div>
     );
   } else {

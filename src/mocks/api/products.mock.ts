@@ -1,4 +1,4 @@
-import { http, HttpResponse } from 'msw';
+import { rest } from 'msw';
 
 import { VERCEL_API_URL } from '@/api/axiosInstance';
 import { getProductsPath } from '@/api/hooks/useGetProducts';
@@ -6,42 +6,32 @@ import { getProductsDetailPath } from '@/api/hooks/useGetProductsDetail';
 import { getProductsOptionPath } from '@/api/hooks/useGetProductsOption';
 
 export const productsMockHandler = [
-  http.get(
-    VERCEL_API_URL +
-      getProductsPath({
-        categoryId: '2920',
-      }),
-    () => {
-      return HttpResponse.json(PRODUCTS_MOCK_DATA);
-    },
-  ),
-  http.get(
-    VERCEL_API_URL +
-      getProductsPath({
-        categoryId: '2930',
-      }),
-    () => {
-      return HttpResponse.json(PRODUCTS_MOCK_DATA);
-    },
-  ),
-  http.get(VERCEL_API_URL + getProductsDetailPath(':productId'), () => {
-    return HttpResponse.json(PRODUCTS_MOCK_DATA.content[0]);
+  rest.get(VERCEL_API_URL + getProductsPath({ categoryId: '2920' }), (_req, res, ctx) => {
+    return res(ctx.json(PRODUCTS_MOCK_DATA));
   }),
-  http.get(VERCEL_API_URL + getProductsOptionPath(':productId'), () => {
-    return HttpResponse.json([
-      {
-        id: 1,
-        name: 'Option A',
-        quantity: 10,
-        productId: 1,
-      },
-      {
-        id: 2,
-        name: 'Option B',
-        quantity: 20,
-        productId: 1,
-      },
-    ]);
+  rest.get(VERCEL_API_URL + getProductsPath({ categoryId: '2930' }), (_req, res, ctx) => {
+    return res(ctx.json(PRODUCTS_MOCK_DATA));
+  }),
+  rest.get(VERCEL_API_URL + getProductsDetailPath(':productsId'), (_req, res, ctx) => {
+    return res(ctx.json(PRODUCTS_MOCK_DATA.content[0]));
+  }),
+  rest.get(VERCEL_API_URL + getProductsOptionPath(':productsId'), (_req, res, ctx) => {
+    return res(
+      ctx.json([
+        {
+          id: 1,
+          name: 'Option A',
+          quantity: 10,
+          productId: 1,
+        },
+        {
+          id: 2,
+          name: 'Option B',
+          quantity: 20,
+          productId: 1,
+        },
+      ]),
+    );
   }),
 ];
 

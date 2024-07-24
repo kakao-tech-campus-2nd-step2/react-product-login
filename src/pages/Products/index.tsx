@@ -22,7 +22,11 @@ const defaultInputs: Inputs = {
 export const ProductsPage = () => {
   const { productsId = '' } = useParams<{ productsId: string }>();
   const { data: productsDetail, isError, isLoading } = useGetProductsDetail({ productsId });
-  const { isError: isOptionsError, isLoading: isOptionsLoading } = useGetProductsOption({
+  const {
+    data: productOptions,
+    isError: isOptionsError,
+    isLoading: isOptionsLoading,
+  } = useGetProductsOption({
     productsId,
   });
   const currentAuthToken = authSessionStorage.get();
@@ -122,7 +126,7 @@ export const ProductsPage = () => {
           </Flex>
           <Flex w="360px" h="100%" flexDir="column" justify="space-between">
             <Flex w="100%" p="5" border="2px" borderColor="#eeeeee" flexDir="column">
-              <Text fontWeight="800">{productsDetail?.name}</Text>
+              <Text fontWeight="800">{productOptions?.[0].name}</Text>
               <Flex w="100%" justify="space-between" mt="2">
                 <Button onClick={() => changeCount(-1)} w="36px" h="36px" boxSizing="border-box">
                   -

@@ -1,11 +1,11 @@
-import { http, HttpResponse } from 'msw';
+import { rest } from 'msw';
 
 import { VERCEL_API_URL } from '@/api/axiosInstance';
 import { getCategoriesPath } from '@/api/hooks/useGetCategories';
 
 export const categoriesMockHandler = [
-  http.get(VERCEL_API_URL + getCategoriesPath(), () => {
-    return HttpResponse.json(CATEGORIES_RESPONSE_DATA);
+  rest.get(VERCEL_API_URL + getCategoriesPath(), (_ , res, ctx) => {
+    return res(ctx.json(CATEGORIES_RESPONSE_DATA));
   }),
 ];
 
