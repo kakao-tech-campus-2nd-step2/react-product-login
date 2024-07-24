@@ -1,12 +1,12 @@
 import '@testing-library/jest-dom';
 
-import { worker } from './mocks/browser';
+import { server } from './mocks/server';
 
-// 서비스 워커 시작
-beforeAll(() => worker.start());
+// 테스트 전에 서버를 시작
+beforeAll(() => server.listen());
 
-// 각 테스트 후 핸들러 리셋
-afterEach(() => worker.resetHandlers());
+// 각 테스트 후 핸들러를 리셋
+afterEach(() => server.resetHandlers());
 
-// 모든 테스트가 끝난 후 서비스 워커 중지
-afterAll(() => worker.stop());
+// 모든 테스트 후 서버를 닫음.
+afterAll(() => server.close());
