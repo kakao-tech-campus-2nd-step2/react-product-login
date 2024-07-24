@@ -4,8 +4,6 @@ import { getProductDetailPath } from './useGetProductDetail';
 import { getProductOptionsPath } from './useGetProductOptions';
 import { getProductsPath } from './useGetProducts';
 
-console.log(getProductDetailPath('1'));
-
 export const productsMockHandler = [
   rest.get(
     getProductsPath({
