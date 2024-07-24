@@ -9,7 +9,7 @@ type RequestParams = {
 };
 
 export function getProductsPath({ categoryId, maxResults }: RequestParams): string {
-  return `/api/products?categoryId=${categoryId}` + (maxResults && `&maxResults=${maxResults}`);
+  return `/api/products?categoryId=${categoryId}` + (maxResults ? `&maxResults=${maxResults}` : '');
 }
 
 function useGetProducts({

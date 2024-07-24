@@ -130,6 +130,7 @@ export const OrderPage = () => {
               나에게 주는 선물
             </Text>
             <Textarea
+              role="message"
               w="100%"
               h="100px"
               mt="5"
@@ -170,6 +171,7 @@ export const OrderPage = () => {
           <Divider opacity="1" borderColor="#eeeeee" />
           <Flex w="100%" flexDir="column" p="5" gap="2">
             <Checkbox
+              role="needReceipt"
               size="lg"
               mb="3"
               colorScheme="yellow"
@@ -180,11 +182,12 @@ export const OrderPage = () => {
                 현금영수증 신청
               </Text>
             </Checkbox>
-            <Select disabled={!needReceiptState} {...getRegister('receiptType')}>
+            <Select role="receiptType" disabled={!needReceiptState} {...getRegister('receiptType')}>
               <option>개인소득공제</option>
               <option>사업자증빙용</option>
             </Select>
             <Input
+              role="receiptNumber"
               type="number"
               disabled={!needReceiptState}
               {...getRegister('receiptNumber')}
