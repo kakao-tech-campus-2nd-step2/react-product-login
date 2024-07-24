@@ -202,6 +202,7 @@ export const OrderPage = () => {
           </Flex>
           <Divider opacity="1" borderColor="#eeeeee" />
           <Button
+            role="submit"
             onClick={handleSubmit(handleOrder, handleError)}
             mt="10"
             bg="#fee500"
