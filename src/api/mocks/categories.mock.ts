@@ -1,4 +1,5 @@
 import { rest } from 'msw';
+
 import { getCategoriesPath } from '../hooks/useGetCategorys';
 
 export const categoriesMockHandler = [

@@ -1,4 +1,5 @@
 import '@testing-library/jest-dom';
+
 import { worker } from './mocks/browser';
 
 // 서비스 워커 시작
