@@ -16,8 +16,8 @@
 
 #### 테스트 환경 구축하기
 
-- [ ] Jest 세팅
-- [ ] React Testing Library 세팅
+- [x] Jest 세팅
+- [x] React Testing Library 세팅
 
 #### 단위 테스트
 
