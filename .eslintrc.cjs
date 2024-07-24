@@ -30,10 +30,10 @@ module.exports = {
       },
     },
     {
-      "files": ["tests/**/*"],
-      "env": {
-        "jest": true
-      }
+      files: ['tests/**/*'],
+      env: {
+        jest: true,
+      },
     },
   ],
   ignorePatterns: ['vite.config.ts'],
