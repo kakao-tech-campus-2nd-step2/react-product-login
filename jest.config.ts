@@ -8,6 +8,8 @@ export default {
     '^.+\\.(t|j)sx?$': '@swc/jest',
   },
   moduleNameMapper: {
+    '\\.(gif|ttf|eot|svg|png|jpg)$':
+      '<rootDir>/src/mocks/pollyfills/file.mock.ts',
     '^@/(.*)$': '<rootDir>/src/$1',
   },
   setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
