@@ -9,7 +9,7 @@ interface TestWrapperProps {
 
 //React Hook Form 테스트를 위한 wrapper
 const TestWrapper = ({ children }: TestWrapperProps) => {
-  const fields = useForm({
+  const methods = useForm({
     defaultValues: {
       hasCashReceipt: false,
       cashReceiptType: '',
@@ -17,7 +17,7 @@ const TestWrapper = ({ children }: TestWrapperProps) => {
     },
   });
 
-  return <FormProvider {...fields}>{children}</FormProvider>;
+  return <FormProvider {...methods}>{children}</FormProvider>;
 };
 
 test('Checkbox에 따라 현금영수증 종류와 번호 활성화 or 비활성화 확인', () => {
@@ -27,9 +27,9 @@ test('Checkbox에 따라 현금영수증 종류와 번호 활성화 or 비활성
     </TestWrapper>,
   );
 
-  const checkbox = screen.getByLabelText('현금영수증 신청');
-  const cashReceiptType = screen.getByRole('combobox', { name: 'cashReceiptType' });
-  const cashReceiptNumber = screen.getByPlaceholderText('(-없이) 숫자만 입력해주세요.');
+  const checkbox = screen.getByLabelText(/현금영수증 신청/i);
+  const cashReceiptType = screen.getByRole('combobox', { name: /cashReceiptType/i });
+  const cashReceiptNumber = screen.getByPlaceholderText(/(-없이) 숫자만 입력해주세요./i);
 
   //체크박스 초기 값: notChecked
   expect(checkbox).not.toBeChecked();
