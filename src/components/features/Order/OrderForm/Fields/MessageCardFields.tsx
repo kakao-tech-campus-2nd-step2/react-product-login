@@ -16,6 +16,7 @@ export const MessageCardFields = () => {
           height="100"
           variant="filled"
           colorScheme="gray"
+          data-testid="message-input"
         />
       </TextMessageWrapper>
     </Wrapper>
