@@ -1,6 +1,9 @@
-import { setupWorker } from 'msw';
+import { setupWorker } from 'msw/browser';
 
-import { categoriesMockHandler } from '@/api/hooks/categories.mock';
-import { productsMockHandler } from '@/api/hooks/products.mock';
+import { categoriesMockHandler } from '@/mocks/categories.mock';
+import { productsMockHandler } from '@/mocks/products.mock';
 
-export const worker = setupWorker(...categoriesMockHandler, ...productsMockHandler);
+export const worker = setupWorker(
+  ...categoriesMockHandler,
+  ...productsMockHandler
+);
