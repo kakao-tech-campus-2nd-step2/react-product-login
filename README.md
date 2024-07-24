@@ -1,27 +1,27 @@
 # 카카오 테크 캠퍼스 - 프론트엔드 카카오 선물하기 편
 
-## Week 5. 0단계 - 기본 코드 준비하기
+## Week 5. 1단계 - 테스트 코드 작성하기
 
-### 🚨 변경 사항
+### 🚀 기능 요구 사항
 
-1. API 수정
+- Jest와 React Testing Libaray를 사용하여 테스트 기반 환경을 구축해요.
+- MSW를 사용하여 Mock API가 동작하도록 해요. (상세 API / 옵션 API)
+- 단위 테스트로 작성하면 좋을 테스트가 있다면 단위테스트 코드를 작성해요.
+- 상품 상세 페이지와 관련된 통합 테스트 코드를 작성해요.
+- 결제하기 페이지의 Form과 관련된 통합 테스트 코드를 작성해요.
+   - 현금영수증 Checkbox가 false인 경우 현금영수증 종류, 현금영수증 번호 field가 비활성화 되어있는지 확인하는 테스트 코드를 작성해요. (만약 true인 경우 현금영수증 종류, 번호 field에 값이 입력 되어야 해요)
+   - form의 validation 로직이 정상 동작하는지 확인하는 테스트 코드를 작성해요.
 
-   - 모든 api path
-   - product detail 페이지네이션 방식
-   - product detail, product option 데이터
+### 💻 구현 할 기능 목록
 
-2. 주요 UI 수정 및 삭제
+#### 테스트 환경 구축하기
 
-   - theme → category로 변경(url, 페이지 정보, api 모두)
-   - 메인 페이지의 rank section 삭제
+- [ ] Jest 세팅
+- [ ] React Testing Library 세팅
 
-3. msw 추가
+#### 단위 테스트
 
-   - categories
-   - products
+#### 결제하기 페이지의 form 통합 테스트
 
-### 이번 주는 msw를 사용해 프로젝트 실행 방법이 달라졌습니다!
-
-#### 실행 방법
-
-`pnpm start:mock`
+- [ ] 현금영수증 checkbox가 false일 때 동작
+- [ ] form의 validation
