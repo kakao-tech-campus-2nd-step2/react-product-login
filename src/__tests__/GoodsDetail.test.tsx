@@ -1,6 +1,6 @@
 import { ChakraProvider } from '@chakra-ui/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { render, screen, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 
 import { GoodsDetail } from '@/components/features/Goods/Detail';
@@ -45,5 +45,27 @@ test('OptionSection 렌더링 성공', async () => {
     expect(screen.getByLabelText('수량 1개 추가')).toBeInTheDocument();
     expect(screen.getByText('총 결제 금액')).toBeInTheDocument();
     expect(screen.getByText('나에게 선물하기')).toBeInTheDocument();
+  });
+});
+
+test('OptionSection 수량 증가 테스트', async () => {
+  renderWithProviders(<OptionSection productId={productData.id.toString()} />);
+
+  const spinbutton = screen.getByRole('spinbutton') as HTMLInputElement;
+  fireEvent.change(spinbutton, { target: { value: '2' } });
+
+  await waitFor(() => {
+    expect(spinbutton.value).toBe('2');
+  });
+});
+
+test('OptionSection 수량 감소 테스트', async () => {
+  renderWithProviders(<OptionSection productId={productData.id.toString()} />);
+
+  const spinbutton = screen.getByRole('spinbutton') as HTMLInputElement;
+  fireEvent.click(screen.getByLabelText('수량 1개 감소'));
+
+  await waitFor(() => {
+    expect(spinbutton.value).toBe('1');
   });
 });
