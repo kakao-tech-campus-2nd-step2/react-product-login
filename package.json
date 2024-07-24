@@ -90,5 +90,8 @@
   },
   "msw": {
     "workerDirectory": "public"
+  },
+  "transform": {
+    "\\.js$": "<rootDir>/node_modules/babel-jest"
   }
 }
