@@ -82,7 +82,7 @@ export const OrderPage = () => {
     options: orderInfoOptions,
   });
 
-  const orderPrice = location.state.price.basicPrice * location.state.count;
+  const orderPrice = location.state.price * location.state.count;
 
   const handleNeedReceiptChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNeedReceiptState(e.target.checked);
@@ -154,11 +154,8 @@ export const OrderPage = () => {
               borderColor="#eeeeee"
               shadow="sm"
             >
-              <Image w="90px" aspectRatio="1/1" src={location.state.imageURL} />
+              <Image w="90px" aspectRatio="1/1" src={location.state.imageUrl} />
               <Flex w="100%" flexDir="column" ml="2">
-                <Text fontSize="sm" fontWeight="500" color="#999999">
-                  {location.state.brandInfo.name}
-                </Text>
                 <Text>
                   {location.state.name} x {location.state.count}개
                 </Text>

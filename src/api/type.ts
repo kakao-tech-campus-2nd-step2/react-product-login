@@ -8,21 +8,8 @@ export type AjaxResult<T> = {
 export type ProductData = {
   id: number;
   name: string;
-  imageURL: string;
-  wish: {
-    wishCount: number;
-    isWished: boolean;
-  };
-  price: {
-    basicPrice: number;
-    discountRate: number;
-    sellingPrice: number;
-  };
-  brandInfo: {
-    id: number;
-    name: string;
-    imageURL: string;
-  };
+  imageUrl: string;
+  price: number;
 };
 
 export type ProductDetailData = ProductData & {
@@ -48,14 +35,14 @@ export type ProductDetailData = ProductData & {
   };
 };
 
-export type ThemeData = {
+export type CategoryData = {
   id: number;
   key: string;
-  label: string;
-  imageURL: string;
+  name: string;
+  imageUrl: string;
   title: string;
   description?: string;
-  backgroundColor: string;
+  color: string;
 };
 
 export type MessageCardTemplateData = {
@@ -109,8 +96,8 @@ export type GetRankingProductsRequestBody = {
   rankType: 'MANY_WISH' | 'MANY_RECEIVE' | 'MANY_WISH_RECEIVE';
 };
 
-export type GetThemesProductsRequestBody = {
-  themeKey: string;
+export type GetCategoriesProductsRequestBody = {
+  categoryKey: string;
   pageToken?: string;
   maxResults?: number;
 };
@@ -120,19 +107,17 @@ export type GetRankingProductsResponseBody = {
   products: ProductData[];
 };
 
-export type GetThemesResponseBody = {
-  themes: ThemeData[];
+export type GetCategoriesResponseBody = CategoryData[];
+
+export type GetCategoriesProductsResponseBody = {
+  content: ProductData[];
+  number: number;
+  totalElements: number;
+  size: number;
+  last: boolean;
 };
 
-export type GetThemesProductsResponseBody = {
-  products: ProductData[];
-  nextPageToken: string;
-  pageInfo: PageInfo;
-};
-
-export type GetProductsDetailResponseBody = {
-  detail: ProductDetailData;
-};
+export type GetProductsDetailResponseBody = ProductDetailData;
 
 export type GetProductsOptionResponseBody = {
   options: {

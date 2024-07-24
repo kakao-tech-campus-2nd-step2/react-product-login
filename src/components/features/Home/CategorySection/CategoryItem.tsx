@@ -8,7 +8,7 @@ type Props = {
   label: string;
 } & React.HTMLAttributes<HTMLDivElement>;
 
-export const ThemeCategoryItem = ({ image, label, ...props }: Props) => (
+export const CategoryItem = ({ image, label, ...props }: Props) => (
   <Wrapper {...props}>
     <CategoryImage src={image} alt={label} />
     <Label>{label}</Label>

@@ -2,7 +2,8 @@ import { Button, Divider, Flex, Image, Input, Text } from '@chakra-ui/react';
 import { useForm } from 'react-hook-form';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
-import { useGetProductsDetail, useGetProductsOption } from '@/api';
+import useGetProductsDetail from '@/api/hooks/useGetProductsDetail';
+import useGetProductsOption from '@/api/hooks/useGetProductsOption';
 import Loading from '@/components/common/Loading';
 import { RouterPath } from '@/routes/path';
 import type { RegisterOption } from '@/utils/form';
@@ -21,16 +22,14 @@ const defaultInputs: Inputs = {
 export const ProductsPage = () => {
   const { productsId = '' } = useParams<{ productsId: string }>();
   const { data: productsDetail, isError, isLoading } = useGetProductsDetail({ productsId });
-  const {
-    data: productsOptions,
-    isError: isOptionsError,
-    isLoading: isOptionsLoading,
-  } = useGetProductsOption({ productsId });
+  const { isError: isOptionsError, isLoading: isOptionsLoading } = useGetProductsOption({
+    productsId,
+  });
   const currentAuthToken = authSessionStorage.get();
   const navigate = useNavigate();
   const location = useLocation();
 
-  const maxCount = productsOptions?.options.giftOrderLimit;
+  const maxCount = 100;
   const inputOptions: RegisterOption<Inputs>[] = [
     {
       name: 'count' as const,
@@ -88,9 +87,9 @@ export const ProductsPage = () => {
       if (window.confirm('로그인이 필요합니다. 로그인페이지로 이동하시겠습니까?')) {
         navigate(RouterPath.login + `?redirect=${location.pathname}`);
       }
-    } else if (productsDetail?.detail) {
+    } else if (productsDetail) {
       navigate(RouterPath.order, {
-        state: { ...productsDetail.detail, count: getValues('count') },
+        state: { ...productsDetail, count: getValues('count') },
       });
     }
   };
@@ -104,13 +103,13 @@ export const ProductsPage = () => {
       >
         <Flex w="100%" maxW="1280px">
           <Flex w="100%" maxW="920px" align="start">
-            <Image w="45%" aspectRatio="1/1" src={productsDetail?.detail.imageURL} />
+            <Image w="45%" aspectRatio="1/1" src={productsDetail?.imageUrl} />
             <Flex w="50%" aspectRatio="1/1" flexDir="column" px="5" py="10">
               <Text fontSize="2xl" fontWeight="500">
-                {productsDetail?.detail.name}
+                {productsDetail?.name}
               </Text>
               <Text fontSize="3xl" my="10">
-                {`${productsDetail?.detail.price.basicPrice}원`}
+                {`${productsDetail?.price}원`}
               </Text>
               <Flex w="100%" flexDir="column" rowGap="5">
                 <Divider />
@@ -123,7 +122,7 @@ export const ProductsPage = () => {
           </Flex>
           <Flex w="360px" h="100%" flexDir="column" justify="space-between">
             <Flex w="100%" p="5" border="2px" borderColor="#eeeeee" flexDir="column">
-              <Text fontWeight="800">{productsDetail?.detail.name}</Text>
+              <Text fontWeight="800">{productsDetail?.name}</Text>
               <Flex w="100%" justify="space-between" mt="2">
                 <Button onClick={() => changeCount(-1)} w="36px" h="36px" boxSizing="border-box">
                   -
@@ -148,10 +147,7 @@ export const ProductsPage = () => {
                 <Text fontSize="sm" fontWeight="800">
                   총 결제 금액
                 </Text>
-                <Text
-                  fontSize="lg"
-                  fontWeight="800"
-                >{`${productsDetail?.detail.price.basicPrice}원`}</Text>
+                <Text fontSize="lg" fontWeight="800">{`${productsDetail?.price}원`}</Text>
               </Flex>
               <Button
                 onClick={handleSubmit(handleOrderClick)}

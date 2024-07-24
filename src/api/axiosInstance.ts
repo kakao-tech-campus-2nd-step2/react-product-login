@@ -6,11 +6,13 @@ const externalApi = axios.create({
   },
 });
 
+const VERCEL_API_URL = 'https://react-gift-mock-api-jasper200207.vercel.app';
+
 const vercelApi = axios.create({
-  baseURL: 'https://react-gift-mock-api-jasper200207.vercel.app',
+  baseURL: VERCEL_API_URL,
   headers: {
     'Content-Type': 'application/json',
   },
 });
 
-export { externalApi, vercelApi };
+export { externalApi, VERCEL_API_URL, vercelApi };

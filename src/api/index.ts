@@ -11,17 +11,8 @@ import { useInfiniteQuery, useQuery, type UseQueryResult } from '@tanstack/react
 import type { AxiosInstance, AxiosRequestConfig } from 'axios';
 
 import { vercelApi } from '@/api/axiosInstance';
-import type {
-  GetProductsDetailResponseBody,
-  GetProductsOptionResponseBody,
-  GetRankingProductsRequestBody,
-  GetRankingProductsResponseBody,
-  GetThemesProductsRequestBody,
-  GetThemesProductsResponseBody,
-  GetThemesResponseBody,
-} from '@/api/type';
 
-function useAxiosQuery<T>(
+export function useAxiosQuery<T>(
   axiosOptions: AxiosRequestConfig,
   keys: string[],
   queryOptions?: Omit<UseQueryOptions<T>, 'queryKey' | 'queryFn'>,
@@ -34,11 +25,11 @@ function useAxiosQuery<T>(
   });
 }
 
-type UseAxiosQueryWithPageResult<T> = UseInfiniteQueryResult<InfiniteData<T>>;
-function useAxiosQueryWithPage<T>(
+export type UseAxiosQueryWithPageResult<T> = UseInfiniteQueryResult<InfiniteData<T>>;
+export function useAxiosQueryWithPage<T>(
   axiosOptions: AxiosRequestConfig,
   keys: string[],
-  getNextPageParam: (lastPage: T) => string,
+  getNextPageParam: (lastPage: T) => string | undefined,
   queryOptions?: Omit<
     UseInfiniteQueryOptions<InfiniteData<T>>,
     'queryKey' | 'queryFn' | 'initialPageParam' | 'getNextPageParam'
@@ -50,77 +41,10 @@ function useAxiosQueryWithPage<T>(
     queryFn: async ({ pageParam }: QueryFunctionContext) =>
       axiosInstance({
         ...axiosOptions,
-        params: { ...axiosOptions.params, pageToken: pageParam },
+        params: { ...axiosOptions.params, initPageToken: pageParam },
       }).then((res) => res.data),
     initialPageParam: '0',
     getNextPageParam: getNextPageParam as GetNextPageParamFunction<unknown>,
     ...(queryOptions || {}),
   });
-}
-
-export function useGetRankingProducts({
-  targetType,
-  rankType,
-}: GetRankingProductsRequestBody): UseQueryResult<GetRankingProductsResponseBody> {
-  return useAxiosQuery<GetRankingProductsResponseBody>(
-    {
-      method: 'GET',
-      url: '/api/v1/ranking/products',
-      params: { targetType, rankType },
-    },
-    ['ranking', targetType, rankType],
-  );
-}
-
-export function useGetThemes(): UseQueryResult<GetThemesResponseBody> {
-  return useAxiosQuery<GetThemesResponseBody>(
-    {
-      method: 'GET',
-      url: '/api/v1/themes',
-    },
-    ['themes'],
-  );
-}
-
-export function useGetThemesProducts({
-  themeKey,
-  ...params
-}: GetThemesProductsRequestBody): UseAxiosQueryWithPageResult<GetThemesProductsResponseBody> {
-  return useAxiosQueryWithPage<GetThemesProductsResponseBody>(
-    {
-      method: 'GET',
-      url: `/api/v1/themes/${themeKey}/products`,
-      params,
-    },
-    ['themes', themeKey],
-    (lastPage) => lastPage.nextPageToken,
-  );
-}
-
-export function useGetProductsDetail({
-  productsId,
-}: {
-  productsId: string;
-}): UseQueryResult<GetProductsDetailResponseBody> {
-  return useAxiosQuery<GetProductsDetailResponseBody>(
-    {
-      method: 'GET',
-      url: `/api/v1/products/${productsId}/detail`,
-    },
-    ['products', productsId],
-  );
-}
-
-export function useGetProductsOption({
-  productsId,
-}: {
-  productsId: string;
-}): UseQueryResult<GetProductsOptionResponseBody> {
-  return useAxiosQuery<GetProductsOptionResponseBody>(
-    {
-      method: 'GET',
-      url: `/api/v1/products/${productsId}/options`,
-    },
-    ['productsOptions', productsId],
-  );
 }

@@ -1,27 +1,27 @@
 import styled from '@emotion/styled';
 
-import type { ThemeData } from '@/api/type';
+import type { CategoryData } from '@/api/type';
 import { Container } from '@/components/common/layouts/Container';
 import { breakpoints } from '@/styles/variants';
 
 type Props = {
-  themeKey: string;
-  themeList: ThemeData[];
+  categoryId: string;
+  categoryList: CategoryData[];
 };
 
-export const ThemeHeroSection = ({ themeKey, themeList }: Props) => {
-  const currentTheme = getCurrentTheme(themeKey, themeList);
+export const CategoryHeroSection = ({ categoryId, categoryList }: Props) => {
+  const currentTheme = getCurrentCategory(categoryId, categoryList);
 
   if (!currentTheme) {
     return null;
   }
 
-  const { backgroundColor, label, title, description } = currentTheme;
+  const { color, name, title, description } = currentTheme;
 
   return (
-    <Wrapper backgroundColor={backgroundColor}>
+    <Wrapper backgroundColor={color}>
       <Container>
-        <Label>{label}</Label>
+        <Label>{name}</Label>
         <Title>{title}</Title>
         {description && <Description>{description}</Description>}
       </Container>
@@ -83,6 +83,6 @@ const Description = styled.p`
   }
 `;
 
-export const getCurrentTheme = (themeKey: string, themeList: ThemeData[]) => {
-  return themeList.find((theme) => theme.key === themeKey);
+export const getCurrentCategory = (categoryId: string, categoryList: CategoryData[]) => {
+  return categoryList.find((category) => category.id.toString() === categoryId);
 };

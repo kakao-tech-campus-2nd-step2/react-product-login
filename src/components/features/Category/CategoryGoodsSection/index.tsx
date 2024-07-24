@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { useInView } from 'react-intersection-observer';
 import { Link } from 'react-router-dom';
 
-import { useGetThemesProducts } from '@/api';
+import useGetProducts from '@/api/hooks/useGetProducts';
 import type { ProductData } from '@/api/type';
 import { DefaultGoodsItems } from '@/components/common/GoodsItem/Default';
 import { Container } from '@/components/common/layouts/Container';
@@ -13,23 +13,17 @@ import Loading from '@/components/common/Loading';
 import { breakpoints } from '@/styles/variants';
 
 type Props = {
-  themeKey: string;
+  categoryId: string;
 };
 
-export const ThemeGoodsSection = ({ themeKey }: Props) => {
+export const CategoryGoodsSection = ({ categoryId }: Props) => {
   const { ref, inView } = useInView();
 
-  const {
-    data: productsPages,
-    isLoading,
-    isError,
-    hasNextPage,
-    fetchNextPage,
-  } = useGetThemesProducts({
-    themeKey,
+  const { data, isLoading, isError, hasNextPage, fetchNextPage } = useGetProducts({
+    categoryId,
   });
 
-  const products: ProductData[] = productsPages?.pages.flatMap((page) => page.products) || [];
+  const flattenGoodsList = data?.pages.map((page) => page?.content ?? []).flat();
 
   useEffect(() => {
     if (inView && hasNextPage) {
@@ -42,15 +36,14 @@ export const ThemeGoodsSection = ({ themeKey }: Props) => {
       <Container>
         <Loading isLoading={isLoading} error={isError}>
           <ListMapper<ProductData>
-            items={products}
+            items={flattenGoodsList}
             ItemComponent={({ item }) => (
               <Link to={`/products/${item.id}`}>
                 <DefaultGoodsItems
                   key={item.id}
-                  imageSrc={item.imageURL}
+                  imageSrc={item.imageUrl}
                   title={item.name}
-                  amount={item.price.sellingPrice}
-                  subtitle={item.brandInfo.name}
+                  amount={item.price}
                 />
               </Link>
             )}

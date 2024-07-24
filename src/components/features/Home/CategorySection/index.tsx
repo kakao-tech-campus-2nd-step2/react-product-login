@@ -1,30 +1,28 @@
 import styled from '@emotion/styled';
 import { Link } from 'react-router-dom';
 
-import { useGetThemes } from '@/api';
-import type { ThemeData } from '@/api/type';
+import useGetCategories from '@/api/hooks/useGetCategories';
+import type { CategoryData } from '@/api/type';
 import { Container } from '@/components/common/layouts/Container';
 import { Grid } from '@/components/common/layouts/Grid';
 import ListMapper from '@/components/common/ListMapper';
 import Loading from '@/components/common/Loading';
+import { CategoryItem } from '@/components/features/Home/CategorySection/CategoryItem';
 import { getDynamicPath } from '@/routes/path';
 import { breakpoints } from '@/styles/variants';
 
-import { ThemeCategoryItem } from './ThemeCategoryItem';
-
-export const ThemeCategorySection = () => {
-  const { data: themesResponse, isLoading, isError } = useGetThemes();
-  const themes = themesResponse?.themes;
+export const CategorySection = () => {
+  const { data: categories, isLoading, isError } = useGetCategories();
 
   return (
     <Wrapper>
       <Container>
         <Loading isLoading={isLoading} error={isError}>
-          <ListMapper<ThemeData>
-            items={themes}
+          <ListMapper<CategoryData>
+            items={categories}
             ItemComponent={({ item }) => (
-              <Link key={item.id} to={getDynamicPath.theme(item.key)}>
-                <ThemeCategoryItem image={item.imageURL} label={item.label} />
+              <Link key={item.id} to={getDynamicPath.category(item.id.toString())}>
+                <CategoryItem image={item.imageUrl} label={item.name} />
               </Link>
             )}
             Wrapper={Grid}
