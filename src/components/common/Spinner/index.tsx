@@ -5,7 +5,7 @@ type Props = {
   size?: number;
 };
 export const Spinner = ({ size = 24 }: Props) => {
-  return <Wrapper size={size} />;
+  return <Wrapper size={size} role="spinner" />;
 };
 
 const spin = keyframes`
