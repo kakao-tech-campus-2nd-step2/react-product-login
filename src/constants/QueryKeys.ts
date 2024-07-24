@@ -1,7 +1,7 @@
 // eslint-disable-next-line import/prefer-default-export
 export const QueryKeys = {
-  THEMES: 'themes',
-  THEME_PRODUCTS: 'themeProducts',
+  CATEGORIES: 'categories',
+  CATEGORY_PRODUCTS: 'categoryProducts',
   RANKING_PRODUCTS: 'rankingProducts',
   PRODUCT_DETAILS: 'productDetails',
 };

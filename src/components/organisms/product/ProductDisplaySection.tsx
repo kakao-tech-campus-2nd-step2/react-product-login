@@ -28,10 +28,10 @@ function ProductDisplaySection({
 
         return (
           <GoodsItem
-            imageSrc={product.imageURL}
-            subtitle={product.brandInfo.name}
+            imageSrc={product.imageUrl}
+            subtitle={product.name}
             title={product.name}
-            amount={product.price.sellingPrice}
+            amount={product.price}
             rankingIndex={indexed ? i + 1 : undefined}
             productId={product.id}
             key={key}

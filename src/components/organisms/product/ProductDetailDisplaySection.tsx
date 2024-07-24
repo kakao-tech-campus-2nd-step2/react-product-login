@@ -10,14 +10,14 @@ import { StatusCodes } from 'http-status-codes';
 import Paths from '@constants/Paths';
 import { useNavigate } from 'react-router-dom';
 import ProductCounterForm from '@components/organisms/product/ProductCounterForm';
-import { ProductDetailData } from '@/dto';
+import { ProductData } from '@/dto';
 
 interface ProductDetailSectionProps {
   productId: number;
 }
 
 function ProductDetailDisplaySection({ productId }: ProductDetailSectionProps) {
-  const { data: product, error } = useSuspenseQuery<ProductDetailData>({
+  const { data: product, error } = useSuspenseQuery<ProductData>({
     queryKey: [QueryKeys.PRODUCT_DETAILS, productId],
     queryFn: () => fetchProductDetail({ productId: productId.toString() }),
   });
@@ -35,7 +35,7 @@ function ProductDetailDisplaySection({ productId }: ProductDetailSectionProps) {
         <Container maxWidth="450px" elementSize="full-width">
           <Image
             ratio="square"
-            src={product.imageURL}
+            src={product.imageUrl}
           />
         </Container>
         <Container flexDirection="column" padding="24px">
@@ -43,7 +43,7 @@ function ProductDetailDisplaySection({ productId }: ProductDetailSectionProps) {
             {product.name}
           </Text>
           <Text fontSize="3xl" paddingTop="16px">
-            {`${product.price.sellingPrice}원`}
+            {`${product.price}원`}
           </Text>
           <Container
             elementSize="full-width"
@@ -62,7 +62,7 @@ function ProductDetailDisplaySection({ productId }: ProductDetailSectionProps) {
 
       <ProductCounterForm
         productId={productId}
-        productPrice={product.price.sellingPrice}
+        productPrice={product.price}
         productName={product.name}
       />
     </>

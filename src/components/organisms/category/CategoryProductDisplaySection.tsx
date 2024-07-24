@@ -2,20 +2,20 @@ import ProductSkeletonGrid
   from '@components/molecules/skeleton/ProductSkeletonGrid';
 import ProductDisplaySection from '@components/organisms/product/ProductDisplaySection';
 import { useEffect, useRef } from 'react';
-import useFetchThemeProducts from '@hooks/useFetchThemeProducts';
+import useFetchCategoryProducts from '@hooks/useFetchCategoryProducts';
 import { css } from '@emotion/react';
 import useInView from '@hooks/useInView';
 import { generateRandomId } from '@/utils';
 
-interface ThemeProductDisplaySectionProps {
-  themeKey: string;
+interface CategoryProductDisplaySectionProps {
+  categoryId: number;
 }
 
-function ThemeProductDisplaySection({ themeKey }: ThemeProductDisplaySectionProps) {
+function CategoryProductDisplaySection({ categoryId }: CategoryProductDisplaySectionProps) {
   const productDisplayId = useRef(generateRandomId());
   const {
     productResponse, hasNextPage, fetchNextPage, isFetchingNextPage,
-  } = useFetchThemeProducts({ themeKey: themeKey || '' });
+  } = useFetchCategoryProducts({ categoryId });
 
   const bottomRef = useRef<HTMLDivElement>(null);
 
@@ -37,7 +37,7 @@ function ThemeProductDisplaySection({ themeKey }: ThemeProductDisplaySectionProp
 
         return (
           <ProductDisplaySection
-            products={page.products}
+            products={page.content}
             maxColumns={4}
             minColumns={2}
             key={key}
@@ -58,4 +58,4 @@ function ThemeProductDisplaySection({ themeKey }: ThemeProductDisplaySectionProp
   );
 }
 
-export default ThemeProductDisplaySection;
+export default CategoryProductDisplaySection;

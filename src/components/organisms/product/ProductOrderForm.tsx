@@ -14,7 +14,7 @@ import Paths from '@constants/Paths';
 import { OrderRequestBody } from '@/types/request';
 import { OrderFormData, OrderHistoryData } from '@/types';
 import { CashReceiptOptions } from '@/constants';
-import { ProductDetailData } from '@/dto';
+import { ProductData } from '@/dto';
 
 interface ProductOrderFormProps {
   orderHistory: OrderHistoryData;
@@ -23,7 +23,7 @@ interface ProductOrderFormProps {
 function ProductOrderForm({ orderHistory }: ProductOrderFormProps) {
   const {
     data: product,
-  } = useSuspenseQuery<ProductDetailData>({
+  } = useSuspenseQuery<ProductData>({
     queryKey: [QueryKeys.PRODUCT_DETAILS, orderHistory.productId],
     queryFn: () => fetchProductDetail({ productId: orderHistory.productId.toString() }),
   });

@@ -1,19 +1,19 @@
 import Container from '@components/atoms/container/Container';
 import { MAX_CONTENT_WIDTH } from '@styles/size';
 import ResponsiveGrid from '@components/atoms/grid/responsive/ResponsiveGrid';
-import MainThemeItem from '@components/organisms/main/theme/MainThemeItem';
-import ResponsiveThemeSection
-  from '@components/organisms/main/theme/ResponsiveThemeSection';
+import MainCategoryItem from '@components/organisms/main/category/MainCategoryItem';
+import ResponsiveCategorySection
+  from '@components/organisms/main/category/ResponsiveCategorySection';
 import { useContext } from 'react';
 import FetchStatusBoundary
   from '@components/atoms/boundary/FetchStatusBoundary';
-import { ThemeContext } from '@/providers/ThemeContextProvider';
+import { CategoryContext } from '@/providers/CategoryContextProvider';
 
-function ThemeSection() {
-  const { themes, fetchStatus } = useContext(ThemeContext);
+function CategorySection() {
+  const { categories, fetchStatus } = useContext(CategoryContext);
 
   return (
-    <ResponsiveThemeSection>
+    <ResponsiveCategorySection>
       <Container
         elementSize="full-width"
         maxWidth={MAX_CONTENT_WIDTH}
@@ -21,18 +21,18 @@ function ThemeSection() {
       >
         <FetchStatusBoundary fetchStatus={fetchStatus}>
           <ResponsiveGrid columnsDefault={6} columnsMd={4} gap={0}>
-            {Object.keys(themes).map((themeKey, i) => {
+            {Object.keys(categories).map((themeKey, i) => {
               const key = `$gift-theme-${i}`;
 
               return (
-                <MainThemeItem themeKey={themeKey} key={key} />
+                <MainCategoryItem categoryId={themeKey} key={key} />
               );
             })}
           </ResponsiveGrid>
         </FetchStatusBoundary>
       </Container>
-    </ResponsiveThemeSection>
+    </ResponsiveCategorySection>
   );
 }
 
-export default ThemeSection;
+export default CategorySection;

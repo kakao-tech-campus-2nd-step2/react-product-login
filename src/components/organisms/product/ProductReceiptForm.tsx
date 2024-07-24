@@ -16,14 +16,14 @@ import {
 import { FormErrorMessages } from '@constants/ErrorMessage';
 import { CashReceiptOptions } from '@/constants';
 import { OrderFormData } from '@/types';
-import { ProductDetailData } from '@/dto';
+import { ProductData } from '@/dto';
 
 interface ProductOrderFormProps<T extends FieldValues> {
   register: UseFormRegister<T>,
   errors: FieldErrors<T>,
   clearErrors: UseFormClearErrors<T>,
   watch: UseFormWatch<T>,
-  productDetails: ProductDetailData,
+  productDetails: ProductData,
   control: Control<T>,
   count: number,
 }
@@ -45,7 +45,7 @@ function ProductReceiptForm({
     [CashReceiptOptions.PERSONAL]: '개인소득공제',
     [CashReceiptOptions.BUSINESS]: '사업자증빙용',
   };
-  const finalPrice = productDetails.price.sellingPrice * count;
+  const finalPrice = productDetails.price * count;
   const hasCashReceipt = watch('hasCashReceipt');
 
   return (

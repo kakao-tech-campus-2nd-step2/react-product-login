@@ -1,20 +1,24 @@
 import {
-  MessageCardTemplateData, MyAccountInfoData,
-  ProductData,
-  ProductDetailData,
+  MessageCardTemplateData,
+  MyAccountInfoData,
+  LegacyProductData,
   ThemeData,
+  ProductData,
+  CategoryData,
 } from '@/dto';
 
 export interface RankingProductsResponse {
-  products: ProductData[];
+  products: LegacyProductData[];
 }
 
-export interface ThemesResponse {
+export interface LegacyThemesResponse {
   themes: ThemeData[];
 }
 
-export interface ThemeProductsResponse {
-  products: ProductData[];
+export type CategoryResponse = CategoryData[];
+
+export interface LegacyThemeProductsResponse {
+  products: LegacyProductData[];
   nextPageToken: string | null;
   pageInfo: {
     totalResults: number;
@@ -22,9 +26,31 @@ export interface ThemeProductsResponse {
   };
 }
 
-export interface ProductDetailResponse {
-  detail: ProductDetailData;
+export interface CategoryProductsResponse {
+  content: ProductData[];
+  pageable: {
+    sort: {
+      sorted: boolean;
+      unsorted: boolean;
+      empty: boolean;
+    };
+    pageNumber: number;
+    pageSize: number;
+    offset: number;
+    unpaged: boolean;
+    paged: boolean;
+  };
+  totalPages: number;
+  totalElements: number;
+  last: boolean;
+  number: number;
+  size: number;
+  numberOfElements: number;
+  first: boolean;
+  empty: boolean;
 }
+
+export type ProductDetailResponse = ProductData;
 
 export interface MessageCardTemplatesResponse {
   templates: MessageCardTemplateData[];
@@ -33,7 +59,7 @@ export interface MessageCardTemplatesResponse {
 export interface MyAccountInfoResponse extends MyAccountInfoData {}
 
 export interface MyWishProductsResponse {
-  products: ProductData[];
+  products: LegacyProductData[];
   nextPageToken: string | null;
   pageInfo: {
     totalResults: number;

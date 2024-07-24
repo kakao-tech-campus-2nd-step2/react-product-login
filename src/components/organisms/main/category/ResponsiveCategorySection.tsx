@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { BREAKPOINT_SM } from '@styles/size';
 
-const ResponsiveThemeSection = styled.div`
+const ResponsiveCategorySection = styled.div`
   display: flex;
   justify-content: center;
   padding: 45px 52px 23px;
@@ -10,4 +10,4 @@ const ResponsiveThemeSection = styled.div`
   }
 `;
 
-export default ResponsiveThemeSection;
+export default ResponsiveCategorySection;
