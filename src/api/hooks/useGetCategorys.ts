@@ -6,7 +6,7 @@ import { BASE_URL, fetchInstance } from '../instance';
 
 export type CategoryResponseData = CategoryData[];
 
-export const getCategoriesPath = () => `${BASE_URL}/api/categories`;
+export const getCategoriesPath = () => `${BASE_URL}/categories`;
 const categoriesQueryKey = [getCategoriesPath()];
 
 export const getCategories = async () => {
