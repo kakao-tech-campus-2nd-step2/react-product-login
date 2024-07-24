@@ -26,7 +26,7 @@ const renderWithProviders = (ui: ReactElement, { route = '/' } = {}) => {
   );
 };
 
-test('Test on request success', async () => {
+test('Product Page', async () => {
   renderWithProviders(<ProductsPage />, { route: '/products/3245119' });
 
   await waitForElementToBeRemoved(() => screen.queryByRole('spinner'), { timeout: 5000 });
