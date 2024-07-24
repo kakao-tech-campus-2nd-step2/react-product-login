@@ -1,6 +1,6 @@
 import { getDynamicPath } from "./path";
 
-test("test test", () => {
+test("dynamicPath function", () => {
     const categoryId = "123";
     expect(getDynamicPath.category(categoryId)).toBe("/category/123");
 
