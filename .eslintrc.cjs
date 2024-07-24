@@ -29,6 +29,12 @@ module.exports = {
         'import/no-extraneous-dependencies': 'off',
       },
     },
+    {
+      "files": ["tests/**/*"],
+      "env": {
+        "jest": true
+      }
+    },
   ],
   ignorePatterns: ['vite.config.ts'],
   parser: '@typescript-eslint/parser',
