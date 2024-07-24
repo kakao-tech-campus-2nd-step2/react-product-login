@@ -4,6 +4,8 @@ import { getProductDetailPath } from './useGetProductDetail';
 import { getProductOptionsPath } from './useGetProductOptions';
 import { getProductsPath } from './useGetProducts';
 
+console.log(getProductDetailPath('1'));
+
 export const productsMockHandler = [
   rest.get(
     getProductsPath({
@@ -21,30 +23,36 @@ export const productsMockHandler = [
       return res(ctx.json(PRODUCTS_MOCK_DATA));
     },
   ),
-  rest.get(getProductDetailPath(':productId'), (_, res, ctx) => {
-    return res(ctx.json(PRODUCTS_MOCK_DATA.content[0]));
+  rest.get(getProductDetailPath(':productId'), (req, res, ctx) => {
+    const { productId } = req.params;
+    const product = PRODUCTS_MOCK_DATA.content.find((p) => p.id.toString() === productId);
+    if (product) {
+      return res(ctx.json(product));
+    }
+    return res(ctx.status(404), ctx.json({ error: 'Product not found' }));
   }),
-  rest.get(getProductOptionsPath(':productId'), (_, res, ctx) => {
-    return res(
-      ctx.json([
-        {
-          id: 1,
-          name: 'Option A',
-          quantity: 10,
-          productId: 1,
-        },
-        {
-          id: 2,
-          name: 'Option B',
-          quantity: 20,
-          productId: 1,
-        },
-      ]),
-    );
+  rest.get(getProductOptionsPath(':productId'), (req, res, ctx) => {
+    const { productId } = req.params;
+    // 동적 옵션 데이터 생성
+    const options = [
+      {
+        id: 1,
+        name: 'Option A',
+        quantity: 10,
+        productId: Number(productId),
+      },
+      {
+        id: 2,
+        name: 'Option B',
+        quantity: 20,
+        productId: Number(productId),
+      },
+    ];
+    return res(ctx.json(options));
   }),
 ];
 
-const PRODUCTS_MOCK_DATA = {
+export const PRODUCTS_MOCK_DATA = {
   content: [
     {
       id: 3245119,
