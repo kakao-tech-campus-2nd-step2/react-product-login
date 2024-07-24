@@ -63,7 +63,9 @@ export const OrderForm = ({ orderHistory }: Props) => {
   );
 };
 
-const validateOrderForm = (values: OrderFormData): { errorMessage?: string; isValid: boolean } => {
+export const validateOrderForm = (
+  values: OrderFormData,
+): { errorMessage?: string; isValid: boolean } => {
   if (values.hasCashReceipt) {
     if (!values.cashReceiptNumber) {
       return {
