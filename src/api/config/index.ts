@@ -19,6 +19,6 @@ BACKEND_API.interceptors.response.use(
 );
 
 export const BASE_URL =
-  import.meta.env.VITE_API_MOCKING === 'enable'
+  process.env.VITE_API_MOCKING === 'enable'
     ? 'https://api.example.com'
     : tempBaseUrl;

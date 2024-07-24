@@ -1,11 +1,27 @@
 {
-  "files": [],
-  "references": [
-    {
-      "path": "./tsconfig.app.json"
-    },
-    {
-      "path": "./tsconfig.node.json"
+  "compilerOptions": {
+    "outDir": "./dist",
+    "skipLibCheck": true,
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "types": ["node", "@emotion/react/types/css-prop", "jest"],
+    "target": "ES2020",
+    "useDefineForClassFields": true,
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "moduleDetection": "auto",
+    "jsx": "react-jsx",
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "paths": {
+      "@/*": ["./src/*"]
     }
-  ]
+  },
+  "include": ["src", ".eslintrc.cjs", "vite.config.ts"]
 }
