@@ -52,7 +52,7 @@ export const OptionSection = ({ productId }: Props) => {
         <PricingWrapper>
           총 결제 금액 <span>{totalPrice}원</span>
         </PricingWrapper>
-        <Button className="presentButton" theme="black" size="large" onClick={handleClick}>
+        <Button theme="black" size="large" onClick={handleClick}>
           나에게 선물하기
         </Button>
       </BottomWrapper>
