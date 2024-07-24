@@ -28,7 +28,7 @@ export const CashReceiptFields = () => {
         control={control}
         name="cashReceiptType"
         render={({ field }) => (
-          <Select {...field} disabled={!hasCashReceipt}>
+          <Select {...field} disabled={!hasCashReceipt} data-testid="cashReceiptType">
             <option value="PERSONAL">개인소득공제</option>
             <option value="BUSINESS">사업자증빙용</option>
           </Select>

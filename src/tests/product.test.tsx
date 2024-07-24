@@ -47,3 +47,23 @@ test('Is ErrorBoundary working', async () => {
 
   expect(screen.getByText('에러 페이지')).toBeInTheDocument();
 });
+
+// FIXME: 아니 이거 클릭 이벤트가 왜 안되는데 진짜
+// test('아니 왜 안되는데', async () => {
+//   const { debug } = renderWithProviders(<GoodsDetailPage />, { route: '/products/3245119' });
+//
+//   // + 버튼 클릭
+//   const incrementButton = screen.getByLabelText('수량 1개 추가');
+//   // const decrementButton = screen.getByLabelText('수량 1개 감소');
+//   const totalPrice = screen.getByText('총 결제 금액');
+//
+//   // 초기 총 결제 금액 확인
+//   expect(screen.getByText('총 결제 금액')).toHaveTextContent('145000');
+//
+//   userEvent.click(incrementButton);
+//
+//   await waitFor(() => {
+//     expect(totalPrice).toHaveTextContent('29');
+//   });
+//   debug(totalPrice);
+// });
