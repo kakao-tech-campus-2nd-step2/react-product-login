@@ -10,6 +10,7 @@ describe('OrderForm Component', () => {
     count: 2,
   };
 
+  // FormProvider를 사용하는 렌더 함수
   const renderOrderForm = () => {
     const methods = useForm({
       defaultValues: {
@@ -24,7 +25,7 @@ describe('OrderForm Component', () => {
     return render(
       <FormProvider {...methods}>
         <OrderForm orderHistory={orderHistory} />
-      </FormProvider>
+      </FormProvider>,
     );
   };
 
