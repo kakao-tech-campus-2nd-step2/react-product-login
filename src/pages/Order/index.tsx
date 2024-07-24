@@ -90,7 +90,7 @@ export const OrderPage = () => {
 
   const handleReceiptNumberInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    if (!/^\d+$/.test(value)) {
+    if (!/^\d+$/.test(value) && value !== '') {
       e.target.value = getValues('receiptNumber');
     }
   };
@@ -180,12 +180,13 @@ export const OrderPage = () => {
                 현금영수증 신청
               </Text>
             </Checkbox>
-            <Select {...getRegister('receiptType')}>
+            <Select disabled={!needReceiptState} {...getRegister('receiptType')}>
               <option>개인소득공제</option>
               <option>사업자증빙용</option>
             </Select>
             <Input
               type="number"
+              disabled={!needReceiptState}
               {...getRegister('receiptNumber')}
               onInput={handleReceiptNumberInput}
               placeholder="(-없이) 숫자만 입력해주세요"
