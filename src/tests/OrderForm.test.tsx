@@ -1,9 +1,12 @@
 import React from 'react';
 import { act, render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { FormProvider, useForm } from 'react-hook-form';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import type { OrderFormData } from '@/types';
 import { CashReceiptFields } from '@/components/features/Order/OrderForm/Fields/CashReceiptFields';
 import { server } from '../mocks/browser';
+
+const queryClient = new QueryClient();
 
 const FormWrapper: React.FC<{ children: React.ReactElement }> = ({ children }) => {
   const methods = useForm<OrderFormData>({
@@ -16,7 +19,11 @@ const FormWrapper: React.FC<{ children: React.ReactElement }> = ({ children }) =
     },
   });
 
-  return <FormProvider {...methods}>{children}</FormProvider>;
+  return (
+    <QueryClientProvider client={queryClient}>
+      <FormProvider {...methods}>{children}</FormProvider>
+    </QueryClientProvider>
+  );
 };
 
 const renderWithFormProvider = (ui: React.ReactElement) => {
