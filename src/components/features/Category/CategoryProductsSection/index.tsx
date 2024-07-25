@@ -15,10 +15,9 @@ type Props = {
 };
 
 export const CategoryProductsSection = ({ categoryId }: Props) => {
-  const { data, isError, isLoading, hasNextPage, fetchNextPage, isFetchingNextPage } =
-    useGetProducts({
-      categoryId,
-    });
+  const { data, isError, isLoading, hasNextPage, fetchNextPage, isFetchingNextPage } = useGetProducts({
+    categoryId,
+  });
 
   if (isLoading) return <LoadingView />;
   if (isError) return <TextView>에러가 발생했습니다.</TextView>;
@@ -39,13 +38,7 @@ export const CategoryProductsSection = ({ categoryId }: Props) => {
         >
           {flattenGoodsList.map(({ id, imageUrl, name, price }) => (
             <Link key={id} to={getDynamicPath.productsDetail(id)}>
-              <DefaultGoodsItems
-                key={id}
-                imageSrc={imageUrl}
-                title={name}
-                amount={price}
-                subtitle={''}
-              />
+              <DefaultGoodsItems key={id} imageSrc={imageUrl} title={name} amount={price} subtitle={''} />
             </Link>
           ))}
         </Grid>

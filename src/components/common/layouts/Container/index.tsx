@@ -38,9 +38,7 @@ const Wrapper = styled.div`
   align-items: center;
 `;
 
-const Inner = styled.div<
-  Pick<Props, 'maxWidth' | 'flexDirection' | 'justifyContent' | 'alignItems'>
->`
+const Inner = styled.div<Pick<Props, 'maxWidth' | 'flexDirection' | 'justifyContent' | 'alignItems'>>`
   width: 100%;
   max-width: ${({ maxWidth }) => maxWidth ?? vars.breakpoints.md};
   display: flex;
