@@ -56,6 +56,7 @@ module.exports = {
     'craco.config.js',
     'babel.config.js',
     'jest.config.js',
+    'jest.setup.js',
   ],
   settings: {
     'import/resolver': {
