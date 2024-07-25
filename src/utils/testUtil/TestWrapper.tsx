@@ -1,7 +1,10 @@
-import { ReactNode } from 'react';
+import { ReactNode, Suspense } from 'react';
 import { Router } from 'react-router-dom';
 import { createMemoryHistory, MemoryHistoryOptions } from 'history';
+import { LoadingSpinnerFullWidth } from '@components/atoms/LoadingSpinner';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import CategoryContextProvider from '@/providers/CategoryContextProvider';
+import LoginContextProvider from '@/providers/LoginContextProvider';
 
 interface TestWrapperProps {
   children?: ReactNode;
@@ -20,10 +23,32 @@ export function RouterWrapper({ children, historyOptions }: TestWrapperProps & R
   );
 }
 
-export function CategoryContextWrapper({ children }: TestWrapperProps) {
+const queryClient = new QueryClient();
+
+export function QueryClientWrapper({ children }: TestWrapperProps) {
   return (
-    <CategoryContextProvider>
-      {children}
-    </CategoryContextProvider>
+    <QueryClientProvider client={queryClient}>
+      { children }
+    </QueryClientProvider>
+  );
+}
+
+export function SuspenseWrapper({ children }: TestWrapperProps) {
+  return (
+    <Suspense fallback={<LoadingSpinnerFullWidth />}>
+      { children }
+    </Suspense>
+  );
+}
+
+export function ContextWrapper({ children }: TestWrapperProps) {
+  return (
+    <QueryClientWrapper>
+      <LoginContextProvider>
+        <CategoryContextProvider>
+          {children}
+        </CategoryContextProvider>
+      </LoginContextProvider>
+    </QueryClientWrapper>
   );
 }
