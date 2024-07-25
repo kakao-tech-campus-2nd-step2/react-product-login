@@ -1,7 +1,6 @@
-import { Center } from '@chakra-ui/react';
 import styled from '@emotion/styled';
 import { useState } from 'react';
-import { Link, useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 
 import KAKAO_LOGO from '@/assets/kakao_logo.svg';
 import { Button } from '@/components/common/Button';
@@ -10,13 +9,13 @@ import { Spacing } from '@/components/common/layouts/Spacing';
 import { breakpoints } from '@/styles/variants';
 import { authSessionStorage } from '@/utils/storage';
 
-export const LoginPage = () => {
-  const [id, setId] = useState('');
+export const JoinPage = () => {
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [queryParams] = useSearchParams();
 
   const handleConfirm = () => {
-    if (!id || !password) {
+    if (!email || !password) {
       alert('아이디와 비밀번호를 입력해주세요.');
       return;
     }
@@ -24,7 +23,7 @@ export const LoginPage = () => {
     // TODO: API 연동
 
     // TODO: API 연동 전까지 임시 로그인 처리
-    authSessionStorage.set(id);
+    authSessionStorage.set(email);
 
     const redirectUrl = queryParams.get('redirect') ?? `${window.location.origin}/`;
     return window.location.replace(redirectUrl);
@@ -34,7 +33,11 @@ export const LoginPage = () => {
     <Wrapper>
       <Logo src={KAKAO_LOGO} alt="카카고 CI" />
       <FormWrapper>
-        <UnderlineTextField placeholder="이름" value={id} onChange={(e) => setId(e.target.value)} />
+        <UnderlineTextField
+          placeholder="이메일"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
         <Spacing />
         <UnderlineTextField
           type="password"
@@ -49,13 +52,7 @@ export const LoginPage = () => {
             sm: 60,
           }}
         />
-        <Button onClick={handleConfirm}>로그인</Button>
-        <br />
-        <Center>
-          <Link to="/join">
-            <div>회원가입</div>
-          </Link>
-        </Center>
+        <Button onClick={handleConfirm}>회원가입</Button>
       </FormWrapper>
     </Wrapper>
   );
