@@ -10,9 +10,28 @@ import { LabelText } from '../Common/LabelText';
 type Props = {
   orderHistory: OrderHistory;
 };
+
 export const GoodsInfo = ({ orderHistory }: Props) => {
   const { id, count } = orderHistory;
   const { data: detail } = useGetProductDetail({ productId: id.toString() });
+
+  // Use a conditional check to handle the case where detail might be null or undefined
+  if (!detail) {
+    return (
+      <Wrapper>
+        <LabelText>선물내역</LabelText>
+        <Spacing />
+        <GoodsWrapper>
+          <GoodsInfoWrapper>
+            <div>Loading...</div> {/* Or any fallback content */}
+          </GoodsInfoWrapper>
+        </GoodsWrapper>
+      </Wrapper>
+    );
+  }
+
+  // Now TypeScript understands that detail is not null here
+  const totalPrice = (detail.price ?? 0) * count; // Use optional chaining to safely access properties
 
   return (
     <Wrapper>
@@ -27,6 +46,8 @@ export const GoodsInfo = ({ orderHistory }: Props) => {
             <GoodsInfoTextTitle>
               {detail.name} X {count}개
             </GoodsInfoTextTitle>
+            {/* You can also show the totalPrice if needed */}
+            <TotalPrice>총 결제 금액: {totalPrice}원</TotalPrice>
           </GoodsInfoTextWrapper>
         </GoodsInfoWrapper>
       </GoodsWrapper>
@@ -68,5 +89,10 @@ const GoodsInfoTextTitle = styled.p`
   margin-top: 3px;
   color: #222;
   overflow: hidden;
-  font-weight: 400;
+`;
+
+const TotalPrice = styled.p`
+  font-size: 16px;
+  font-weight: 700;
+  color: #111;
 `;

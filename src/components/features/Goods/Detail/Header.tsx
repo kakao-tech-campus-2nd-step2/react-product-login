@@ -10,6 +10,10 @@ type Props = ProductDetailRequestParams;
 export const GoodsDetailHeader = ({ productId }: Props) => {
   const { data: detail } = useGetProductDetail({ productId });
 
+  if (!detail) {
+    return <div>Loading...</div>; // 또는 에러 메시지
+  }
+
   return (
     <Wrapper>
       <GoodsImage src={detail.imageUrl} alt={detail.name} />
