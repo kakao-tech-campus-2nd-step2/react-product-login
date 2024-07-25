@@ -1,11 +1,16 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { act, render, renderHook, screen } from '@testing-library/react';
+import { act, render, renderHook, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { setupServer } from 'msw/node';
 import { FormProvider, useForm } from 'react-hook-form';
 
+import { categoriesMockHandler } from '@/api/hooks/categories.mock';
+import { productsMockHandler } from '@/api/hooks/products.mock';
 import type { Props } from '@/components/features/Home/CategorySection/CategoryItem';
 import { CategoryItem } from '@/components/features/Home/CategorySection/CategoryItem';
+import { OrderForm } from '@/components/features/Order/OrderForm';
 import { CashReceiptFields } from '@/components/features/Order/OrderForm/Fields/CashReceiptFields';
+// import { OrderFormOrderInfo } from '@/components/features/Order/OrderForm/OrderInfo';
 import { Sum } from '@/Sum';
 import type { OrderFormData, OrderHistory } from '@/types';
 
@@ -29,10 +34,10 @@ describe('useGetCategorys 카테고리 렌더링 테스트', () => {
 describe('통합테스트', () => {
   const queryClient = new QueryClient();
   const testOrderHistory: OrderHistory = {
-    id: 1,
+    id: 3245119,
     count: 2,
   };
-  test('현금영수증 checkbox가 false인 경우 현금영수증 종류 및 번호 필드 비활성화', async () => {
+  test('현금영수증 checkbox가 false인 경우 현금영수증 종류 및 번호 필드 비활성화', () => {
     const { id, count } = testOrderHistory;
 
     const { result } = renderHook(() =>
@@ -82,5 +87,36 @@ describe('통합테스트', () => {
     expect(checkbox).not.toBeChecked();
     expect(cashReceiptType).toBeDisabled();
     expect(cashReceiptNumber).toBeDisabled();
+  });
+
+  test('form validation', async () => {
+    const { id, count } = testOrderHistory;
+
+    const { result } = renderHook(() =>
+      useForm<OrderFormData>({
+        defaultValues: {
+          productId: id,
+          productQuantity: count,
+          senderId: 0,
+          receiverId: 0,
+          hasCashReceipt: false,
+        },
+      }),
+    );
+    expect(result.current).toBeDefined();
+
+    const testWorker = setupServer(...categoriesMockHandler, ...productsMockHandler);
+    await testWorker.listen();
+    render(
+      <QueryClientProvider client={queryClient}>
+        <OrderForm orderHistory={{ ...testOrderHistory }} />
+      </QueryClientProvider>,
+    );
+    const submitBtn = await screen.findByLabelText('submitBtn');
+    await userEvent.click(submitBtn);
+    window.alert = jest.fn();
+    await waitFor(() => {
+      expect(window.alert).toBeCalledWith('메시지를 입력해주세요.');
+    });
   });
 });
