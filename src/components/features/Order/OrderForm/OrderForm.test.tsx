@@ -1,15 +1,9 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 
-import { useHandleOrderHistory } from '@/hooks/useHandleOrderHistory';
 import type { OrderHistory } from '@/types';
 
 import { OrderForm } from '.';
-
-jest.mock('@/hooks/useHandleOrderHistory');
-const mockUseHandleOrderHistory = useHandleOrderHistory as jest.MockedFunction<
-  typeof useHandleOrderHistory
->;
 
 const orderHistory: OrderHistory = {
   id: 1,
@@ -17,8 +11,6 @@ const orderHistory: OrderHistory = {
 };
 
 test('결제하기 페이지의 Form과 관련된 통합 테스트', async () => {
-  mockUseHandleOrderHistory.mockReturnValue({ orderHistory });
-
   window.alert = jest.fn();
 
   render(
