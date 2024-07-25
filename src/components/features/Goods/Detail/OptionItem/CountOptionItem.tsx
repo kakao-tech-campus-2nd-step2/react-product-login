@@ -10,13 +10,7 @@ type Props = {
   onChange: (value: string) => void;
 };
 
-export const CountOptionItem = ({
-  name,
-  minValues = 1,
-  maxValues = 100,
-  value,
-  onChange,
-}: Props) => {
+export const CountOptionItem = ({ name, minValues = 1, maxValues = 100, value, onChange }: Props) => {
   const { getInputProps, getIncrementButtonProps, getDecrementButtonProps } = useNumberInput({
     step: 1,
     min: minValues,
