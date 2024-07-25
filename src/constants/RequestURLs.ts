@@ -10,6 +10,10 @@ const endpoints = {
   MY_WISH_PRODUCTS: '/my-account/wish/products',
   MY_ACCOUNT_POINT: '/my-account/point',
   ORDER: '/order',
+  LOGIN: '/members/login',
+  REGISTER: '/members/register',
+  WISHES: '/wishes',
+  DELETE_WISHES: '/wishes/:wishId',
 };
 
 type RequestURLKey = keyof typeof endpoints;
@@ -22,3 +26,8 @@ Object.entries(endpoints).forEach(([key, value]) => {
 });
 
 export default RequestURLs;
+
+export const AuthenticatedRequestURLs = {
+  [RequestURLs.WISHES]: true,
+  [RequestURLs.DELETE_WISHES]: true,
+};
