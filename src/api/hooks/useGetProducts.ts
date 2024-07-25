@@ -6,8 +6,7 @@ import {
 
 import type { ProductData } from '@/types';
 
-import { BASE_URL } from '../instance';
-import { fetchInstance } from './../instance/index';
+import { PRODUCTS_MOCK_DATA } from './products.mock';
 
 type RequestParams = {
   categoryId: string;
@@ -24,28 +23,9 @@ type ProductsResponseData = {
   };
 };
 
-type ProductsResponseRawData = {
-  content: ProductData[];
-  number: number;
-  totalElements: number;
-  size: number;
-  last: boolean;
-};
-
-export const getProductsPath = ({ categoryId, pageToken, maxResults }: RequestParams) => {
-  const params = new URLSearchParams();
-
-  params.append('categoryId', categoryId);
-  params.append('sort', 'name,asc');
-  if (pageToken) params.append('page', pageToken);
-  if (maxResults) params.append('size', maxResults.toString());
-
-  return `${BASE_URL}/api/products?${params.toString()}`;
-};
-
-export const getProducts = async (params: RequestParams): Promise<ProductsResponseData> => {
-  const response = await fetchInstance.get<ProductsResponseRawData>(getProductsPath(params));
-  const data = response.data;
+// 모킹 데이터를 반환하는 함수
+export const getProducts = async (): Promise<ProductsResponseData> => {
+  const data = PRODUCTS_MOCK_DATA;
 
   return {
     products: data.content,
@@ -65,8 +45,8 @@ export const useGetProducts = ({
 }: Params): UseInfiniteQueryResult<InfiniteData<ProductsResponseData>> => {
   return useInfiniteQuery({
     queryKey: ['products', categoryId, maxResults, initPageToken],
-    queryFn: async ({ pageParam = initPageToken }) => {
-      return getProducts({ categoryId, pageToken: pageParam, maxResults });
+    queryFn: async () => {
+      return getProducts();
     },
     initialPageParam: initPageToken,
     getNextPageParam: (lastPage) => lastPage.nextPageToken,
