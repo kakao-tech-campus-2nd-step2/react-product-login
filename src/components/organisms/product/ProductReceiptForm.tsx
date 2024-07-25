@@ -14,6 +14,7 @@ import {
   UseFormWatch,
 } from 'react-hook-form';
 import { FormErrorMessages } from '@constants/ErrorMessage';
+import TestIds from '@constants/TestIds';
 import { CashReceiptOptions } from '@/constants';
 import { OrderFormData } from '@/types';
 import { ProductData } from '@/dto';
@@ -85,6 +86,7 @@ function ProductReceiptForm({
 
                 field.onChange(e);
               }}
+              data-testid={TestIds.ID_HAS_RECEIPT}
             >
               현금영수증 신청
             </Checkbox>
@@ -122,6 +124,7 @@ function ProductReceiptForm({
               borderColor={defaultBorderColor}
               marginTop="5px"
               {...field}
+              data-testid={TestIds.ID_RECEIPT_NUMBER}
             />
           )}
         />
@@ -148,6 +151,7 @@ function ProductReceiptForm({
           marginTop: '16px',
         }}
         type="submit"
+        data-testid={TestIds.ID_SUBMIT_ORDER}
       />
     </Container>
   );

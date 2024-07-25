@@ -2,7 +2,7 @@ module.exports = {
   root: true,
   env: { browser: true, es2020: true },
   extends: ['airbnb', 'airbnb-typescript', 'airbnb/hooks', 'plugin:storybook/recommended'],
-  ignorePatterns: ['dist', '.eslintrc.cjs', 'vite.config.ts', 'src/stories/*', 'mockServiceWorker.js'],
+  ignorePatterns: ['dist', '.eslintrc.cjs', 'vite.config.ts', 'src/stories/*', 'mockServiceWorker.js', 'vitest.setup.ts'],
   parser: '@typescript-eslint/parser',
   parserOptions: {
     project: ['./tsconfig.json', './tsconfig.app.json'],
@@ -41,7 +41,7 @@ module.exports = {
     ],
     'import/no-extraneous-dependencies': [
       'error',
-      { devDependencies: ['**/mock/*'] },
+      { devDependencies: ['**/mock/*', '**/*.test.*'] },
     ],
   }
 }
