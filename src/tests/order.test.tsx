@@ -6,9 +6,7 @@ import type { ReactElement } from 'react';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 
 import { queryClient } from '@/api/instance';
-import { validateOrderForm } from '@/components/features/Order/OrderForm';
 import { OrderPage } from '@/pages/Order';
-import type { OrderFormData } from '@/types';
 import { orderHistorySessionStorage } from '@/utils/storage';
 
 import { worker } from '../../server';
@@ -19,6 +17,19 @@ beforeAll(() => {
 });
 afterEach(() => worker.resetHandlers());
 afterAll(() => worker.close());
+
+const testOrderHistory = {
+  id: 3245119,
+  count: 3,
+};
+
+const setup = async () => {
+  orderHistorySessionStorage.set(testOrderHistory);
+  renderWithProviders(<OrderPage />);
+  const user = userEvent.setup();
+  const submitButton = screen.getByText(/결제하기/i);
+  return { user, submitButton };
+};
 
 const renderWithProviders = (ui: ReactElement, { route = '/' } = {}) => {
   return render(
@@ -35,10 +46,7 @@ const renderWithProviders = (ui: ReactElement, { route = '/' } = {}) => {
 };
 
 test('오더테스트', async () => {
-  orderHistorySessionStorage.set({
-    id: 3245119,
-    count: 3,
-  });
+  orderHistorySessionStorage.set(testOrderHistory);
 
   renderWithProviders(<OrderPage />);
   const user = userEvent.setup();
@@ -71,85 +79,60 @@ test('오더테스트', async () => {
   expect(cashReceiptNumberInput.value).toBe('1234567890');
 });
 
-describe('밸리데이션 검증', () => {
-  it('현금영수증을 요청할 경우 번호를 입력해주세요.', () => {
-    const orderData: OrderFormData = {
-      productId: 1,
-      productQuantity: 1,
-      messageCardTextMessage: '감사합니다!',
-      senderId: 123,
-      receiverId: 456,
-      hasCashReceipt: true,
-      cashReceiptNumber: '',
-    };
-    const result = validateOrderForm(orderData);
+test('메시지를 입력해주세요.', async () => {
+  const { user, submitButton } = await setup();
 
-    expect(result.isValid).toBe(false);
+  await user.click(submitButton);
 
-    expect(result.errorMessage).toBe('현금영수증 번호를 입력해주세요.');
-  });
-
-  it('현금영수증 번호는 숫자만 입력해주세요.', () => {
-    const orderData: OrderFormData = {
-      ...baseOrderData,
-      hasCashReceipt: true,
-      cashReceiptNumber: 'abc123',
-    };
-    const result = validateOrderForm(orderData);
-
-    expect(result.isValid).toBe(false);
-
-    expect(result.errorMessage).toBe('현금영수증 번호는 숫자로만 입력해주세요.');
-  });
-
-  it('메시지를 입력해주세요.', () => {
-    const orderData: OrderFormData = {
-      ...baseOrderData,
-      messageCardTextMessage: '',
-    };
-    const result = validateOrderForm(orderData);
-
-    expect(result.isValid).toBe(false);
-
-    expect(result.errorMessage).toBe('메시지를 입력해주세요.');
-  });
-
-  it('메시지는 100자 이내로 입력해주세요.', () => {
-    const orderData: OrderFormData = {
-      ...baseOrderData,
-      messageCardTextMessage: 'ㅋ'.repeat(101),
-    };
-    const result = validateOrderForm(orderData);
-
-    expect(result.isValid).toBe(false);
-
-    expect(result.errorMessage).toBe('메시지는 100자 이내로 입력해주세요.');
-  });
-
-  it('통과해야 하는 테스트', () => {
-    const orderData: OrderFormData = {
-      productId: 1,
-      productQuantity: 2,
-      messageCardTextMessage: '정상 데이터',
-      senderId: 200,
-      receiverId: 300,
-      hasCashReceipt: true,
-      cashReceiptNumber: '1234567890',
-    };
-    const result = validateOrderForm(orderData);
-
-    expect(result.isValid).toBe(true);
-
-    expect(result.errorMessage).toBeUndefined();
-  });
+  expect(window.alert).toHaveBeenCalledWith('메시지를 입력해주세요.');
 });
 
-const baseOrderData = {
-  productId: 1,
-  productQuantity: 2,
-  messageCardTextMessage: '감사합니다!',
-  senderId: 100,
-  receiverId: 200,
-  hasCashReceipt: false,
-  cashReceiptNumber: '123456',
-};
+test('메시지는 100자 이내로 입력해주세요.', async () => {
+  const { user, submitButton } = await setup();
+  const messageTextArea =
+    screen.getByPlaceholderText<HTMLTextAreaElement>('선물과 함께 보낼 메시지를 적어보세요');
+
+  await user.type(messageTextArea, 'ㅋ'.repeat(101));
+  await user.click(submitButton);
+
+  expect(window.alert).toHaveBeenCalledWith('메시지는 100자 이내로 입력해주세요.');
+});
+
+test('현금영수증을 요청할 경우 번호를 입력해주세요.', async () => {
+  const { user, submitButton } = await setup();
+  const cashReceiptCheckbox = screen.getByLabelText<HTMLInputElement>(/현금영수증 신청/i);
+
+  await user.click(cashReceiptCheckbox);
+  await user.click(submitButton);
+
+  expect(window.alert).toHaveBeenCalledWith('현금영수증 번호를 입력해주세요.');
+});
+
+test('현금영수증 번호는 숫자만 입력해주세요.', async () => {
+  const { user, submitButton } = await setup();
+  const cashReceiptCheckbox = screen.getByLabelText<HTMLInputElement>(/현금영수증 신청/i);
+  const cashReceiptNumberInput =
+    screen.getByPlaceholderText<HTMLInputElement>('(-없이) 숫자만 입력해주세요.');
+
+  await user.click(cashReceiptCheckbox);
+  await user.type(cashReceiptNumberInput, '1-2-3-4');
+  await user.click(submitButton);
+
+  expect(window.alert).toHaveBeenCalledWith('현금영수증 번호는 숫자로만 입력해주세요.');
+});
+
+test('통과해야 하는 테스트', async () => {
+  const { user, submitButton } = await setup();
+  const messageTextArea =
+    screen.getByPlaceholderText<HTMLTextAreaElement>('선물과 함께 보낼 메시지를 적어보세요');
+  const cashReceiptCheckbox = screen.getByLabelText<HTMLInputElement>(/현금영수증 신청/i);
+  const cashReceiptNumberInput =
+    screen.getByPlaceholderText<HTMLInputElement>('(-없이) 숫자만 입력해주세요.');
+
+  await user.type(messageTextArea, '감사합니다!');
+  await user.click(cashReceiptCheckbox);
+  await user.type(cashReceiptNumberInput, '123456789');
+  await user.click(submitButton);
+
+  expect(window.alert).toHaveBeenCalledWith('주문이 완료되었습니다.');
+});
