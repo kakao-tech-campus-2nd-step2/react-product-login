@@ -151,6 +151,7 @@ function ProductReceiptForm({
           marginTop: '16px',
         }}
         type="submit"
+        data-testid={TestIds.ID_SUBMIT_ORDER}
       />
     </Container>
   );
