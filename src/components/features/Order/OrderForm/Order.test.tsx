@@ -110,14 +110,15 @@ describe('OrderForm', () => {
       const cashReceiptNumberInputs = screen.queryAllByLabelText(/현금영수증 번호/i);
 
       // 정확한 요소를 찾기 위해 첫 번째 요소를 선택
-      const cashReceiptTypeSelect = cashReceiptTypeSelects[0];
-      const cashReceiptNumberInput = cashReceiptNumberInputs[0];
+      const cashReceiptTypeSelect = cashReceiptTypeSelects[0] as HTMLSelectElement;
+      const cashReceiptNumberInput = cashReceiptNumberInputs[0] as HTMLInputElement;
 
       expect(cashReceiptCheckbox).toBeInTheDocument();
       expect(cashReceiptTypeSelect).toBeDisabled();
       expect(cashReceiptNumberInput).toBeDisabled();
     });
   });
+
   test('현금영수증 Checkbox가 true인 경우, 현금영수증 종류와 현금영수증 번호 필드가 활성화 되고 값이 입력되는지 확인', async () => {
     // When: OrderForm 컴포넌트를 렌더링
     render(
@@ -135,8 +136,8 @@ describe('OrderForm', () => {
       const cashReceiptNumberInputs = screen.queryAllByLabelText(/현금영수증 번호/i);
 
       // 정확한 요소를 찾기 위해 첫 번째 요소를 선택
-      const cashReceiptTypeSelect = cashReceiptTypeSelects[0];
-      const cashReceiptNumberInput = cashReceiptNumberInputs[0];
+      const cashReceiptTypeSelect = cashReceiptTypeSelects[0] as HTMLSelectElement;
+      const cashReceiptNumberInput = cashReceiptNumberInputs[0] as HTMLInputElement;
 
       expect(cashReceiptTypeSelect).toBeEnabled();
       expect(cashReceiptNumberInput).toBeEnabled();
