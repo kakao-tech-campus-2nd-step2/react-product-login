@@ -47,7 +47,9 @@ export const OptionSection = ({ productId }: Props) => {
 
   return (
     <Wrapper>
-      <CountOptionItem name={options[0].name} value={countAsString} onChange={setCountAsString} />
+      {options && options.length > 0 && (
+        <CountOptionItem name={options[0].name} value={countAsString} onChange={setCountAsString} />
+      )}
       <BottomWrapper>
         <PricingWrapper>
           총 결제 금액 <span>{totalPrice}원</span>
