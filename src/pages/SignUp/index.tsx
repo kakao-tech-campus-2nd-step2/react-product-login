@@ -1,24 +1,22 @@
 import styled from '@emotion/styled';
 import { useState } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 
 import KAKAO_LOGO from '@/assets/kakao_logo.svg';
 import { Button } from '@/components/common/Button';
 import { UnderlineTextField } from '@/components/common/Form/Input/UnderlineTextField';
 import { Spacing } from '@/components/common/layouts/Spacing';
-import { RouterPath } from '@/routes/path';
 import { breakpoints } from '@/styles/variants';
 import { authSessionStorage } from '@/utils/storage';
 
-export const LoginPage = () => {
+export const SignUpPage = () => {
   const [id, setId] = useState('');
   const [password, setPassword] = useState('');
   const [queryParams] = useSearchParams();
-  const navigate = useNavigate();
 
   const handleConfirm = () => {
     if (!id || !password) {
-      alert('아이디와 비밀번호를 입력해주세요.');
+      alert('가입할 아이디와 비밀번호를 입력해주세요.');
       return;
     }
 
@@ -33,7 +31,7 @@ export const LoginPage = () => {
 
   return (
     <Wrapper>
-      <Logo src={KAKAO_LOGO} alt="카카고 CI" />
+      <Logo src={KAKAO_LOGO} alt="카카오 CI" />
       <FormWrapper>
         <UnderlineTextField placeholder="이름" value={id} onChange={(e) => setId(e.target.value)} />
         <Spacing />
@@ -43,17 +41,13 @@ export const LoginPage = () => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-
         <Spacing
           height={{
             initial: 40,
             sm: 60,
           }}
         />
-        <Button onClick={handleConfirm}>로그인</Button>
-        <UserInfoWrapper>
-          <LinkButton onClick={() => navigate(RouterPath.signup)}>회원가입</LinkButton>
-        </UserInfoWrapper>
+        <Button onClick={handleConfirm}>회원가입</Button>
       </FormWrapper>
     </Wrapper>
   );
@@ -82,16 +76,4 @@ const FormWrapper = styled.article`
     border: 1px solid rgba(0, 0, 0, 0.12);
     padding: 60px 52px;
   }
-`;
-
-const UserInfoWrapper = styled.div`
-  margin-top: 26px;
-`;
-
-const LinkButton = styled.a`
-  float: left;
-  font-size: 12px;
-  color: #191919;
-  text-decoration: none;
-  cursor: pointer;
 `;
