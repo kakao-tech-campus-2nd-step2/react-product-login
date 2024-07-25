@@ -1,6 +1,7 @@
+import { Center } from '@chakra-ui/react';
 import styled from '@emotion/styled';
 import { useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import KAKAO_LOGO from '@/assets/kakao_logo.svg';
 import { Button } from '@/components/common/Button';
@@ -12,21 +13,19 @@ import { authSessionStorage } from '@/utils/storage';
 export const JoinPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [queryParams] = useSearchParams();
+  const navigate = useNavigate();
 
   const handleConfirm = () => {
     if (!email || !password) {
-      alert('아이디와 비밀번호를 입력해주세요.');
+      alert('이메일과 비밀번호를 입력해주세요.');
       return;
     }
 
-    // TODO: API 연동
-
-    // TODO: API 연동 전까지 임시 로그인 처리
+    // 로그인 상태 저장
     authSessionStorage.set(email);
 
-    const redirectUrl = queryParams.get('redirect') ?? `${window.location.origin}/`;
-    return window.location.replace(redirectUrl);
+    // 회원가입 후 메인 페이지 또는 원하는 페이지로 리다이렉트
+    navigate('/');
   };
 
   return (
@@ -53,6 +52,12 @@ export const JoinPage = () => {
           }}
         />
         <Button onClick={handleConfirm}>회원가입</Button>
+        <br />
+        <Center>
+          <Link to="/login">
+            <div>로그인</div>
+          </Link>
+        </Center>
       </FormWrapper>
     </Wrapper>
   );
