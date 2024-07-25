@@ -28,14 +28,14 @@ export const CashReceiptFields = () => {
         control={control}
         name="cashReceiptType"
         render={({ field }) => (
-          <Select {...field} disabled={!hasCashReceipt}>
+          <Select {...field} disabled={!hasCashReceipt} aria-label="현금영수증 종류">
             <option value="PERSONAL">개인소득공제</option>
             <option value="BUSINESS">사업자증빙용</option>
           </Select>
         )}
       />
       <Spacing height={8} />
-      <Input {...register('cashReceiptNumber')} placeholder="(-없이) 숫자만 입력해주세요." disabled={!hasCashReceipt} />
+      <Input {...register('cashReceiptNumber')} placeholder="(-없이) 숫자만 입력해주세요." disabled={!hasCashReceipt} aria-label="현금영수증 번호" />
     </Wrapper>
   );
 };
