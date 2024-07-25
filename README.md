@@ -36,8 +36,10 @@
 ### 통합 테스트 작성
 
 - 상품 상세 페이지
-  - [ ] 상품 상세 정보 로딩 테스트
-  - [ ] 옵션 선택 테스트
+  - [x] useGetCategorys.test
+  - [x] useGetProducts.test
+  - [x] useGetProductDetail.test
+  - [x] useGetProductOptions.test
 
 - 결제하기 페이지
   - [ ] 입력 필드 테스트
