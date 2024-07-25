@@ -10,6 +10,7 @@ import RequestURLs from '@constants/RequestURLs';
 import {
   CategoryProductsResponse,
 } from '@/types/response';
+import { CategoryProductsRequestQuery } from '@/types/request';
 
 interface FetchParams {
   categoryId: number;
@@ -19,7 +20,7 @@ const MAX_RESULTS_PER_PAGE = 20;
 
 function useFetchCategoryProducts({ categoryId }: FetchParams) {
   const fetchPage = useCallback(async ({ pageParam = 0 }) => {
-    const params = {
+    const params: CategoryProductsRequestQuery = {
       size: MAX_RESULTS_PER_PAGE,
       page: pageParam,
       sort: 'name,asc', // 임시 하드코딩
