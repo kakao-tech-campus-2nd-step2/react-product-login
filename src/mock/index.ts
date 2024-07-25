@@ -1,7 +1,6 @@
 import { http, HttpResponse } from 'msw';
 import RequestURLs from '@constants/RequestURLs';
 import MockData from '@mock/MockData';
-import { setupWorker } from 'msw/browser';
 
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
@@ -17,6 +16,4 @@ const handlers = [
   ),
 ];
 
-const worker = setupWorker(...handlers);
-
-export default worker;
+export default handlers;

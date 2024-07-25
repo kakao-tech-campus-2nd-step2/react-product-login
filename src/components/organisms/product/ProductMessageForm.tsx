@@ -6,6 +6,8 @@ import {
 import {
   FieldErrors, FieldValues, UseFormRegister,
 } from 'react-hook-form';
+import TestIds from '@constants/TestIds';
+import { FormErrorMessages } from '@constants/ErrorMessage';
 import { OrderFormData } from '@/types';
 
 interface ProductMessageFormProps<T extends FieldValues> {
@@ -32,8 +34,9 @@ function ProductMessageForm({
             resize="none"
             placeholder="선물과 함께 보낼 메시지를 적어보세요"
             {...register('messageCardTextMessage', {
-              required: '카드 메시지를 입력해주세요',
+              required: FormErrorMessages.MESSAGE_CARD_EMPTY,
             })}
+            data-testid={TestIds.ID_MESSAGE_CARD}
           />
           {
             errors.messageCardTextMessage ? (

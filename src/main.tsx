@@ -5,8 +5,9 @@ import { RouterProvider } from 'react-router-dom';
 import GlobalStyle from '@styles/GlobalStyle';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ChakraProvider } from '@chakra-ui/react';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { setupWorker } from 'msw/browser';
 import LoginContextProvider from '@/providers/LoginContextProvider';
-import worker from '@/mock';
 
 const queryClient = new QueryClient();
 const testFlagEnabled = import.meta.env.VITE_RUNNING_ON_DEV;
@@ -27,5 +28,7 @@ function render() {
 }
 
 if (testFlagEnabled) {
-  worker.start().then(render);
+  const handlers = await import('@/mock');
+  const mockWorker = setupWorker(...handlers.default);
+  mockWorker.start().then(render);
 } else render();
