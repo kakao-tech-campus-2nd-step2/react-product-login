@@ -16,16 +16,13 @@
 
 ### 테스트 기반 환경 구축
 
-- Jest와 React Testing Library를 사용하여 테스트 환경을 설정
-  - [ ] 필요한 패키지 설치
-  - [ ] Jest 설정 파일 추가
-  - [ ] 테스트 설정 파일 추가
+- [ ] Jest 테스트 환경 설정
+- [ ] React Testing Library 테스트 환경 설정
 
 ### MSW를 사용하여 Mock API 설정
 
-- [ ] Mock API 서버 설정
-- [ ] 상세 API 및 옵션 API 엔드포인트 추가
-- [ ]  `msw` 설정 파일 작성
+- [ ] 상세 API 엔드포인트 추가
+- [ ] 옵션 API 엔드포인트 추가
 
 ### 단위 테스트 작성
 
