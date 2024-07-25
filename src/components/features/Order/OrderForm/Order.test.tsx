@@ -150,4 +150,45 @@ describe('OrderForm', () => {
       expect(cashReceiptNumberInput.value).toBe('1234567890');
     });
   });
+
+  test('폼의 유효성 검사 로직이 정상적으로 동작하는지 확인', async () => {
+    // When: OrderForm 컴포넌트를 렌더링하고 값 입력
+    render(
+      <Wrapper>
+        <OrderForm orderHistory={mockOrderHistory} />
+      </Wrapper>,
+    );
+
+    // 현금영수증 번호가 잘못된 경우
+    fireEvent.click(screen.getByLabelText(/현금영수증 신청/i));
+    fireEvent.change(screen.getByLabelText(/현금영수증 번호/i), { target: { value: 'abc' } });
+    fireEvent.change(screen.getByPlaceholderText(/선물과 함께 보낼 메시지를 적어보세요/i), {
+      target: { value: '테스트 메시지' },
+    });
+    fireEvent.click(screen.getByText(/2000원 결제하기/i));
+
+    let errorMessage = await screen.findByText(/현금영수증 번호는 숫자로만 입력해주세요./i);
+    expect(errorMessage).toBeInTheDocument();
+
+    // 메시지가 없는 경우
+    fireEvent.change(screen.getByLabelText(/현금영수증 번호/i), {
+      target: { value: '1234567890' },
+    });
+    fireEvent.change(screen.getByPlaceholderText(/선물과 함께 보낼 메시지를 적어보세요/i), {
+      target: { value: '' },
+    });
+    fireEvent.click(screen.getByText(/2000원 결제하기/i));
+
+    errorMessage = await screen.findByText(/메시지를 입력해주세요./i);
+    expect(errorMessage).toBeInTheDocument();
+
+    // 메시지가 너무 긴 경우
+    fireEvent.change(screen.getByPlaceholderText(/선물과 함께 보낼 메시지를 적어보세요/i), {
+      target: { value: 'a'.repeat(101) },
+    });
+    fireEvent.click(screen.getByText(/2000원 결제하기/i));
+
+    errorMessage = await screen.findByText(/메시지는 100자 이내로 입력해주세요./i);
+    expect(errorMessage).toBeInTheDocument();
+  });
 });
