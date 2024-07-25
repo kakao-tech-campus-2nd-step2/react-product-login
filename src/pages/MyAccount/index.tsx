@@ -48,6 +48,10 @@ export const MyAccountPage = () => {
     window.location.replace(redirectURL);
   };
 
+  const handleDelete = (id: number) => {
+    setWishlist(wishlist.filter((item) => item.id !== id));
+  };
+
   return (
     <Wrapper>
       {authInfo?.name}님 안녕하세요! <Spacing height={64} />
@@ -73,6 +77,7 @@ export const MyAccountPage = () => {
                   <p>상품 이름: {item.product.name}</p>
                   <p>가격: {item.product.price}원</p>
                 </div>
+                <DeleteButton onClick={() => handleDelete(item.id)}>삭제</DeleteButton>
               </li>
             ))}
           </ul>
@@ -119,5 +124,18 @@ const WishlistContainer = styled.div`
   p {
     font-size: 18px;
     color: gray;
+  }
+`;
+const DeleteButton = styled.button`
+  background-color: red;
+  color: white;
+  border: none;
+  padding: 8px;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 14px;
+
+  &:hover {
+    background-color: darkred;
   }
 `;
