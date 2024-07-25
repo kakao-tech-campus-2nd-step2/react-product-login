@@ -7,6 +7,10 @@ import { useCallback, useContext, useRef } from 'react';
 import { Text } from '@chakra-ui/react';
 import Paths from '@constants/Paths';
 import AuthFormContainer from '@components/organisms/auth/AuthFormContainer';
+import { requestAuth } from '@utils/query';
+import { tokenStorage } from '@utils/storage';
+import { isAxiosError } from 'axios';
+import { StatusCodes } from 'http-status-codes';
 import { LoginContext } from '@/providers/LoginContextProvider';
 
 function RegisterForm() {
@@ -16,10 +20,29 @@ function RegisterForm() {
   const idRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
 
-  const onLoginClick = useCallback(() => {
-    setIsLoggedIn(true);
-    setUsername(idRef.current ? idRef.current.value : '');
-    navigate(-1);
+  const onRegisterClick = useCallback(async () => {
+    if (!idRef.current || !passwordRef.current) return;
+
+    try {
+      const authResult = await requestAuth({
+        email: idRef.current.value,
+        password: passwordRef.current.value,
+      }, 'register');
+      setIsLoggedIn(true);
+      setUsername(authResult.email);
+      tokenStorage.set(authResult.token);
+      navigate(-1);
+    } catch (e) {
+      if (!isAxiosError(e)) {
+        console.error(e);
+
+        return;
+      }
+
+      if (e.response?.status === StatusCodes.BAD_REQUEST) {
+        alert('잘못된 입력값입니다.');
+      }
+    }
   }, [navigate, setIsLoggedIn, setUsername]);
 
   return (
@@ -56,7 +79,7 @@ function RegisterForm() {
           height: '60px',
         }}
         text="회원가입"
-        onClick={onLoginClick}
+        onClick={onRegisterClick}
       />
       <Container
         justifyContent="center"
