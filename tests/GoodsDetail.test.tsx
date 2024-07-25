@@ -32,7 +32,7 @@ test('상품의 상세 정보를 올바르게 렌더링', async () => {
   });
 });
 
-test('옵션 변경하면 총 결제 금액 업데이트', async () => {
+test('상품 수량 변경하면 총 결제 금액 업데이트', async () => {
   render(
     <QueryClientProvider client={queryClient}>
       <MemoryRouter>
@@ -51,4 +51,26 @@ test('옵션 변경하면 총 결제 금액 업데이트', async () => {
   const testPrice = screen.getByText(`${GoodsData.price * 2}원`);
 
   expect(testPrice).toBeInTheDocument();
+});
+
+test('상품 수량의 최소 및 최대 값에 따른 버튼 비활성화', async () => {
+  render(
+    <QueryClientProvider client={queryClient}>
+      <MemoryRouter>
+        <OptionSection productId={GoodsData.id.toString()} />
+      </MemoryRouter>
+    </QueryClientProvider>
+  );
+
+  const input = await screen.findByLabelText('수량 입력');
+  const decreaseButton = screen.getByLabelText('수량 1개 감소');
+  const increaseButton = screen.getByLabelText('수량 1개 추가');
+
+  expect(input).toHaveValue('1');
+  expect(decreaseButton).toHaveAttribute('aria-disabled', 'true'); 
+
+  fireEvent.change(input, { target: { value: '100' }});
+
+  expect(input).toHaveValue('100');
+  expect(increaseButton).toHaveAttribute('aria-disabled', 'true'); 
 });
