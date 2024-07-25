@@ -6,7 +6,9 @@
     "start:mock": "cross-env REACT_APP_RUN_MSW=true npm run start",
     "start": "craco start",
     "build": "craco build",
-    "test": "craco test",
+    "test": "craco test --transformIgnorePatterns \"node_modules/(?!axios)/\"",
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "format": "prettier --write '**/*.{ts,tsx}'",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
   },
@@ -40,6 +42,7 @@
   "devDependencies": {
     "@craco/craco": "^7.1.0",
     "@emotion/eslint-plugin": "^11.11.0",
+    "@jest/types": "^29.6.3",
     "@storybook/addon-essentials": "^7.6.17",
     "@storybook/addon-interactions": "^7.6.17",
     "@storybook/addon-links": "^7.6.17",
@@ -53,7 +56,7 @@
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "@types/jest": "^27.5.2",
-    "@types/node": "^16.18.82",
+    "@types/node": "^16.18.104",
     "@types/react": "^18.2.57",
     "@types/react-dom": "^18.2.19",
     "@typescript-eslint/eslint-plugin": "^6.21.0",
@@ -77,6 +80,8 @@
     "prop-types": "^15.8.1",
     "react-scripts": "5.0.1",
     "storybook": "^7.6.17",
+    "ts-node": "^10.9.2",
+    "tsconfig-paths": "^4.2.0",
     "tsconfig-paths-webpack-plugin": "^4.1.0",
     "typescript": "^4.9.5",
     "webpack": "^5.90.3"
