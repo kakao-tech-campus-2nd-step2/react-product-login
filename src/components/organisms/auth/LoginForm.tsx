@@ -17,15 +17,15 @@ function LoginForm() {
   const navigate = useNavigate();
   const { setIsLoggedIn, setUsername } = useContext(LoginContext);
 
-  const idRef = useRef<HTMLInputElement>(null);
+  const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
 
   const onLoginClick = useCallback(async () => {
-    if (!idRef.current || !passwordRef.current) return;
+    if (!emailRef.current || !passwordRef.current) return;
 
     try {
       const authResult = await requestAuth({
-        email: idRef.current.value,
+        email: emailRef.current.value,
         password: passwordRef.current.value,
       }, 'login');
       setIsLoggedIn(true);
@@ -53,7 +53,7 @@ function LoginForm() {
           height: '46px',
         }}
         placeholder="이름"
-        ref={idRef}
+        ref={emailRef}
       />
       <div css={css`
             height: 16px;
