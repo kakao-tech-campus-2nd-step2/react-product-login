@@ -1,4 +1,12 @@
 const MockData = {
+  MOCK_LOGIN_INFO: {
+    email: 'email1234@email.com',
+    password: 'password',
+  },
+  MOCK_LOGIN_DATA: {
+    email: 'email1234@email.com',
+    token: 'tokentest1234',
+  },
   MOCK_PRODUCT_DETAIL: {
     id: 3245119,
     name: '[단독각인] 피렌체 1221 에디션 오드코롱 50ml (13종 택1)',
