@@ -1,8 +1,7 @@
-import '@testing-library/jest-dom';
-
 import { ChakraProvider } from '@chakra-ui/react';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { fireEvent, render, screen, waitForElementToBeRemoved } from '@testing-library/react';
+import { userEvent } from '@testing-library/user-event';
 import type { ReactElement } from 'react';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 
@@ -42,10 +41,13 @@ test('오더테스트', async () => {
   });
 
   renderWithProviders(<OrderPage />);
+  const user = userEvent.setup();
 
   await waitForElementToBeRemoved(() => screen.queryByRole('spinner'), { timeout: 5000 });
 
   const cashReceiptCheckbox = screen.getByLabelText(/현금영수증 신청/i);
+  // const cashReceiptCheckBoxTestId = screen.getByTestId('cashcheck');
+  // const cashReceiptCheckboxByRole = screen.queryByRole('checkbox');
   const cashReceiptTypeSelect = screen.getByTestId('cashReceiptType');
   const cashReceiptNumberInput = screen.getByPlaceholderText('(-없이) 숫자만 입력해주세요.');
 
@@ -56,12 +58,10 @@ test('오더테스트', async () => {
   expect(cashReceiptTypeSelect).toBeDisabled();
   expect(cashReceiptNumberInput).toBeDisabled();
 
-  fireEvent(screen.getByLabelText(/현금영수증 신청/i), new MouseEvent('click', { bubbles: true }));
-  cashReceiptCheckbox.checked = true;
-  cashReceiptTypeSelect.disabled = false;
-  cashReceiptNumberInput.disabled = false;
+  await user.click(cashReceiptCheckbox);
 
   expect(cashReceiptCheckbox).toBeChecked();
+
   expect(cashReceiptTypeSelect).toBeEnabled();
   expect(cashReceiptNumberInput).toBeEnabled();
 
