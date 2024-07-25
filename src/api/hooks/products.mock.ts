@@ -22,7 +22,7 @@ export const productsMockHandler = [
     },
   ),
   rest.get(getProductDetailPath(':productId'), (_, res, ctx) => {
-    return res(ctx.json(PRODUCTS_MOCK_DATA.content[0]));
+    return res(ctx.json(PRODUCTS_MOCK_DATA.content.find((product) => product.id === 1)));
   }),
   rest.get(getProductOptionsPath(':productId'), (_, res, ctx) => {
     return res(
