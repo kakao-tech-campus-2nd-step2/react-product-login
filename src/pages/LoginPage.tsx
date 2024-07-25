@@ -1,4 +1,4 @@
-import LoginForm from '@components/organisms/login/LoginForm';
+import LoginForm from '@components/organisms/auth/LoginForm';
 import Container from '@components/atoms/container/Container';
 import { css } from '@emotion/react';
 import loginLogo from '@assets/images/login_logo.svg';
