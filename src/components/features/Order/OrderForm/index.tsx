@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import React, { useState } from 'react';
-import { FormProvider, useForm } from 'react-hook-form';
+import { FormProvider, useForm, useWatch } from 'react-hook-form';
 
 import { Spacing } from '@/components/common/layouts/Spacing';
 import { SplitLayout } from '@/components/common/layouts/SplitLayout';
@@ -29,7 +29,11 @@ export const OrderForm = ({ orderHistory }: Props) => {
       messageCardTextMessage: '',
     },
   });
-  const { handleSubmit } = methods;
+  const { handleSubmit, control } = methods;
+  const hasCashReceipt = useWatch({
+    control,
+    name: 'hasCashReceipt',
+  });
 
   const handleForm = (values: OrderFormData) => {
     const { errorMessage, isValid } = validateOrderForm(values);
@@ -59,6 +63,28 @@ export const OrderForm = ({ orderHistory }: Props) => {
             {error && <ErrorText>{error}</ErrorText>}
             <Spacing height={8} backgroundColor="#ededed" />
             <GoodsInfo orderHistory={orderHistory} />
+            <div>
+              <label htmlFor="cashReceiptType">현금영수증 종류</label>
+              <select
+                id="cashReceiptType"
+                disabled={!hasCashReceipt}
+                {...methods.register('cashReceiptType')}
+                aria-label="현금영수증 종류"
+              >
+                <option value="PERSONAL">개인소득공제</option>
+                <option value="BUSINESS">사업자증빙용</option>
+              </select>
+            </div>
+            <div>
+              <label htmlFor="cashReceiptNumber">현금영수증 번호</label>
+              <input
+                id="cashReceiptNumber"
+                placeholder="(-없이) 숫자만 입력해주세요."
+                disabled={!hasCashReceipt}
+                {...methods.register('cashReceiptNumber')}
+                aria-label="현금영수증 번호"
+              />
+            </div>
           </Wrapper>
         </SplitLayout>
       </form>

@@ -94,4 +94,28 @@ describe('OrderForm', () => {
     // Restore alert mock
     alertMock.mockRestore();
   });
+
+  test('현금영수증 Checkbox가 false인 경우, 현금영수증 종류와 현금영수증 번호 필드가 비활성화 되는지 확인', async () => {
+    // When: OrderForm 컴포넌트를 렌더링
+    render(
+      <Wrapper>
+        <OrderForm orderHistory={mockOrderHistory} />
+      </Wrapper>,
+    );
+
+    // Then: 현금영수증 체크박스가 false일 때, 현금영수증 종류와 현금영수증 번호 필드가 비활성화 되는지 확인
+    await waitFor(() => {
+      const cashReceiptCheckbox = screen.getByLabelText(/현금영수증 신청/i);
+      const cashReceiptTypeSelects = screen.queryAllByLabelText(/현금영수증 종류/i);
+      const cashReceiptNumberInputs = screen.queryAllByLabelText(/현금영수증 번호/i);
+
+      // 정확한 요소를 찾기 위해 첫 번째 요소를 선택
+      const cashReceiptTypeSelect = cashReceiptTypeSelects[0];
+      const cashReceiptNumberInput = cashReceiptNumberInputs[0];
+
+      expect(cashReceiptCheckbox).toBeInTheDocument();
+      expect(cashReceiptTypeSelect).toBeDisabled();
+      expect(cashReceiptNumberInput).toBeDisabled();
+    });
+  });
 });
