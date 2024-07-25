@@ -59,7 +59,7 @@ describe('GoodsDetailPage', () => {
     expect(screen.getByText(/Mock Product/i)).toBeInTheDocument();  // 상품 이름
     expect(screen.getByText(/This is a mock product./i)).toBeInTheDocument();   // 상품 설명
 
-    // 옵션 A와 옵션 B가 화면에 표시될 때까지 기다림
+    // 옵션 A와 옵션 B가 화면에 ㄹ
     await waitFor(() => {
       expect(screen.getByText(/Option A/i)).toBeInTheDocument();
       expect(screen.getByText(/Option B/i)).toBeInTheDocument();
