@@ -29,7 +29,7 @@ export const CountOptionItem = ({
 
   const increment = getIncrementButtonProps();
   const decrement = getDecrementButtonProps();
-  const input = getInputProps();
+  const input = getInputProps({ 'aria-label': '수량' });
 
   return (
     <Wrapper>

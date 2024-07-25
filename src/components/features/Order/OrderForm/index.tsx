@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import React, { useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
 import { Spacing } from '@/components/common/layouts/Spacing';
@@ -16,6 +17,7 @@ type Props = {
 
 export const OrderForm = ({ orderHistory }: Props) => {
   const { id, count } = orderHistory;
+  const [error, setError] = useState<string | null>(null);
 
   const methods = useForm<OrderFormData>({
     defaultValues: {
@@ -24,6 +26,7 @@ export const OrderForm = ({ orderHistory }: Props) => {
       senderId: 0,
       receiverId: 0,
       hasCashReceipt: false,
+      messageCardTextMessage: '',
     },
   });
   const { handleSubmit } = methods;
@@ -32,15 +35,14 @@ export const OrderForm = ({ orderHistory }: Props) => {
     const { errorMessage, isValid } = validateOrderForm(values);
 
     if (!isValid) {
-      alert(errorMessage);
+      setError(errorMessage || null);
       return;
     }
 
-    console.log('values', values);
+    setError(null);
     alert('주문이 완료되었습니다.');
   };
 
-  // Submit 버튼을 누르면 form이 제출되는 것을 방지하기 위한 함수
   const preventEnterKeySubmission = (e: React.KeyboardEvent<HTMLFormElement>) => {
     const target = e.target as HTMLFormElement;
     if (e.key === 'Enter' && !['TEXTAREA'].includes(target.tagName)) {
@@ -54,6 +56,7 @@ export const OrderForm = ({ orderHistory }: Props) => {
         <SplitLayout sidebar={<OrderFormOrderInfo orderHistory={orderHistory} />}>
           <Wrapper>
             <OrderFormMessageCard />
+            {error && <ErrorText>{error}</ErrorText>}
             <Spacing height={8} backgroundColor="#ededed" />
             <GoodsInfo orderHistory={orderHistory} />
           </Wrapper>
@@ -80,7 +83,7 @@ const validateOrderForm = (values: OrderFormData): { errorMessage?: string; isVa
     }
   }
 
-  if (values.messageCardTextMessage.length < 1) {
+  if (!values.messageCardTextMessage || values.messageCardTextMessage.length < 1) {
     return {
       errorMessage: '메시지를 입력해주세요.',
       isValid: false,
@@ -102,4 +105,9 @@ const validateOrderForm = (values: OrderFormData): { errorMessage?: string; isVa
 const Wrapper = styled.div`
   border-left: 1px solid #e5e5e5;
   height: calc(100vh - ${HEADER_HEIGHT});
+`;
+
+const ErrorText = styled.div`
+  color: red;
+  margin: 10px 0;
 `;
