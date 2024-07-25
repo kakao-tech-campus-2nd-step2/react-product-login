@@ -2,17 +2,14 @@ import styled from '@emotion/styled';
 import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import {
-  type ProductDetailRequestParams,
-  useGetProductDetail,
-} from '@/api/hooks/useGetProductDetail';
+import { CountOptionItem } from './OptionItem/CountOptionItem';
+
+import { type ProductDetailRequestParams, useGetProductDetail } from '@/api/hooks/useGetProductDetail';
 import { useGetProductOptions } from '@/api/hooks/useGetProductOptions';
 import { Button } from '@/components/common/Button';
 import { useAuth } from '@/provider/Auth';
 import { getDynamicPath, RouterPath } from '@/routes/path';
 import { orderHistorySessionStorage } from '@/utils/storage';
-
-import { CountOptionItem } from './OptionItem/CountOptionItem';
 
 type Props = ProductDetailRequestParams;
 
@@ -29,9 +26,7 @@ export const OptionSection = ({ productId }: Props) => {
   const authInfo = useAuth();
   const handleClick = () => {
     if (!authInfo) {
-      const isConfirm = window.confirm(
-        '로그인이 필요한 메뉴입니다.\n로그인 페이지로 이동하시겠습니까?',
-      );
+      const isConfirm = window.confirm('로그인이 필요한 메뉴입니다.\n로그인 페이지로 이동하시겠습니까?');
 
       if (!isConfirm) return;
       return navigate(getDynamicPath.login());

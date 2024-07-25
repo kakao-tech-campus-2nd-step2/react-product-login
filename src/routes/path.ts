@@ -16,8 +16,5 @@ export const getDynamicPath = {
     return `${RouterPath.login}?redirect=${encodeURIComponent(currentRedirect)}`;
   },
   productsDetail: (goodsId: number | string) =>
-    RouterPath.productsDetail.replace(
-      ':productId',
-      typeof goodsId === 'number' ? goodsId.toString() : goodsId,
-    ),
+    RouterPath.productsDetail.replace(':productId', typeof goodsId === 'number' ? goodsId.toString() : goodsId),
 };

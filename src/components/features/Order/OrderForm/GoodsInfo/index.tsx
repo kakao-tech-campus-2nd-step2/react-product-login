@@ -1,11 +1,11 @@
 import styled from '@emotion/styled';
 
+import { LabelText } from '../Common/LabelText';
+
 import { useGetProductDetail } from '@/api/hooks/useGetProductDetail';
 import { Image } from '@/components/common/Image';
 import { Spacing } from '@/components/common/layouts/Spacing';
 import type { OrderHistory } from '@/types';
-
-import { LabelText } from '../Common/LabelText';
 
 type Props = {
   orderHistory: OrderHistory;

@@ -1,11 +1,8 @@
 import styled from '@emotion/styled';
 
-import {
-  useIntersectionObserver,
-  type UseIntersectionObserverProps,
-} from '@/hooks/useIntersectionObserver';
-
 import { Spinner } from '../Spinner';
+
+import { useIntersectionObserver, type UseIntersectionObserverProps } from '@/hooks/useIntersectionObserver';
 
 type Props = {
   children?: React.ReactNode;

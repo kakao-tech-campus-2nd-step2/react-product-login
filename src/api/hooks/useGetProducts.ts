@@ -1,13 +1,9 @@
-import {
-  type InfiniteData,
-  useInfiniteQuery,
-  type UseInfiniteQueryResult,
-} from '@tanstack/react-query';
-
-import type { ProductData } from '@/types';
+import { type InfiniteData, useInfiniteQuery, type UseInfiniteQueryResult } from '@tanstack/react-query';
 
 import { BASE_URL } from '../instance';
 import { fetchInstance } from './../instance/index';
+
+import type { ProductData } from '@/types';
 
 type RequestParams = {
   categoryId: string;
