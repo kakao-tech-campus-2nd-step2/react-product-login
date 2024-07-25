@@ -1,4 +1,3 @@
-
 import { getProducts } from './useGetProducts';
 
 // Mocking the PRODUCTS_MOCK_DATA
