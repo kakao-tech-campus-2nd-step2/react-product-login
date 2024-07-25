@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import { Checkbox, Input, Select } from '@chakra-ui/react';
@@ -8,7 +9,15 @@ import { FormField } from '@/components/ui/Form';
 import { Container } from '@/components/ui/Layout/Container';
 
 export const CashCheckFields = () => {
-  const { control } = useFormContext<OrderForm>();
+  const { control, watch, setValue } = useFormContext<OrderForm>();
+  const cashCheck = watch('isCashChecked');
+
+  useEffect(() => {
+    if (!cashCheck) {
+      setValue('cashReceiptType', undefined);
+      setValue('cashReceiptNumber', '');
+    }
+  }, [cashCheck]);
 
   return (
     <Container flexDirection="column" gap="1rem">
@@ -26,7 +35,11 @@ export const CashCheckFields = () => {
           control={control}
           name="cashReceiptType"
           render={({ field }) => (
-            <Select value={field.value} onChange={field.onChange}>
+            <Select
+              value={field.value}
+              onChange={field.onChange}
+              disabled={!cashCheck}
+            >
               <option value="개인소득공제">개인소득공제</option>
               <option value="사업자증빙용">사업자증빙용</option>
             </Select>
@@ -39,6 +52,7 @@ export const CashCheckFields = () => {
             <Input
               value={field.value}
               onChange={field.onChange}
+              disabled={!cashCheck}
               placeholder="(-없이) 숫자만 입력해주세요."
             />
           )}

@@ -23,12 +23,12 @@ export const useOrderForm = () => {
       productQuantity: quantity,
       gitfMessage: '',
       isCashChecked: false,
-      cashReceiptType: '개인소득공제',
       cashReceiptNumber: '',
     },
   });
 
   const onSubmit = () => {
+    console.log(form.getValues());
     setAlertMessage('주문이 완료되었습니다.');
   };
 

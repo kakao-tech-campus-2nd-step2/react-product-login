@@ -2,14 +2,14 @@ import { z } from 'zod';
 
 export const OrderSchema = z
   .object({
-    productId: z.number(),
+    productId: z.string(),
     productQuantity: z.number(),
     gitfMessage: z
       .string()
       .min(1, { message: '메세지를 입력해주세요.' })
       .max(100, { message: '선물 메세지는 100자 이내로 입력해 주세요.' }),
     isCashChecked: z.boolean(),
-    cashReceiptType: z.enum(['개인소득공제', '사업자증빙용']),
+    cashReceiptType: z.enum(['개인소득공제', '사업자증빙용']).optional(),
     cashReceiptNumber: z.string(),
   })
   .superRefine((data, ctx) => {

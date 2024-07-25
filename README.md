@@ -19,6 +19,12 @@
 - [x] Jest 세팅
 - [x] React Testing Library 세팅
 
+### 결제하기 form 기능 수정
+
+- 현금 영수증 checkbox가 false일 때
+  - [x] 현금영수증 종류, 번호 field 비활성화하기
+  - [x] 현금 영수증 종류, 번호 값 초기화하기
+
 #### 단위 테스트
 
 #### 결제하기 페이지의 form 통합 테스트
