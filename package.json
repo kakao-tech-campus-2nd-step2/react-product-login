@@ -6,7 +6,7 @@
     "start:mock": "cross-env REACT_APP_RUN_MSW=true npm run start",
     "start": "craco start",
     "build": "craco build",
-    "test:unit": "react-scripts test --env=jsdom",
+    "test": "react-scripts test --env=jsdom",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
   },
