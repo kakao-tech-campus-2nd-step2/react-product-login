@@ -1,7 +1,7 @@
 import { rest } from 'msw';
 import { z } from 'zod'; 
 
-import { getProductOptionsPath } from './productOptionsPath';
+import { getProductOptionsPath } from './productOptionsPath'; // getProductOptionsPath 함수 import
 
 // 제품 옵션 API 응답 스키마 (zod)
 const productOptionsResponseDataSchema = z.array(

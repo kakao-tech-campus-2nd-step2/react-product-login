@@ -1,7 +1,7 @@
 import { rest } from 'msw';
 import { z } from 'zod';
 
-import { getProductDetailPath } from './productDetailPath'; // 별도 파일로 분리
+import { getProductDetailPath } from './productDetailPath'; // getProductDetailPath 함수 import
 
 // 제품 상세 정보 데이터 스키마 (zod)
 const productDetailResponseDataSchema = z.object({
