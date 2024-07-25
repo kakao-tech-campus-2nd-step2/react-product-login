@@ -19,13 +19,13 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
     "incremental": true,
-    "baseUrl": ".",
+    "baseUrl": "src",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["*"]
     }
   },
   "include": [
   "src",
-  "jest.config.ts"],
+  "jest.config.ts", "tsconfig.test.json"],
   "exclude": ["node_modules", "build", "public"]
 }
