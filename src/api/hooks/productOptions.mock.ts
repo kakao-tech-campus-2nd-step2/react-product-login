@@ -27,6 +27,8 @@ export const productOptionsMockHandler = [
         ]),
       );
     }
-    return res(ctx.status(404), ctx.json({ error: 'Product not found' }));
+
+    // productId가 1이 아닐 경우 빈 배열 반환
+    return res(ctx.status(200), ctx.json([])); 
   }),
 ];

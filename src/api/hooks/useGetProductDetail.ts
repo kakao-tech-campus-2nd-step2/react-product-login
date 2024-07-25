@@ -10,10 +10,10 @@ export type ProductDetailRequestParams = {
 
 type Props = ProductDetailRequestParams;
 
-export type GoodsDetailResponseData = ProductData;
+export type GoodsDetailResponseData = ProductData | null;
 
 // 실제 API 호출 대신 모킹 데이터를 반환하는 함수
-export const getProductDetail = async (params: ProductDetailRequestParams) => {
+export const getProductDetail = async (params: ProductDetailRequestParams): Promise<GoodsDetailResponseData> => {
   const { productId } = params;
   if (productId === '1') {
     return {
@@ -22,10 +22,12 @@ export const getProductDetail = async (params: ProductDetailRequestParams) => {
       price: 145000,
       imageUrl:
         'https://st.kakaocdn.net/product/gift/product/20240215083306_8e1db057580145829542463a84971ae3.png',
-      categoryId: 2920,
+      categoryId: 1,
     };
   }
-  throw new Error('Product not found');
+
+  // null 반환
+  return null;
 };
 
 export const useGetProductDetail = ({ productId }: Props) => {
