@@ -118,4 +118,35 @@ describe('OrderForm', () => {
       expect(cashReceiptNumberInput).toBeDisabled();
     });
   });
+  test('현금영수증 Checkbox가 true인 경우, 현금영수증 종류와 현금영수증 번호 필드가 활성화 되고 값이 입력되는지 확인', async () => {
+    // When: OrderForm 컴포넌트를 렌더링
+    render(
+      <Wrapper>
+        <OrderForm orderHistory={mockOrderHistory} />
+      </Wrapper>,
+    );
+
+    // 현금영수증 체크박스를 클릭하여 true로 설정
+    fireEvent.click(screen.getByLabelText(/현금영수증 신청/i));
+
+    // Then: 현금영수증 종류와 현금영수증 번호 필드가 활성화 되고 값이 입력되는지 확인
+    await waitFor(() => {
+      const cashReceiptTypeSelects = screen.queryAllByLabelText(/현금영수증 종류/i);
+      const cashReceiptNumberInputs = screen.queryAllByLabelText(/현금영수증 번호/i);
+
+      // 정확한 요소를 찾기 위해 첫 번째 요소를 선택
+      const cashReceiptTypeSelect = cashReceiptTypeSelects[0];
+      const cashReceiptNumberInput = cashReceiptNumberInputs[0];
+
+      expect(cashReceiptTypeSelect).toBeEnabled();
+      expect(cashReceiptNumberInput).toBeEnabled();
+
+      // 현금영수증 종류를 선택하고 번호를 입력
+      fireEvent.change(cashReceiptTypeSelect, { target: { value: 'PERSONAL' } });
+      fireEvent.change(cashReceiptNumberInput, { target: { value: '1234567890' } });
+
+      expect(cashReceiptTypeSelect.value).toBe('PERSONAL');
+      expect(cashReceiptNumberInput.value).toBe('1234567890');
+    });
+  });
 });
