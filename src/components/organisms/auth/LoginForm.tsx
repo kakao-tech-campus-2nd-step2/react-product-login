@@ -7,6 +7,10 @@ import { useCallback, useContext, useRef } from 'react';
 import AuthFormContainer from '@components/organisms/auth/AuthFormContainer';
 import Paths from '@constants/Paths';
 import { Text } from '@chakra-ui/react';
+import { requestAuth } from '@utils/query';
+import { tokenStorage } from '@utils/storage';
+import { isAxiosError } from 'axios';
+import { StatusCodes } from 'http-status-codes';
 import { LoginContext } from '@/providers/LoginContextProvider';
 
 function LoginForm() {
@@ -16,10 +20,29 @@ function LoginForm() {
   const idRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
 
-  const onLoginClick = useCallback(() => {
-    setIsLoggedIn(true);
-    setUsername(idRef.current ? idRef.current.value : '');
-    navigate(-1);
+  const onLoginClick = useCallback(async () => {
+    if (!idRef.current || !passwordRef.current) return;
+
+    try {
+      const authResult = await requestAuth({
+        email: idRef.current.value,
+        password: passwordRef.current.value,
+      }, 'login');
+      setIsLoggedIn(true);
+      setUsername(authResult.email);
+      tokenStorage.set(authResult.token);
+      navigate(-1);
+    } catch (e) {
+      if (!isAxiosError(e)) {
+        console.error(e);
+
+        return;
+      }
+
+      if (e.response?.status === StatusCodes.FORBIDDEN) {
+        alert('아이디나 비밀번호가 일치하지 않습니다.');
+      }
+    }
   }, [navigate, setIsLoggedIn, setUsername]);
 
   return (
