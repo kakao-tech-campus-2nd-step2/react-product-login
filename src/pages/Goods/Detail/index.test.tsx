@@ -9,11 +9,11 @@ import { GoodsDetailPage } from './index';
 
 
 // useGetProductDetail, useGetProductOptions 모킹
-jest.mock('@/api/hooks/useGetProductDetail', () => ({
+jest.mock('@src/api/hooks/useGetProductDetail', () => ({
   useGetProductDetail: jest.fn(),
 }));
 
-jest.mock('@/api/hooks/useGetProductOptions', () => ({
+jest.mock('@src/api/hooks/useGetProductOptions', () => ({
   useGetProductOptions: jest.fn(),
 }));
 

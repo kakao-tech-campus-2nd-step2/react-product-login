@@ -7,7 +7,7 @@ import { OrderPage } from './index'
 beforeAll(() => {
     worker.start()
     worker.use(
-        rest.get('/api/orderHistory', (_req, res, ctx) => {
+        rest.get('src/api/orderHistory', (_req, res, ctx) => {
         return res(
             ctx.status(200),
             ctx.json({ id: 1, count: 2 })
