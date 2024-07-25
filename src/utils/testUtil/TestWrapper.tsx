@@ -3,7 +3,6 @@ import { Router } from 'react-router-dom';
 import { createMemoryHistory, MemoryHistoryOptions } from 'history';
 import { LoadingSpinnerFullWidth } from '@components/atoms/LoadingSpinner';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import CategoryContextProvider from '@/providers/CategoryContextProvider';
 import LoginContextProvider from '@/providers/LoginContextProvider';
 
 interface TestWrapperProps {
@@ -45,9 +44,7 @@ export function ContextWrapper({ children }: TestWrapperProps) {
   return (
     <QueryClientWrapper>
       <LoginContextProvider>
-        <CategoryContextProvider>
-          {children}
-        </CategoryContextProvider>
+        {children}
       </LoginContextProvider>
     </QueryClientWrapper>
   );
