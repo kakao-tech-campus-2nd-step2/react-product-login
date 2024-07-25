@@ -7,7 +7,6 @@ export const productOptionsMockHandler = [
   rest.get(getProductOptionsPath(':productId'), (req, res, ctx) => {
     const { productId } = req.params;
 
-    // 예시: productId에 따라 다른 데이터를 반환할 수 있습니다.
     if (productId === '1') {
       return res(
         ctx.status(200),
@@ -24,11 +23,10 @@ export const productOptionsMockHandler = [
             quantity: 20,
             productId: 1,
           },
-        ]),
+        ])
       );
     }
 
-    // productId가 1이 아닐 경우 빈 배열 반환
-    return res(ctx.status(200), ctx.json([])); 
+    return res(ctx.status(200), ctx.json([])); // 다른 productId에 대한 빈 배열
   }),
 ];

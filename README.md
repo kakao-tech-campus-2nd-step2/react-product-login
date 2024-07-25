@@ -16,13 +16,13 @@
 
 ### 테스트 기반 환경 구축
 
-- [ ] Jest 테스트 환경 설정
-- [ ] React Testing Library 테스트 환경 설정
+- [x] Jest 테스트 환경 설정
+- [x] React Testing Library 테스트 환경 설정
 
 ### MSW를 사용하여 Mock API 설정
 
-- [ ] 상세 API 엔드포인트 추가
-- [ ] 옵션 API 엔드포인트 추가
+- [x] 상세 API 엔드포인트 추가
+- [x] 옵션 API 엔드포인트 추가
 
 ### 단위 테스트 작성
 
