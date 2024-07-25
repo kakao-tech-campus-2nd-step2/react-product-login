@@ -40,7 +40,7 @@
       "@mock/*": ["mock/*"],
       "@router": ["router/"]
     },
-    "types": ["@emotion/react/types/css-prop"]
+    "types": ["@emotion/react/types/css-prop", "@vitest/browser/matchers"]
   },
   "include": ["src"]
 }
