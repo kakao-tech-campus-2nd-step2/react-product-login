@@ -1,28 +1,20 @@
 import { useSuspenseQuery } from '@tanstack/react-query';
 
-import type { ProductData } from '@/types';
-
-import { BASE_URL, fetchInstance } from '../instance';
+import { fetchInstance } from '../instance';
+import type { ProductDetailResponseData } from './productDetail.mock';
+import { getProductDetailPath } from './productDetailPath';
 
 export type ProductDetailRequestParams = {
   productId: string;
 };
 
-type Props = ProductDetailRequestParams;
-
-export type GoodsDetailResponseData = ProductData;
-
-export const getProductDetailPath = (productId: string) => `${BASE_URL}/api/products/${productId}`;
-
-export const getProductDetail = async (params: ProductDetailRequestParams) => {
-  const response = await fetchInstance.get<GoodsDetailResponseData>(
-    getProductDetailPath(params.productId),
-  );
-
+// 실제 API 호출 함수
+export const getProductDetail = async ({ productId }: ProductDetailRequestParams): Promise<ProductDetailResponseData> => {
+  const response = await fetchInstance.get<ProductDetailResponseData>(getProductDetailPath(productId));
   return response.data;
 };
 
-export const useGetProductDetail = ({ productId }: Props) => {
+export const useGetProductDetail = ({ productId }: ProductDetailRequestParams) => {
   return useSuspenseQuery({
     queryKey: [getProductDetailPath(productId)],
     queryFn: () => getProductDetail({ productId }),

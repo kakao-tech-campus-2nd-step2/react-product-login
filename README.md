@@ -1,4 +1,4 @@
-# React Product Login
+# React Product msw
 
 ## 개요
 
@@ -14,15 +14,40 @@
 
 ## 1단계 - Form 부분 테스트 코드 작성하기
 
-- Jest와 React Testing Library를 사용하여 테스트 기반 환경을 구축합니다.
-- MSW를 사용하여 Mock API가 동작하도록 합니다. (상세 API / 옵션 API)
-- 단위 테스트가 필요하다면 단위 테스트 코드를 작성합니다.
-- 상품 상세 페이지와 관련된 통합 테스트 코드를 작성합니다.
-- 결제하기 페이지의 Form과 관련된 통합 테스트 코드를 작성합니다.
-- 현금영수증 Checkbox가 false인 경우 현금영수증 종류, 현금영수증 번호 field가 비활성화 되어있는지 확인하는 테스트 코드를 작성합니다. (true인 경우 현금영수증 종류, 번호 field에 값이 입력되어야 합니다.)
-- form의 validation 로직이 정상 동작하는지 확인하는 테스트 코드를 작성합니다.
-- 본인만의 기준으로 일관된 코드를 작성합니다.
-- 기능 단위로 나누어 커밋을 합니다.
+### 테스트 기반 환경 구축
+
+- [x] Jest 테스트 환경 설정
+- [x] React Testing Library 테스트 환경 설정
+
+### MSW를 사용하여 Mock API 설정
+
+- [ ] 상세 API 엔드포인트 추가
+- [ ] 옵션 API 엔드포인트 추가
+
+### 단위 테스트 작성
+
+- CashReceiptFields 컴포넌트
+  - [x] 렌더링 테스트: 현금영수증 관련 입력 컴포넌트(체크박스, 셀렉트, input)가 화면에 정상적으로 표시되는지 확인
+  - [x] 사용자 상호작용 테스트: 체크박스 클릭, 셀렉트 옵션 선택, input 값 입력 등 사용자 입력에 대한 테스트
+- MessageCardFields 컴포넌트
+  - [x] 렌더링 테스트: 메시지 카드 입력 textarea가 화면에 정상적으로 표시되는지 확인
+  - [x] 사용자 입력 테스트: textarea에 메시지 입력 후 값이 제대로 반영되는지 확인
+
+### 통합 테스트 작성
+
+- 상품 상세 페이지
+  - [x] useGetCategorys.test
+  - [x] useGetProducts.test
+  - [x] useGetProductDetail.test
+  - [x] useGetProductOptions.test
+
+- 결제하기 페이지
+  - 현금영수증
+    - [x] Checkbox 상태에 따른 필드 활성화/비활성화 테스트
+    - [x] Checkbox가 `true`인 경우 필드 값 입력 테스트
+  - Form
+    - [x] 필수 입력 필드 검사
+    - [x] 입력 값 형식 검사
 
 ---
 
