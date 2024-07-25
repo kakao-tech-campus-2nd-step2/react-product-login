@@ -7,7 +7,7 @@
 
 ## 1단계
 
-- [ ] Jest와 React Testing Libaray를 사용하여 테스트 기반 환경을 구축해요.
+- [x] Jest와 React Testing Libaray를 사용하여 테스트 기반 환경을 구축해요.
 - [x] MSW를 사용하여 Mock API가 동작하도록 해요. (상세 API / 옵션 API)
 	- `npm run start:mock` 입력
 - [ ] 단위 테스트로 작성하면 좋을 테스트가 있다면 단위테스트 코드를 작성해요.
