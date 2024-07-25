@@ -45,11 +45,10 @@ test('오더테스트', async () => {
 
   await waitForElementToBeRemoved(() => screen.queryByRole('spinner'), { timeout: 5000 });
 
-  const cashReceiptCheckbox = screen.getByLabelText(/현금영수증 신청/i);
-  // const cashReceiptCheckBoxTestId = screen.getByTestId('cashcheck');
-  // const cashReceiptCheckboxByRole = screen.queryByRole('checkbox');
-  const cashReceiptTypeSelect = screen.getByTestId('cashReceiptType');
-  const cashReceiptNumberInput = screen.getByPlaceholderText('(-없이) 숫자만 입력해주세요.');
+  const cashReceiptCheckbox = screen.getByLabelText<HTMLInputElement>(/현금영수증 신청/i);
+  const cashReceiptTypeSelect = screen.getByTestId<HTMLInputElement>('cashReceiptType');
+  const cashReceiptNumberInput =
+    screen.getByPlaceholderText<HTMLInputElement>('(-없이) 숫자만 입력해주세요.');
 
   expect(cashReceiptCheckbox).toBeInTheDocument();
   expect(cashReceiptNumberInput).toBeInTheDocument();
