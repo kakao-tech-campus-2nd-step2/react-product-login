@@ -1,36 +1,20 @@
 import { useSuspenseQuery } from '@tanstack/react-query';
 
-import type { ProductData } from '@/types';
-
-import { getProductDetailPath } from './productDetail.mock';
+import { fetchInstance } from '../instance';
+import type { ProductDetailResponseData } from './productDetail.mock';
+import { getProductDetailPath } from './productDetailPath';
 
 export type ProductDetailRequestParams = {
   productId: string;
 };
 
-type Props = ProductDetailRequestParams;
-
-export type GoodsDetailResponseData = ProductData | null;
-
-// 실제 API 호출 대신 모킹 데이터를 반환하는 함수
-export const getProductDetail = async (params: ProductDetailRequestParams): Promise<GoodsDetailResponseData> => {
-  const { productId } = params;
-  if (productId === '1') {
-    return {
-      id: 1,
-      name: '[단독각인] 피렌체 1221 에디션 오드코롱 50ml (13종 택1)',
-      price: 145000,
-      imageUrl:
-        'https://st.kakaocdn.net/product/gift/product/20240215083306_8e1db057580145829542463a84971ae3.png',
-      categoryId: 1,
-    };
-  }
-
-  // null 반환
-  return null;
+// 실제 API 호출 함수
+export const getProductDetail = async ({ productId }: ProductDetailRequestParams): Promise<ProductDetailResponseData> => {
+  const response = await fetchInstance.get<ProductDetailResponseData>(getProductDetailPath(productId));
+  return response.data;
 };
 
-export const useGetProductDetail = ({ productId }: Props) => {
+export const useGetProductDetail = ({ productId }: ProductDetailRequestParams) => {
   return useSuspenseQuery({
     queryKey: [getProductDetailPath(productId)],
     queryFn: () => getProductDetail({ productId }),

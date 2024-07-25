@@ -1,30 +1,31 @@
-import { useSuspenseQuery } from '@tanstack/react-query';
+import type { UseQueryOptions, UseQueryResult } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 
-import type { ProductOptionsData } from '@/types';
-
-import { BASE_URL, fetchInstance } from '../instance';
+import { fetchInstance } from '../instance';
+import type { ProductOptionsResponseData } from './productOptions.mock';
+import { getProductOptionsPath } from './productOptionsPath';
 import type { ProductDetailRequestParams } from './useGetProductDetail';
 
 type Props = ProductDetailRequestParams;
 
-export type ProductOptionsResponseData = ProductOptionsData[];
-
-// 제품 옵션 API 경로 생성
-export const getProductOptionsPath = (productId: string) =>
-  `${BASE_URL}/api/products/${productId}/options`;
-
-// 제품 옵션 가져오기
-export const getProductOptions = async (params: ProductDetailRequestParams) => {
+// 데이터 가져오는 함수
+export const getProductOptions = async ({ productId }: Props): Promise<ProductOptionsResponseData> => {
   const response = await fetchInstance.get<ProductOptionsResponseData>(
-    getProductOptionsPath(params.productId)
+    getProductOptionsPath(productId)
   );
   return response.data;
 };
 
-// 제품 옵션 훅
-export const useGetProductOptions = ({ productId }: Props) => {
-  return useSuspenseQuery({
-    queryKey: [getProductOptionsPath(productId)],
-    queryFn: () => getProductOptions({ productId }),
+// React Query 훅
+export const useGetProductOptions = (
+  params: Props,
+  options?: UseQueryOptions<ProductOptionsResponseData, Error>
+): UseQueryResult<ProductOptionsResponseData, Error> => {
+  return useQuery({
+    ...options,
+    queryKey: [getProductOptionsPath(params.productId)],
+    queryFn: () => getProductOptions(params),
+    enabled: !!params.productId, // productId가 있을 때만 쿼리 활성화
+    retry: false,
   });
 };
