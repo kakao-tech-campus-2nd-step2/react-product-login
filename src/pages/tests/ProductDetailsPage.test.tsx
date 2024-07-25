@@ -6,7 +6,7 @@ import {
   render,
   screen,
 } from '@testing-library/react';
-import { ContextWrapper, RouterWrapper } from '@utils/testUtil/TestWrapper';
+import { RouterWrapper } from '@utils/testUtil/TestWrapper';
 import ProductCounterForm from '@components/organisms/product/ProductCounterForm';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import fireEvent from '@testing-library/user-event';
@@ -20,30 +20,23 @@ describe('Product details page', () => {
       'https://st.kakaocdn.net/product/gift/product/20240215083306_8e1db057580145829542463a84971ae3.png',
     price: 145000,
   };
+  const renderComponent = () => render(
+    <RouterWrapper>
+      <ProductCounterForm
+        productId={mockProductData.id}
+        productName={mockProductData.name}
+        productPrice={mockProductData.price}
+      />
+    </RouterWrapper>,
+  );
   it('Product details should be rendered properly', async () => {
-    const { getByText } = render(
-      <RouterWrapper>
-        <ProductCounterForm
-          productId={mockProductData.id}
-          productName={mockProductData.name}
-          productPrice={mockProductData.price}
-        />
-      </RouterWrapper>,
-    );
-    expect(getByText('나에게 선물하기')).toBeInTheDocument();
-    expect(getByText(mockProductData.name)).toBeInTheDocument();
-    expect(getByText(new RegExp(mockProductData.price.toString()))).toBeInTheDocument();
+    renderComponent();
+    expect(screen.getByText('나에게 선물하기')).toBeInTheDocument();
+    expect(screen.getByText(mockProductData.name)).toBeInTheDocument();
+    expect(screen.getByText(new RegExp(mockProductData.price.toString()))).toBeInTheDocument();
   });
   it('Count should be changed when the plus button is clicked', async () => {
-    render(
-      <RouterWrapper>
-        <ProductCounterForm
-          productId={mockProductData.id}
-          productName={mockProductData.name}
-          productPrice={mockProductData.price}
-        />
-      </RouterWrapper>,
-    );
+    renderComponent();
     expect(screen.getByText('+')).toBeInTheDocument();
     await fireEvent.click(screen.getByText('+'));
     expect(screen.getByDisplayValue(2)).toBeInTheDocument();
@@ -52,17 +45,7 @@ describe('Product details page', () => {
   });
   it('Confirm dialog should be displayed when the login status is false', async () => {
     const confirmSpy = vi.spyOn(window, 'confirm').mockImplementation(() => true);
-    render(
-      <ContextWrapper>
-        <RouterWrapper>
-          <ProductCounterForm
-            productId={mockProductData.id}
-            productName={mockProductData.name}
-            productPrice={mockProductData.price}
-          />
-        </RouterWrapper>
-      </ContextWrapper>,
-    );
+    renderComponent();
     const button = screen.getByText('나에게 선물하기');
     expect(button).toBeInTheDocument();
     await fireEvent.click(button);
