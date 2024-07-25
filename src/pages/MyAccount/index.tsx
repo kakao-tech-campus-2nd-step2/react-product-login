@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import { useEffect, useState } from 'react';
 
 import { Button } from '@/components/common/Button';
 import { Spacing } from '@/components/common/layouts/Spacing';
@@ -6,8 +7,39 @@ import { useAuth } from '@/provider/Auth';
 import { RouterPath } from '@/routes/path';
 import { authSessionStorage } from '@/utils/storage';
 
+interface Product {
+  id: number;
+  name: string;
+  price: number;
+  imageUrl: string;
+}
+
+interface WishlistItem {
+  id: number;
+  product: Product;
+}
+
+interface WishlistResponse {
+  content: WishlistItem[];
+}
+
 export const MyAccountPage = () => {
   const authInfo = useAuth();
+  const [wishlist, setWishlist] = useState<WishlistItem[]>([]);
+
+  useEffect(() => {
+    const fetchWishlist = async () => {
+      try {
+        const response = await fetch('/api/wishes');
+        const data: WishlistResponse = await response.json();
+        setWishlist(data.content);
+      } catch (error) {
+        console.error('Failed to fetch wishlist', error);
+      }
+    };
+
+    fetchWishlist();
+  }, []);
 
   const handleLogout = () => {
     authSessionStorage.set(undefined);
@@ -29,6 +61,25 @@ export const MyAccountPage = () => {
       >
         로그아웃
       </Button>
+      <Spacing height={64} />
+      <WishlistContainer>
+        <h2>관심 목록</h2>
+        {wishlist.length > 0 ? (
+          <ul>
+            {wishlist.map((item) => (
+              <li key={item.id}>
+                <img src={item.product.imageUrl} alt={item.product.name} width={50} />
+                <div>
+                  <p>상품 이름: {item.product.name}</p>
+                  <p>가격: {item.product.price}원</p>
+                </div>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p>관심 목록이 비어있습니다.</p>
+        )}
+      </WishlistContainer>
     </Wrapper>
   );
 };
@@ -43,4 +94,30 @@ const Wrapper = styled.div`
   justify-content: center;
   font-weight: 700;
   font-size: 36px;
+`;
+
+const WishlistContainer = styled.div`
+  width: 100%;
+  max-width: 600px;
+  text-align: center;
+
+  h2 {
+    font-size: 24px;
+    margin-bottom: 16px;
+  }
+
+  ul {
+    list-style-type: none;
+    padding: 0;
+
+    li {
+      font-size: 18px;
+      margin-bottom: 8px;
+    }
+  }
+
+  p {
+    font-size: 18px;
+    color: gray;
+  }
 `;
