@@ -1,39 +1,62 @@
-import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { ChakraProvider } from '@chakra-ui/react';
+import { fireEvent, render, screen } from '@testing-library/react';
+import { FormProvider, useForm } from 'react-hook-form';
 
 import { CashReceiptFields } from './CashReceiptFields';
 
 describe('CashReceiptFields', () => {
-  test('현금영수증 관련 입력 컴포넌트 렌더링 확인', () => {
-    render(<CashReceiptFields />);
+  const TestComponent = () => {
+    const methods = useForm();
 
-    // 컴포넌트 존재 여부 확인
-    const checkbox = screen.getByRole('checkbox', { name: '현금영수증 신청' });
-    const select = screen.getByRole('combobox', { name: 'cashReceiptType' });
-    const input = screen.getByPlaceholderText('(-없이) 숫자만 입력해주세요.');
+    return (
+      <ChakraProvider>
+        <FormProvider {...methods}>
+          <CashReceiptFields />
+        </FormProvider>
+      </ChakraProvider>
+    );
+  };
 
-    expect(checkbox).toBeInTheDocument();
-    expect(select).toBeInTheDocument();
-    expect(input).toBeInTheDocument();
+  test('Checkbox 상태에 따른 필드 활성화/비활성화 테스트', async () => {
+    render(<TestComponent />);
+
+    // 1. 초기 상태: 체크박스가 체크되지 않은 상태에서 필드들이 비활성화 되어 있는지 확인
+    const cashReceiptTypeSelect = screen.getByRole('combobox', { name: 'cashReceiptType' });
+    const cashReceiptNumberInput = screen.getByPlaceholderText('(-없이) 숫자만 입력해주세요.');
+    expect(cashReceiptTypeSelect).toBeDisabled();
+    expect(cashReceiptNumberInput).toBeDisabled();
+
+    // 2. 체크박스 클릭: 체크박스를 클릭하여 필드들을 활성화
+    const cashReceiptCheckbox = screen.getByLabelText('현금영수증 신청');
+    fireEvent.click(cashReceiptCheckbox);
+
+    // 3. 필드 활성화 확인: 필드들이 활성화 되었는지 확인
+    expect(cashReceiptTypeSelect).toBeEnabled();
+    expect(cashReceiptNumberInput).toBeEnabled();
   });
 
-  test('현금영수증 신청 및 입력 테스트', async () => {
-    render(<CashReceiptFields />);
+  test('Checkbox가 true인 경우 필드 값 입력 테스트', async () => {
+    const methods = useForm();
+    render(
+      <ChakraProvider>
+        <FormProvider {...methods}>
+          <CashReceiptFields />
+        </FormProvider>
+      </ChakraProvider>,
+    );
 
-    const checkbox = screen.getByRole('checkbox', { name: '현금영수증 신청' });
-    const select = screen.getByRole('combobox', { name: 'cashReceiptType' });
-    const input = screen.getByPlaceholderText('(-없이) 숫자만 입력해주세요.');
+    // 1. 체크박스 클릭
+    const cashReceiptCheckbox = screen.getByLabelText('현금영수증 신청');
+    fireEvent.click(cashReceiptCheckbox);
 
-    // 체크박스 클릭
-    await userEvent.click(checkbox);
+    // 2. 필드 값 입력
+    const cashReceiptTypeSelect = screen.getByRole('combobox', { name: 'cashReceiptType' });
+    const cashReceiptNumberInput = screen.getByPlaceholderText('(-없이) 숫자만 입력해주세요.');
+    fireEvent.change(cashReceiptTypeSelect, { target: { value: 'BUSINESS' } });
+    fireEvent.change(cashReceiptNumberInput, { target: { value: '1234567890' } });
 
-    // 옵션 선택
-    await userEvent.selectOptions(select, 'BUSINESS');
-
-    // 입력창에 값 입력
-    await userEvent.type(input, '1234567890');
-
-    // 입력값 확인 (react-hook-form 연동 테스트는 별도로 필요)
-    expect(input).toHaveValue('1234567890');
+    // 3. 입력 값 확인
+    expect(methods.getValues('cashReceiptType')).toBe('BUSINESS');
+    expect(methods.getValues('cashReceiptNumber')).toBe('1234567890');
   });
 });
