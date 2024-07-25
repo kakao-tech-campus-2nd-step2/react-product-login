@@ -10,9 +10,25 @@ import { LabelText } from '../Common/LabelText';
 type Props = {
   orderHistory: OrderHistory;
 };
+
 export const GoodsInfo = ({ orderHistory }: Props) => {
   const { id, count } = orderHistory;
   const { data: detail } = useGetProductDetail({ productId: id.toString() });
+
+  // Check if detail is null or undefined
+  if (!detail) {
+    return (
+      <Wrapper>
+        <LabelText>선물내역</LabelText>
+        <Spacing />
+        <GoodsWrapper>
+          <GoodsInfoWrapper>
+            <div>Loading...</div> {/* Or any fallback content */}
+          </GoodsInfoWrapper>
+        </GoodsWrapper>
+      </Wrapper>
+    );
+  }
 
   return (
     <Wrapper>
@@ -68,5 +84,4 @@ const GoodsInfoTextTitle = styled.p`
   margin-top: 3px;
   color: #222;
   overflow: hidden;
-  font-weight: 400;
 `;
