@@ -1,30 +1,25 @@
 import styled from '@emotion/styled';
 import { useState } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import KAKAO_LOGO from '@/assets/kakao_logo.svg';
 import { Button } from '@/components/common/Button';
 import { UnderlineTextField } from '@/components/common/Form/Input/UnderlineTextField';
 import { Spacing } from '@/components/common/layouts/Spacing';
-import { RouterPath } from '@/routes/path';
 import { breakpoints } from '@/styles/variants';
 import { authSessionStorage } from '@/utils/storage';
 
-export const LoginPage = () => {
-  const navigate = useNavigate();
-
+export const SignupPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [queryParams] = useSearchParams();
 
-  const handleConfirm = async () => {
+  const handleSignup = async () => {
     if (!email || !password) {
-      alert('아이디와 비밀번호를 입력해주세요.');
+      alert('이메일과 비밀번호를 입력해주세요.');
       return;
     }
 
     try {
-      const response = await fetch('/api/members/login', {
+      const response = await fetch('/api/members/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -32,24 +27,20 @@ export const LoginPage = () => {
         body: JSON.stringify({ email, password }),
       });
 
-      if (response.status === 200) {
+      if (response.status === 201) {
         const data = await response.json();
         authSessionStorage.set(data.token);
 
-        const redirectUrl = queryParams.get('redirect') ?? `${window.location.origin}/`;
+        const redirectUrl = `${window.location.origin}/`;
         window.location.replace(redirectUrl);
       } else {
         const errorData = await response.json();
-        alert(`로그인에 실패했습니다: ${errorData.error}`);
+        alert(`회원가입에 실패했습니다: ${errorData.error}`);
       }
     } catch (error) {
-      console.error('Failed to login', error);
-      alert('로그인에 실패했습니다.');
+      console.error('Failed to sign up', error);
+      alert('회원가입에 실패했습니다.');
     }
-  };
-
-  const handleSignup = () => {
-    navigate(RouterPath.signUp);
   };
 
   return (
@@ -75,8 +66,6 @@ export const LoginPage = () => {
             sm: 60,
           }}
         />
-        <Button onClick={handleConfirm}>로그인</Button>
-        <Spacing height={16} />
         <Button onClick={handleSignup}>회원가입</Button>
       </FormWrapper>
     </Wrapper>
