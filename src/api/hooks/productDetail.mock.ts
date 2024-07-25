@@ -1,10 +1,10 @@
 import { rest } from 'msw';
 
-import { getProductDetailPath } from './useGetProductDetail';
+export const getProductDetailPath = (productId: string) => `/api/products/${productId}`;
 
-// 제품 상세 정보 모킹 핸들러
+// 제품 상세 정보 모킹 데이터
 export const productDetailMockHandler = [
-  rest.get(getProductDetailPath(':productId'), (req, res, ctx) => {
+  rest.get('/api/products/:productId', (req, res, ctx) => {
     const { productId } = req.params;
 
     // 예시: productId에 따라 다른 데이터를 반환할 수 있습니다.
