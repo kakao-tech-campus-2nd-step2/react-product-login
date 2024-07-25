@@ -1,7 +1,9 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { render, screen, waitFor } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { MemoryRouter } from "react-router-dom";
 
 import { GoodsDetail } from "@/components/features/Goods/Detail";
+import { OptionSection } from "@/components/features/Goods/Detail/OptionSection";
 
 const GoodsData = {
   id: 3245119,
@@ -28,4 +30,25 @@ test('상품의 상세 정보를 올바르게 렌더링', async () => {
     expect(image).toBeInTheDocument();
     expect(price).toBeInTheDocument();
   });
+});
+
+test('옵션 변경하면 총 결제 금액 업데이트', async () => {
+  render(
+    <QueryClientProvider client={queryClient}>
+      <MemoryRouter>
+        <OptionSection productId={GoodsData.id.toString()} />
+      </MemoryRouter>
+    </QueryClientProvider>
+  );
+
+  const input = await screen.findByLabelText('수량 입력');
+  const defaultPrice = screen.getByText(`${GoodsData.price}원`);
+
+  expect(defaultPrice).toBeInTheDocument();
+
+  fireEvent.change(input, { target: { value: '2' }});
+
+  const testPrice = screen.getByText(`${GoodsData.price * 2}원`);
+
+  expect(testPrice).toBeInTheDocument();
 });
