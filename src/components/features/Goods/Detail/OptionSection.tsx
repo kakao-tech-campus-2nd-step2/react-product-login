@@ -1,11 +1,8 @@
 import styled from '@emotion/styled';
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import {
-  type ProductDetailRequestParams,
-  useGetProductDetail,
-} from '@/api/hooks/useGetProductDetail';
+import { useGetProductDetail } from '@/api/hooks/useGetProductDetail';
 import { useGetProductOptions } from '@/api/hooks/useGetProductOptions';
 import { Button } from '@/components/common/Button';
 import { useAuth } from '@/provider/Auth';
@@ -14,7 +11,11 @@ import { orderHistorySessionStorage } from '@/utils/storage';
 
 import { CountOptionItem } from './OptionItem/CountOptionItem';
 
-type Props = ProductDetailRequestParams;
+const WISHLIST_KEY = 'wishlist';
+
+type Props = {
+  productId: string;
+};
 
 export const OptionSection = ({ productId }: Props) => {
   const { data: detail } = useGetProductDetail({ productId });
@@ -22,12 +23,17 @@ export const OptionSection = ({ productId }: Props) => {
 
   const [countAsString, setCountAsString] = useState('1');
   const [isFavorite, setIsFavorite] = useState(false);
-  const totalPrice = useMemo(() => {
-    return detail.price * Number(countAsString);
-  }, [detail, countAsString]);
+
+  const totalPrice = useMemo(() => detail.price * Number(countAsString), [detail, countAsString]);
 
   const navigate = useNavigate();
   const authInfo = useAuth();
+
+  useEffect(() => {
+    const storedWishlist = JSON.parse(localStorage.getItem(WISHLIST_KEY) || '[]');
+    setIsFavorite(storedWishlist.includes(parseInt(productId)));
+  }, [productId]);
+
   const handleClick = () => {
     if (!authInfo) {
       const isConfirm = window.confirm(
@@ -35,7 +41,7 @@ export const OptionSection = ({ productId }: Props) => {
       );
 
       if (!isConfirm) return;
-      return navigate(getDynamicPath.login());
+      navigate(getDynamicPath.login());
     }
 
     orderHistorySessionStorage.set({
@@ -47,21 +53,30 @@ export const OptionSection = ({ productId }: Props) => {
   };
 
   const toggleFavorite = useCallback(() => {
-    setIsFavorite(prev => {
+    setIsFavorite((prev) => {
       const newState = !prev;
-      if (!prev && newState) {
+      const storedWishlist = JSON.parse(localStorage.getItem(WISHLIST_KEY) || '[]');
+      let updatedWishlist;
+
+      if (newState) {
+        updatedWishlist = [...storedWishlist, parseInt(productId)];
+        localStorage.setItem(WISHLIST_KEY, JSON.stringify(updatedWishlist));
         alert('위시 등록 완료');
+      } else {
+        updatedWishlist = storedWishlist.filter((id: number) => id !== parseInt(productId));
+        localStorage.setItem(WISHLIST_KEY, JSON.stringify(updatedWishlist));
       }
+
       return newState;
     });
-  }, []);
+  }, [productId]);
 
   return (
     <Wrapper>
-      <CountOptionItem name={options[0].name} value={countAsString} onChange={setCountAsString} />
+      <CountOptionItem name={options[0]?.name} value={countAsString} onChange={setCountAsString} />
       <BottomWrapper>
         <PricingWrapper>
-          총 결제 금액 <span>{totalPrice}원</span>
+          총 결제 금액 <span>{totalPrice.toLocaleString()}원</span>
         </PricingWrapper>
         <ButtonWrapper>
           <HeartButton onClick={toggleFavorite} isFavorite={isFavorite}>
@@ -118,6 +133,6 @@ const HeartButton = styled.button<{ isFavorite: boolean }>`
   border: none;
   font-size: 24px;
   cursor: pointer;
-  color: ${props => (props.isFavorite ? 'red' : 'grey')}; 
-  margin-right: 10px; /* Adds space between the buttons */
+  color: ${(props) => (props.isFavorite ? 'red' : 'grey')};
+  margin-right: 10px;
 `;
