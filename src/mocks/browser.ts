@@ -14,5 +14,5 @@ export const worker = setupWorker(
   ...productOptionsMockHandler,
   ...loginMockHandler,
   ...registerMockHandler,
-  ...wishlistMockHandlers
+  ...wishlistMockHandlers,
 );

@@ -21,11 +21,14 @@ interface WishListResponse {
 
 export const useWishList = (page: number = 0, size: number = 10) => {
   const fetchWishList = async (): Promise<WishListResponse> => {
-    const response = await axios.get(`${API_URL}/wishes?page=${page}&size=${size}&sort=createdDate,desc`, {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
+    const response = await axios.get(
+      `${API_URL}/wishes?page=${page}&size=${size}&sort=createdDate,desc`,
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
       },
-    });
+    );
     return response.data;
   };
 
