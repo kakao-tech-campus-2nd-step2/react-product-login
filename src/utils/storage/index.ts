@@ -25,6 +25,9 @@ export const authSessionStorage = initStorage('authToken', sessionStorage);
 export const orderHistorySessionStorage = initStorage('orderHistory', sessionStorage);
 
 interface StorageKey {
-  authToken?: string;
+  authToken?: {
+    token: string;
+    email: string;
+  };
   orderHistory?: OrderHistory;
 }

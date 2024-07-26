@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 import { useState } from 'react';
 
+import { BASE_URL, fetchInstance } from '@/api/instance';
 import KAKAO_LOGO from '@/assets/kakao_logo.svg';
 import { Button } from '@/components/common/Button';
 import { UnderlineTextField } from '@/components/common/Form/Input/UnderlineTextField';
@@ -19,22 +20,30 @@ export const SignUpPage = () => {
     }
 
     try {
-      const response = await fetch('/api/members/register', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
+      const response = await fetchInstance.post(
+        `${BASE_URL}/api/members/register`,
+        {
+          email: email,
+          password: password,
         },
-        body: JSON.stringify({ email, password }),
-      });
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        },
+      );
 
       if (response.status === 201) {
-        const data = await response.json();
-        authSessionStorage.set(data.token);
-
+        const data = response.data;
+        authSessionStorage.set({ token: data.token, email: data.email });
         window.location.replace(`${window.location.origin}/`);
+      } else {
+        console.error('Unexpected response', response);
+        alert('회원가입에 실패했습니다. 다시 시도해주세요.');
       }
     } catch (error) {
       console.error('Failed sign up', error);
+      alert('회원가입 중 오류가 발생했습니다.');
     }
   };
 

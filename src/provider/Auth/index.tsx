@@ -5,7 +5,7 @@ import { authSessionStorage } from '@/utils/storage';
 
 type AuthInfo = {
   email: string;
-  name: string;
+  name?: string;
   token: string;
 };
 
@@ -20,9 +20,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     if (currentAuthToken) {
       setAuthInfo({
-        email: currentAuthToken,
-        name: currentAuthToken,
-        token: currentAuthToken,
+        email: currentAuthToken.email,
+        token: currentAuthToken.token,
       });
       setIsReady(true);
     }

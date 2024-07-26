@@ -19,7 +19,7 @@ export const MyAccountPage = () => {
 
   return (
     <Wrapper>
-      {authInfo?.name}님 안녕하세요! <Spacing height={64} />
+      {authInfo?.email}님 안녕하세요! <Spacing height={64} />
       <Button
         size="small"
         theme="darkGray"
