@@ -72,12 +72,23 @@ export const MyAccountPage = () => {
           <ul>
             {wishlist.map((item) => (
               <li key={item.id}>
-                <img src={item.product.imageUrl} alt={item.product.name} width={50} />
-                <div>
-                  <p>상품 이름: {item.product.name}</p>
-                  <p>가격: {item.product.price}원</p>
-                </div>
-                <DeleteButton onClick={() => handleDelete(item.id)}>삭제</DeleteButton>
+                <InterestProduct>
+                  <img src={item.product.imageUrl} alt={item.product.name} width={70} />
+                  <div>
+                    <p>이름: {item.product.name}</p>
+                    <p>가격 : {item.product.price}원</p>
+                  </div>
+                  <Button
+                    size="small"
+                    theme="darkGray"
+                    style={{
+                      maxWidth: '100px',
+                    }}
+                    onClick={() => handleDelete(item.id)}
+                  >
+                    삭제
+                  </Button>
+                </InterestProduct>
               </li>
             ))}
           </ul>
@@ -120,22 +131,14 @@ const WishlistContainer = styled.div`
       margin-bottom: 8px;
     }
   }
-
-  p {
-    font-size: 18px;
-    color: gray;
-  }
 `;
-const DeleteButton = styled.button`
-  background-color: red;
-  color: white;
-  border: none;
-  padding: 8px;
-  cursor: pointer;
-  border-radius: 4px;
-  font-size: 14px;
-
-  &:hover {
-    background-color: darkred;
+const InterestProduct = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  font-size: 18px;
+  gap: 4px;
+  div {
+    text-align: left;
   }
 `;
