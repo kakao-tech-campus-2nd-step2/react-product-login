@@ -1,6 +1,12 @@
-export const roots = ['<rootDir>/src'];
-export const moduleNameMapper = {
-  '^@/(.*)$': '<rootDir>/src/$1',
+module.exports = {
+  roots: ['<rootDir>/src'],
+  moduleNameMapper: {
+    '^@/(.*)$': '<rootDir>/src/$1',
+  },
+  testEnvironment: 'jsdom',
+  setupFilesAfterEnv: ['<rootDir>/src/setupTests.ts'],
+  watchPlugins: [
+    'jest-watch-typeahead/filename',
+    'jest-watch-typeahead/testname'
+  ]
 };
-export const testEnvironment = 'jsdom';
-export const setupFilesAfterEnv = ['<rootDir>/src/setupTests.ts'];
