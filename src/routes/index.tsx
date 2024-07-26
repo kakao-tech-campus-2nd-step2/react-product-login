@@ -7,7 +7,7 @@ import { HomePage } from '@/pages/Home';
 import { LoginPage } from '@/pages/Login';
 import { MyAccountPage } from '@/pages/MyAccount';
 import { OrderPage } from '@/pages/Order';
-import SignUpPage from '@/pages/SignUp';
+import { SignUpPage } from '@/pages/SignUp';
 
 import { PrivateRoute } from './components/PrivateRoute';
 import { RouterPath } from './path';
