@@ -1,3 +1,4 @@
+import { LiveStorage } from '@mswjs/storage';
 import { rest } from 'msw';
 
 import { VERCEL_API_URL } from '@/api/axiosInstance';
@@ -10,23 +11,27 @@ type User = {
   password: string;
 };
 
-const USERLIST: User[] = [
+const USER_STORAGE = new LiveStorage<User[]>('userlist', [
   {
     id: 1,
     loginId: 'test',
     password: 'test',
   },
-];
+]);
 
 const registerUser = (loginId: string, password: string) => {
+  const USERLIST = USER_STORAGE.getValue();
   if (USERLIST.find((user) => user.loginId === loginId)) {
     throw new Error('이미 존재하는 아이디입니다.');
   } else {
-    USERLIST.push({
-      id: USERLIST.length + 1,
-      loginId,
-      password,
-    });
+    USER_STORAGE.update((prev) => [
+      ...prev,
+      {
+        id: prev.length + 1,
+        loginId,
+        password,
+      },
+    ]);
 
     const authToken = loginId;
     return authToken;
@@ -34,6 +39,7 @@ const registerUser = (loginId: string, password: string) => {
 };
 
 const loginUser = (loginId: string, password: string) => {
+  const USERLIST = USER_STORAGE.getValue();
   const user = USERLIST.find((u) => u.loginId === loginId && u.password === password);
 
   if (!user) {
