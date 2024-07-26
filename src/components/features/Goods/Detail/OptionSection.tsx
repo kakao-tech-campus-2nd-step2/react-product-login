@@ -59,6 +59,14 @@ export const OptionSection = ({ productId }: Props) => {
   });
 
   const wishlist = () => {
+    if (!authInfo) {
+      const isConfirm = window.confirm(
+        '로그인이 필요한 메뉴입니다.\n로그인 페이지로 이동하시겠습니까?',
+      );
+
+      if (!isConfirm) return;
+      return navigate(getDynamicPath.login());
+    }
     mutate();
   };
   return (
