@@ -16,7 +16,7 @@ const generateOptions = (productId: number): ProductOption[] => {
     id: index + 1,
     name: `Option ${String.fromCharCode(65 + index)}`, // A, B, C...
     quantity: Math.floor(Math.random() * 50) + 10, // 10에서 59 사이의 수량
-    productId: productId
+    productId: productId,
   }));
 };
 

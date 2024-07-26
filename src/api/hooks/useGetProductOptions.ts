@@ -14,9 +14,11 @@ export interface ProductOptionsRequestParams {
   productId: number;
 }
 
-const fetchProductOptions = async ({ productId }: ProductOptionsRequestParams): Promise<ProductOption[]> => {
+const fetchProductOptions = async ({
+  productId,
+}: ProductOptionsRequestParams): Promise<ProductOption[]> => {
   const response = await fetch(`${BASE_URL}/api/products/${productId}/options`);
-  
+
   if (!response.ok) {
     if (response.status === 404) {
       throw new Error('Product not found');
@@ -29,7 +31,10 @@ const fetchProductOptions = async ({ productId }: ProductOptionsRequestParams): 
 
 export const useGetProductOptions = (
   { productId }: ProductOptionsRequestParams,
-  options?: Omit<UseQueryOptions<ProductOption[], Error, ProductOption[], [string, number]>, 'queryKey' | 'queryFn'>
+  options?: Omit<
+    UseQueryOptions<ProductOption[], Error, ProductOption[], [string, number]>,
+    'queryKey' | 'queryFn'
+  >,
 ) => {
   return useQuery({
     queryKey: ['productOptions', productId],

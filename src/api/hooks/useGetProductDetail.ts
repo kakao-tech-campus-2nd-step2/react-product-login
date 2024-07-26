@@ -15,9 +15,11 @@ export interface ProductDetailRequestParams {
   productId: number;
 }
 
-const fetchProductDetail = async ({ productId }: ProductDetailRequestParams): Promise<ProductDetail> => {
+const fetchProductDetail = async ({
+  productId,
+}: ProductDetailRequestParams): Promise<ProductDetail> => {
   const response = await fetch(`${BASE_URL}/api/products/${productId}`);
-  
+
   if (!response.ok) {
     throw new Error('Failed to fetch product detail');
   }
@@ -27,7 +29,10 @@ const fetchProductDetail = async ({ productId }: ProductDetailRequestParams): Pr
 
 export const useGetProductDetail = (
   { productId }: ProductDetailRequestParams,
-  options?: Omit<UseQueryOptions<ProductDetail, Error, ProductDetail, [string, number]>, 'queryKey' | 'queryFn'>
+  options?: Omit<
+    UseQueryOptions<ProductDetail, Error, ProductDetail, [string, number]>,
+    'queryKey' | 'queryFn'
+  >,
 ) => {
   return useQuery({
     queryKey: ['productDetail', productId],

@@ -1,7 +1,7 @@
 import type { UseMutationOptions } from '@tanstack/react-query';
 import { useMutation } from '@tanstack/react-query';
 
-const BASE_URL = 'http://localhost:3000'; 
+const BASE_URL = 'http://localhost:3000';
 
 interface RegisterRequestBody {
   email: string;
@@ -30,7 +30,9 @@ const register = async (registerData: RegisterRequestBody): Promise<RegisterSucc
   return response.json();
 };
 
-export const useGetRegister = (options?: UseMutationOptions<RegisterSuccessResponse, Error, RegisterRequestBody>) => {
+export const useGetRegister = (
+  options?: UseMutationOptions<RegisterSuccessResponse, Error, RegisterRequestBody>,
+) => {
   return useMutation<RegisterSuccessResponse, Error, RegisterRequestBody>({
     mutationFn: register,
     ...options,

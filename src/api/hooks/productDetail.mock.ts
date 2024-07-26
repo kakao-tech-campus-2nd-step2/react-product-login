@@ -12,10 +12,11 @@ interface ProductDetail {
 
 const mockProductDetail: ProductDetail = {
   id: 1,
-  name: "Sample Product",
+  name: 'Sample Product',
   price: 100,
-  imageUrl: "https://i.namu.wiki/i/lTIwu3NCJk-m5VOdugukoiVGzyZAVauahUc2qnrOX-j8XFCA7PXv95cioeTRqrixnTUYDdfZnapP2Fo-jz3OBl5VYyd5SJpft-ZcMedgg4QmJGEkeol2W-do5U3mL6_vqQYTPAr7QBwp7VTts7kmfiYUgQ_Hosv7gwcBxnFagmo.webp",
-  categoryId: 1
+  imageUrl:
+    'https://i.namu.wiki/i/lTIwu3NCJk-m5VOdugukoiVGzyZAVauahUc2qnrOX-j8XFCA7PXv95cioeTRqrixnTUYDdfZnapP2Fo-jz3OBl5VYyd5SJpft-ZcMedgg4QmJGEkeol2W-do5U3mL6_vqQYTPAr7QBwp7VTts7kmfiYUgQ_Hosv7gwcBxnFagmo.webp',
+  categoryId: 1,
 };
 
 export const productDetailMockHandler = [
@@ -27,7 +28,7 @@ export const productDetailMockHandler = [
     if (productId) {
       return res(ctx.status(200), ctx.json(mockProductDetail));
     } else {
-      return res(ctx.status(404), ctx.json({ message: "Product not found" }));
+      return res(ctx.status(404), ctx.json({ message: 'Product not found' }));
     }
   }),
 ];

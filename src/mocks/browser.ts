@@ -7,10 +7,10 @@ import { productOptionsMockHandler } from '@/api/hooks/productOptions.mock';
 import { productsMockHandler } from '@/api/hooks/products.mock';
 import { registerMockHandler } from '@/api/hooks/register.mock';
 export const worker = setupWorker(
-  ...categoriesMockHandler, 
-  ...productsMockHandler, 
-  ...productDetailMockHandler, 
+  ...categoriesMockHandler,
+  ...productsMockHandler,
+  ...productDetailMockHandler,
   ...productOptionsMockHandler,
   ...loginMockHandler,
-  ...registerMockHandler 
+  ...registerMockHandler,
 );
