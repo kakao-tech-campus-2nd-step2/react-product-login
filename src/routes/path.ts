@@ -7,6 +7,7 @@ export const RouterPath = {
   order: '/order',
   login: '/login',
   notFound: '*',
+  createAccount: '/create_account'
 };
 
 export const getDynamicPath = {
