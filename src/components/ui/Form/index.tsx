@@ -1,29 +1,60 @@
-import { useMemo } from 'react';
-import {
-  Controller,
-  ControllerProps,
-  FieldPath,
-  FieldValues,
-  FormProvider,
-} from 'react-hook-form';
+import { css } from '@emotion/react';
 
-import { FormFieldContext } from '@/provider/form/FormContext';
+import { HTMLAttributes, forwardRef } from 'react';
+import { FormProvider } from 'react-hook-form';
+
+import {
+  FormFieldProvider,
+  FormItemProvider,
+} from '@/provider/form/FormProvider';
+import { useFormField } from '@/provider/form/useFormField';
 
 const Form = FormProvider;
+const FormField = FormFieldProvider;
 
-const FormField = <
-  TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
->({
-  ...props
-}: ControllerProps<TFieldValues, TName>) => {
-  const value = useMemo(() => ({ name: props.name }), [props.name]);
+const FormItem = FormItemProvider;
+
+const FormControl = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
+  ({ ...props }, ref) => {
+    const { error, formItemId, formMessageId } = useFormField();
+
+    return (
+      <div
+        ref={ref}
+        id={formItemId}
+        aria-describedby={`${formMessageId}`}
+        aria-invalid={!!error}
+        {...props}
+      />
+    );
+  }
+);
+FormControl.displayName = 'FormControl';
+
+const FormMessage = forwardRef<
+  HTMLParagraphElement,
+  HTMLAttributes<HTMLParagraphElement>
+>(({ children, ...props }, ref) => {
+  const { error, formMessageId } = useFormField();
+  const body = error ? String(error?.message) : children;
+
+  if (!body) {
+    return null;
+  }
 
   return (
-    <FormFieldContext.Provider value={value}>
-      <Controller {...props} />
-    </FormFieldContext.Provider>
+    <p
+      ref={ref}
+      id={formMessageId}
+      css={css({
+        color: 'red',
+      })}
+      {...props}
+    >
+      {body}
+    </p>
   );
-};
+});
+FormMessage.displayName = 'FormMessage';
 
-export { Form, FormField };
+export { Form, FormField, FormItem, FormControl, FormMessage };
