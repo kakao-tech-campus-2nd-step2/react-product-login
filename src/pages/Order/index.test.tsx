@@ -91,7 +91,7 @@ describe('OrderForm', () => {
       )) as HTMLInputElement;
 
       // then
-      expect(cashReceiptTypeField).toBeInTheDocument();
+      expect(cashReceiptTypeField).not.toBeDisabled();
       expect(cashReceiptNumberField).not.toBeDisabled();
     });
   });
@@ -121,7 +121,9 @@ describe('OrderForm', () => {
     it('현금영수증 체크박스가 선택되었으나 현금영수증 번호가 입력되지 않으면 "현금영수증 번호를 입력해주세요."라는 경고를 출력한다.', async () => {
       // given
       const submitButton = await screen.findByText(/결제하기/i);
-      const cashReceiptCheckbox = screen.getByLabelText(/현금영수증/i);
+      const cashReceiptCheckbox = (await screen.findByTestId(
+        'has-cash-receipt',
+      )) as HTMLInputElement;
 
       // when
       fireEvent.click(cashReceiptCheckbox);
@@ -136,10 +138,12 @@ describe('OrderForm', () => {
     it('잘못된 형식의 현금영수증 번호가 입력되면 "현금영수증 번호는 숫자로만 입력해주세요."라는 경고를 출력한다.', async () => {
       // given
       const submitButton = await screen.findByText(/결제하기/i);
-      const cashReceiptCheckbox = screen.getByLabelText(/현금영수증/i);
-      const cashReceiptNumberField = screen.getByPlaceholderText(
-        '(-없이) 숫자만 입력해주세요.',
-      ) as HTMLInputElement;
+      const cashReceiptCheckbox = (await screen.findByTestId(
+        'has-cash-receipt',
+      )) as HTMLInputElement;
+      const cashReceiptNumberField = (await screen.findByTestId(
+        'cash-receipt-number',
+      )) as HTMLInputElement;
 
       // when
       fireEvent.click(cashReceiptCheckbox);
@@ -158,10 +162,12 @@ describe('OrderForm', () => {
       const messageTextarea = screen.getByPlaceholderText(
         /선물과 함께 보낼 메시지를 적어보세요/i,
       ) as HTMLTextAreaElement;
-      const cashReceiptCheckbox = screen.getByLabelText(/현금영수증/i);
-      const cashReceiptNumberField = screen.getByPlaceholderText(
-        '(-없이) 숫자만 입력해주세요.',
-      ) as HTMLInputElement;
+      const cashReceiptCheckbox = (await screen.findByTestId(
+        'has-cash-receipt',
+      )) as HTMLInputElement;
+      const cashReceiptNumberField = (await screen.findByTestId(
+        'cash-receipt-number',
+      )) as HTMLInputElement;
 
       // when
       fireEvent.change(messageTextarea, { target: { value: 'Hello World' } });
