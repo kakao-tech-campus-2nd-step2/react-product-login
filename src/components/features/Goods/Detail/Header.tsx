@@ -5,12 +5,14 @@ import type { ProductDetailRequestParams } from '@/api/hooks/useGetProductDetail
 import { useGetProductDetail } from '@/api/hooks/useGetProductDetail';
 import { addToWishlist } from '@/api/utils';
 import { Button } from '@/components/common/Button';
+import { useAuth } from '@/provider/Auth';
 import { breakpoints } from '@/styles/variants';
 
 type Props = ProductDetailRequestParams;
 
 export const GoodsDetailHeader = ({ productId }: Props) => {
   const { data: detail } = useGetProductDetail({ productId });
+  const authInfo = useAuth();
 
   const handleAddToWishlist = async () => {
     try {
@@ -31,7 +33,7 @@ export const GoodsDetailHeader = ({ productId }: Props) => {
         <Divider color="#f5f5f5" />
         <Notice>카톡 친구가 아니어도 선물 코드로 선물 할 수 있어요!</Notice>
         <Divider color="#f5f5f5" />
-        <Button onClick={handleAddToWishlist}>위시리스트에 추가</Button>
+        {authInfo && <Button onClick={handleAddToWishlist}>위시리스트에 추가</Button>}
       </InfoWrapper>
     </Wrapper>
   );
