@@ -27,7 +27,21 @@ export const OptionSection = ({ productId }: Props) => {
 
   const navigate = useNavigate();
   const authInfo = useAuth();
-  const handleClick = () => {
+
+  const handleInterestClick = () => {
+    if (!authInfo) {
+      const isConfirm = window.confirm(
+        '로그인이 필요한 메뉴입니다.\n로그인 페이지로 이동하시겠습니까?',
+      );
+
+      if (!isConfirm) return;
+      return navigate(getDynamicPath.login());
+    }
+
+    alert('관심 등록 완료');
+  };
+
+  const handleOrderClick = () => {
     if (!authInfo) {
       const isConfirm = window.confirm(
         '로그인이 필요한 메뉴입니다.\n로그인 페이지로 이동하시겠습니까?',
@@ -49,10 +63,13 @@ export const OptionSection = ({ productId }: Props) => {
     <Wrapper>
       <CountOptionItem name={options[0].name} value={countAsString} onChange={setCountAsString} />
       <BottomWrapper>
+        <Button theme="kakao" size="large" onClick={handleInterestClick}>
+          관심 등록
+        </Button>
         <PricingWrapper>
           총 결제 금액 <span>{totalPrice}원</span>
         </PricingWrapper>
-        <Button theme="black" size="large" onClick={handleClick}>
+        <Button theme="black" size="large" onClick={handleOrderClick}>
           나에게 선물하기
         </Button>
       </BottomWrapper>
