@@ -82,4 +82,15 @@ export const handlers = [
       })
     );
   }),
+  rest.delete('/api/wishes/:wishId', (req, res, ctx) => {
+    const { wishId } = req.params as { wishId: string };
+    const index = wishlist.findIndex((item) => item.id === parseInt(wishId));
+
+    if (index === -1) {
+      return res(ctx.status(404), ctx.json({ error: 'Wish not found' }));
+    }
+
+    wishlist.splice(index, 1);
+    return res(ctx.status(204));
+  }),
 ];

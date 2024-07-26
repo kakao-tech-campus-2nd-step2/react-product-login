@@ -50,6 +50,31 @@ export const MyAccountPage = () => {
     fetchWishlist();
   }, [page, authInfo.token]);
 
+  const handleDelete = async (wishId: number) => {
+    try {
+      const response = await fetch(`/api/wishes/${wishId}`, {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${authInfo.token}`,
+        },
+      });
+
+      if (response.status === 204) {
+        setWishlist((prev) => prev.filter((item) => item.id !== wishId));
+        alert('관심 목록에서 삭제되었습니다.');
+      } else if (response.status === 404) {
+        alert('관심 상품을 찾을 수 없습니다.');
+      } else if (response.status === 401) {
+        alert('토큰이 유효하지 않습니다. 다시 로그인해주세요.');
+      } else {
+        alert('관심 목록 삭제에 실패했습니다.');
+      }
+    } catch (error) {
+      console.error('관심 목록 삭제 에러:', error);
+      alert('관심 목록 삭제 에러가 발생했습니다.');
+    }
+  };
+
   const handleLogout = () => {
     authSessionStorage.set(undefined);
 
@@ -72,6 +97,13 @@ export const MyAccountPage = () => {
                 <Text fontSize="lg" fontWeight="bold">{item.product.name}</Text>
                 <Text>{item.product.price}원</Text>
               </VStack>
+              <Button
+                colorScheme="red"
+                size="sm"
+                onClick={() => handleDelete(item.id)}
+              >
+                삭제
+              </Button>
             </HStack>
           </Box>
         ))}
