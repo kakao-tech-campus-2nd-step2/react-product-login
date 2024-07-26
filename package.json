@@ -6,7 +6,7 @@
     "start:mock": "cross-env REACT_APP_RUN_MSW=true npm run start",
     "start": "craco start",
     "build": "craco build",
-    "test": "craco test",
+    "test": "jest --config jest.config.js",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
   },
@@ -20,7 +20,6 @@
       ["@babel/plugin-transform-react-jsx", { "runtime": "automatic" }]
     ]
   },
-  
   "browserslist": {
     "production": [
       ">0.2%",
@@ -49,6 +48,9 @@
     "react-router-dom": "^6.22.1"
   },
   "devDependencies": {
+    "@babel/preset-env": "^7.24.8",
+    "@babel/preset-react": "^7.24.7",
+    "@babel/preset-typescript": "^7.24.7",
     "@craco/craco": "^7.1.0",
     "@emotion/eslint-plugin": "^11.11.0",
     "@storybook/addon-essentials": "^7.6.17",
@@ -69,6 +71,7 @@
     "@types/react-dom": "^18.2.19",
     "@typescript-eslint/eslint-plugin": "^6.21.0",
     "@typescript-eslint/parser": "^6.21.0",
+    "babel-jest": "^29.7.0",
     "cross-env": "^7.0.3",
     "eslint": "^8.56.0",
     "eslint-config-airbnb": "^19.0.4",
