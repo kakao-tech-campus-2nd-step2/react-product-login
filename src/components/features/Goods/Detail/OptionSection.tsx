@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { useAddWish } from '@/api/hooks/useAddWishList';
 import type { ProductDetailRequestParams } from '@/api/hooks/useGetProductDetail';
 import { useGetProductDetail } from '@/api/hooks/useGetProductDetail';
 import { useGetProductOptions } from '@/api/hooks/useGetProductOptions';
@@ -20,7 +21,7 @@ export const OptionSection = ({ productId }: Props) => {
 
   const [countAsString, setCountAsString] = useState('1');
   const totalPrice = useMemo(() => detail.price * Number(countAsString), [detail, countAsString]);
-
+  const addWish = useAddWish();
   const navigate = useNavigate();
   const authInfo = useAuth();
 
@@ -33,10 +34,16 @@ export const OptionSection = ({ productId }: Props) => {
       return;
     }
 
-    // 가짜 API 호출로 위시 리스트에 상품 추가
-    setTimeout(() => {
-      alert('관심 등록 완료');
-    }, 500);
+    if (productId) {
+      addWish.mutate(
+        { productId: Number(productId) },
+        {
+          onSuccess: () => {
+            alert('관심 등록 완료');
+          },
+        },
+      );
+    }
   };
 
   const handleClick = () => {

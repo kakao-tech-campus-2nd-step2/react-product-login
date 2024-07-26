@@ -1,6 +1,7 @@
 import { Box, CloseButton, Flex, Image, Text } from '@chakra-ui/react';
 import styled from '@emotion/styled';
 
+import { useDeleteWish } from '@/api/hooks/useDeleteWishList';
 import { useGetWishList } from '@/api/hooks/useGetWishList';
 import { Button } from '@/components/common/Button';
 import { Spacing } from '@/components/common/layouts/Spacing';
@@ -10,7 +11,7 @@ import { authSessionStorage } from '@/utils/storage';
 
 export const MyAccountPage = () => {
   const { data, fetchNextPage, hasNextPage, isLoading, isError } = useGetWishList({});
-
+  const deleteWish = useDeleteWish();
   const authInfo = useAuth();
 
   const handleLogout = () => {
@@ -18,6 +19,10 @@ export const MyAccountPage = () => {
 
     const redirectURL = `${window.location.origin}${RouterPath.home}`;
     window.location.replace(redirectURL);
+  };
+
+  const handleDelete = (wishId: number) => {
+    deleteWish.mutate(wishId);
   };
 
   if (isLoading) {
@@ -62,11 +67,7 @@ export const MyAccountPage = () => {
                   {item.product.price}원
                 </Text>
               </Box>
-              <CloseButton
-                size="md"
-                colorScheme="red"
-                // onClick={() => handleDelete(item.id)}
-              />
+              <CloseButton size="md" colorScheme="red" onClick={() => handleDelete(item.id)} />
             </Flex>
           )),
         )}
