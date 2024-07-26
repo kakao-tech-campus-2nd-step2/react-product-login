@@ -1,13 +1,28 @@
 import { axiosInstance, replacePathParams } from '@utils/network';
 import RequestURLs from '@constants/RequestURLs';
-import { LoginRequestBody } from '@/types/request';
+import { AddWishesBody, DeleteWishesPath, LoginRequestBody } from '@/types/request';
 import {
+  AddWishesResponse,
   CategoryResponse,
   LoginResponse,
   ProductDetailResponse,
 } from '@/types/response';
 import { CategoryRepository } from '@/types';
 import { ProductData } from '@/dto';
+
+export const addWishProduct = async (body: AddWishesBody) => {
+  const response = await axiosInstance.post<AddWishesResponse>(RequestURLs.WISHES, body);
+
+  return response.data;
+};
+
+export const deleteWishProduct = (path: DeleteWishesPath) => {
+  const url = replacePathParams(RequestURLs.DELETE_WISHES, {
+    wishId: path.wishId.toString(),
+  });
+
+  return axiosInstance.delete(url);
+};
 
 export const requestAuth = async (body: LoginRequestBody, authType: 'login' | 'register') => {
   const url = authType === 'register' ? RequestURLs.REGISTER : RequestURLs.LOGIN;
