@@ -2,6 +2,7 @@ import { createBrowserRouter, Navigate, RouterProvider } from 'react-router-dom'
 
 import { Layout } from '@/components/features/Layout';
 import { CategoryPage } from '@/pages/Category';
+import FavoritesPage from '@/pages/FavoritesPage';
 import { GoodsDetailPage } from '@/pages/Goods/Detail';
 import { HomePage } from '@/pages/Home';
 import { LoginPage } from '@/pages/Login';
@@ -46,6 +47,16 @@ const router = createBrowserRouter([
           {
             path: RouterPath.order,
             element: <OrderPage />,
+          },
+        ],
+      },
+      {
+        path: RouterPath.favorites, // favorites 경로 추가
+        element: <PrivateRoute />,
+        children: [
+          {
+            path: RouterPath.favorites,
+            element: <FavoritesPage />,
           },
         ],
       },
