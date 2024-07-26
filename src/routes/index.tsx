@@ -7,7 +7,7 @@ import { HomePage } from '@/pages/Home';
 import { LoginPage } from '@/pages/Login';
 import { MyAccountPage } from '@/pages/MyAccount';
 import { OrderPage } from '@/pages/Order';
-import { SignupPage } from '@/pages/Signup'; // 회원가입 페이지 추가
+import { SignupPage } from '@/pages/Signup';
 
 import { PrivateRoute } from './components/PrivateRoute';
 import { RouterPath } from './path';

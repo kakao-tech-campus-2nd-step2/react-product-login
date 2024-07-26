@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import { useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 
-import { useLogin } from '@/api/hooks/useLogin';
+import { useGetLogin } from '@/api/hooks/useGetLogin';
 import KAKAO_LOGO from '@/assets/kakao_logo.svg';
 import { Button } from '@/components/common/Button';
 import { UnderlineTextField } from '@/components/common/Form/Input/UnderlineTextField';
@@ -15,7 +15,7 @@ export const LoginPage = () => {
   const [password, setPassword] = useState('');
   const [queryParams] = useSearchParams();
 
-  const { mutate: login, status } = useLogin({
+  const { mutate: login } = useGetLogin({
     onSuccess: (data) => {
       authSessionStorage.set(data.token);
       const redirectUrl = queryParams.get('redirect') ?? `${window.location.origin}/`;
@@ -57,9 +57,7 @@ export const LoginPage = () => {
             sm: 60,
           }}
         />
-        <Button onClick={handleConfirm} disabled={status === 'loading'}>
-          로그인
-        </Button>
+        <Button onClick={handleConfirm}>로그인</Button>
         <SignUpLinkWrapper>
           <SignUpLink to="/signup">회원가입</SignUpLink>
         </SignUpLinkWrapper>
