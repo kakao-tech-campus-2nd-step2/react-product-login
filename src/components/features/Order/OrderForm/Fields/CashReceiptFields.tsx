@@ -27,7 +27,7 @@ export const CashReceiptFields = () => {
         control={control}
         name="cashReceiptType"
         render={({ field }) => (
-          <Select {...field}>
+          <Select {...field} data-testid="combobox">
             <option value="PERSONAL">개인소득공제</option>
             <option value="BUSINESS">사업자증빙용</option>
           </Select>

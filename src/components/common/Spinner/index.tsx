@@ -5,7 +5,7 @@ type Props = {
   size?: number;
 };
 export const Spinner = ({ size = 24 }: Props) => {
-  return <Wrapper size={size} />;
+  return <Wrapper size={size} role="alert" />;
 };
 
 const spin = keyframes`
@@ -25,4 +25,5 @@ const Wrapper = styled.div<Pick<Props, 'size'>>`
   border-left-color: #999;
 
   animation: ${spin} 1s linear infinite;
+  role: alert;
 `;
