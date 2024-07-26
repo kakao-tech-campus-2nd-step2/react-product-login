@@ -72,6 +72,11 @@ export type ProductsOptionData = {
   productId: number;
 };
 
+export type AuthData = {
+  loginId: string;
+  password: string;
+};
+
 // RequestBody Types
 export type ProductOrderRequestBody = {
   productId: number;
@@ -97,6 +102,10 @@ export type GetCategoriesProductsRequestBody = {
   maxResults?: number;
 };
 
+export type PostLoginRequestBody = AuthData;
+
+export type PostRegisterRequestBody = AuthData;
+
 // ResponseBody Types
 export type GetRankingProductsResponseBody = {
   products: ProductData[];
@@ -115,3 +124,11 @@ export type GetCategoriesProductsResponseBody = {
 export type GetProductsDetailResponseBody = ProductDetailData;
 
 export type GetProductsOptionResponseBody = ProductsOptionData[];
+
+export type PostLoginResponseBody = {
+  authToken: string;
+};
+
+export type PostRegisterResponseBody = {
+  authToken: string;
+};
