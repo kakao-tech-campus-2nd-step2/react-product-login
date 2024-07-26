@@ -53,3 +53,47 @@ export type MessageCardTemplateData = {
   thumbUrl: string;
   imageUrl: string;
 };
+
+export type Product = {
+  id: number;
+  name: string;
+  price: number;
+  imageUrl: string;
+};
+
+export type WishItem = {
+  id: number;
+  product: Product;
+};
+
+export type Sort = {
+  sorted: boolean;
+  unsorted: boolean;
+  empty: boolean;
+};
+
+export type Pageable = {
+  sort: Sort;
+  pageNumber: number;
+  pageSize: number;
+  offset: number;
+  unpaged: boolean;
+  paged: boolean;
+};
+
+export type WishListResponse = {
+  content: WishItem[];
+  pageable: Pageable;
+  totalPages: number;
+  totalElements: number;
+  last: boolean;
+  number: number;
+  size: number;
+  numberOfElements: number;
+  first: boolean;
+  empty: boolean;
+};
+
+export type ApiError = {
+  message: string;
+};
