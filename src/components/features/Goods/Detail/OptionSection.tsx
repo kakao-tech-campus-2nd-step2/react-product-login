@@ -58,7 +58,12 @@ export const OptionSection = ({ productId }: Props) => {
       return navigate(getDynamicPath.login());
     }
 
-    await addToWishlist(parseInt(productId));
+    await addToWishlist({
+      id: detail.id,
+      name: detail.name,
+      price: detail.price,
+      imageUrl: detail.imageUrl,
+    });
   };
 
   return (

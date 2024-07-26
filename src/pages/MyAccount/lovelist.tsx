@@ -16,18 +16,13 @@ interface WishItem {
 
 const LoveList = () => {
   const [interestList, setInterestList] = useState<WishItem[]>([]);
-  const [page, setPage] = useState(0);
-  const [totalPages, setTotalPages] = useState(0);
 
   useEffect(() => {
     axios
-      .get(`/api/wishes?page=${page}&size=10&sort=createdDate,desc`)
-      .then((response) => {
-        setInterestList(response.data.content);
-        setTotalPages(response.data.totalPages);
-      })
+      .get('/api/wishes')
+      .then((response) => setInterestList(response.data.content))
       .catch((error) => console.error(error));
-  }, [page]);
+  }, []);
 
   const handleRemoveClick = async (id: number) => {
     try {
@@ -42,23 +37,15 @@ const LoveList = () => {
   return (
     <VStack spacing={4} align="stretch">
       {interestList.map((item) => (
-        <Box key={item.id} borderWidth="1px" borderRadius="lg" overflow="hidden" padding="10px">
-          <Image src={item.product.imageUrl} alt={item.product.name} />
+        <Box key={item.id} borderWidth="10px" borderRadius="lg" overflow="hidden" padding="100px">
+          <Image src={item.product.imageUrl} alt={`Product ${item.product.name}`} />
           <Text fontWeight="bold">{item.product.name}</Text>
+          <Text>{item.product.price}원</Text>
           <Button colorScheme="red" onClick={() => handleRemoveClick(item.id)}>
             관심 삭제
           </Button>
         </Box>
       ))}
-      <Button onClick={() => setPage((prev) => Math.max(prev - 1, 0))} disabled={page === 0}>
-        이전
-      </Button>
-      <Button
-        onClick={() => setPage((prev) => Math.min(prev + 1, totalPages - 1))}
-        disabled={page === totalPages - 1}
-      >
-        다음
-      </Button>
     </VStack>
   );
 };

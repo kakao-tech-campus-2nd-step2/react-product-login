@@ -22,7 +22,7 @@ export const InterestButton = ({ productId }: Props) => {
 
   return (
     <Button onClick={handleInterestClick} colorScheme={isInterested ? 'blue' : 'gray'}>
-      {isInterested ? '관심 등록 완료' : '관심 등록'}
+      {isInterested ? '관심 등록 완료' : '관심 등록button'}
     </Button>
   );
 };

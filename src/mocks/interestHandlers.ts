@@ -1,17 +1,22 @@
 import { rest } from 'msw';
 
-const wishesDatabase: { id: number; productId: number }[] = [];
+const wishesDatabase: {
+  id: number;
+  product: { id: number; name: string; price: number; imageUrl: string };
+}[] = [];
 let nextId = 1;
 
 export const interestHandlers = [
   rest.post('/api/wishes', (req, res, ctx) => {
-    const { productId } = req.body as { productId: number };
+    const { product } = req.body as {
+      product: { id: number; name: string; price: number; imageUrl: string };
+    };
 
-    if (!productId) {
+    if (!product) {
       return res(ctx.status(400), ctx.json({ message: 'Invalid input' }));
     }
 
-    const newWish = { id: nextId++, productId };
+    const newWish = { id: nextId++, product };
     wishesDatabase.push(newWish);
 
     return res(ctx.status(201), ctx.json(newWish));

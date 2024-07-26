@@ -5,12 +5,17 @@ export const useAddToWishlist = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<null | string>(null);
 
-  const addToWishlist = async (productId: number) => {
+  const addToWishlist = async (product: {
+    id: number;
+    name: string;
+    price: number;
+    imageUrl: string;
+  }) => {
     setLoading(true);
     setError(null);
 
     try {
-      const response = await axios.post(`http://localhost:3000/api/wishes`, { productId });
+      const response = await axios.post(`http://localhost:3000/api/wishes`, { product });
       setLoading(false);
       alert('관심 등록 완료');
       return response.data;

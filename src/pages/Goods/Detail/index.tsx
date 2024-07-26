@@ -5,7 +5,7 @@ import { AsyncBoundary } from '@/components/common/AsyncBoundary';
 import { SplitLayout } from '@/components/common/layouts/SplitLayout';
 import { LoadingView } from '@/components/common/View/LoadingView';
 import { GoodsDetail } from '@/components/features/Goods/Detail';
-import { InterestButton } from '@/components/features/Goods/Detail/InterestButton';
+//import { InterestButton } from '@/components/features/Goods/Detail/InterestButton';
 import { OptionSection } from '@/components/features/Goods/Detail/OptionSection';
 
 export const GoodsDetailPage = () => {
@@ -16,7 +16,6 @@ export const GoodsDetailPage = () => {
       <AsyncBoundary pendingFallback={<LoadingView />} rejectedFallback={<div>에러 페이지</div>}>
         <SplitLayout sidebar={<OptionSection productId={productId} />}>
           <GoodsDetail productId={productId} />
-          <InterestButton productId={productId} />
         </SplitLayout>
       </AsyncBoundary>
     </>
