@@ -14,7 +14,6 @@ export const LoginPage = () => {
   const [id, setId] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
-  const queryParams = new URLSearchParams(window.location.search);
 
   const navigateToSignUp = () => {
     navigate(RouterPath.signup);
@@ -26,7 +25,7 @@ export const LoginPage = () => {
       return;
     }
 
-    handleLogin(id, password, queryParams);
+    handleLogin(id, password);
   };
 
   return (
