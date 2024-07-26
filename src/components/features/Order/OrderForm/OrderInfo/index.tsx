@@ -33,7 +33,7 @@ export const OrderFormOrderInfo = ({ orderHistory }: Props) => {
       </ItemWrapper>
       <Divider color="#ededed" />
       <Spacing height={32} />
-      <Button type="submit">{totalPrice}원 결제하기</Button>
+      <Button type="submit" data-testid="submit-button">{totalPrice}원 결제하기</Button>
     </Wrapper>
   );
 };

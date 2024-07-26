@@ -1,9 +1,10 @@
-import React from 'react';
-import { render, screen, waitFor } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { useGetProductDetail } from './useGetProductDetail';
-import { PRODUCTS_MOCK_DATA } from './products.mock';
+import { render, screen, waitFor } from '@testing-library/react';
+import React from 'react';
+
 import { fetchInstance } from '../instance';
+import { PRODUCTS_MOCK_DATA } from './products.mock';
+import { useGetProductDetail } from './useGetProductDetail';
 
 jest.mock('../instance', () => ({
   fetchInstance: {
