@@ -32,7 +32,7 @@ export const LoginPage = () => {
   };
 
   const handleSignUp = () => {
-    navigate('./signup');
+    navigate('/signUp');
   };
 
   return (
