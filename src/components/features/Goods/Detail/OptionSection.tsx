@@ -1,18 +1,18 @@
+import { Button } from '@chakra-ui/react';
 import styled from '@emotion/styled';
 import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { useAddToWishlist } from '@/api/hooks/useAddToWishlist';
 import {
   type ProductDetailRequestParams,
   useGetProductDetail,
 } from '@/api/hooks/useGetProductDetail';
 import { useGetProductOptions } from '@/api/hooks/useGetProductOptions';
-import { Button } from '@/components/common/Button';
 import { useAuth } from '@/provider/Auth';
 import { getDynamicPath, RouterPath } from '@/routes/path';
 import { orderHistorySessionStorage } from '@/utils/storage';
 
-import { InterestButton } from './InterestButton';
 import { CountOptionItem } from './OptionItem/CountOptionItem';
 
 type Props = ProductDetailRequestParams;
@@ -20,6 +20,7 @@ type Props = ProductDetailRequestParams;
 export const OptionSection = ({ productId }: Props) => {
   const { data: detail } = useGetProductDetail({ productId });
   const { data: options } = useGetProductOptions({ productId });
+  const { addToWishlist } = useAddToWishlist();
 
   const [countAsString, setCountAsString] = useState('1');
   const totalPrice = useMemo(() => {
@@ -28,6 +29,7 @@ export const OptionSection = ({ productId }: Props) => {
 
   const navigate = useNavigate();
   const authInfo = useAuth();
+
   const handleClick = () => {
     if (!authInfo) {
       const isConfirm = window.confirm(
@@ -46,11 +48,26 @@ export const OptionSection = ({ productId }: Props) => {
     navigate(RouterPath.order);
   };
 
+  const handleInterestClick = async () => {
+    if (!authInfo) {
+      const isConfirm = window.confirm(
+        '로그인이 필요한 메뉴입니다.\n로그인 페이지로 이동하시겠습니까?',
+      );
+
+      if (!isConfirm) return;
+      return navigate(getDynamicPath.login());
+    }
+
+    await addToWishlist(parseInt(productId));
+  };
+
   return (
     <Wrapper>
       <CountOptionItem name={options[0].name} value={countAsString} onChange={setCountAsString} />
       <BottomWrapper>
-        <InterestButton productId={productId} />
+        <Button colorScheme="blue" onClick={handleInterestClick}>
+          관심 등록
+        </Button>
         <PricingWrapper>
           총 결제 금액 <span>{totalPrice}원</span>
         </PricingWrapper>
