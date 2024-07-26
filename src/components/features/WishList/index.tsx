@@ -1,9 +1,10 @@
-import { Box, Flex, Heading, ListItem, Text, UnorderedList } from '@chakra-ui/react';
+import { Box, Flex, Heading, Text, UnorderedList } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 
-import { Image } from '@/components/common/Image';
 import type { WishList, WishListItem } from '@/types';
 import { authSessionStorage, wishListSessionStorage } from '@/utils/storage';
+
+import { WishItemContainer } from './WishItem';
 
 export const WishListSection = () => {
   const [wishList, setWishList] = useState<WishList>([]);
@@ -14,6 +15,15 @@ export const WishListSection = () => {
     setWishList(wishListHistory || []);
   }, []);
 
+  const handleDelete = (id: number) => {
+    const isConfirm = window.confirm('선택한 상품을 삭제하시겠습니까?');
+    if (!isConfirm) return;
+    const updatedList = wishList.filter((item) => item.id !== id);
+    setWishList(updatedList);
+    wishListSessionStorage.set(updatedList);
+    alert('삭제가 완료되었습니다.');
+  };
+
   return (
     <Flex alignItems="center" justifyContent="center">
       <Box mb={12}>
@@ -23,19 +33,7 @@ export const WishListSection = () => {
         {wishList.length > 0 ? (
           <UnorderedList styleType="none" spacing={4}>
             {wishList.map((item: WishListItem) => (
-              <ListItem key={item.id} p={4} shadow="md" borderWidth="2px" borderRadius="md">
-                <Flex align="center">
-                  <Image src={item.product.imageUrl} alt={item.product.name} width="100px" />
-                  <Box ml={4}>
-                    <Heading as="h3" size="sm">
-                      {item.product.name}
-                    </Heading>
-                    <Text fontSize="lg" fontWeight="700">
-                      {item.product.price.toLocaleString()} 원
-                    </Text>
-                  </Box>
-                </Flex>
-              </ListItem>
+              <WishItemContainer key={item.id} item={item} onDelete={handleDelete} />
             ))}
           </UnorderedList>
         ) : (

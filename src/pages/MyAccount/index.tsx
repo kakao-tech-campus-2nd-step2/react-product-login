@@ -19,7 +19,8 @@ export const MyAccountPage = () => {
 
   return (
     <Wrapper>
-      {authInfo?.name}님 안녕하세요! <Spacing height={64} />
+      <h4 style={{ fontSize: '28px', fontWeight: '700' }}>{authInfo?.name}님 안녕하세요!</h4>
+      <Spacing height={64} />
       <WishListSection />
       <Button
         size="small"
