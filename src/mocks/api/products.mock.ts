@@ -18,7 +18,9 @@ export const productsMockHandler = [
     return res(ctx.json(PRODUCTS_MOCK_DATA));
   }),
   rest.get(VERCEL_API_URL + getProductsDetailPath(':productsId'), (_req, res, ctx) => {
-    return res(ctx.json(PRODUCTS_MOCK_DATA.content[0]));
+    const productId = Number(_req.url.pathname.split('/').pop());
+
+    return res(ctx.json(PRODUCTS_MOCK_DATA.content.find((product) => product.id === productId)));
   }),
   rest.get(VERCEL_API_URL + getProductsOptionPath(':productsId'), (_req, res, ctx) => {
     return res(

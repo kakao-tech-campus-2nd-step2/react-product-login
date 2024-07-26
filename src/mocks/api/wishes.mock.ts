@@ -53,6 +53,7 @@ const deleteWishes = (userId: string, wishId: number) => {
 };
 
 const getWishes = (userId: string) => {
+  console.log(WISHES_STORAGE.getValue()[userId]);
   return WISHES_STORAGE.getValue()[userId] || [];
 };
 
@@ -83,7 +84,19 @@ export const wishesMockHandler = [
     const token = req.headers.get('authorization') || '';
 
     if (checkToken(token)) {
-      return res(ctx.json(getWishes(token)));
+      return res(
+        ctx.json({
+          content: getWishes(token),
+          last: true,
+          totalElements: WISHES_LENGTH.getValue(),
+          totalPages: 1,
+          size: 10,
+          number: 0,
+          first: true,
+          numberOfElements: 1,
+          empty: false,
+        }),
+      );
     } else {
       return res(ctx.status(401), ctx.json({ message: 'Invalid or missing token' }));
     }
