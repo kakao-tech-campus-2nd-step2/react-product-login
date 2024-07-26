@@ -6,6 +6,7 @@ export const RouterPath = {
   productsDetail: '/products/:productId',
   order: '/order',
   login: '/login',
+  wishlist: '/wishlist', //wishlist 경로 추가
   notFound: '*',
 };
 
