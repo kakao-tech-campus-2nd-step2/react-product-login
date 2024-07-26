@@ -8,14 +8,25 @@ import { UnderlineTextField } from '@/components/common/Form/Input/UnderlineText
 import { Spacing } from '@/components/common/layouts/Spacing';
 import { RouterPath } from '@/routes/path';
 import { breakpoints } from '@/styles/variants';
+import { handleLogin } from '@/utils/login';
 
 export const LoginPage = () => {
   const [id, setId] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
+  const queryParams = new URLSearchParams(window.location.search);
 
   const navigateToSignUp = () => {
     navigate(RouterPath.signup);
+  };
+
+  const handleConfirm = () => {
+    if (!id || !password) {
+      alert('아이디와 비밀번호를 입력해주세요.');
+      return;
+    }
+
+    handleLogin(id, password, queryParams);
   };
 
   return (
@@ -38,7 +49,7 @@ export const LoginPage = () => {
           }}
         />
         <ButtonWrapper>
-          <Button>로그인</Button>
+          <Button onClick={handleConfirm}>로그인</Button>
           <Button theme="lightGray" onClick={navigateToSignUp}>
             회원가입
           </Button>
