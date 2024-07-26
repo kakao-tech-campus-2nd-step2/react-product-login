@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import axios from 'axios'; // axios import 추가
 import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -27,6 +28,7 @@ export const OptionSection = ({ productId }: Props) => {
 
   const navigate = useNavigate();
   const authInfo = useAuth();
+
   const handleClick = () => {
     if (!authInfo) {
       const isConfirm = window.confirm(
@@ -45,10 +47,54 @@ export const OptionSection = ({ productId }: Props) => {
     navigate(RouterPath.order);
   };
 
+  const handleInterestClick = () => {
+    if (!authInfo) {
+      alert('로그인이 필요합니다.');
+      return;
+    }
+
+    const token = authInfo.token; // 사용자의 인증 토큰을 가져옵니다.
+
+    axios
+      .post(
+        `/api/wishes`,
+        { productId: parseInt(productId) },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        },
+      )
+      .then((response) => {
+        alert('관심 등록 완료');
+        console.log('Success:', response.data);
+      })
+      .catch((error) => {
+        if (error.response) {
+          const { status } = error.response;
+          if (status === 400) {
+            alert('잘못된 입력입니다.');
+          } else if (status === 404) {
+            alert('회원 또는 상품을 찾을 수 없습니다.');
+          } else if (status === 401) {
+            alert('유효하지 않거나 누락된 토큰입니다.');
+          } else {
+            alert('알 수 없는 오류가 발생했습니다.');
+          }
+        } else {
+          alert('네트워크 오류가 발생했습니다.');
+        }
+      });
+  };
+
   return (
     <Wrapper>
       <CountOptionItem name={options[0].name} value={countAsString} onChange={setCountAsString} />
       <BottomWrapper>
+        <Button theme="black" size="small" onClick={handleInterestClick}>
+          관심등록하기
+        </Button>
         <PricingWrapper>
           총 결제 금액 <span>{totalPrice}원</span>
         </PricingWrapper>
