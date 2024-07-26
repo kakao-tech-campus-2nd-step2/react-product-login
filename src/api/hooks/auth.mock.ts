@@ -28,4 +28,24 @@ export const authMockHandler = [
       );
     }
   }),
+  rest.post(`${BASE_URL}/api/members/register`, (req, res, ctx) => {
+    const { email, password } = req.body as { email: string; password: string };
+
+    if (email && password) {
+      return res(
+        ctx.status(201),
+        ctx.json({
+          email,
+          token: 'abcdefg',
+        }),
+      );
+    } else {
+      return res(
+        ctx.status(400),
+        ctx.json({
+          message: '유효하지 않은 입력입니다.',
+        }),
+      );
+    }
+  }),
 ];
