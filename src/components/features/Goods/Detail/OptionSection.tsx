@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import axios from 'axios'; // axios import 추가
+import axios from 'axios';
 import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -16,6 +16,18 @@ import { orderHistorySessionStorage } from '@/utils/storage';
 import { CountOptionItem } from './OptionItem/CountOptionItem';
 
 type Props = ProductDetailRequestParams;
+
+interface Product {
+  id: number;
+  name: string;
+  price: number;
+  imageUrl: string;
+}
+
+interface WishItem {
+  id: number;
+  product: Product;
+}
 
 export const OptionSection = ({ productId }: Props) => {
   const { data: detail } = useGetProductDetail({ productId });
@@ -58,16 +70,22 @@ export const OptionSection = ({ productId }: Props) => {
     }
 
     try {
-      const response = await axios.post(
-        '/api/wishes',
-        { productId: parseInt(productId) },
-        {
-          headers: {
-            Authorization: `Bearer ${authInfo.token}`, // 로그인 토큰 추가
-            'Content-Type': 'application/json',
-          },
+      const wishItem: WishItem = {
+        id: Date.now(), // 고유 ID 생성 (예시로 현재 시간을 사용)
+        product: {
+          id: detail.id,
+          name: detail.name,
+          price: detail.price,
+          imageUrl: detail.imageUrl,
         },
-      );
+      };
+
+      const response = await axios.post('/api/wishes', wishItem, {
+        headers: {
+          Authorization: `Bearer ${authInfo.token}`,
+          'Content-Type': 'application/json',
+        },
+      });
 
       // 성공적으로 추가된 경우
       if (response.status === 201) {
@@ -76,7 +94,6 @@ export const OptionSection = ({ productId }: Props) => {
     } catch (error) {
       if (axios.isAxiosError(error)) {
         if (error.response) {
-          // 서버에서 반환한 에러 메시지 처리
           alert(error.response.data.message || '오류가 발생했습니다.');
         } else {
           alert('네트워크 오류가 발생했습니다.');

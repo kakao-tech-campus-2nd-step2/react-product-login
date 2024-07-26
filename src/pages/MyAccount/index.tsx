@@ -1,4 +1,6 @@
 import styled from '@emotion/styled';
+import axios from 'axios';
+import { useCallback, useEffect, useState } from 'react';
 
 import { Button } from '@/components/common/Button';
 import { Spacing } from '@/components/common/layouts/Spacing';
@@ -6,15 +8,51 @@ import { useAuth } from '@/provider/Auth';
 import { RouterPath } from '@/routes/path';
 import { authSessionStorage } from '@/utils/storage';
 
+export interface WishItem {
+  id: number;
+  product: {
+    id: number;
+    name: string;
+    price: number;
+    imageUrl: string;
+  };
+}
+
 export const MyAccountPage = () => {
   const authInfo = useAuth();
+  const [wishes, setWishes] = useState<WishItem[]>([]);
+  const [currentPage, setCurrentPage] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
+  const pageSize = 10;
 
   const handleLogout = () => {
     authSessionStorage.set(undefined);
-
     const redirectURL = `${window.location.origin}${RouterPath.home}`;
     window.location.replace(redirectURL);
   };
+
+  const fetchWishes = useCallback(
+    async (page: number) => {
+      if (!authInfo) return; // authInfo가 없으면 반환
+      try {
+        const response = await axios.get(`/api/wishes?page=${page}&size=${pageSize}`, {
+          headers: {
+            Authorization: `Bearer ${authInfo.token}`, // 로그인 토큰 추가
+          },
+        });
+        console.log(response.data);
+        setWishes(response.data.content);
+        setTotalPages(response.data.totalPages);
+      } catch (error) {
+        console.error('Failed to fetch wishes', error);
+      }
+    },
+    [authInfo, pageSize],
+  );
+
+  useEffect(() => {
+    fetchWishes(currentPage);
+  }, [fetchWishes, currentPage]);
 
   return (
     <Wrapper>
@@ -29,6 +67,30 @@ export const MyAccountPage = () => {
       >
         로그아웃
       </Button>
+      <Spacing height={64} />
+      <h2>관심 목록</h2>
+      <WishList>
+        {wishes.map((wish) => (
+          <WishListItem key={wish.id}>
+            <img src={wish.product.imageUrl} alt={wish.product.name} />
+            <div>
+              <h3>{wish.product.name}</h3>
+              <p>{wish.product.price}원</p>
+            </div>
+          </WishListItem>
+        ))}
+      </WishList>
+      <Pagination>
+        {Array.from({ length: totalPages }, (_, index) => (
+          <PageButton
+            key={index}
+            onClick={() => setCurrentPage(index)}
+            active={index === currentPage}
+          >
+            {index + 1}
+          </PageButton>
+        ))}
+      </Pagination>
     </Wrapper>
   );
 };
@@ -36,11 +98,57 @@ export const MyAccountPage = () => {
 const Wrapper = styled.div`
   width: 100%;
   padding: 80px 0 120px;
-
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   font-weight: 700;
   font-size: 36px;
+`;
+
+const WishList = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+`;
+
+const WishListItem = styled.div`
+  display: flex;
+  align-items: center;
+  margin: 10px 0;
+
+  img {
+    width: 50px;
+    height: 50px;
+    margin-right: 10px;
+  }
+
+  h3 {
+    margin: 0;
+    font-size: 18px;
+  }
+
+  p {
+    margin: 0;
+    color: #888;
+  }
+`;
+
+const Pagination = styled.div`
+  margin-top: 20px;
+  display: flex;
+`;
+
+const PageButton = styled.button<{ active?: boolean }>`
+  margin: 0 5px;
+  padding: 5px 10px;
+  border: none;
+  background-color: ${({ active }) => (active ? '#333' : '#f5f5f5')};
+  color: ${({ active }) => (active ? '#fff' : '#000')};
+  cursor: pointer;
+
+  &:hover {
+    background-color: #ddd;
+  }
 `;
