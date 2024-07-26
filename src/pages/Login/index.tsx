@@ -2,6 +2,8 @@ import styled from '@emotion/styled';
 import { useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
+import usePostLogin from '@/api/hooks/usePostLogin';
+import type { PostLoginResponseBody } from '@/api/type';
 import KAKAO_LOGO from '@/assets/kakao_logo.svg';
 import { Button } from '@/components/common/Button';
 import { UnderlineTextField } from '@/components/common/Form/Input/UnderlineTextField';
@@ -14,19 +16,24 @@ export const LoginPage = () => {
   const [password, setPassword] = useState('');
   const [queryParams] = useSearchParams();
 
+  const { mutateAsync: login } = usePostLogin();
+
   const handleConfirm = () => {
     if (!id || !password) {
       alert('아이디와 비밀번호를 입력해주세요.');
       return;
     }
 
-    // TODO: API 연동
+    login({ loginId: id, password })
+      .then((res: PostLoginResponseBody) => {
+        authSessionStorage.set(res.authToken);
 
-    // TODO: API 연동 전까지 임시 로그인 처리
-    authSessionStorage.set(id);
-
-    const redirectUrl = queryParams.get('redirect') ?? `${window.location.origin}/`;
-    return window.location.replace(redirectUrl);
+        const redirectUrl = queryParams.get('redirect') ?? `${window.location.origin}/`;
+        return window.location.replace(redirectUrl);
+      })
+      .catch((err) => {
+        alert(err?.response?.data?.message ?? '알 수 없는 오류가 발생했습니다.');
+      });
   };
 
   return (
