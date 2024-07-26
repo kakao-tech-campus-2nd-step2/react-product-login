@@ -1,7 +1,8 @@
 import styled from '@emotion/styled';
 import { useState } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
+import { usePostUserLogin } from '@/api/hooks/userPostUserLogin';
 import KAKAO_LOGO from '@/assets/kakao_logo.svg';
 import { Button } from '@/components/common/Button';
 import { UnderlineTextField } from '@/components/common/Form/Input/UnderlineTextField';
@@ -11,30 +12,35 @@ import { authSessionStorage } from '@/utils/storage';
 
 export const LoginPage = () => {
   const navigate = useNavigate();
-  const [id, setId] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [queryParams] = useSearchParams();
+
+  const onSuccess = () => {
+    alert('로그인이 완료되었습니다.');
+    authSessionStorage.set(email);
+    navigate('/');
+  };
+
+  const { mutate: postUserLogin } = usePostUserLogin({ onSuccess });
 
   const handleConfirm = () => {
-    if (!id || !password) {
+    if (!email || !password) {
       alert('아이디와 비밀번호를 입력해주세요.');
       return;
     }
 
-    // TODO: API 연동
-
-    // TODO: API 연동 전까지 임시 로그인 처리
-    authSessionStorage.set(id);
-
-    const redirectUrl = queryParams.get('redirect') ?? `${window.location.origin}/`;
-    return window.location.replace(redirectUrl);
+    postUserLogin({ email, password });
   };
 
   return (
     <Wrapper>
       <Logo src={KAKAO_LOGO} alt="카카고 CI" />
       <FormWrapper>
-        <UnderlineTextField placeholder="이름" value={id} onChange={(e) => setId(e.target.value)} />
+        <UnderlineTextField
+          placeholder="이름"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
         <Spacing />
         <UnderlineTextField
           type="password"

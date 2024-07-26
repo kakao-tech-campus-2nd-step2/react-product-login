@@ -8,6 +8,7 @@ import { Button } from '@/components/common/Button';
 import { UnderlineTextField } from '@/components/common/Form/Input/UnderlineTextField';
 import { Spacing } from '@/components/common/layouts/Spacing';
 import { breakpoints } from '@/styles/variants';
+import { authSessionStorage } from '@/utils/storage';
 
 export const JoinPage = () => {
   const navigate = useNavigate();
@@ -15,12 +16,19 @@ export const JoinPage = () => {
   const [password, setPassword] = useState('');
   const [passwordConfirm, setPasswordConfirm] = useState('');
 
-  const {
-    mutate: postUserJoin,
-    isSuccess: isJoinSuccess,
-    isPending: isJoinPending,
-    isError: isJoinError,
-  } = usePostUserJoin();
+  const onSuccess = () => {
+    alert('회원가입이 완료되었습니다.');
+    authSessionStorage.set(email);
+    navigate('/login');
+  };
+  const onError = () => {
+    alert('회원가입에 실패했습니다.');
+  };
+
+  const { mutate: postUserJoin, isPending: isJoinPending } = usePostUserJoin({
+    onSuccess,
+    onError,
+  });
 
   const handleConfirm = () => {
     if (!email || !password || !passwordConfirm) {
@@ -35,12 +43,6 @@ export const JoinPage = () => {
 
     postUserJoin({ email, password });
   };
-
-  if (isJoinSuccess) {
-    alert('회원가입이 완료되었습니다.');
-    navigate('/login');
-  }
-  if (isJoinError) alert('회원가입에 실패했습니다.');
 
   return (
     <Wrapper>
