@@ -7,7 +7,7 @@ import { HomePage } from '@/pages/Home';
 import { LoginPage } from '@/pages/Login';
 import { MyAccountPage } from '@/pages/MyAccount';
 import { OrderPage } from '@/pages/Order';
-import { SignupPage } from '@/pages/Signup';
+import { RegisterPage } from '@/pages/Register'; // 회원가입 페이지 import
 
 import { PrivateRoute } from './components/PrivateRoute';
 import { RouterPath } from './path';
@@ -60,8 +60,8 @@ const router = createBrowserRouter([
     element: <LoginPage />,
   },
   {
-    path: RouterPath.signup,
-    element: <SignupPage />,
+    path: RouterPath.register, // 회원가입 경로 추가
+    element: <RegisterPage />,
   },
 ]);
 

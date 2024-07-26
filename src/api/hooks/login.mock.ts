@@ -12,21 +12,15 @@ type LoginSuccessResponse = {
   token: string;
 };
 
-const VALID_EMAIL = 'user@example.com';
-const VALID_PASSWORD = 'password123';
-
 export const loginMockHandler = [
-  rest.post(`${BASE_URL}/api/members/login`, (req, res, ctx) => {
-    const { email, password } = req.body as LoginRequestBody;
+  rest.post<LoginRequestBody>(`${BASE_URL}/api/members/login`, async (req, res, ctx) => {
+    const { email } = await req.json();
 
-    if (email === VALID_EMAIL && password === VALID_PASSWORD) {
-      const response: LoginSuccessResponse = {
-        email,
-        token: 'mocked-jwt-token',
-      };
-      return res(ctx.status(200), ctx.json(response));
-    } else {
-      return res(ctx.status(403), ctx.json({ message: 'Invalid email or password' }));
-    }
+    // 항상 성공 응답 반환
+    const response: LoginSuccessResponse = {
+      email,
+      token: 'mocked-jwt-token',
+    };
+    return res(ctx.status(200), ctx.json(response));
   }),
 ];

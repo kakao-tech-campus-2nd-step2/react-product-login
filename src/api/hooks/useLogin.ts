@@ -23,13 +23,16 @@ const login = async (loginData: LoginRequestBody): Promise<LoginSuccessResponse>
   });
 
   if (!response.ok) {
-    throw new Error('Invalid email or password');
+    if (response.status === 403) {
+      throw new Error('Invalid email or password');
+    }
+    throw new Error('An error occurred during login');
   }
 
   return response.json();
 };
 
-export const useGetLogin = (options?: UseMutationOptions<LoginSuccessResponse, Error, LoginRequestBody>) => {
+export const useLogin = (options?: UseMutationOptions<LoginSuccessResponse, Error, LoginRequestBody>) => {
   return useMutation<LoginSuccessResponse, Error, LoginRequestBody>({
     mutationFn: login,
     ...options,
