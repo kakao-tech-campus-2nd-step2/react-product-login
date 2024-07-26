@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import type { ChangeEventHandler } from 'react';
 
 import { registerUser } from '@/api/utils';
 import { Button } from '@/components/common/Button';
@@ -7,9 +8,9 @@ import { Spacing } from '@/components/common/layouts/Spacing';
 
 export interface IEnrollForm {
   email: string;
-  setEmail: (email: string) => void;
+  setEmail: ChangeEventHandler<HTMLInputElement>;
   password: string;
-  setPassword: (password: string) => void;
+  setPassword: ChangeEventHandler<HTMLInputElement>;
   handleConfirm: () => void;
 }
 
@@ -49,11 +50,7 @@ export const EnrollForm = ({
         회원가입을 위한 이메일을 입력해 주세요.
         <Checkmark show={email !== '' && isValidEmail(email)}>✅</Checkmark>
         <Checkmark show={email !== '' && !isValidEmail(email)}>❌</Checkmark>
-        <UnderlineTextField
-          placeholder="이메일"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
+        <UnderlineTextField placeholder="이메일" value={email} onChange={setEmail} />
       </GrayLabel>
       <Spacing />
       <GrayLabel>
@@ -64,7 +61,7 @@ export const EnrollForm = ({
           type="password"
           placeholder="비밀번호"
           value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          onChange={setPassword}
         />
       </GrayLabel>
       <Spacing
