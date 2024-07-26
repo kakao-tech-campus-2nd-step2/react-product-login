@@ -21,30 +21,21 @@ export const productsMockHandler = [
       return res(ctx.json(PRODUCTS_MOCK_DATA));
     },
   ),
-  rest.get(getProductDetailPath(':productId'), (_, res, ctx) => {
-    return res(ctx.json(PRODUCTS_MOCK_DATA.content[0]));
+  rest.get(getProductDetailPath(':productId'), (req, res, ctx) => {
+    const { productId } = req.params;
+    const product = PRODUCTS_MOCK_DATA.content.find((item) => item.id === Number(productId));
+    if (product) {
+      return res(ctx.json(product));
+    }
+
+    return res(ctx.status(404), ctx.json({ message: 'Product not found' }));
   }),
   rest.get(getProductOptionsPath(':productId'), (_, res, ctx) => {
-    return res(
-      ctx.json([
-        {
-          id: 1,
-          name: 'Option A',
-          quantity: 10,
-          productId: 1,
-        },
-        {
-          id: 2,
-          name: 'Option B',
-          quantity: 20,
-          productId: 1,
-        },
-      ]),
-    );
+    return res(ctx.json(PRODUCTS_MOCK_OPTIONS));
   }),
 ];
 
-const PRODUCTS_MOCK_DATA = {
+export const PRODUCTS_MOCK_DATA = {
   content: [
     {
       id: 3245119,
@@ -87,3 +78,18 @@ const PRODUCTS_MOCK_DATA = {
   size: 10,
   last: true,
 };
+
+export const PRODUCTS_MOCK_OPTIONS = [
+  {
+    id: 1,
+    name: 'Option A',
+    quantity: 10,
+    productId: 1,
+  },
+  {
+    id: 2,
+    name: 'Option B',
+    quantity: 20,
+    productId: 1,
+  },
+];
