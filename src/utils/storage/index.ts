@@ -27,6 +27,9 @@ const initStorage = <T extends keyof StorageKey>(key: T, storage: Storage) => {
 // eslint-disable-next-line import/prefer-default-export
 export const orderHistoryStorage = initStorage('orderHistory', sessionStorage);
 
+export const tokenStorage = initStorage('accessToken', sessionStorage);
+
 interface StorageKey {
   orderHistory?: OrderHistoryData;
+  accessToken?: string;
 }

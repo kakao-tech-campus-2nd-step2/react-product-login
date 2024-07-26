@@ -6,6 +6,7 @@ import { useCallback, useContext, useEffect } from 'react';
 import styled from '@emotion/styled';
 import { useNavigate } from 'react-router-dom';
 import Paths from '@constants/Paths';
+import WishesSection from '@components/organisms/mypage/WishesSection';
 import { LoginContext } from '@/providers/LoginContextProvider';
 
 const GreetingTitle = styled.h1`
@@ -33,6 +34,7 @@ function MyPage() {
         elementSize="full-width"
         justifyContent="center"
         alignItems="center"
+        flexDirection="column"
       >
         <Container
           padding="80px 0px 120px"
@@ -58,6 +60,8 @@ function MyPage() {
             onClick={onLogoutClick}
           />
         </Container>
+
+        <WishesSection />
       </Container>
     </Page>
   );

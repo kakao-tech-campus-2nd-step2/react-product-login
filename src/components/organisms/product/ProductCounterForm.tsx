@@ -10,6 +10,9 @@ import {
 import { useNavigate } from 'react-router-dom';
 import Paths from '@constants/Paths';
 import { orderHistoryStorage } from '@utils/storage';
+import { addWishProduct } from '@utils/query';
+import { isAxiosError } from 'axios';
+import { StatusCodes } from 'http-status-codes';
 import { LoginContext } from '@/providers/LoginContextProvider';
 import { OrderHistoryData } from '@/types';
 
@@ -33,7 +36,7 @@ function ProductCounterForm({ productId, productPrice, productName }: ProductCou
     },
   });
 
-  const handleSubmitClick = useCallback(() => {
+  const checkLogin = useCallback(() => {
     if (!loginStatus.isLoggedIn) {
       const confirm = window.confirm('로그인이 필요한 페이지입니다.\n'
         + '로그인하시겠습니까?');
@@ -41,9 +44,39 @@ function ProductCounterForm({ productId, productPrice, productName }: ProductCou
       if (confirm) {
         navigate(Paths.LOGIN_PAGE);
       }
-
-      return;
     }
+  }, [loginStatus.isLoggedIn, navigate]);
+
+  const handleAddWishClick = useCallback(async () => {
+    checkLogin();
+    try {
+      await addWishProduct({
+        productId,
+      });
+      alert('상품 추가가 완료되었습니다.');
+    } catch (error) {
+      if (isAxiosError(error)) {
+        switch (error.response?.status) {
+          case StatusCodes.BAD_REQUEST:
+            alert('잘못된 요청입니다.');
+            break;
+          case StatusCodes.UNAUTHORIZED:
+            alert('토큰 인증 오류!');
+            break;
+          case StatusCodes.NOT_FOUND:
+            alert('상품 정보를 찾을 수 없습니다.');
+            break;
+          default:
+            break;
+        }
+      }
+
+      console.error(error);
+    }
+  }, [checkLogin, productId]);
+
+  const handleSubmitClick = useCallback(() => {
+    checkLogin();
 
     const productHistoryData: OrderHistoryData = {
       productId,
@@ -53,7 +86,7 @@ function ProductCounterForm({ productId, productPrice, productName }: ProductCou
     orderHistoryStorage.set(productHistoryData);
 
     navigate(Paths.PRODUCT_ORDER);
-  }, [productId, count, navigate, loginStatus]);
+  }, [checkLogin, productId, count, navigate]);
 
   const handleInputChange = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
@@ -116,6 +149,15 @@ function ProductCounterForm({ productId, productPrice, productName }: ProductCou
             원
           </Text>
         </Box>
+        <DefaultButton
+          theme="kakao"
+          text="관심 선물에 등록하기"
+          elementSize="big"
+          style={{
+            fontSize: '15px',
+          }}
+          onClick={handleAddWishClick}
+        />
         <DefaultButton
           theme="black"
           text="나에게 선물하기"

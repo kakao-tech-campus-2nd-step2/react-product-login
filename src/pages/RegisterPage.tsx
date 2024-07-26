@@ -1,13 +1,13 @@
-import LoginForm from '@components/organisms/auth/LoginForm';
 import Container from '@components/atoms/container/Container';
 import { css } from '@emotion/react';
 import loginLogo from '@assets/images/login_logo.svg';
 import { useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Paths from '@constants/Paths';
+import RegisterForm from '@components/organisms/auth/RegisterForm';
 import { LoginContext } from '@/providers/LoginContextProvider';
 
-function LoginPage() {
+function RegisterPage() {
   const navigate = useNavigate();
   const { isLoggedIn } = useContext(LoginContext);
 
@@ -33,9 +33,9 @@ function LoginPage() {
       `}
         src={loginLogo}
       />
-      <LoginForm />
+      <RegisterForm />
     </Container>
   );
 }
 
-export default LoginPage;
+export default RegisterPage;
