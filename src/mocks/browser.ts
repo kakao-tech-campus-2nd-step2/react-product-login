@@ -1,11 +1,13 @@
 import { setupWorker } from 'msw/browser';
 
-import { authMockHandler } from '@/mocks/auth.mock';
-import { categoriesMockHandler } from '@/mocks/categories.mock';
-import { productsMockHandler } from '@/mocks/products.mock';
+import { authMockHandler } from './auth.mock';
+import { categoriesMockHandler } from './categories.mock';
+import { productsMockHandler } from './products.mock';
+import { wishMockHandler } from './wish.mock';
 
 export const worker = setupWorker(
   ...categoriesMockHandler,
   ...productsMockHandler,
-  ...authMockHandler
+  ...authMockHandler,
+  ...wishMockHandler
 );
