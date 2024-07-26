@@ -5,8 +5,9 @@ import { CategoryPage } from '@/pages/Category';
 import { GoodsDetailPage } from '@/pages/Goods/Detail';
 import { HomePage } from '@/pages/Home';
 import { LoginPage } from '@/pages/Login';
-import { MyAccountPage } from '@/pages/MyAccount';
+import { MyAccount } from '@/pages/MyAccount';
 import { OrderPage } from '@/pages/Order';
+import { SignupPage } from '@/pages/Signup'; // 회원가입 페이지 추가
 
 import { PrivateRoute } from './components/PrivateRoute';
 import { RouterPath } from './path';
@@ -34,7 +35,7 @@ const router = createBrowserRouter([
         children: [
           {
             path: RouterPath.myAccount,
-            element: <MyAccountPage />,
+            element: <MyAccount />,
           },
         ],
       },
@@ -57,6 +58,10 @@ const router = createBrowserRouter([
   {
     path: RouterPath.login,
     element: <LoginPage />,
+  },
+  {
+    path: RouterPath.signup, // 회원가입 경로 추가
+    element: <SignupPage />,
   },
 ]);
 
