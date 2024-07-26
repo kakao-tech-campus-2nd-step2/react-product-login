@@ -23,3 +23,13 @@ export const loginUser = async (email: string, password: string) => {
     throw new Error('로그인에 실패했습니다.');
   }
 };
+
+export const addToWishlist = async (productId: string) => {
+  try {
+    const response = await fetchInstance.post('/api/wishes', { productId });
+
+    return response.data;
+  } catch (error) {
+    throw new Error('위시 리스트 추가에 실패했습니다.');
+  }
+};
