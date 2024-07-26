@@ -7,7 +7,7 @@ export type WishResponseData = {
   id: number;
   productId: number;
 };
-export const AddWishListMockHandler = [
+export const getWishListMockHandler = [
   rest.post(getWishListPath(), (req, res, ctx) => {
     const { productId } = req.body as WishData;
 
