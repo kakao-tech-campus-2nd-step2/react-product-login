@@ -1,3 +1,4 @@
+import { Accordion, AccordionButton, AccordionItem, AccordionPanel } from '@chakra-ui/react';
 import styled from '@emotion/styled';
 import { useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
@@ -14,6 +15,10 @@ import { authSessionStorage } from '@/utils/storage';
 export const LoginPage = () => {
   const [id, setId] = useState('');
   const [password, setPassword] = useState('');
+
+  const [newId, setNewId] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+
   const [queryParams] = useSearchParams();
 
   const { mutateAsync: login } = usePostLogin();
@@ -36,26 +41,64 @@ export const LoginPage = () => {
       });
   };
 
+  const handleRegister = () => {};
+
   return (
     <Wrapper>
       <Logo src={KAKAO_LOGO} alt="카카고 CI" />
       <FormWrapper>
-        <UnderlineTextField placeholder="이름" value={id} onChange={(e) => setId(e.target.value)} />
-        <Spacing />
-        <UnderlineTextField
-          type="password"
-          placeholder="비밀번호"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
+        <Accordion allowToggle defaultIndex={[0]}>
+          <AccordionItem w="full">
+            <FormHeader as={AccordionButton}>로그인</FormHeader>
+            <AccordionPanel>
+              <UnderlineTextField
+                placeholder="이름"
+                value={id}
+                onChange={(e) => setId(e.target.value)}
+              />
+              <Spacing />
+              <UnderlineTextField
+                type="password"
+                placeholder="비밀번호"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
 
-        <Spacing
-          height={{
-            initial: 40,
-            sm: 60,
-          }}
-        />
-        <Button onClick={handleConfirm}>로그인</Button>
+              <Spacing
+                height={{
+                  initial: 40,
+                  sm: 60,
+                }}
+              />
+              <Button onClick={handleConfirm}>로그인</Button>
+            </AccordionPanel>
+          </AccordionItem>
+          <AccordionItem w="full">
+            <FormHeader as={AccordionButton}>회원가입</FormHeader>
+            <AccordionPanel>
+              <UnderlineTextField
+                placeholder="이름"
+                value={newId}
+                onChange={(e) => setNewId(e.target.value)}
+              />
+              <Spacing />
+              <UnderlineTextField
+                type="password"
+                placeholder="비밀번호"
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+              />
+
+              <Spacing
+                height={{
+                  initial: 40,
+                  sm: 60,
+                }}
+              />
+              <Button onClick={handleRegister}>로그인</Button>
+            </AccordionPanel>
+          </AccordionItem>
+        </Accordion>
       </FormWrapper>
     </Wrapper>
   );
@@ -73,6 +116,11 @@ const Wrapper = styled.div`
 const Logo = styled.img`
   width: 88px;
   color: #333;
+`;
+
+const FormHeader = styled.div`
+  width: 100%;
+  max-width: 580px;
 `;
 
 const FormWrapper = styled.article`
