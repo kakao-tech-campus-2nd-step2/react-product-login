@@ -3,7 +3,7 @@ import '@testing-library/jest-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { render, screen, waitFor } from '@testing-library/react';
 import type { ReactNode } from 'react';
-import React from 'react';
+//import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 
 import { PRODUCTS_MOCK_DATA } from '@/api/hooks/products.mock';

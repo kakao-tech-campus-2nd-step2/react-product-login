@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { useState } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import KAKAO_LOGO from '@/assets/kakao_logo.svg';
 import { Button } from '@/components/common/Button';
@@ -9,36 +9,34 @@ import { Spacing } from '@/components/common/layouts/Spacing';
 import { breakpoints } from '@/styles/variants';
 import { authSessionStorage } from '@/utils/storage';
 
-export const LoginPage = () => {
-  const [id, setId] = useState('');
+export const SignUpPage = () => {
+  const [name, setName] = useState('');
   const [password, setPassword] = useState('');
-  const [queryParams] = useSearchParams();
   const navigate = useNavigate();
 
-  const handleConfirm = () => {
-    if (!id || !password) {
-      alert('아이디와 비밀번호를 입력해주세요.');
+  const handleSignUp = () => {
+    if (!name || !password) {
+      alert('이름과 비밀번호를 입력해주세요.');
       return;
     }
 
-    // TODO: API 연동
+    // TODO: 회원가입 API 연동
+    // 회원가입 성공 시 로그인 처리
+    authSessionStorage.set(name);
 
-    // TODO: API 연동 전까지 임시 로그인 처리
-    authSessionStorage.set(id);
-
-    const redirectUrl = queryParams.get('redirect') ?? `${window.location.origin}/`;
-    return window.location.replace(redirectUrl);
-  };
-
-  const handleSignUp = () => {
-    navigate('/sign-up'); // 회원가입 페이지로 이동
+    alert('회원가입이 완료되었습니다.');
+    navigate('/');
   };
 
   return (
     <Wrapper>
       <Logo src={KAKAO_LOGO} alt="카카고 CI" />
       <FormWrapper>
-        <UnderlineTextField placeholder="이름" value={id} onChange={(e) => setId(e.target.value)} />
+        <UnderlineTextField
+          placeholder="이름"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+        />
         <Spacing />
         <UnderlineTextField
           type="password"
@@ -46,10 +44,7 @@ export const LoginPage = () => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-
         <Spacing height={{ initial: 40, sm: 60 }} />
-        <Button onClick={handleConfirm}>로그인</Button>
-        <Spacing height={{ initial: 20, sm: 40 }} />
         <Button onClick={handleSignUp}>회원가입</Button>
       </FormWrapper>
     </Wrapper>
@@ -74,7 +69,6 @@ const FormWrapper = styled.article`
   width: 100%;
   max-width: 580px;
   padding: 16px;
-
   @media screen and (min-width: ${breakpoints.sm}) {
     border: 1px solid rgba(0, 0, 0, 0.12);
     padding: 60px 52px;

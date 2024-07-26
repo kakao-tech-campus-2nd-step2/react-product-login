@@ -1,6 +1,5 @@
 import type { ReactNode } from 'react';
 import { createContext, useContext, useEffect, useState } from 'react';
-import React from 'react';
 
 import { authSessionStorage } from '@/utils/storage';
 

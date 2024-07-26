@@ -1,5 +1,4 @@
 import styled from '@emotion/styled';
-import React from 'react';
 
 import type { ProductDetailRequestParams } from '@/api/hooks/useGetProductDetail';
 import { breakpoints } from '@/styles/variants';
