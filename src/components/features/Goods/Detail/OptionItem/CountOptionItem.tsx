@@ -36,7 +36,7 @@ export const CountOptionItem = ({
       <Title>{name}</Title>
       <InputWrapper>
         <IconButton {...decrement} aria-label="수량 1개 감소" icon={<MinusIcon />} />
-        <Input {...input} />
+        <Input test-data="수량" {...input} />
         <IconButton {...increment} aria-label="수량 1개 추가" icon={<AddIcon />} />
       </InputWrapper>
     </Wrapper>
