@@ -1,4 +1,5 @@
 export default {
+  moduleDirectories: ['./node_modules', 'src'],
   preset: 'ts-jest',
   testEnvironment: 'jest-fixed-jsdom',
   testEnvironmentOptions: {

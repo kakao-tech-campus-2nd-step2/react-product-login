@@ -2,7 +2,6 @@ module.exports = {
   env: {
     browser: true,
     es2021: true,
-    module: 'node',
   },
   extends: [
     'plugin:react/recommended',
@@ -40,6 +39,10 @@ module.exports = {
   ],
   ignorePatterns: ['vite.config.ts'],
   parser: '@typescript-eslint/parser',
+  parserOptions: {
+    project: './tsconfig.json',
+    tsconfigRootDir: __dirname,
+  },
   plugins: ['@typescript-eslint', 'react', 'import'],
   rules: {
     'react/react-in-jsx-scope': 'off',
