@@ -1,3 +1,4 @@
+import { Flex } from '@chakra-ui/react';
 import styled from '@emotion/styled';
 import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -52,9 +53,14 @@ export const OptionSection = ({ productId }: Props) => {
         <PricingWrapper>
           총 결제 금액 <span>{totalPrice}원</span>
         </PricingWrapper>
-        <Button theme="black" size="large" onClick={handleClick}>
-          나에게 선물하기
-        </Button>
+        <Flex>
+          <Button theme="outline" size="large" onClick={handleClick}>
+            💛
+          </Button>
+          <Button theme="black" size="large" onClick={handleClick}>
+            나에게 선물하기
+          </Button>
+        </Flex>
       </BottomWrapper>
     </Wrapper>
   );
