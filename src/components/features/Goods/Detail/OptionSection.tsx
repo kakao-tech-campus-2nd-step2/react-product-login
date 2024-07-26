@@ -30,6 +30,13 @@ export const OptionSection = ({ productId }: Props) => {
   const authInfo = useAuth();
 
   const handleWishItem = () => {
+    if (!authInfo) {
+      const isConfirm = window.confirm('로그인이 필요합니다.\n로그인 페이지로 이동하시겠습니까?');
+
+      if (!isConfirm) return;
+      return navigate(getDynamicPath.login());
+    }
+
     const productIdNumber = parseInt(productId, 10);
     const currentWishList: WishList = wishListSessionStorage.get() || { productId: [] };
 

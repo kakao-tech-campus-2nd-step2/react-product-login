@@ -1,5 +1,3 @@
-import { RouterPath } from '@/routes/path';
-
 import { authSessionStorage } from '../storage';
 
 export const handleLogin = (id: string, password: string) => {
@@ -7,8 +5,9 @@ export const handleLogin = (id: string, password: string) => {
 
   if (storedAuth && id === storedAuth.id && password === storedAuth.pwd) {
     alert('로그인 성공!');
-    const redirectURL = `${window.location.origin}${RouterPath.home}`;
-    window.location.replace(redirectURL);
+    const queryParams = new URLSearchParams(window.location.search);
+    const redirectUrl = queryParams.get('redirect') ?? `${window.location.origin}/`;
+    window.location.replace(redirectUrl);
     return;
   }
 
