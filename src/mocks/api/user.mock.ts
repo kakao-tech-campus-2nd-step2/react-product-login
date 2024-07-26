@@ -51,6 +51,11 @@ const loginUser = (email: string, password: string) => {
   return authToken;
 };
 
+export const checkToken = (token: string): boolean => {
+  const USERLIST = USER_STORAGE.getValue();
+  return !!USERLIST.find((u) => u.email === token);
+};
+
 export const userMockHandler = [
   rest.post(VERCEL_API_URL + getRegisterPath(), (req, res, ctx) => {
     const { email, password } = req.body as PostRegisterRequestBody;

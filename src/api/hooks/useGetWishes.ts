@@ -3,13 +3,12 @@ import { useAxiosQueryWithPage } from '@/api';
 import type { GetWishesResponseBody } from '@/api/type';
 
 type RequestParams = {
-  page?: number;
   size?: number;
   sort?: string;
 };
 
-export function getWishesPath(): string {
-  return '/api/wishes';
+export function getWishesPath({ size, sort }: RequestParams): string {
+  return '/api/wishes' + (size ? `?size=${size}` : '') + (sort ? `&sort=${sort}` : '');
 }
 
 function useGetWishes({
@@ -19,8 +18,7 @@ function useGetWishes({
   return useAxiosQueryWithPage<GetWishesResponseBody>(
     {
       method: 'GET',
-      url: getWishesPath(),
-      params: { size, sort },
+      url: getWishesPath({ size, sort }),
     },
     ['wishes'],
     (lastPage) => (!lastPage.last ? (lastPage.number + 1).toString() : undefined),

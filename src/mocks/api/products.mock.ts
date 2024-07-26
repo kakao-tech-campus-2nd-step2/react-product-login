@@ -4,6 +4,11 @@ import { VERCEL_API_URL } from '@/api/axiosInstance';
 import { getProductsPath } from '@/api/hooks/useGetProducts';
 import { getProductsDetailPath } from '@/api/hooks/useGetProductsDetail';
 import { getProductsOptionPath } from '@/api/hooks/useGetProductsOption';
+import type { ProductData } from '@/api/type';
+
+export function getProductsById(id: number): ProductData | undefined {
+  return PRODUCTS_MOCK_DATA.content.find((product) => product.id === id);
+}
 
 export const productsMockHandler = [
   rest.get(VERCEL_API_URL + getProductsPath({ categoryId: '2920' }), (_req, res, ctx) => {
