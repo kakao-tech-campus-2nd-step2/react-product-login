@@ -8,13 +8,25 @@ describe('authSessionStorage', () => {
     sessionStorage.clear();
   });
 
-  test('문자열 값 저장 및 저장된 값 얻기', () => {
-    authSessionStorage.set(testAuthToken);
-    expect(authSessionStorage.get()).toBe(testAuthToken);
+  it('문자열 값을 저장하면, 저장된 값은 동일해야 한다.', () => {
+    // given
+    const value = testAuthToken;
+
+    // when
+    authSessionStorage.set(value);
+
+    // then
+    expect(authSessionStorage.get()).toBe(value);
   });
 
-  test('undefined 값에 대한 처리 확인', () => {
-    authSessionStorage.set(undefined);
+  it('undefined 값이 저장되면, 저장된 값은 null이어야 한다.', () => {
+    // given
+    const value = undefined;
+
+    // when
+    authSessionStorage.set(value);
+
+    // then
     expect(authSessionStorage.get()).toBeNull();
   });
 });
@@ -29,13 +41,25 @@ describe('orderHistorySessionStorage', () => {
     sessionStorage.clear();
   });
 
-  test('객체 값 저장 및 저장된 값 얻기', () => {
-    orderHistorySessionStorage.set(testOrderHistory);
-    expect(orderHistorySessionStorage.get()).toEqual(testOrderHistory);
+  it('OrderHistory 객체를 저장하면, 저장된 값은 동일해야 한다.', () => {
+    // given
+    const value = testOrderHistory;
+
+    // when
+    orderHistorySessionStorage.set(value);
+
+    // then
+    expect(orderHistorySessionStorage.get()).toEqual(value);
   });
 
-  test('undefined 값에 대한 처리 확인', () => {
-    orderHistorySessionStorage.set(undefined);
+  it('undefined 값이 저장되면, 저장된 값은 null이어야 한다.', () => {
+    // given
+    const value = undefined;
+
+    // when
+    orderHistorySessionStorage.set(value);
+
+    // then
     expect(orderHistorySessionStorage.get()).toBeNull();
   });
 });
