@@ -7,6 +7,7 @@ import {
   useGetProductDetail,
 } from '@/api/hooks/useGetProductDetail';
 import { useGetProductOptions } from '@/api/hooks/useGetProductOptions';
+import { fetchWithTokenInstance } from '@/api/instance';
 import { Button } from '@/components/common/Button';
 import { useAuth } from '@/provider/Auth';
 import { getDynamicPath, RouterPath } from '@/routes/path';
@@ -45,8 +46,17 @@ export const OptionSection = ({ productId }: Props) => {
     navigate(RouterPath.order);
   };
 
-  const handleLike = () => {
-
+  const handleLike = async () => {
+    try {
+      const response = await fetchWithTokenInstance.post('/wishlist', {
+        productId
+      })
+      alert('관심 상품에 등록되었습니다.')
+      console.log('response', response)
+    } catch (error) {
+      console.error('관심 상품 등록 실패', error)
+      alert('관심 상품 등록에 실패하였습니다.')
+    }
   }
 
   return (
