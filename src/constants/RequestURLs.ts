@@ -7,8 +7,6 @@ const endpoints = {
   PRODUCT_OPTIONS: '/products/:productId/options',
   MESSAGE_CARD_TEMPLATE: '/message-card/templates',
   MY_ACCOUNT_INFO: '/my-account/info',
-  MY_WISH_PRODUCTS: '/my-account/wish/products',
-  MY_ACCOUNT_POINT: '/my-account/point',
   ORDER: '/order',
   LOGIN: '/members/login',
   REGISTER: '/members/register',
