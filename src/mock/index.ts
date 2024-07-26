@@ -50,6 +50,39 @@ const handlers = [
       return HttpResponse.json(MockData.MOCK_LOGIN_DATA);
     },
   ),
+  http.get(
+    BASE_URL + RequestURLs.WISHES,
+    async () => (
+      HttpResponse.json(MockData.MOCK_WISHES)
+    ),
+  ),
+  http.post(
+    BASE_URL + RequestURLs.WISHES,
+    async (info) => {
+      const result = {
+        wishId: 1,
+        productId: 1,
+      };
+
+      if (!info.request.headers.has('Authorization')) {
+        return new HttpResponse('Invalid or missing token');
+      }
+
+      return HttpResponse.json(result);
+    },
+  ),
+  http.delete(
+    BASE_URL + RequestURLs.DELETE_WISHES,
+    async (info) => {
+      if (!info.request.headers.has('Authorization')) {
+        return new HttpResponse('Invalid or missing token');
+      }
+
+      return new HttpResponse('', {
+        status: StatusCodes.NO_CONTENT,
+      });
+    },
+  ),
 ];
 
 export default handlers;
