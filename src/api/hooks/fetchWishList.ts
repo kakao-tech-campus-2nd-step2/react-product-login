@@ -34,6 +34,7 @@ const fetchWishList = async (
       sort: 'createdDate,desc',
     },
   });
+
   return response.data;
 };
 
@@ -48,12 +49,34 @@ export const useRemoveWish = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (wishId: number) =>
-      axios.delete(`${API_URL}/wishes/${wishId}`, {
+    mutationFn: (wishId: number) => {
+      return axios.delete(`${API_URL}/wishes/${wishId}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
-      }),
+      });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['wishList'] });
+    },
+  });
+};
+
+export const useAddWish = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (productId: number) => {
+      return axios.post(
+        `${API_URL}/wishes`,
+        { productId },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+          },
+        },
+      );
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['wishList'] });
     },
