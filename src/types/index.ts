@@ -53,3 +53,13 @@ export type MessageCardTemplateData = {
   thumbUrl: string;
   imageUrl: string;
 };
+
+export type RegisterData = {
+  email: string;
+  password: string;
+};
+
+export type RegisterResponseData = {
+  email: string;
+  token: string;
+};

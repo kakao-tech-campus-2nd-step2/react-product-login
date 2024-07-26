@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 import { useState } from 'react';
 
+import { FetchRegister } from '@/api/hooks/usePostRegister';
 import KAKAO_LOGO from '@/assets/kakao_logo.svg';
 import { Button } from '@/components/common/Button';
 import { UnderlineTextField } from '@/components/common/Form/Input/UnderlineTextField';
@@ -10,8 +11,16 @@ import { breakpoints } from '@/styles/variants';
 export const RegisterPage = () => {
   const [id, setId] = useState('');
   const [password, setPassword] = useState('');
-  const handleRegister = () => {
-    throw new Error('Function not implemented.');
+  const mutation = FetchRegister({ email: id, password: password });
+  const handleRegister = async () => {
+    if (!id || !password) {
+      alert('아이디와 비밀번호를 입력해주세요.');
+      return;
+    }
+    mutation.mutate();
+
+    // TODO: 회원가입 시 토큰을 왜 전달받는 것??????
+    // 해당 부분에 입력받은 email : password를 서버 DB에 저장하는 로직 필요.
   };
 
   return (

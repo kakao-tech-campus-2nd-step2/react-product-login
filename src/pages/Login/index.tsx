@@ -25,6 +25,7 @@ export const LoginPage = () => {
     // TODO: API 연동
 
     // TODO: API 연동 전까지 임시 로그인 처리
+    // 회원가입 시 서버 DB에서 회원가입한 ID를 찾는 로직이 들어가야함.
     authSessionStorage.set(id);
 
     const redirectUrl = queryParams.get('redirect') ?? `${window.location.origin}/`;
