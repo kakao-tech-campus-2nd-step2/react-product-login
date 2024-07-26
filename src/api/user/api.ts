@@ -11,3 +11,15 @@ export const registerUser = async (email: string, password: string) => {
     throw new Error('회원가입에 실패했습니다.');
   }
 };
+
+export const loginUser = async (email: string, password: string) => {
+  try {
+    const response = await fetchInstance.post('/api/members/login', { email, password });
+    const { token } = response.data;
+    localStorage.setItem('token', token);
+
+    return response.data;
+  } catch (error) {
+    throw new Error('로그인에 실패했습니다.');
+  }
+};

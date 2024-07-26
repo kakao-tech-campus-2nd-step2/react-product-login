@@ -17,4 +17,20 @@ export const userHandlers = [
       }),
     );
   }),
+  rest.post('https://api.example.com/api/members/login', async (req, res, ctx) => {
+    const { email, password } = await req.json<{ email: string; password: string }>();
+
+    // temporary mock user
+    if (email === 'qqqq' && password === 'wwww') {
+      return res(
+        ctx.status(200),
+        ctx.json({
+          email,
+          token: 'mock-token',
+        }),
+      );
+    }
+
+    return res(ctx.status(403), ctx.json({ message: 'Invalid email or password' }));
+  }),
 ];
