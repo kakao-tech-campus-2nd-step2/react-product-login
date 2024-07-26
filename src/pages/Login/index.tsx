@@ -23,6 +23,7 @@ export const LoginPage = () => {
     // TODO: API 연동
 
     // TODO: API 연동 전까지 임시 로그인 처리
+    alert('로그인 성공!');
     authSessionStorage.set(id);
 
     const redirectUrl = queryParams.get('redirect') ?? `${window.location.origin}/`;
