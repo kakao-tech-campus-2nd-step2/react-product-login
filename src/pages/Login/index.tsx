@@ -1,11 +1,12 @@
 import styled from '@emotion/styled';
 import { useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import KAKAO_LOGO from '@/assets/kakao_logo.svg';
 import { Button } from '@/components/common/Button';
 import { UnderlineTextField } from '@/components/common/Form/Input/UnderlineTextField';
 import { Spacing } from '@/components/common/layouts/Spacing';
+import { RouterPath } from '@/routes/path';
 import { breakpoints } from '@/styles/variants';
 import { authSessionStorage } from '@/utils/storage';
 
@@ -13,6 +14,7 @@ export const LoginPage = () => {
   const [id, setId] = useState('');
   const [password, setPassword] = useState('');
   const [queryParams] = useSearchParams();
+  const navigate = useNavigate();
 
   const handleConfirm = () => {
     if (!id || !password) {
@@ -27,6 +29,10 @@ export const LoginPage = () => {
 
     const redirectUrl = queryParams.get('redirect') ?? `${window.location.origin}/`;
     return window.location.replace(redirectUrl);
+  };
+
+  const navigateToSignUp = () => {
+    navigate(RouterPath.signup);
   };
 
   return (
@@ -48,7 +54,12 @@ export const LoginPage = () => {
             sm: 60,
           }}
         />
-        <Button onClick={handleConfirm}>로그인</Button>
+        <ButtonWrapper>
+          <Button onClick={handleConfirm}>로그인</Button>
+          <Button theme="lightGray" onClick={navigateToSignUp}>
+            회원가입
+          </Button>
+        </ButtonWrapper>
       </FormWrapper>
     </Wrapper>
   );
@@ -77,4 +88,10 @@ const FormWrapper = styled.article`
     border: 1px solid rgba(0, 0, 0, 0.12);
     padding: 60px 52px;
   }
+`;
+
+const ButtonWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 `;
