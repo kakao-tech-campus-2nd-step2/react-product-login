@@ -17,8 +17,6 @@ const Form = ({ children }: { children: ReactNode }) => {
   const form = useForm<OrderFormType>({
     resolver: zodResolver(OrderSchema),
     defaultValues: {
-      productId: '123',
-      productQuantity: 2,
       gitfMessage: '',
       isCashChecked: false,
       cashReceiptNumber: '',
