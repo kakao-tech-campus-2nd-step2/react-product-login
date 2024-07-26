@@ -1,4 +1,4 @@
-import { Box, Flex, Image, Text } from '@chakra-ui/react';
+import { Box, CloseButton, Flex, Image, Text } from '@chakra-ui/react';
 import styled from '@emotion/styled';
 
 import { useGetWishList } from '@/api/hooks/useGetWishList';
@@ -42,19 +42,19 @@ export const MyAccountPage = () => {
         로그아웃
       </Button>
       <Box p={4}>
-        <Text fontSize="2xl" fontWeight="bold" mb={4}>
+        <Text fontSize="2xl" fontWeight="bold" ml={5}>
           관심 목록
         </Text>
         {data?.pages.map((page) =>
           page.products.map((item) => (
-            <Flex key={item.id} p={4} borderWidth="1px" borderRadius="md">
+            <Flex key={item.id} p={4} borderWidth="1px" borderRadius="md" m={5}>
               <Image
                 src={item.product.imageUrl}
                 alt={item.product.name}
                 boxSize="100px"
                 objectFit="cover"
               />
-              <Box ml={4} flex="1">
+              <Box ml={4} flex="1" mr={8}>
                 <Text fontSize={18} fontWeight="bold">
                   {item.product.name}
                 </Text>
@@ -62,10 +62,21 @@ export const MyAccountPage = () => {
                   {item.product.price}원
                 </Text>
               </Box>
+              <CloseButton
+                size="md"
+                colorScheme="red"
+                // onClick={() => handleDelete(item.id)}
+              />
             </Flex>
           )),
         )}
-        {hasNextPage && <Button onClick={() => fetchNextPage()}>더 보기</Button>}
+        {hasNextPage && (
+          <Box textAlign="center" ml={100} mr={100}>
+            <Button size="small" theme="lightGray" onClick={() => fetchNextPage()}>
+              더 보기
+            </Button>
+          </Box>
+        )}
       </Box>
     </Wrapper>
   );
