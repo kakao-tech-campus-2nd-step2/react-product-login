@@ -1,8 +1,9 @@
-import { Box, Container, VStack } from '@chakra-ui/react';
+import { Box, Button, Container, VStack } from '@chakra-ui/react';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { Fragment } from 'react';
 
-import { getWishlist } from '@/api/utils';
+import { queryClient } from '@/api/instance';
+import { deleteFromWishlist, getWishlist } from '@/api/utils';
 import { DefaultGoodsItems } from '@/components/common/GoodsItem/Default';
 import { Spacing } from '@/components/common/layouts/Spacing';
 
@@ -22,6 +23,16 @@ export const Wishlist = () => {
     queryKey: ['wishlist', page, size],
     queryFn: () => getWishlist(page, size),
   });
+
+  const handleDelete = (productId: number) => async () => {
+    try {
+      await deleteFromWishlist(productId);
+
+      await queryClient.invalidateQueries({ queryKey: ['wishlist', page, size] });
+    } catch (error) {
+      alert('관심 물품 삭제에 실패했습니다.');
+    }
+  };
 
   return (
     <Container maxW="container.md" py={8}>
@@ -44,6 +55,9 @@ export const Wishlist = () => {
                 title={item.product.name}
                 amount={item.product.price}
               />
+              <Button colorScheme="red" mt={4} onClick={handleDelete(item.product.id)}>
+                삭제
+              </Button>
               <Spacing height={4} />
             </Box>
           </Fragment>
