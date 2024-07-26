@@ -13,4 +13,14 @@ export const handlers = [
       ctx.json({ data: 'mocked options data' })
     );
   }),
+  rest.post('/api/wishes', (req, res, ctx) => {
+    const { productId } = req.body as { productId: number };
+    return res(
+      ctx.status(201),
+      ctx.json({
+        id: Date.now(),
+        productId,
+      })
+    );
+  }),
 ];
