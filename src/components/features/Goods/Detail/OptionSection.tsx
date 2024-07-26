@@ -10,7 +10,7 @@ import { useGetProductOptions } from '@/api/hooks/useGetProductOptions';
 import { Button } from '@/components/common/Button';
 import { useAuth } from '@/provider/Auth';
 import { getDynamicPath, RouterPath } from '@/routes/path';
-import type { WishList } from '@/types';
+import type { WishList, WishListItem } from '@/types';
 import { orderHistorySessionStorage, wishListSessionStorage } from '@/utils/storage';
 
 import { CountOptionItem } from './OptionItem/CountOptionItem';
@@ -38,13 +38,22 @@ export const OptionSection = ({ productId }: Props) => {
     }
 
     const productIdNumber = parseInt(productId, 10);
-    const currentWishList: WishList = wishListSessionStorage.get() || { productId: [] };
+    const currentWishList: WishList = wishListSessionStorage.get() || [];
 
-    if (!currentWishList.productId.includes(productIdNumber)) {
-      const updatedWishList = {
-        ...currentWishList,
-        productId: [...currentWishList.productId, productIdNumber],
+    const isProductInWishList = currentWishList.some((item) => item.product.id === productIdNumber);
+
+    if (!isProductInWishList) {
+      const newWishListItem: WishListItem = {
+        id: detail.id,
+        product: {
+          id: detail.id,
+          name: detail.name,
+          price: detail.price,
+          imageUrl: detail.imageUrl,
+        },
       };
+
+      const updatedWishList = [...currentWishList, newWishListItem];
       wishListSessionStorage.set(updatedWishList);
 
       alert('관심 등록 완료');

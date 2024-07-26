@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 
 import { Button } from '@/components/common/Button';
 import { Spacing } from '@/components/common/layouts/Spacing';
+import { WishListSection } from '@/components/features/WishList';
 import { useAuth } from '@/provider/Auth';
 import { RouterPath } from '@/routes/path';
 import { authSessionStorage } from '@/utils/storage';
@@ -19,6 +20,7 @@ export const MyAccountPage = () => {
   return (
     <Wrapper>
       {authInfo?.name}님 안녕하세요! <Spacing height={64} />
+      <WishListSection />
       <Button
         size="small"
         theme="darkGray"
