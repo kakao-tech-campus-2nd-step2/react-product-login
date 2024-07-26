@@ -2,6 +2,7 @@ import { Box, Flex, Image, Text } from '@chakra-ui/react';
 import styled from '@emotion/styled';
 import { useEffect } from 'react';
 
+import { useDeleteWishlistItem } from '@/api/hooks/useDeleteWishlistItem';
 import { useGetWishlist } from '@/api/hooks/useGetWishlist';
 import { Button } from '@/components/common/Button';
 import { Spacing } from '@/components/common/layouts/Spacing';
@@ -20,10 +21,23 @@ export const MyAccountPage = () => {
   };
 
   const { data, refetch } = useGetWishlist();
+  const deleteWishlistItem = useDeleteWishlistItem();
 
   useEffect(() => {
     refetch();
   }, [refetch]);
+
+  const handleDelete = (id: number) => {
+    deleteWishlistItem.mutate(id, {
+      onSuccess: () => {
+        alert('관심 목록에서 삭제되었습니다.');
+        refetch();
+      },
+      onError: () => {
+        alert('관심 목록에서 삭제하는 중 오류가 발생했습니다.');
+      },
+    });
+  };
 
   return (
     <Wrapper>
@@ -43,7 +57,15 @@ export const MyAccountPage = () => {
           위시리스트
         </Text>
         {data?.content.map((item) => (
-          <Flex key={item.id} p={4} borderWidth={1} borderRadius="md" alignItems="center" mt={7}>
+          <Flex
+            key={item.id}
+            p={4}
+            w="700px"
+            borderWidth={1}
+            borderRadius="md"
+            alignItems="center"
+            mt={7}
+          >
             <Image boxSize="100px" src={item.product.imageUrl} alt={item.product.name} />
             <Box ml={4} mr={4}>
               <Text fontSize="xl">{item.product.name}</Text>
@@ -51,7 +73,9 @@ export const MyAccountPage = () => {
                 {item.product.price}원
               </Text>
             </Box>
-            <Box ml="auto">❤️</Box>
+            <Box ml="auto" onClick={() => handleDelete(item.id)}>
+              ❤️
+            </Box>
           </Flex>
         ))}
       </Box>

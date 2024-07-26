@@ -1,17 +1,25 @@
 import { rest } from 'msw';
 
+import { BASE_URL } from '../instance';
 import { getWishlistPath } from './useGetWishlist';
 
 export const wishlistMockHandler = [
   rest.get(getWishlistPath(), (_, res, ctx) => {
     return res(ctx.json(WISHLIST_RESPONSE_DATA));
   }),
+  rest.delete(`${BASE_URL}/api/wishes/:id`, (req, res, ctx) => {
+    const { id } = req.params;
+    WISHLIST_RESPONSE_DATA.content = WISHLIST_RESPONSE_DATA.content.filter(
+      (item) => item.id !== parseInt(id as string),
+    );
+    return res(ctx.status(204));
+  }),
 ];
 
 const WISHLIST_RESPONSE_DATA = {
   content: [
     {
-      id: 1,
+      id: 3245119,
       product: {
         id: 3245119,
         name: '[단독각인] 피렌체 1221 에디션 오드코롱 50ml (13종 택1)',
@@ -21,7 +29,7 @@ const WISHLIST_RESPONSE_DATA = {
       },
     },
     {
-      id: 2,
+      id: 2263833,
       product: {
         id: 2263833,
         name: '외식 통합권 10만원권',
