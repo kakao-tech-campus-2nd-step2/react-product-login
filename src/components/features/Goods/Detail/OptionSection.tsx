@@ -45,6 +45,10 @@ export const OptionSection = ({ productId }: Props) => {
     navigate(RouterPath.order);
   };
 
+  const handleInterestClick = () => {
+    alert('관심 등록 완료');
+  };
+
   return (
     <Wrapper>
       <CountOptionItem name={options[0].name} value={countAsString} onChange={setCountAsString} />
@@ -54,6 +58,9 @@ export const OptionSection = ({ productId }: Props) => {
         </PricingWrapper>
         <Button theme="black" size="large" onClick={handleClick}>
           나에게 선물하기
+        </Button>
+        <Button theme="lightGray" size="large" onClick={handleInterestClick}>
+          관심 등록
         </Button>
       </BottomWrapper>
     </Wrapper>
