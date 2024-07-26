@@ -16,7 +16,8 @@ import { Container } from '@/components/ui/Layout/Container';
 
 import { QuantityInput } from './QuantityInput';
 import { TotalPriceCallout } from './TotalPriceCallout';
-import { containerStyle } from './style';
+import { WishButton } from './WishButton';
+import { containerStyle, submitButton } from './style';
 
 type ProductFormProps = ProductDetailRequestParams;
 
@@ -59,22 +60,20 @@ export const ProductForm = ({ productId }: ProductFormProps) => {
       />
       <Container flexDirection="column" gap="1rem">
         <TotalPriceCallout totalPrice={totalPrice} />
-        <Button
-          theme="black"
-          size="large"
-          onClick={onClick}
-          css={{ height: '3.5rem' }}
-        >
-          나에게 선물하기
-        </Button>
-        <Confirm
-          message={`로그인이 필요한 메뉴입니다.
-            로그인 페이지로 이동하시겠습니까?`}
-          isOpen={isOpen}
-          onClose={onClose}
-          onConfirm={() => navigate(ROUTER_PATH.LOGIN)}
-        />
+        <Container gap="0.5rem">
+          <WishButton />
+          <Button theme="black" onClick={onClick} css={submitButton}>
+            나에게 선물하기
+          </Button>
+        </Container>
       </Container>
+      <Confirm
+        message={`로그인이 필요한 메뉴입니다.
+            로그인 페이지로 이동하시겠습니까?`}
+        isOpen={isOpen}
+        onClose={onClose}
+        onConfirm={() => navigate(ROUTER_PATH.LOGIN)}
+      />
     </Container>
   );
 };
