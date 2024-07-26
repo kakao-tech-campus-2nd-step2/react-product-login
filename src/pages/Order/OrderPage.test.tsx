@@ -58,7 +58,7 @@ describe('OrderPage', () => {
     expect(screen.getByLabelText('현금영수증 번호')).toBeInTheDocument();
   });
 
-  test('현금 영수증 체크박스가 true일 때 관련 필드가 필수로 입력되어야 한다', async () => {
+  test('현금 영수증 체크박스가 true일 때 필수 입력 필드가 제대로 검증되어야 한다', async () => {
     renderWithProviders(<OrderPage />);
 
     const cashReceiptCheckbox = screen.getByLabelText('현금 영수증');
@@ -86,6 +86,37 @@ describe('OrderPage', () => {
       expect(
         screen.queryByText('현금영수증 번호는 숫자로만 입력해주세요.'),
       ).not.toBeInTheDocument();
+    });
+  });
+
+  test('메시지 카드 텍스트 유효성 검사', async () => {
+    renderWithProviders(<OrderPage />);
+
+    const cashReceiptCheckbox = screen.getByLabelText('현금 영수증');
+    fireEvent.click(cashReceiptCheckbox);
+
+    const messageCardField = screen.getByLabelText('메시지 카드 텍스트');
+    const submitButton = screen.getByRole('button', { name: /제출/i });
+
+    fireEvent.change(messageCardField, { target: { value: '' } });
+
+    fireEvent.click(submitButton);
+
+    expect(await screen.findByText('메시지를 입력해주세요.')).toBeInTheDocument();
+
+    fireEvent.change(messageCardField, { target: { value: 'a'.repeat(101) } });
+
+    fireEvent.click(submitButton);
+
+    expect(await screen.findByText('메시지는 100자 이내로 입력해주세요.')).toBeInTheDocument();
+
+    fireEvent.change(messageCardField, { target: { value: 'Valid message' } });
+
+    fireEvent.click(submitButton);
+
+    await waitFor(() => {
+      expect(screen.queryByText('메시지를 입력해주세요.')).not.toBeInTheDocument();
+      expect(screen.queryByText('메시지는 100자 이내로 입력해주세요.')).not.toBeInTheDocument();
     });
   });
 });
