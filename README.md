@@ -29,5 +29,5 @@
 
 #### 결제하기 페이지의 form 통합 테스트
 
-- [ ] 현금영수증 checkbox가 false일 때 동작
-- [ ] form의 validation
+- [x] 현금영수증 checkbox가 false일 때 동작
+- [ ] form의 validation <- 하위 컴포넌트에 접근 불가...
