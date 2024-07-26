@@ -21,6 +21,7 @@ export const OptionSection = ({ productId }: Props) => {
   const { data: options } = useGetProductOptions({ productId });
 
   const [countAsString, setCountAsString] = useState('1');
+  const [isFavorite, setIsFavorite] = useState(false);
   const totalPrice = useMemo(() => {
     return detail.price * Number(countAsString);
   }, [detail, countAsString]);
@@ -45,6 +46,11 @@ export const OptionSection = ({ productId }: Props) => {
     navigate(RouterPath.order);
   };
 
+  const toggleFavorite = () => {
+    setIsFavorite(prev => !prev);
+    // Handle the favorite state change (e.g., API call to save favorite state)
+  };
+
   return (
     <Wrapper>
       <CountOptionItem name={options[0].name} value={countAsString} onChange={setCountAsString} />
@@ -52,9 +58,14 @@ export const OptionSection = ({ productId }: Props) => {
         <PricingWrapper>
           총 결제 금액 <span>{totalPrice}원</span>
         </PricingWrapper>
-        <Button theme="black" size="large" onClick={handleClick}>
-          나에게 선물하기
-        </Button>
+        <ButtonWrapper>
+          <HeartButton onClick={toggleFavorite} isFavorite={isFavorite}>
+            {isFavorite ? '❤️' : '🤍'} {/* Change this to an icon if needed */}
+          </HeartButton>
+          <Button theme="black" size="large" onClick={handleClick}>
+            나에게 선물하기
+          </Button>
+        </ButtonWrapper>
       </BottomWrapper>
     </Wrapper>
   );
@@ -90,4 +101,18 @@ const PricingWrapper = styled.div`
     font-size: 20px;
     letter-spacing: -0.02em;
   }
+`;
+
+const ButtonWrapper = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const HeartButton = styled.button<{ isFavorite: boolean }>`
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: ${props => (props.isFavorite ? 'red' : 'grey')}; 
+  margin-right: 10px; /* Adds space between the buttons */
 `;
