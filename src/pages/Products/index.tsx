@@ -1,5 +1,6 @@
-import { Button, Divider, Flex, Image, Input, Text } from '@chakra-ui/react';
+import { Button, Divider, Flex, IconButton, Image, Input, Text } from '@chakra-ui/react';
 import { useForm } from 'react-hook-form';
+import { IoIosHeart, IoIosHeartEmpty } from 'react-icons/io';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
 import useGetProductsDetail from '@/api/hooks/useGetProductsDetail';
@@ -122,6 +123,17 @@ export const ProductsPage = () => {
                 </Text>
                 <Divider />
               </Flex>
+              <IconButton
+                mt="10"
+                ml="auto"
+                w="10"
+                h="10"
+                bg="transparent"
+                border="1px"
+                borderRadius="100%"
+                aria-label="share"
+                icon={<IoIosHeartEmpty size="20" /> || <IoIosHeart />}
+              />
             </Flex>
           </Flex>
           <Flex w="360px" h="100%" flexDir="column" justify="space-between">
