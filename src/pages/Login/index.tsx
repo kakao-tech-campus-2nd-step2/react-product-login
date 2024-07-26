@@ -33,14 +33,18 @@ export const LoginPage = () => {
       );
 
       if (response.status === 200) {
-        const data = await response.data();
-        authSessionStorage.set(data.token);
+        const data = await response.data;
+        authSessionStorage.set({ token: data.token, email: data.email });
 
         const redirectUrl = queryParams.get('redirect') ?? `${window.location.origin}/`;
         return window.location.replace(redirectUrl);
+      } else {
+        console.error('Unexpected response', response);
+        alert('로그인에 실패했습니다. 다시 시도해주세요.');
       }
     } catch (error) {
       console.error('Failed sign in', error);
+      alert('로그인 중 오류가 발생했습니다.');
     }
   };
 
