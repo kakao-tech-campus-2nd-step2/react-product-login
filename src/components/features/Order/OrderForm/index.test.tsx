@@ -1,9 +1,12 @@
-import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
-import { useForm, FormProvider } from 'react-hook-form';
-import { OrderForm } from '.';
-import { OrderFormData } from '@/types';
+
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { fireEvent,render, screen } from '@testing-library/react';
+import { FormProvider,useForm } from 'react-hook-form';
+
+import type { OrderFormData } from '@/types';
+
+import { OrderForm } from '.';
 
 const queryClient = new QueryClient();
 

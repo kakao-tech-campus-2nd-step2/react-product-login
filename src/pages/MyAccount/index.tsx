@@ -2,12 +2,11 @@ import styled from '@emotion/styled';
 
 import { Button } from '@/components/common/Button';
 import { Spacing } from '@/components/common/layouts/Spacing';
-import { useAuth } from '@/provider/Auth';
 import { RouterPath } from '@/routes/path';
 import { authSessionStorage } from '@/utils/storage';
 
 export const MyAccountPage = () => {
-  const authInfo = useAuth();
+  const authInfo = JSON.parse(authSessionStorage.get() || '{}');
 
   const handleLogout = () => {
     authSessionStorage.set(undefined);
@@ -18,7 +17,7 @@ export const MyAccountPage = () => {
 
   return (
     <Wrapper>
-      {authInfo?.name}님 안녕하세요! <Spacing height={64} />
+      {authInfo?.email}님 안녕하세요! <Spacing height={64} />
       <Button
         size="small"
         theme="darkGray"

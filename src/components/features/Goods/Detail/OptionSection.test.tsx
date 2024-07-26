@@ -1,9 +1,11 @@
 import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
-import { OptionSection } from './OptionSection';
-import { useAuth } from '@/provider/Auth';
+
 import { useGetProductDetail } from '@/api/hooks/useGetProductDetail';
 import { useGetProductOptions } from '@/api/hooks/useGetProductOptions';
+import { useAuth } from '@/provider/Auth';
+
+import { OptionSection } from './OptionSection';
 
 jest.mock('@/provider/Auth', () => ({
   useAuth: jest.fn(),
