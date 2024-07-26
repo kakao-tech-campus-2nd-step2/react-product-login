@@ -45,9 +45,20 @@ export const OptionSection = ({ productId }: Props) => {
     navigate(RouterPath.order);
   };
 
-  const handleAddToWishlist = () => {
-    alert('관심 등록 완료');
-    return;
+  const handleAddToWishlist = async () => {
+    try {
+      await fetch('/api/wishes', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ productId }),
+      });
+      alert('관심 등록 완료');
+    } catch (error) {
+      console.error(error);
+      alert('관심 상품 등록에 실패했습니다.');
+    }
   }
 
   return (

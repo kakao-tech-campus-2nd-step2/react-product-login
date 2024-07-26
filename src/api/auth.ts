@@ -1,4 +1,4 @@
-import { fetchInstance } from "./instance"
+import { fetchInstance } from './instance';
 
 export const register = async (email: string, password: string) => {
   const response = await fetchInstance.post('/api/members/register', {
@@ -14,4 +14,4 @@ export const login = async (email: string, password: string) => {
     password,
   });
   return response.data;
-}
+};
