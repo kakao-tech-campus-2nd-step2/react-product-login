@@ -20,6 +20,10 @@ export const OrderFormOrderInfo = ({ orderHistory }: Props) => {
   const { data: detail } = useGetProductDetail({ productId: id.toString() });
   const totalPrice = detail.price * count;
 
+  const handleAddToFavorites = () => {
+    alert('관심 상품으로 추가되었습니다!');
+  };
+
   return (
     <Wrapper>
       <Title>
@@ -41,6 +45,7 @@ export const OrderFormOrderInfo = ({ orderHistory }: Props) => {
         colorScheme="red"
         isRound
         mb={4}
+        onClick={handleAddToFavorites}
       />
       <Button type="submit">{totalPrice}원 결제하기</Button>
     </Wrapper>
