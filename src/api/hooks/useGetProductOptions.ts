@@ -1,32 +1,39 @@
-import type { UseQueryOptions, UseQueryResult } from '@tanstack/react-query';
+import type { UseQueryOptions } from '@tanstack/react-query';
 import { useQuery } from '@tanstack/react-query';
 
-import { fetchInstance } from '../instance'; // 실제 API 통신을 위한 fetchInstance 
-import type { ProductOptionsResponseData } from './productOptions.mock'; // 타입 공유
-import { getProductOptionsPath } from './productOptionsPath'; // path 생성 함수 공유
+const BASE_URL = 'http://localhost:3000';
 
-type Props = {
-  productId: string;
+export interface ProductOption {
+  id: number;
+  name: string;
+  quantity: number;
+  productId: number;
+}
+
+export interface ProductOptionsRequestParams {
+  productId: number;
+}
+
+const fetchProductOptions = async ({ productId }: ProductOptionsRequestParams): Promise<ProductOption[]> => {
+  const response = await fetch(`${BASE_URL}/api/products/${productId}/options`);
+  
+  if (!response.ok) {
+    if (response.status === 404) {
+      throw new Error('Product not found');
+    }
+    throw new Error('Failed to fetch product options');
+  }
+
+  return response.json();
 };
 
-// 데이터 가져오는 함수
-export const getProductOptions = async ({ productId }: Props): Promise<ProductOptionsResponseData> => {
-  const response = await fetchInstance.get<ProductOptionsResponseData>(
-    getProductOptionsPath(productId)
-  );
-  return response.data;
-};
-
-// React Query 훅
 export const useGetProductOptions = (
-  params: Props,
-  options?: UseQueryOptions<ProductOptionsResponseData, Error>
-): UseQueryResult<ProductOptionsResponseData, Error> => {
+  { productId }: ProductOptionsRequestParams,
+  options?: Omit<UseQueryOptions<ProductOption[], Error, ProductOption[], [string, number]>, 'queryKey' | 'queryFn'>
+) => {
   return useQuery({
+    queryKey: ['productOptions', productId],
+    queryFn: () => fetchProductOptions({ productId }),
     ...options,
-    queryKey: [getProductOptionsPath(params.productId)], // 쿼리 키에 동적 productId 포함
-    queryFn: () => getProductOptions(params),
-    enabled: !!params.productId, // productId가 있을 때만 쿼리 활성화
-    retry: false,
   });
 };

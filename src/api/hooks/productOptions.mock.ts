@@ -1,35 +1,30 @@
 import { rest } from 'msw';
-import { z } from 'zod'; 
 
-import { getProductOptionsPath } from './productOptionsPath'; // getProductOptionsPath 함수 import
+const BASE_URL = 'http://localhost:3000';
 
-// 제품 옵션 API 응답 스키마 (zod)
-const productOptionsResponseDataSchema = z.array(
-  z.object({
-    id: z.number(),
-    name: z.string(),
-    quantity: z.number(),
-    productId: z.number(),
-  })
-);
+interface ProductOption {
+  id: number;
+  name: string;
+  quantity: number;
+  productId: number;
+}
 
-export type ProductOptionsResponseData = z.infer<typeof productOptionsResponseDataSchema>;
+// 동적으로 옵션을 생성하는 함수
+const generateOptions = (productId: number): ProductOption[] => {
+  const optionCount = Math.floor(Math.random() * 3) + 1; // 1에서 3개의 옵션 생성
+  return Array.from({ length: optionCount }, (_, index) => ({
+    id: index + 1,
+    name: `Option ${String.fromCharCode(65 + index)}`, // A, B, C...
+    quantity: Math.floor(Math.random() * 50) + 10, // 10에서 59 사이의 수량
+    productId: productId
+  }));
+};
 
-// 샘플 제품 옵션 데이터 (productId: 1)
-const sampleProductOptions: ProductOptionsResponseData = [
-  { id: 1, name: 'Option A', quantity: 10, productId: 1 },
-  { id: 2, name: 'Option B', quantity: 20, productId: 1 },
-];
-
-// 제품 옵션 모킹 핸들러
 export const productOptionsMockHandler = [
-  rest.get(getProductOptionsPath(':productId'), (req, res, ctx) => {
+  rest.get(`${BASE_URL}/api/products/:productId/options`, (req, res, ctx) => {
     const { productId } = req.params;
+    const options = generateOptions(Number(productId));
 
-    if (productId === '1') {
-      return res(ctx.status(200), ctx.json(sampleProductOptions));
-    }
-
-    return res(ctx.status(404), ctx.json({ message: 'Product not found' }));
+    return res(ctx.status(200), ctx.json(options));
   }),
 ];
