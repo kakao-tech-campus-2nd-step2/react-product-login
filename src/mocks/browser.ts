@@ -1,6 +1,6 @@
-import { setupServer } from 'msw/node';
+import { setupWorker } from 'msw';
 
 import { categoriesMockHandler } from '@/api/hooks/categories.mock';
 import { productsMockHandler } from '@/api/hooks/products.mock';
 
-export const server = setupServer(...categoriesMockHandler, ...productsMockHandler);
+export const worker = setupWorker(...categoriesMockHandler, ...productsMockHandler);
