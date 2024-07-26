@@ -1,6 +1,6 @@
 import { rest } from 'msw';
 
-export const userHandlers = [
+export const mockApiHandlers = [
   // TODO: api/members/register로 하면 http를 사용해서 matching request url이 없다고 나옴
   rest.post('https://api.example.com/api/members/register', async (req, res, ctx) => {
     const { email, password } = await req.json<{ email: string; password: string }>();
