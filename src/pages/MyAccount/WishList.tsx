@@ -19,7 +19,13 @@ export const WishList = () => {
   return (
     <Wrapper>
       {data?.map((wish: ProductData) => (
-        <WishItem imageUrl={wish.imageUrl} name={wish.name} price={wish.price} />
+        <WishItem
+          key={wish.id}
+          wishId={wish.id}
+          imageUrl={wish.imageUrl}
+          name={wish.name}
+          price={wish.price}
+        />
       ))}
     </Wrapper>
   );
