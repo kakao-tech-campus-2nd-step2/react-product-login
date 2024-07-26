@@ -53,3 +53,56 @@ export type MessageCardTemplateData = {
   thumbUrl: string;
   imageUrl: string;
 };
+
+export type UserRequestData = {
+  email: string;
+  password: string;
+};
+
+export type UserResponseData = {
+  email: string;
+  token: string;
+};
+
+export type WishData = {
+  productId: number;
+};
+
+export type Product = {
+  id: number;
+  name: string;
+  price: number;
+  imageUrl: string;
+};
+
+export type Content = {
+  id: number;
+  product: Product;
+};
+
+export type Sort = {
+  sorted: boolean;
+  unsorted: boolean;
+  empty: boolean;
+};
+
+export type Pageable = {
+  sort: Sort;
+  pageNumber: number;
+  pageSize: number;
+  offset: number;
+  unpaged: boolean;
+  paged: boolean;
+};
+export type ProductListResponse = {
+  content: Content[];
+  pageable: Pageable;
+  totalPages: number;
+  totalElements: number;
+  last: boolean;
+  number: number;
+  size: number;
+  numberOfElements: number;
+  first: boolean;
+  empty: boolean;
+};
