@@ -11,12 +11,10 @@ export const GoodsDetailPage = () => {
   const { productId = '' } = useParams<ProductDetailRequestParams>();
 
   return (
-    <>
-      <AsyncBoundary pendingFallback={<LoadingView />} rejectedFallback={<div>에러 페이지</div>}>
-        <SplitLayout sidebar={<OptionSection productId={productId} />}>
-          <GoodsDetail productId={productId} />
-        </SplitLayout>
-      </AsyncBoundary>
-    </>
+    <AsyncBoundary pendingFallback={<LoadingView />} rejectedFallback={<div>에러 페이지</div>}>
+      <SplitLayout sidebar={<OptionSection productId={productId} />}>
+        <GoodsDetail productId={productId} />
+      </SplitLayout>
+    </AsyncBoundary>
   );
 };
