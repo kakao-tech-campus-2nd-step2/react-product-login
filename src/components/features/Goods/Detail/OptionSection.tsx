@@ -45,6 +45,10 @@ export const OptionSection = ({ productId }: Props) => {
     navigate(RouterPath.order);
   };
 
+  const handleRegisterClick = () => {
+    alert('관심 등록 완료');
+  };
+
   return (
     <Wrapper>
       <CountOptionItem name={options[0].name} value={countAsString} onChange={setCountAsString} />
@@ -52,8 +56,11 @@ export const OptionSection = ({ productId }: Props) => {
         <PricingWrapper>
           총 결제 금액 <span>{totalPrice}원</span>
         </PricingWrapper>
-        <Button theme="black" size="large" onClick={handleClick}>
+        <Button theme="black" size="large" onClick={handleClick} style={{ marginBottom: '10px' }}>
           나에게 선물하기
+        </Button>
+        <Button theme="black" size="large" onClick={handleRegisterClick}>
+          관심 등록
         </Button>
       </BottomWrapper>
     </Wrapper>
