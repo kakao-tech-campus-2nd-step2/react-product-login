@@ -2,23 +2,25 @@ import { useMutation } from '@tanstack/react-query';
 
 import { BASE_URL, fetchInstance } from '../instance';
 
+import { authSessionStorage } from '@/utils/storage';
+
 const postWishs = async (productId: number) => {
   const response = await fetchInstance.post(
     `${BASE_URL}/api/wishes`,
     {
-      productId: productId,
+      productId,
     },
     {
       headers: {
-        'Content-Type': 'application/json',
+        Authorization: `Bearer ${authSessionStorage.get()?.token}`,
       },
     },
   );
   return response.data;
 };
 
-export const usePostWishs = (productId: number) => {
+export const usePostWishs = () => {
   return useMutation({
-    mutationFn: () => postWishs(productId),
+    mutationFn: (productId: number) => postWishs(productId),
   });
 };

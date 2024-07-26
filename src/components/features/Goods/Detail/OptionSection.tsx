@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { useMemo, useState } from 'react';
-import { VscHeart, VscHeartFilled } from 'react-icons/vsc';
+import { VscHeart } from 'react-icons/vsc';
 import { useNavigate } from 'react-router-dom';
 
 import { CountOptionItem } from './OptionItem/CountOptionItem';
@@ -11,7 +11,8 @@ import { usePostWishs } from '@/api/hooks/usePostWishs';
 import { Button } from '@/components/common/Button';
 import { useAuth } from '@/provider/Auth';
 import { getDynamicPath, RouterPath } from '@/routes/path';
-import { orderHistorySessionStorage } from '@/utils/storage';
+import type { WishListData } from '@/types';
+import { orderHistorySessionStorage, wishListSessionStorage } from '@/utils/storage';
 
 type Props = ProductDetailRequestParams;
 
@@ -28,8 +29,7 @@ export const OptionSection = ({ productId }: Props) => {
   const authInfo = useAuth();
 
   const likeCount = 36293;
-  const [isWished, setIsWished] = useState(false);
-  const { mutate } = usePostWishs(Number(productId));
+  const { mutate: postWishs } = usePostWishs();
 
   const handleClick = () => {
     if (!authInfo) {
@@ -54,10 +54,20 @@ export const OptionSection = ({ productId }: Props) => {
       if (!isConfirm) return;
       return navigate(getDynamicPath.login());
     }
-
-    mutate(undefined, {
+    const currentWishList: WishListData[] = wishListSessionStorage.get() || [];
+    const newWishItem: WishListData = {
+      id: detail.id,
+      product: {
+        id: detail.id,
+        name: detail.name,
+        price: detail.price,
+        imageUrl: detail.imageUrl,
+      },
+    };
+    postWishs(Number(productId), {
       onSuccess: () => {
-        setIsWished(true);
+        const addWishList = [...currentWishList, newWishItem];
+        wishListSessionStorage.set(addWishList);
         alert('관심 등록 완료');
       },
       onError: (error) => {
@@ -75,7 +85,7 @@ export const OptionSection = ({ productId }: Props) => {
         </PricingWrapper>
         <ButtonWrapper>
           <CustomButton onClick={handleWishClick}>
-            {isWished ? <VscHeartFilled size={30} /> : <VscHeart size={30} />}
+            <VscHeart size={30} />
             <span>{likeCount}</span>
           </CustomButton>
           <Button theme="black" size="large" onClick={handleClick}>
