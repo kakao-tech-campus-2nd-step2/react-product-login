@@ -6,7 +6,7 @@
     "start:mock": "cross-env REACT_APP_RUN_MSW=true npm run start",
     "start": "craco start",
     "build": "craco build",
-    "test": "craco test",
+    "test": "craco test --transformIgnorePatterns \"node_modules/(?!axios/)\"",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
   },
