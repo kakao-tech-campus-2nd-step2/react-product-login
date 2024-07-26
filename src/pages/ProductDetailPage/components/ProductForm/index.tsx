@@ -61,7 +61,7 @@ export const ProductForm = ({ productId }: ProductFormProps) => {
       <Container flexDirection="column" gap="1rem">
         <TotalPriceCallout totalPrice={totalPrice} />
         <Container gap="0.5rem">
-          <WishButton />
+          <WishButton productId={productId} />
           <Button theme="black" onClick={onClick} css={submitButton}>
             나에게 선물하기
           </Button>
