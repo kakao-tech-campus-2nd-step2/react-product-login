@@ -28,7 +28,7 @@ export const OptionSection = ({ productId }: Props) => {
   const navigate = useNavigate();
   const authInfo = useAuth();
 
-  const handleInterestClick = () => {
+  const handleInterestClick = async () => {
     if (!authInfo) {
       const isConfirm = window.confirm(
         '로그인이 필요한 메뉴입니다.\n로그인 페이지로 이동하시겠습니까?',
@@ -38,7 +38,31 @@ export const OptionSection = ({ productId }: Props) => {
       return navigate(getDynamicPath.login());
     }
 
-    alert('관심 등록 완료');
+    try {
+      const response = await fetch('/api/wishes', {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${authInfo.token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ productId: parseInt(productId) }),
+      });
+
+      if (response.status === 201) {
+        alert('관심 등록 완료');
+      } else if (response.status === 400) {
+        alert('잘못된 요청입니다.');
+      } else if (response.status === 404) {
+        alert('회원 또는 상품을 찾을 수 없습니다.');
+      } else if (response.status === 401) {
+        alert('토큰이 유효하지 않습니다. 다시 로그인해주세요.');
+      } else {
+        alert('관심 등록에 실패했습니다.');
+      }
+    } catch (error) {
+      console.error('관심 등록 에러:', error);
+      alert('관심 등록 에러가 발생했습니다.');
+    }
   };
 
   const handleOrderClick = () => {
