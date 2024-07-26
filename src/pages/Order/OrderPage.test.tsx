@@ -1,12 +1,13 @@
-import React from 'react';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { server } from '@/mocks/server';
-import { rest } from 'msw';
-import { OrderForm } from '@/components/features/Order/OrderForm';
-import { OrderHistory } from '@/types';
-import { PRODUCTS_MOCK_DATA } from '@/api/hooks/products.mock';
 import { ChakraProvider } from '@chakra-ui/react';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { rest } from 'msw';
+import React from 'react';
+
+import { PRODUCTS_MOCK_DATA } from '@/api/hooks/products.mock';
+import { OrderForm } from '@/components/features/Order/OrderForm';
+import { server } from '@/mocks/server';
+import type { OrderHistory } from '@/types';
 
 window.alert = jest.fn();
 
@@ -35,7 +36,7 @@ afterAll(() => server.close());
 
 test('주문_폼이_렌더링되고_성공적으로_제출', async () => {
   server.use(
-    rest.get('/api/product/:productId', (req, res, ctx) => {
+    rest.get('/api/product/:productId', (_, res, ctx) => {
       return res(ctx.json(PRODUCTS_MOCK_DATA.content[0]));
     }),
   );
@@ -69,7 +70,7 @@ test('주문_폼이_렌더링되고_성공적으로_제출', async () => {
 
 test('유효하지_않은_제출에서_유효성_검사_오류_표시', async () => {
   server.use(
-    rest.get('/api/product/:productId', (req, res, ctx) => {
+    rest.get('/api/product/:productId', (_, res, ctx) => {
       return res(ctx.json(PRODUCTS_MOCK_DATA.content[0]));
     }),
   );
@@ -88,7 +89,7 @@ test('유효하지_않은_제출에서_유효성_검사_오류_표시', async ()
 
 test('상품_정보가_포함된_GoodsInfo_렌더링', async () => {
   server.use(
-    rest.get('/api/product/:productId', (req, res, ctx) => {
+    rest.get('/api/product/:productId', (_, res, ctx) => {
       return res(ctx.json(PRODUCTS_MOCK_DATA.content[0]));
     }),
   );
@@ -106,7 +107,7 @@ test('상품_정보가_포함된_GoodsInfo_렌더링', async () => {
 
 test('총_결제_금액과_함께_OrderFormOrderInfo_렌더링', async () => {
   server.use(
-    rest.get('/api/product/:productId', (req, res, ctx) => {
+    rest.get('/api/product/:productId', (_, res, ctx) => {
       return res(ctx.json(PRODUCTS_MOCK_DATA.content[0]));
     }),
   );
@@ -126,7 +127,7 @@ test('총_결제_금액과_함께_OrderFormOrderInfo_렌더링', async () => {
 
 test('폼의_유효성_검사_로직이_정상적으로_동작하는지_확인', async () => {
   server.use(
-    rest.get('/api/product/:productId', (req, res, ctx) => {
+    rest.get('/api/product/:productId', (_, res, ctx) => {
       return res(ctx.json(PRODUCTS_MOCK_DATA.content[0]));
     }),
   );

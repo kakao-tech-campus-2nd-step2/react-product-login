@@ -1,10 +1,11 @@
-import React from 'react';
-import { render, screen } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { server } from '@/mocks/server';
+import { render, screen } from '@testing-library/react';
 import { rest } from 'msw';
-import { GoodsDetailHeader } from '@/components/features/Goods/Detail/Header';
+import React from 'react';
+
 import { PRODUCTS_MOCK_DATA } from '@/api/hooks/products.mock';
+import { GoodsDetailHeader } from '@/components/features/Goods/Detail/Header';
+import { server } from '@/mocks/server';
 
 beforeAll(() => server.listen());
 afterEach(() => server.resetHandlers());
@@ -20,7 +21,7 @@ const createWrapper = () => {
 
 test('상품_상세_헤더가_상품_정보와_함께_렌더링', async () => {
   server.use(
-    rest.get('/api/product/:productId', (req, res, ctx) => {
+    rest.get('/api/product/:productId', (_, res, ctx) => {
       return res(ctx.json(PRODUCTS_MOCK_DATA.content[0]));
     }),
   );
