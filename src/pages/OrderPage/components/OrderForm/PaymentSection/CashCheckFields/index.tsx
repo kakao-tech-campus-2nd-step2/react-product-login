@@ -17,7 +17,7 @@ export const CashCheckFields = () => {
       setValue('cashReceiptType', undefined);
       setValue('cashReceiptNumber', '');
     }
-  }, [cashCheck]);
+  }, [cashCheck, setValue]);
 
   return (
     <Container flexDirection="column" gap="1rem">
