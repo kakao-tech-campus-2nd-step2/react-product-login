@@ -16,6 +16,7 @@ import {
   FormControl,
   FormField,
   FormItem,
+  FormLabel,
   FormMessage,
 } from '@/components/ui/Form';
 
@@ -62,10 +63,11 @@ export const RegisterForm = () => {
           render={({ field }) => (
             <FormItem>
               <FormControl>
+                <FormLabel>이메일</FormLabel>
                 <Input
                   value={field.value}
                   onChange={field.onChange}
-                  placeholder="이메일"
+                  placeholder=" test@gmail.com"
                   variant="flushed"
                   focusBorderColor="black"
                 />
@@ -80,11 +82,12 @@ export const RegisterForm = () => {
           render={({ field }) => (
             <FormItem>
               <FormControl>
+                <FormLabel>비밀번호</FormLabel>
                 <Input
                   value={field.value}
                   onChange={field.onChange}
                   type="password"
-                  placeholder="비밀번호"
+                  placeholder=" ******"
                   variant="flushed"
                   focusBorderColor="black"
                 />
