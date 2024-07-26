@@ -1,7 +1,7 @@
 import { Center } from '@chakra-ui/react';
 import styled from '@emotion/styled';
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import KAKAO_LOGO from '@/assets/kakao_logo.svg';
 import { Button } from '@/components/common/Button';
@@ -13,22 +13,35 @@ import { authSessionStorage } from '@/utils/storage';
 export const JoinPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const navigate = useNavigate();
 
-  const handleRegister = () => {
+  const handleRegister = async () => {
     if (!email || !password) {
       alert('이메일과 비밀번호를 입력해주세요.');
       return;
     }
 
-    // 가짜 API 호출로 회원가입 처리
-    const fakeToken = 'fake_token_123'; // 가짜 토큰
+    try {
+      const response = await fetch('/api/members/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+      });
 
-    // 로그인 상태 저장
-    authSessionStorage.set(fakeToken);
+      if (response.status === 201) {
+        const data = await response.json();
+        authSessionStorage.set(data.token);
 
-    // 회원가입 후 로그인 페이지로 리다이렉트
-    navigate('/');
+        window.location.replace(window.location.origin);
+      } else {
+        const err = await response.json();
+        alert(`회원가입 실패: ${err.message}`);
+      }
+    } catch (error) {
+      console.error('회원가입 중 에러 발생:', error);
+      alert('회원가입 중 에러가 발생했습니다.');
+    }
   };
 
   return (

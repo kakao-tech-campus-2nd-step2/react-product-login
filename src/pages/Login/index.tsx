@@ -11,24 +11,39 @@ import { breakpoints } from '@/styles/variants';
 import { authSessionStorage } from '@/utils/storage';
 
 export const LoginPage = () => {
-  const [id, setId] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [queryParams] = useSearchParams();
 
-  const handleLogin = () => {
-    if (!id || !password) {
-      alert('아이디와 비밀번호를 입력해주세요.');
+  const handleLogin = async () => {
+    if (!email || !password) {
+      alert('이메일과 비밀번호를 입력해주세요.');
       return;
     }
 
-    // 가짜 API 호출로 로그인 처리
-    const fakeToken = 'fake_token_123'; // 가짜 토큰
+    try {
+      const response = await fetch('/api/members/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+      });
 
-    // 로그인 상태 저장
-    authSessionStorage.set(fakeToken);
+      if (response.status === 200) {
+        const data = await response.json();
+        authSessionStorage.set(data.token);
 
-    const redirectUrl = queryParams.get('redirect') ?? `${window.location.origin}/`;
-    return window.location.replace(redirectUrl);
+        const redirectUrl = queryParams.get('redirect') ?? `${window.location.origin}/`;
+
+        window.location.replace(redirectUrl);
+      } else {
+        const err = await response.json();
+        alert(`로그인 실패: ${err.message}`);
+      }
+    } catch (error) {
+      console.error('로그인 중 에러 발생:', error);
+    }
   };
 
   return (
@@ -37,8 +52,8 @@ export const LoginPage = () => {
       <FormWrapper>
         <UnderlineTextField
           placeholder="이메일"
-          value={id}
-          onChange={(e) => setId(e.target.value)}
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
         />
         <Spacing />
         <UnderlineTextField
