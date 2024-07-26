@@ -25,6 +25,7 @@ export const GiftMessageField = () => {
               onChange={field.onChange}
               placeholder="선물과 함께 보낼 메세지를 적어보세요"
               variant="filled"
+              data-testid="gift-message-field"
               css={{ height: '6.5rem' }}
             />
             <span css={textLengthStyle(textLength > 100)}>

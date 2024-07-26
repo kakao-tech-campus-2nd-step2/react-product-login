@@ -25,7 +25,12 @@ export const CashCheckFields = () => {
         control={control}
         name="isCashChecked"
         render={({ field }) => (
-          <Checkbox size="lg" checked={field.value} onChange={field.onChange}>
+          <Checkbox
+            size="lg"
+            checked={field.value}
+            onChange={field.onChange}
+            data-testid="cash-checked-field"
+          >
             현금영수증 신청
           </Checkbox>
         )}
@@ -54,6 +59,7 @@ export const CashCheckFields = () => {
               onChange={field.onChange}
               disabled={!cashCheck}
               placeholder="(-없이) 숫자만 입력해주세요."
+              data-testid="cash-number-field"
             />
           )}
         />

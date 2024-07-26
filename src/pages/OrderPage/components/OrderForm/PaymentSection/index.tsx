@@ -39,7 +39,7 @@ export const PaymentSection = ({
         </Text>
       </Container>
       <Divider marginBottom="2rem" />
-      <Button size="large" type="submit">
+      <Button size="large" type="submit" data-testid="submit-button">
         {totalPrice} 결제하기
       </Button>
     </Container>
