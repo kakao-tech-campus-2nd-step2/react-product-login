@@ -1,12 +1,11 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 import KAKAO_LOGO from '@/assets/kakao_logo.svg';
+import { authSessionStorage } from '@/utils/storage';
 const SignUpPage = () => {
   const [id, setId] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const navigate = useNavigate();
 
   const handleSignUp = () => {
     if (!id || !password || !confirmPassword) {
@@ -20,7 +19,8 @@ const SignUpPage = () => {
     }
 
     alert('회원가입 성공!');
-    navigate('/login');
+    authSessionStorage.set(id);
+    window.location.replace('/');
   };
 
   return (
