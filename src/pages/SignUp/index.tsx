@@ -35,7 +35,7 @@ export const SignUpPage = () => {
 
       if (response.status === 201) {
         const data = response.data;
-        authSessionStorage.set({ token: data.token, email: data.email });
+        authSessionStorage.set({ token: data.token, email: data.email, password:password });
         window.location.replace(`${window.location.origin}/`);
       } else {
         console.error('Unexpected response', response);

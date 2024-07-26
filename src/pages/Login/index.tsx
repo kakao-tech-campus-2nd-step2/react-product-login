@@ -16,36 +16,41 @@ export const LoginPage = () => {
   const [queryParams] = useSearchParams();
 
   const handleConfirm = async () => {
-    if (!email || !password) {
-      alert('이메일과 비밀번호를 입력해주세요.');
-      return;
-    }
-
-    try {
-      const response = await fetchInstance.post(
-        `${BASE_URL}/api/members/login`,
-        { email: email, password: password },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        },
-      );
-
-      if (response.status === 200) {
-        const data = await response.data;
-        authSessionStorage.set({ token: data.token, email: data.email });
-
-        const redirectUrl = queryParams.get('redirect') ?? `${window.location.origin}/`;
-        return window.location.replace(redirectUrl);
-      } else {
-        console.error('Unexpected response', response);
-        alert('로그인에 실패했습니다. 다시 시도해주세요.');
+    const registerData = authSessionStorage.get();
+    if (registerData) {
+      if (email !== registerData.email) {
+        alert('존재하지 않는 이메일입니다.');
+      } else if (password !== registerData.password) {
+        alert('존재하지 않는 비밀번호입니다.');
       }
-    } catch (error) {
-      console.error('Failed sign in', error);
-      alert('로그인 중 오류가 발생했습니다.');
+    } else {
+      alert('회원 정보를 찾을 수 없습니다.');
     }
+    if (registerData && email === registerData.email && password === registerData.password)
+      try {
+        const response = await fetchInstance.post(
+          `${BASE_URL}/api/members/login`,
+          { email: email, password: password },
+          {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          },
+        );
+
+        if (response.status === 200) {
+          const data = await response.data;
+          authSessionStorage.set({ token: data.token, email: data.email });
+          const redirectUrl = queryParams.get('redirect') ?? `${window.location.origin}/`;
+          return window.location.replace(redirectUrl);
+        } else {
+          console.error('Unexpected response', response);
+          alert('로그인에 실패했습니다. 다시 시도해주세요.');
+        }
+      } catch (error) {
+        console.error('Failed sign in', error);
+        alert('로그인 중 오류가 발생했습니다.');
+      }
   };
 
   return (
