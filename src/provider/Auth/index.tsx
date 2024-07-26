@@ -4,7 +4,7 @@ import { createContext, useContext, useEffect, useState } from 'react';
 import { authSessionStorage } from '@/utils/storage';
 
 type AuthInfo = {
-  id: string;
+  email: string;
   name: string;
   token: string;
 };
@@ -20,7 +20,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     if (currentAuthToken) {
       setAuthInfo({
-        id: currentAuthToken, // TODO: 임시로 로그인 페이지에서 입력한 이름을 ID, token, name으로 사용
+        email: currentAuthToken,
         name: currentAuthToken,
         token: currentAuthToken,
       });
