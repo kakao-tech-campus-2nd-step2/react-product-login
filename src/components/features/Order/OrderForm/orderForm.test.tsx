@@ -1,53 +1,10 @@
-import { ReactNode } from 'react';
-import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import { OrderForm } from '@/components/features/Order/OrderForm';
-import { FormProvider, useForm } from 'react-hook-form';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-
-type WrapperProps = {
-  children: ReactNode;
-};
-
-jest.mock('@/components/common/layouts/SplitLayout', () => ({
-  SplitLayout: ({ children }: WrapperProps) => <div>{children}</div>,
-}));
-jest.mock('./OrderInfo', () => ({
-  OrderFormOrderInfo: () => <div>Order Info</div>,
-}));
-jest.mock('./MessageCard', () => ({
-  OrderFormMessageCard: () => <div>Message Card</div>,
-}));
-jest.mock('./GoodsInfo', () => ({
-  GoodsInfo: () => <div>Goods Info</div>,
-}));
-
-const mockOrderHistory = {
-  id: 1,
-  count: 2,
-};
-
-const Wrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const queryClient = new QueryClient();
-  const methods = useForm();
-
-  return (
-    <QueryClientProvider client={queryClient}>
-      <FormProvider {...methods}>
-        {children}
-      </FormProvider>
-    </QueryClientProvider>
-  );
-};
 
 describe('OrderForm', () => {
   test('현금영수증 Checkbox가 false인 경우 관련 필드가 비활성화 되어있는지 확인', () => {
-    render(
-      <Wrapper>
-        <OrderForm orderHistory={mockOrderHistory} />
-      </Wrapper>
-    );
+    render(<OrderForm orderHistory={{ id: 1, count: 2 }} />);
 
     const checkbox = screen.getByLabelText(/현금영수증 신청/i);
     const receiptTypeSelect = screen.getByRole('combobox', { name: /현금영수증 종류/i });
@@ -65,11 +22,7 @@ describe('OrderForm', () => {
   });
 
   test('현금영수증 Checkbox가 true인 경우 관련 필드에 값이 입력되는지 확인', async () => {
-    render(
-      <Wrapper>
-        <OrderForm orderHistory={mockOrderHistory} />
-      </Wrapper>
-    );
+    render(<OrderForm orderHistory={{ id: 1, count: 2 }} />);
 
     const checkbox = screen.getByLabelText(/현금영수증 신청/i);
     fireEvent.click(checkbox);
@@ -87,11 +40,7 @@ describe('OrderForm', () => {
   test('form의 validation 로직이 정상 동작하는지 확인', async () => {
     const alertMock = jest.spyOn(window, 'alert').mockImplementation(() => {});
 
-    render(
-      <Wrapper>
-        <OrderForm orderHistory={mockOrderHistory} />
-      </Wrapper>
-    );
+    render(<OrderForm orderHistory={{ id: 1, count: 2 }} />);
 
     const submitButton = screen.getByRole('button', { name: /주문하기/i });
     fireEvent.click(submitButton);
