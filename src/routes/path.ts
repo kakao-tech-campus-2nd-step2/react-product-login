@@ -9,15 +9,31 @@ export const RouterPath = {
   notFound: '*',
 };
 
+export const ApiPath = {
+  members: {
+    register: '/api/members/register',
+    login: '/api/members/login',
+  },
+  wishes: {
+    root: '/api/wishes',
+    detail: (wishId: number | string) => `/api/wishes/${wishId}`,
+  },
+  products: {
+    root: '/api/products',
+    detail: (productId: string) => `/api/products/${productId}`,
+    options: (productId: string) => `/api/products/${productId}/options`,
+  },
+};
+
 export const getDynamicPath = {
   category: (categoryId: string) => RouterPath.category.replace(':categoryId', categoryId),
   login: (redirect?: string) => {
     const currentRedirect = redirect ?? window.location.href;
     return `${RouterPath.login}?redirect=${encodeURIComponent(currentRedirect)}`;
   },
-  productsDetail: (goodsId: number | string) =>
+  productsDetail: (productId: number | string) =>
     RouterPath.productsDetail.replace(
       ':productId',
-      typeof goodsId === 'number' ? goodsId.toString() : goodsId,
+      typeof productId === 'number' ? productId.toString() : productId,
     ),
 };
