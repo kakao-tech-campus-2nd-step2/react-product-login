@@ -1,8 +1,8 @@
-import { rest, setupWorker } from 'msw';
+import { rest } from 'msw';
 
 const API_URL = 'http://localhost:3000/api';
 
-const handlers = [
+export const wishesMockHandler = [
   rest.get(`${API_URL}/wishes`, (req, res, ctx) => {
     const page = req.url.searchParams.get('page')
       ? parseInt(req.url.searchParams.get('page')!, 10)
@@ -61,8 +61,17 @@ const handlers = [
       }),
     );
   }),
+  rest.post(`${API_URL}/wishes`, (req, res, ctx) => {
+    const { productId } = req.body as { productId: number };
+    return res(
+      ctx.status(201),
+      ctx.json({
+        id: Math.random(),
+        productId,
+      }),
+    );
+  }),
+  rest.delete(`${API_URL}/wishes/:wishId`, (_req, res, ctx) => {
+    return res(ctx.status(204));
+  }),
 ];
-
-const worker = setupWorker(...handlers);
-
-export default worker;
