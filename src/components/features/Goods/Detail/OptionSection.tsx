@@ -45,7 +45,12 @@ export const OptionSection = ({ productId }: Props) => {
           Authorization: `Bearer ${authInfo.token}`,
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ productId: parseInt(productId) }),
+        body: JSON.stringify({
+          productId: parseInt(productId),
+          name: detail.name,
+          price: detail.price,
+          imageUrl: detail.imageUrl,
+        }),
       });
 
       if (response.status === 201) {
