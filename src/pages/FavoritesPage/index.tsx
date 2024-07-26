@@ -1,4 +1,4 @@
-import { StarIcon } from '@chakra-ui/icons';
+import { CloseIcon } from '@chakra-ui/icons';
 import {
   Box,
   Button,
@@ -69,7 +69,7 @@ const FavoritesPage = () => {
                     <Text>{item.product.price}원</Text>
                   </Box>
                   <IconButton
-                    icon={<StarIcon />}
+                    icon={<CloseIcon />}
                     aria-label="Remove from favorites"
                     variant="outline"
                     colorScheme="red"
