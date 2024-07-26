@@ -10,6 +10,17 @@
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
   },
+  "babel": {
+    "presets": [
+      "@babel/preset-env",
+      "@babel/preset-react",
+      "@babel/preset-typescript"
+    ],
+    "plugins": [
+      ["@babel/plugin-transform-react-jsx", { "runtime": "automatic" }]
+    ]
+  },
+  
   "browserslist": {
     "production": [
       ">0.2%",
