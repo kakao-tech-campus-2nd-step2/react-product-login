@@ -22,7 +22,6 @@ export const interestHandlers = [
     return res(ctx.status(201), ctx.json(newWish));
   }),
 
-  // 관심 목록 리스트 가져오기
   rest.get('/api/wishes', (req, res, ctx) => {
     const page = parseInt(req.url.searchParams.get('page') || '0');
     const size = parseInt(req.url.searchParams.get('size') || '10');
@@ -38,11 +37,7 @@ export const interestHandlers = [
       ctx.json({
         content,
         pageable: {
-          sort: {
-            sorted: true,
-            unsorted: false,
-            empty: false,
-          },
+          sort: { sorted: true, unsorted: false, empty: false },
           pageNumber: page,
           pageSize: size,
           offset: start,
@@ -61,7 +56,7 @@ export const interestHandlers = [
     );
   }),
 
-  // 관심 목록 아이템 삭제
+  //관심목록 가져오기
   rest.delete('/api/wishes/:id', (req, res, ctx) => {
     const { id } = req.params;
     const wishId = Array.isArray(id) ? id[0] : id;
