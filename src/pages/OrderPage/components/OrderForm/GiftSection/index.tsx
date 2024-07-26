@@ -1,11 +1,17 @@
 import { Divider, Heading } from '@chakra-ui/react';
 
+import { OrderHistory } from '@/types/orderType';
+
 import { Container } from '@/components/ui/Layout/Container';
 
 import { GiftInfo } from './GiftInfo';
 import { GiftMessageField } from './GiftMessageField';
 
-export const GiftSection = () => {
+export const GiftSection = ({
+  orderHistory,
+}: {
+  orderHistory: OrderHistory;
+}) => {
   return (
     <Container flexDirection="column">
       <Container
@@ -18,7 +24,7 @@ export const GiftSection = () => {
         <GiftMessageField />
       </Container>
       <Divider borderTopWidth="0.5rem" />
-      <GiftInfo />
+      <GiftInfo orderHistory={orderHistory} />
     </Container>
   );
 };

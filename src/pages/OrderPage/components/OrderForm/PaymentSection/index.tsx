@@ -1,8 +1,7 @@
-import { useLocation } from 'react-router-dom';
-
 import { Divider, Text } from '@chakra-ui/react';
 
 import { useProductDetail } from '@/api/hooks/useProductDetail';
+import { OrderHistory } from '@/types/orderType';
 
 import { Button } from '@/components/ui/Button';
 import { Container } from '@/components/ui/Layout/Container';
@@ -10,12 +9,16 @@ import { Container } from '@/components/ui/Layout/Container';
 import { CashCheckFields } from './CashCheckFields';
 import { containerStyle } from './styles';
 
-export const PaymentSection = () => {
-  const location = useLocation();
-  const { productId, quantity } = location.state;
-  const { data: productDetail } = useProductDetail(productId);
+export const PaymentSection = ({
+  orderHistory,
+}: {
+  orderHistory: OrderHistory;
+}) => {
+  const { data: productDetail } = useProductDetail({
+    productId: orderHistory.productId,
+  });
 
-  const totalPrice = productDetail.price * quantity;
+  const totalPrice = productDetail.price * orderHistory.productQuantity;
 
   return (
     <Container flexDirection="column" gap="1rem" css={containerStyle}>
