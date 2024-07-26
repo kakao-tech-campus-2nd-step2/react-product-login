@@ -36,8 +36,7 @@ export const EnrollForm = ({
     }
 
     try {
-      const response = await registerUser(email, password);
-      localStorage.setItem('token', response.token);
+      await registerUser(email, password);
       handleConfirm();
     } catch (err) {
       alert('회원가입에 실패했습니다.');
