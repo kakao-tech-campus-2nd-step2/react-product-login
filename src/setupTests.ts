@@ -1,7 +1,7 @@
 import '@testing-library/jest-dom';
 
-import { worker } from './mocks/browser';
+import { server } from './mocks/server';
 
-beforeAll(() => worker.start());
-afterEach(() => worker.resetHandlers());
-afterAll(() => worker.stop());
+beforeAll(() => server.listen());
+afterEach(() => server.resetHandlers());
+afterAll(() => server.close());
