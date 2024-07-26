@@ -73,7 +73,7 @@ export type ProductsOptionData = {
 };
 
 export type AuthData = {
-  loginId: string;
+  email: string;
   password: string;
 };
 
@@ -126,9 +126,11 @@ export type GetProductsDetailResponseBody = ProductDetailData;
 export type GetProductsOptionResponseBody = ProductsOptionData[];
 
 export type PostLoginResponseBody = {
-  authToken: string;
+  email: string;
+  token: string;
 };
 
 export type PostRegisterResponseBody = {
-  authToken: string;
+  email: string;
+  token: string;
 };

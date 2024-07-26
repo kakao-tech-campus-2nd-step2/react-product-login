@@ -38,9 +38,9 @@ export const LoginPage = () => {
       return;
     }
 
-    login({ loginId: id, password })
+    login({ email: id, password })
       .then((res: PostLoginResponseBody) => {
-        return afterGetToken(res.authToken);
+        return afterGetToken(res.token);
       })
       .catch((err) => {
         alert(err?.response?.data?.message ?? '알 수 없는 오류가 발생했습니다.');
@@ -53,9 +53,9 @@ export const LoginPage = () => {
       return;
     }
 
-    register({ loginId: newId, password: newPassword })
+    register({ email: newId, password: newPassword })
       .then((res: PostRegisterResponseBody) => {
-        return afterGetToken(res.authToken);
+        return afterGetToken(res.token);
       })
       .catch((err) => {
         alert(err?.response?.data?.message ?? '알 수 없는 오류가 발생했습니다.');
@@ -71,7 +71,7 @@ export const LoginPage = () => {
             <FormHeader as={AccordionButton}>회원가입</FormHeader>
             <AccordionPanel>
               <UnderlineTextField
-                placeholder="이름"
+                placeholder="이메일"
                 value={newId}
                 onChange={(e) => setNewId(e.target.value)}
               />
@@ -96,7 +96,7 @@ export const LoginPage = () => {
             <FormHeader as={AccordionButton}>로그인</FormHeader>
             <AccordionPanel>
               <UnderlineTextField
-                placeholder="이름"
+                placeholder="이메일"
                 value={id}
                 onChange={(e) => setId(e.target.value)}
               />

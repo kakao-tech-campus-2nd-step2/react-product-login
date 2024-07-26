@@ -7,56 +7,56 @@ import type { PostLoginRequestBody, PostRegisterRequestBody } from '@/api/type';
 
 type User = {
   id: number;
-  loginId: string;
+  email: string;
   password: string;
 };
 
 const USER_STORAGE = new LiveStorage<User[]>('userlist', [
   {
     id: 1,
-    loginId: 'test',
+    email: 'test',
     password: 'test',
   },
 ]);
 
-const registerUser = (loginId: string, password: string) => {
+const registerUser = (email: string, password: string) => {
   const USERLIST = USER_STORAGE.getValue();
-  if (USERLIST.find((user) => user.loginId === loginId)) {
-    throw new Error('이미 존재하는 아이디입니다.');
+  if (USERLIST.find((user) => user.email === email)) {
+    throw new Error('Invalid input');
   } else {
     USER_STORAGE.update((prev) => [
       ...prev,
       {
         id: prev.length + 1,
-        loginId,
+        email,
         password,
       },
     ]);
 
-    const authToken = loginId;
+    const authToken = email;
     return authToken;
   }
 };
 
-const loginUser = (loginId: string, password: string) => {
+const loginUser = (email: string, password: string) => {
   const USERLIST = USER_STORAGE.getValue();
-  const user = USERLIST.find((u) => u.loginId === loginId && u.password === password);
+  const user = USERLIST.find((u) => u.email === email && u.password === password);
 
   if (!user) {
-    throw new Error('아이디 또는 비밀번호가 틀렸습니다.');
+    throw new Error('Invalid email or password');
   }
 
-  const authToken = loginId;
+  const authToken = email;
 
   return authToken;
 };
 
 export const userMockHandler = [
   rest.post(VERCEL_API_URL + getRegisterPath(), (req, res, ctx) => {
-    const { loginId, password } = req.body as PostRegisterRequestBody;
+    const { email, password } = req.body as PostRegisterRequestBody;
 
     try {
-      const authToken = registerUser(loginId, password);
+      const authToken = registerUser(email, password);
       return res(ctx.status(201), ctx.json({ authToken }));
     } catch (e) {
       if (e instanceof Error) {
@@ -67,14 +67,14 @@ export const userMockHandler = [
     }
   }),
   rest.post(VERCEL_API_URL + '/api/login', (req, res, ctx) => {
-    const { loginId, password } = req.body as PostLoginRequestBody;
+    const { email, password } = req.body as PostLoginRequestBody;
 
     try {
-      const authToken = loginUser(loginId, password);
+      const authToken = loginUser(email, password);
       return res(ctx.status(200), ctx.json({ authToken }));
     } catch (e) {
       if (e instanceof Error) {
-        return res(ctx.status(400), ctx.json({ message: e.message }));
+        return res(ctx.status(403), ctx.json({ message: e.message }));
       } else {
         return res(ctx.status(500), ctx.json({ message: '알 수 없는 에러가 발생했습니다.' }));
       }
