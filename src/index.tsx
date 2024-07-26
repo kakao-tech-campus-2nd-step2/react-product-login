@@ -12,14 +12,12 @@ async function deferRender() {
     const { worker } = await import('./mocks/browser');
     await worker.start();
   }
-
-  return;
 }
 
 deferRender().then(() => {
   root.render(
     <React.StrictMode>
       <App />
-    </React.StrictMode>,
+    </React.StrictMode>
   );
 });
