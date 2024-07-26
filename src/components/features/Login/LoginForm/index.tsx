@@ -1,4 +1,4 @@
-import { loginUser } from '@/api/user/api';
+import { loginUser } from '@/api/utils';
 import { Button } from '@/components/common/Button';
 import { UnderlineTextField } from '@/components/common/Form/Input/UnderlineTextField';
 import { Spacing } from '@/components/common/layouts/Spacing';
