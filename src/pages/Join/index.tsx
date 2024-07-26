@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { usePostUserJoin } from '@/api/hooks/usePostUserJoin';
 import KAKAO_LOGO from '@/assets/kakao_logo.svg';
 import { Button } from '@/components/common/Button';
 import { UnderlineTextField } from '@/components/common/Form/Input/UnderlineTextField';
@@ -14,16 +15,32 @@ export const JoinPage = () => {
   const [password, setPassword] = useState('');
   const [passwordConfirm, setPasswordConfirm] = useState('');
 
+  const {
+    mutate: postUserJoin,
+    isSuccess: isJoinSuccess,
+    isPending: isJoinPending,
+    isError: isJoinError,
+  } = usePostUserJoin();
+
   const handleConfirm = () => {
     if (!email || !password || !passwordConfirm) {
       alert('모든 필드를 입력해주세요.');
       return;
     }
 
-    //TODO: api 코드 추가하기
+    if (password !== passwordConfirm) {
+      alert('비밀번호가 일치하지 않습니다.');
+      return;
+    }
 
-    return navigate('/');
+    postUserJoin({ email, password });
   };
+
+  if (isJoinSuccess) {
+    alert('회원가입이 완료되었습니다.');
+    navigate('/login');
+  }
+  if (isJoinError) alert('회원가입에 실패했습니다.');
 
   return (
     <Wrapper>
@@ -54,7 +71,9 @@ export const JoinPage = () => {
             sm: 60,
           }}
         />
-        <Button onClick={handleConfirm}>회원가입</Button>
+        <Button onClick={handleConfirm} disabled={isJoinPending}>
+          회원가입
+        </Button>
       </FormWrapper>
     </Wrapper>
   );
