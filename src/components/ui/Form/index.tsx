@@ -1,6 +1,6 @@
 import { css } from '@emotion/react';
 
-import { HTMLAttributes, forwardRef } from 'react';
+import { HTMLAttributes, LabelHTMLAttributes, forwardRef } from 'react';
 import { FormProvider } from 'react-hook-form';
 
 import {
@@ -57,4 +57,14 @@ const FormMessage = forwardRef<
 });
 FormMessage.displayName = 'FormMessage';
 
-export { Form, FormField, FormItem, FormControl, FormMessage };
+const FormLabel = forwardRef<
+  HTMLLabelElement,
+  LabelHTMLAttributes<HTMLLabelElement>
+>(({ ...props }, ref) => {
+  const { formItemId } = useFormField();
+
+  return <label ref={ref} htmlFor={formItemId} {...props} />;
+});
+FormLabel.displayName = 'FormLabel';
+
+export { Form, FormField, FormItem, FormControl, FormMessage, FormLabel };
