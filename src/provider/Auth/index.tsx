@@ -12,7 +12,7 @@ type AuthInfo = {
 export const AuthContext = createContext<AuthInfo | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const currentAuthToken = authSessionStorage.get();
+  const currentAuthToken = authSessionStorage.get()?.id;
   const [isReady, setIsReady] = useState(!currentAuthToken);
 
   const [authInfo, setAuthInfo] = useState<AuthInfo | undefined>(undefined);
@@ -20,7 +20,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     if (currentAuthToken) {
       setAuthInfo({
-        id: currentAuthToken, // TODO: 임시로 로그인 페이지에서 입력한 이름을 ID, token, name으로 사용
+        id: currentAuthToken,
         name: currentAuthToken,
         token: currentAuthToken,
       });

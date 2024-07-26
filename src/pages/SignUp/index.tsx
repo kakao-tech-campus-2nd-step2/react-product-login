@@ -1,19 +1,50 @@
 import styled from '@emotion/styled';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import KAKAO_LOGO from '@/assets/kakao_logo.svg';
 import { Button } from '@/components/common/Button';
 import { UnderlineTextField } from '@/components/common/Form/Input/UnderlineTextField';
 import { Spacing } from '@/components/common/layouts/Spacing';
 import { breakpoints } from '@/styles/variants';
+import { authSessionStorage } from '@/utils/storage';
 
 export const SignUpPage = () => {
+  const [id, setId] = useState('');
+  const [password, setPassword] = useState('');
+  const navigate = useNavigate();
+
+  const handleConfirm = () => {
+    if (!id || !password) {
+      alert('아이디와 비밀번호를 입력해주세요.');
+      return;
+    }
+
+    //세션 스토리지에 회원정보 저장
+    authSessionStorage.set({ id: id, pwd: password });
+
+    const storedAuth = authSessionStorage.get();
+
+    //회원정보가 저장되면
+    if (storedAuth) {
+      navigate(-1); //이전 로그인페이지로 이동
+    } else {
+      alert('회원가입에 실패했습니다.');
+    }
+  };
+
   return (
     <Wrapper>
-      <Logo src={KAKAO_LOGO} alt="카카고 CI" />
+      <Logo src={KAKAO_LOGO} alt="카카오 CI" />
       <FormWrapper>
-        <UnderlineTextField placeholder="이름" />
+        <UnderlineTextField placeholder="이름" value={id} onChange={(e) => setId(e.target.value)} />
         <Spacing />
-        <UnderlineTextField type="password" placeholder="비밀번호" />
+        <UnderlineTextField
+          type="password"
+          placeholder="비밀번호"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
 
         <Spacing
           height={{
@@ -21,7 +52,7 @@ export const SignUpPage = () => {
             sm: 60,
           }}
         />
-        <Button theme="darkGray">회원가입</Button>
+        <Button onClick={handleConfirm}>회원가입</Button>
       </FormWrapper>
     </Wrapper>
   );
