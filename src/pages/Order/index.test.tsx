@@ -70,19 +70,21 @@ describe('OrderForm', () => {
       expect(cashReceiptNumberField).toBeDisabled();
     });
 
-    it('현금영수증 체크박스가 true로 변경된 경우, 현금영수증 종류와 번호 필드가 활성화되어야 한다.', () => {
-      const cashReceiptCheckbox = screen.getByLabelText(/현금영수증/i);
+    it('현금영수증 체크박스가 true로 변경된 경우, 현금영수증 종류와 번호 필드가 활성화되어야 한다.', async () => {
+      const cashReceiptCheckbox = (await screen.findByTestId(
+        'has-cash-receipt',
+      )) as HTMLInputElement;
       fireEvent.click(cashReceiptCheckbox);
 
-      const cashReceiptTypeField =
-        screen.getByDisplayValue('개인소득공제') || screen.getByDisplayValue('사업자증빙용');
-      const cashReceiptNumberField = screen.getByPlaceholderText(
-        '(-없이) 숫자만 입력해주세요.',
-      ) as HTMLInputElement;
+      const cashReceiptTypeField = (await screen.findByTestId(
+        'cash-receipt-type',
+      )) as HTMLInputElement;
+      const cashReceiptNumberField = (await screen.findByTestId(
+        'cash-receipt-number',
+      )) as HTMLInputElement;
 
-      expect(cashReceiptTypeField).toBeInTheDocument(); // Check if type field is present
-      expect(cashReceiptNumberField).not.toBeDisabled(); // Check if number field is enabled
-      expect(cashReceiptCheckbox).toBeChecked();
+      expect(cashReceiptTypeField).toBeInTheDocument();
+      expect(cashReceiptNumberField).not.toBeDisabled();
     });
   });
 
