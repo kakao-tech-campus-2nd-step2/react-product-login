@@ -33,3 +33,19 @@ export const addToWishlist = async (productId: string) => {
     throw new Error('위시 리스트 추가에 실패했습니다.');
   }
 };
+
+export const getWishlist = async (page: number, size: number) => {
+  try {
+    const response = await fetchInstance.get(`/api/wishes`, {
+      params: {
+        page,
+        size,
+        sort: 'createdDate,desc',
+      },
+    });
+
+    return response.data;
+  } catch (error) {
+    throw new Error('위시 리스트 조회에 실패했습니다.');
+  }
+};

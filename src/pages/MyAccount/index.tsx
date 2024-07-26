@@ -1,7 +1,9 @@
 import styled from '@emotion/styled';
 
+import { AsyncBoundary } from '@/components/common/AsyncBoundary';
 import { Button } from '@/components/common/Button';
 import { Spacing } from '@/components/common/layouts/Spacing';
+import { Wishlist } from '@/components/features/MyAccount/WhishList';
 import { useAuth } from '@/provider/Auth';
 import { RouterPath } from '@/routes/path';
 import { authSessionStorage } from '@/utils/storage';
@@ -29,6 +31,12 @@ export const MyAccountPage = () => {
       >
         로그아웃
       </Button>
+      <AsyncBoundary
+        pendingFallback={<div>불러오는 중...</div>}
+        rejectedFallback={<div>에러가 발생했습니다.</div>}
+      >
+        <Wishlist />
+      </AsyncBoundary>
     </Wrapper>
   );
 };
