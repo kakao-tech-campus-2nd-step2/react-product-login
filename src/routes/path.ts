@@ -7,6 +7,7 @@ export const RouterPath = {
   order: '/order',
   login: '/login',
   register: '/register',
+  wishlist: '/wishlist',
   notFound: '*',
 };
 
@@ -25,4 +26,7 @@ export const getDynamicPath = {
       ':productId',
       typeof goodsId === 'number' ? goodsId.toString() : goodsId,
     ),
+  wishlist: () => {
+    return RouterPath.wishlist; 
+  },
 };
