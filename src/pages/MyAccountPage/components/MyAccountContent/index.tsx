@@ -7,7 +7,7 @@ import { Container } from '@/components/ui/Layout/Container';
 import { buttonStyle, countainerStyle, titleStyle } from './styles';
 
 export const MyAccountConent = () => {
-  const { user } = useAuth();
+  const { email } = useAuth();
   const { handleLogout } = useLogout();
 
   return (
@@ -18,7 +18,7 @@ export const MyAccountConent = () => {
       gap="3rem"
       css={countainerStyle}
     >
-      <h1 css={titleStyle}>{user}님 안녕하세요!</h1>
+      <h1 css={titleStyle}>{email}님 안녕하세요!</h1>
       <Button
         size="medium"
         theme="darkGray"
