@@ -10,6 +10,7 @@ import {
 import { useGetProductOptions } from '@/api/hooks/useGetProductOptions';
 import { FetchPutWish } from '@/api/hooks/usePostWish';
 import { Button } from '@/components/common/Button';
+import { Spacing } from '@/components/common/layouts/Spacing';
 import { useAuth } from '@/provider/Auth';
 import { getDynamicPath, RouterPath } from '@/routes/path';
 import { orderHistorySessionStorage } from '@/utils/storage';
@@ -72,9 +73,20 @@ export const OptionSection = ({ productId }: Props) => {
           총 결제 금액 <span>{totalPrice}원</span>
         </PricingWrapper>
         <Flex>
-          <Button theme="outline" size="large" onClick={handleWishClick}>
+          <Button
+            theme="outline"
+            style={{
+              maxWidth: '60px',
+            }}
+            onClick={handleWishClick}
+          >
             💛
           </Button>
+          <Spacing
+            style={{
+              maxWidth: '20px',
+            }}
+          />
           <Button theme="black" size="large" onClick={handleOrderClick}>
             나에게 선물하기
           </Button>

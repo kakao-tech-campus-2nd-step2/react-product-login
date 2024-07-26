@@ -1,12 +1,12 @@
 import { useMutation } from '@tanstack/react-query';
 
-import type { WishData } from '@/types';
+import type { WishRequestData } from '@/types';
 
 import { BASE_URL, fetchInstanceWithAuth } from '../instance';
 
 export const getPutWishPath = () => `${BASE_URL}/api/wishes`;
 
-export const postWish = async ({ req, token }: { req: WishData; token: string }) => {
+export const postWish = async ({ req, token }: { req: WishRequestData; token: string }) => {
   const response = await fetchInstanceWithAuth(token).post(getPutWishPath(), req);
   return response.data;
 };
