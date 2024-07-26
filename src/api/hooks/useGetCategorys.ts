@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 
 import type { CategoryData } from '@/types';
 
-import { CATEGORIES_RESPONSE_DATA, getCategoriesPath } from './categories.mock';
+import { CATEGORIES_RESPONSE_DATA, getCategoriesPath } from '../mocks/categories.mock';
 
 // 모킹 데이터 타입 정의
 export type CategoryResponseData = CategoryData[];

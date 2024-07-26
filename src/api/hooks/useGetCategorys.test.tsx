@@ -1,7 +1,7 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { renderHook, waitFor } from '@testing-library/react';
 
-import { CATEGORIES_RESPONSE_DATA } from './categories.mock';
+import { CATEGORIES_RESPONSE_DATA } from '../mocks/categories.mock';
 import { useGetCategories } from './useGetCategorys';
 describe('useGetCategories', () => {
   it('should fetch categories correctly', async () => {

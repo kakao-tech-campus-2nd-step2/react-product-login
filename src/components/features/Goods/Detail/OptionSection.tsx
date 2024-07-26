@@ -8,6 +8,7 @@ import {
 } from '@/api/hooks/useGetProductDetail';
 import { useGetProductOptions } from '@/api/hooks/useGetProductOptions';
 import { Button } from '@/components/common/Button';
+import { HeartIcon } from '@/components/common/Icons/HeartIcon';
 import { useAuth } from '@/provider/Auth';
 import { getDynamicPath, RouterPath } from '@/routes/path';
 import { orderHistorySessionStorage } from '@/utils/storage';
@@ -59,6 +60,11 @@ export const OptionSection = ({ productId }: Props) => {
     navigate(RouterPath.order);
   };
 
+  const handleWishClick = () => {
+    // 위시리스트 추가 로직 구현 (아직 구현되지 않음)
+    alert('위시리스트에 추가되었습니다.');
+  };
+
   if (!detail || !options) {
     return <div>Loading...</div>;
   }
@@ -90,6 +96,10 @@ export const OptionSection = ({ productId }: Props) => {
         <PricingWrapper>
           총 결제 금액 <span>{totalPrice}원</span>
         </PricingWrapper>
+        <WishButton onClick={handleWishClick}>
+          <HeartIcon width={160} height={20} />
+          위시리스트에 추가
+        </WishButton>
         <Button theme="black" size="large" onClick={handleClick} disabled={!selectedOption}>
           나에게 선물하기
         </Button>
@@ -127,5 +137,22 @@ const PricingWrapper = styled.div`
   & span {
     font-size: 20px;
     letter-spacing: -0.02em;
+  }
+`;
+
+const WishButton = styled.button`
+  margin-bottom: 30px;
+  padding: 18px 20px;
+  border-radius: 4px;
+  background-color: #f5f5f5;
+  display: flex;
+
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 14px;
+  color: #111;
+
+  &:hover {
+    background-color: #e0e0e0;
   }
 `;
