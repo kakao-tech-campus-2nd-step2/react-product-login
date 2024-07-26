@@ -13,6 +13,7 @@ import {
   useInfiniteQuery,
   useMutation,
   useQuery,
+  useQueryClient,
   type UseQueryResult,
 } from '@tanstack/react-query';
 import type { AxiosInstance, AxiosRequestConfig } from 'axios';
@@ -60,16 +61,28 @@ export type UseAxiosMutationResult<T, U> = UseMutationResult<T, Error, U, unknow
 export function useAxiosMutation<T, U>(
   axiosOptions: AxiosRequestConfig,
   axiosInstance: AxiosInstance = vercelApi,
+  refetchQueryKeys?: string[][],
   urlFn?: (body: U) => string,
   mutationOptions?: Omit<UseMutationOptions<T, Error, U>, 'mutationFn'>,
 ): UseAxiosMutationResult<T, U> {
+  const queryClient = useQueryClient();
+
   return useMutation({
     mutationFn: async (body: U): Promise<T> =>
       axiosInstance({
         ...axiosOptions,
         data: body,
         url: urlFn ? urlFn(body) : axiosOptions.url,
-      }).then((res) => res.data),
+      }).then((res) => {
+        if (refetchQueryKeys) {
+          refetchQueryKeys.forEach((key) => {
+            queryClient.invalidateQueries({
+              queryKey: key,
+            });
+          });
+        }
+        return res.data;
+      }),
     ...(mutationOptions || {}),
   });
 }

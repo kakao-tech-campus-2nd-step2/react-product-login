@@ -16,6 +16,7 @@ function useDeleteWishes(): UseAxiosMutationResult<void, DeleteWishesRequestBody
       method: 'DELETE',
     },
     vercelApiWithAuth(token),
+    [['wishes']],
     getDeleteWishesPath,
   );
 }

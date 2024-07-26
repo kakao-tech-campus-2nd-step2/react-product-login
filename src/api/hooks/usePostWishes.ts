@@ -17,6 +17,7 @@ function usePostWishes(): UseAxiosMutationResult<PostWishesResponseBody, PostWis
       url: getPostWishesPath(),
     },
     vercelApiWithAuth(token),
+    [['wishes']],
   );
 }
 
