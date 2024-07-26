@@ -1,22 +1,17 @@
 import { rest } from 'msw';
 
-const wishesDatabase: {
-  id: number;
-  product: { id: number; name: string; price: number; imageUrl: string };
-}[] = [];
+const wishesDatabase: { id: number; productId: number }[] = [];
 let nextId = 1;
 
 export const interestHandlers = [
   rest.post('/api/wishes', (req, res, ctx) => {
-    const { product } = req.body as {
-      product: { id: number; name: string; price: number; imageUrl: string };
-    };
+    const { productId } = req.body as { productId: number };
 
-    if (!product) {
+    if (!productId) {
       return res(ctx.status(400), ctx.json({ message: 'Invalid input' }));
     }
 
-    const newWish = { id: nextId++, product };
+    const newWish = { id: nextId++, productId };
     wishesDatabase.push(newWish);
 
     return res(ctx.status(201), ctx.json(newWish));
@@ -56,7 +51,6 @@ export const interestHandlers = [
     );
   }),
 
-  //관심목록 가져오기
   rest.delete('/api/wishes/:id', (req, res, ctx) => {
     const { id } = req.params;
     const wishId = Array.isArray(id) ? id[0] : id;

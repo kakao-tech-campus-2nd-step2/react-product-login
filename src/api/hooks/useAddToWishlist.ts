@@ -1,8 +1,6 @@
 import axios from 'axios';
 import { useState } from 'react';
 
-const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
-
 export const useAddToWishlist = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<null | string>(null);
@@ -12,7 +10,7 @@ export const useAddToWishlist = () => {
     setError(null);
 
     try {
-      const response = await axios.post(`${API_BASE_URL}/api/wishes`, { productId });
+      const response = await axios.post(`http://localhost:3000/api/wishes`, { productId });
       setLoading(false);
       alert('관심 등록 완료');
       return response.data;
