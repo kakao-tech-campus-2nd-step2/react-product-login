@@ -1,15 +1,30 @@
 import styled from '@emotion/styled';
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+
+import { useGetRegister } from '@/api/hooks/useGetRegister';
+import KAKAO_LOGO from '@/assets/kakao_logo.svg';
 import { Button } from '@/components/common/Button';
 import { UnderlineTextField } from '@/components/common/Form/Input/UnderlineTextField';
 import { Spacing } from '@/components/common/layouts/Spacing';
 import { breakpoints } from '@/styles/variants';
+import { authSessionStorage } from '@/utils/storage';
 
 export const SignupPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const navigate = useNavigate();
+
+  const { mutate: register } = useGetRegister({
+    onSuccess: (data) => {
+      authSessionStorage.set(data.token);
+      navigate('/');
+    },
+    onError: (error) => {
+      alert(`회원가입 실패: ${error.message}`);
+    },
+  });
 
   const handleSignup = () => {
     if (!email || !password || !confirmPassword) {
@@ -22,11 +37,12 @@ export const SignupPage = () => {
       return;
     }
 
-    // 회원가입 로직을 추가합니다.
+    register({ email, password });
   };
 
   return (
     <Wrapper>
+      <Logo src={KAKAO_LOGO} alt="카카오 CI" />
       <FormWrapper>
         <UnderlineTextField
           placeholder="이메일"
@@ -55,7 +71,7 @@ export const SignupPage = () => {
         />
         <Button onClick={handleSignup}>회원가입</Button>
         <LoginLinkWrapper>
-          <LoginLink to="/login">로그인</LoginLink>
+          이미 계정이 있으신가요? <LoginLink to="/login">로그인</LoginLink>
         </LoginLinkWrapper>
       </FormWrapper>
     </Wrapper>
@@ -69,6 +85,11 @@ const Wrapper = styled.div`
   justify-content: center;
   align-items: center;
   flex-direction: column;
+`;
+
+const Logo = styled.img`
+  width: 88px;
+  color: #333;
 `;
 
 const FormWrapper = styled.article`
