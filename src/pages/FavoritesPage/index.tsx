@@ -10,7 +10,7 @@ import {
   Spinner,
   Text,
 } from '@chakra-ui/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { useRemoveWish, useWishList } from '@/api/hooks/fetchWishList';
 import { useAuth } from '@/provider/Auth';
@@ -20,9 +20,20 @@ const FavoritesPage = () => {
   const [page, setPage] = useState(0);
   const { data, error, isLoading } = useWishList(page);
   const removeWish = useRemoveWish();
+  const [wishList, setWishList] = useState(data?.content || []);
+
+  useEffect(() => {
+    if (data) {
+      setWishList(data.content);
+    }
+  }, [data]);
 
   const handleRemoveFavorite = (id: number) => {
-    removeWish.mutate(id);
+    removeWish.mutate(id, {
+      onSuccess: () => {
+        setWishList((prevList) => prevList.filter((item) => item.id !== id));
+      },
+    });
   };
 
   const handleNextPage = () => {
@@ -53,7 +64,7 @@ const FavoritesPage = () => {
       ) : (
         <>
           <List spacing={3}>
-            {data?.content.map((item) => (
+            {wishList.map((item) => (
               <ListItem key={item.id} p={4} borderWidth="1px" borderRadius="lg">
                 <Flex align="center">
                   <Image
