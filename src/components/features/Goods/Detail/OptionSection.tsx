@@ -12,6 +12,7 @@ import { useAuth } from '@/provider/Auth';
 import { getDynamicPath, RouterPath } from '@/routes/path';
 import { orderHistorySessionStorage } from '@/utils/storage';
 
+import { InterestButton } from './InterestButton';
 import { CountOptionItem } from './OptionItem/CountOptionItem';
 
 type Props = ProductDetailRequestParams;
@@ -49,6 +50,7 @@ export const OptionSection = ({ productId }: Props) => {
     <Wrapper>
       <CountOptionItem name={options[0].name} value={countAsString} onChange={setCountAsString} />
       <BottomWrapper>
+        <InterestButton productId={productId} />
         <PricingWrapper>
           총 결제 금액 <span>{totalPrice}원</span>
         </PricingWrapper>
