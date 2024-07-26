@@ -3,7 +3,7 @@ import axios from 'axios';
 
 const API_URL = 'http://localhost:3000/api';
 
-interface WishItem {
+export interface WishItem {
   id: number;
   product: {
     id: number;
@@ -29,45 +29,24 @@ export const useWishList = (page: number = 0, size: number = 10) => {
     return response.data;
   };
 
-  return useQuery<WishListResponse, Error>(['wishList', page, size], fetchWishList);
-};
-
-export const useAddWish = () => {
-  const queryClient = useQueryClient();
-
-  return useMutation(
-    (productId: number) =>
-      axios.post(
-        `${API_URL}/wishes`,
-        { productId },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`,
-          },
-        }
-      ),
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries('wishList');
-      },
-    }
-  );
+  return useQuery<WishListResponse, Error>({
+    queryKey: ['wishList', page, size],
+    queryFn: fetchWishList,
+  });
 };
 
 export const useRemoveWish = () => {
   const queryClient = useQueryClient();
 
-  return useMutation(
-    (wishId: number) =>
+  return useMutation({
+    mutationFn: (wishId: number) =>
       axios.delete(`${API_URL}/wishes/${wishId}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
       }),
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries('wishList');
-      },
-    }
-  );
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['wishList'] });
+    },
+  });
 };

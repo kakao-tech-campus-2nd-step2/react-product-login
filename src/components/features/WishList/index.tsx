@@ -13,7 +13,7 @@ interface WishItem {
 
 interface WishListProps {
   wishes: WishItem[];
-  onRemove: (wishId: number) => void;
+  onRemove: (wishId: number) => void; // void 대신 Promise<void>를 사용할 수도 있습니다.
 }
 
 export const WishList: React.FC<WishListProps> = ({ wishes, onRemove }) => {

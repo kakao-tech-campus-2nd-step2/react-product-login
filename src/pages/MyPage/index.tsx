@@ -13,7 +13,7 @@ export const MyPage: React.FC = () => {
   };
 
   if (isLoading) return <Spinner />;
-  if (error) return <Text>에러가 발생했습니다: {error.message}</Text>;
+  if (error) return <Text>에러가 발생했습니다: {(error as Error).message}</Text>;
 
   return (
     <Box p={6}>
