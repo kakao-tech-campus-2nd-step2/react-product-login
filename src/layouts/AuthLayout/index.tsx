@@ -4,9 +4,9 @@ import { Container } from '@/components/ui/Layout/Container';
 
 import { containerStyle } from './styles';
 
-interface LoginLayoutProp extends HTMLAttributes<HTMLDivElement> {}
+interface AuthLayoutProp extends HTMLAttributes<HTMLDivElement> {}
 
-const LoginLayout = ({ children, ...props }: LoginLayoutProp) => {
+const AuthLayout = ({ children, ...props }: AuthLayoutProp) => {
   return (
     <Container
       flexDirection="column"
@@ -21,4 +21,4 @@ const LoginLayout = ({ children, ...props }: LoginLayoutProp) => {
   );
 };
 
-export default LoginLayout;
+export default AuthLayout;
