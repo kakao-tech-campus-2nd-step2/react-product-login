@@ -50,6 +50,21 @@ export const MyAccountPage = () => {
     [authInfo, pageSize],
   );
 
+  const deleteWish = async (wishId: number) => {
+    if (!authInfo) return; // authInfo가 없으면 반환
+    try {
+      await axios.delete(`/api/wishes/${wishId}`, {
+        headers: {
+          Authorization: `Bearer ${authInfo.token}`, // 로그인 토큰 추가
+        },
+      });
+      // 삭제 후 wishes 업데이트
+      setWishes(wishes.filter((wish) => wish.id !== wishId));
+    } catch (error) {
+      console.error('Failed to delete wish', error);
+    }
+  };
+
   useEffect(() => {
     fetchWishes(currentPage);
   }, [fetchWishes, currentPage]);
@@ -76,6 +91,7 @@ export const MyAccountPage = () => {
             <div>
               <h3>{wish.product.name}</h3>
               <p>{wish.product.price}원</p>
+              <Button onClick={() => deleteWish(wish.id)}>삭제</Button>
             </div>
           </WishListItem>
         ))}
