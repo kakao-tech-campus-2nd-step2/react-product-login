@@ -26,6 +26,11 @@ export interface ProductData {
   categoryId: number;
 }
 
+export interface WishData {
+  id: number;
+  product: ProductData;
+}
+
 export interface LegacyProductDetailData extends LegacyProductData {
   isAccessableProductPage: boolean;
   review: {
