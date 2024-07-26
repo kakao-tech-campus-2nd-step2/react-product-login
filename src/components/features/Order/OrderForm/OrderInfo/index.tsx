@@ -1,4 +1,5 @@
-import { Divider } from '@chakra-ui/react';
+import { StarIcon } from '@chakra-ui/icons';
+import { Divider, IconButton } from '@chakra-ui/react';
 import styled from '@emotion/styled';
 
 import { useGetProductDetail } from '@/api/hooks/useGetProductDetail';
@@ -33,6 +34,14 @@ export const OrderFormOrderInfo = ({ orderHistory }: Props) => {
       </ItemWrapper>
       <Divider color="#ededed" />
       <Spacing height={32} />
+      <IconButton
+        icon={<StarIcon />}
+        aria-label="Add to favorites"
+        variant="outline"
+        colorScheme="red"
+        isRound
+        mb={4}
+      />
       <Button type="submit">{totalPrice}원 결제하기</Button>
     </Wrapper>
   );
