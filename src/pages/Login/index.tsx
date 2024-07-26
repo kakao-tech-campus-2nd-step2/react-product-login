@@ -1,13 +1,13 @@
 import styled from '@emotion/styled';
 import { useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
-
+import { useSearchParams, Link } from 'react-router-dom';
 import KAKAO_LOGO from '@/assets/kakao_logo.svg';
 import { Button } from '@/components/common/Button';
 import { UnderlineTextField } from '@/components/common/Form/Input/UnderlineTextField';
 import { Spacing } from '@/components/common/layouts/Spacing';
 import { breakpoints } from '@/styles/variants';
 import { authSessionStorage } from '@/utils/storage';
+import { RouterPath } from '@/routes/path';
 
 export const LoginPage = () => {
   const [id, setId] = useState('');
@@ -49,6 +49,9 @@ export const LoginPage = () => {
           }}
         />
         <Button onClick={handleConfirm}>로그인</Button>
+        <RegisterWrapper>
+          <Link to={RouterPath.register}>회원가입</Link>
+        </RegisterWrapper>
       </FormWrapper>
     </Wrapper>
   );
@@ -77,4 +80,14 @@ const FormWrapper = styled.article`
     border: 1px solid rgba(0, 0, 0, 0.12);
     padding: 60px 52px;
   }
+`;
+
+const RegisterWrapper = styled.div`
+  margin-top: 10px;
+  text-align: center;
+  text-decoration: none;
+  &:hover {
+    text-decoration: underline;
+  }
+  font-size: 12px;
 `;
