@@ -2,7 +2,7 @@
 
 ## 1단계
 
-- [ ]  테스트 기반 환경 구축 (Jest와 React Testing Libaray 사용)
+- [x]  테스트 기반 환경 구축 (Jest와 React Testing Libaray 사용)
 - [ ]  MSW를 사용하여 Mock API가 동작하도록 (상세 API / 옵션 API)
 - [ ]  단위 테스트 코드 작성
 
