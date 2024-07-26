@@ -1,4 +1,4 @@
-import type { OrderHistory } from '@/types';
+import type { OrderHistory, WishList } from '@/types';
 
 interface AuthToken {
   id: string;
@@ -8,6 +8,7 @@ interface AuthToken {
 interface StorageKey {
   authToken?: AuthToken;
   orderHistory?: OrderHistory;
+  wishList?: WishList;
 }
 
 const initStorage = <T extends keyof StorageKey>(key: T, storage: Storage) => {
@@ -33,3 +34,4 @@ const initStorage = <T extends keyof StorageKey>(key: T, storage: Storage) => {
 
 export const authSessionStorage = initStorage('authToken', sessionStorage);
 export const orderHistorySessionStorage = initStorage('orderHistory', sessionStorage);
+export const wishListSessionStorage = initStorage('wishList', sessionStorage);

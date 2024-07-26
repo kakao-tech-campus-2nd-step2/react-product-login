@@ -10,7 +10,8 @@ import { useGetProductOptions } from '@/api/hooks/useGetProductOptions';
 import { Button } from '@/components/common/Button';
 import { useAuth } from '@/provider/Auth';
 import { getDynamicPath, RouterPath } from '@/routes/path';
-import { orderHistorySessionStorage } from '@/utils/storage';
+import type { WishList } from '@/types';
+import { orderHistorySessionStorage, wishListSessionStorage } from '@/utils/storage';
 
 import { CountOptionItem } from './OptionItem/CountOptionItem';
 
@@ -27,6 +28,24 @@ export const OptionSection = ({ productId }: Props) => {
 
   const navigate = useNavigate();
   const authInfo = useAuth();
+
+  const handleWishItem = () => {
+    const productIdNumber = parseInt(productId, 10);
+    const currentWishList: WishList = wishListSessionStorage.get() || { productId: [] };
+
+    if (!currentWishList.productId.includes(productIdNumber)) {
+      const updatedWishList = {
+        ...currentWishList,
+        productId: [...currentWishList.productId, productIdNumber],
+      };
+      wishListSessionStorage.set(updatedWishList);
+
+      alert('관심 등록 완료');
+    } else {
+      alert('이미 위시리스트에 등록된 상품입니다.');
+    }
+  };
+
   const handleClick = () => {
     if (!authInfo) {
       const isConfirm = window.confirm(
@@ -53,7 +72,7 @@ export const OptionSection = ({ productId }: Props) => {
           총 결제 금액 <span>{totalPrice}원</span>
         </PricingWrapper>
         <ButtonWrapper>
-          <Button theme="darkGray" size="responsive">
+          <Button theme="darkGray" size="responsive" onClick={handleWishItem}>
             ♥️ 관심 ♥️
           </Button>
           <Button theme="black" size="large" onClick={handleClick}>

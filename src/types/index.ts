@@ -53,3 +53,7 @@ export type MessageCardTemplateData = {
   thumbUrl: string;
   imageUrl: string;
 };
+
+export type WishList = {
+  productId: number[];
+};
