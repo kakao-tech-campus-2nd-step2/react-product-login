@@ -54,6 +54,9 @@ module.exports = {
   },
   ignorePatterns: ['**/build/**/*', '.eslintrc.js', 'craco.config.js'],
   settings: {
+    react: {
+      version: 'detect',
+    },
     'import/resolver': {
       typescript: {},
     },

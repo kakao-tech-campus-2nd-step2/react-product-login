@@ -5,24 +5,21 @@ import { getProductOptionsPath } from './useGetProductOptions';
 import { getProductsPath } from './useGetProducts';
 
 export const productsMockHandler = [
-  rest.get(
-    getProductsPath({
-      categoryId: '2920',
-    }),
-    (_, res, ctx) => {
+  rest.get(getProductsPath({ categoryId: '2920' }), (req, res, ctx) => {
+    const categoryId = req.url.searchParams.get('categoryId');
+    if (categoryId === '2920') {
       return res(ctx.json(PRODUCTS_MOCK_DATA));
-    },
-  ),
-  rest.get(
-    getProductsPath({
-      categoryId: '2930',
-    }),
-    (_, res, ctx) => {
+    }
+  }),
+  rest.get(getProductsPath({ categoryId: '2930' }), (req, res, ctx) => {
+    const categoryId = req.url.searchParams.get('categoryId');
+    if (categoryId === '2930') {
       return res(ctx.json(PRODUCTS_MOCK_DATA));
-    },
-  ),
-  rest.get(getProductDetailPath(':productId'), (_, res, ctx) => {
-    return res(ctx.json(PRODUCTS_MOCK_DATA.content[0]));
+    }
+  }),
+  rest.get(getProductDetailPath(':productId'), (req, res, ctx) => {
+    const { productId } = req.params;
+    return res(ctx.json(PRODUCTS_MOCK_DATA.content.find((p) => p.id === Number(productId))));
   }),
   rest.get(getProductOptionsPath(':productId'), (_, res, ctx) => {
     return res(
@@ -44,7 +41,7 @@ export const productsMockHandler = [
   }),
 ];
 
-const PRODUCTS_MOCK_DATA = {
+export const PRODUCTS_MOCK_DATA = {
   content: [
     {
       id: 3245119,
