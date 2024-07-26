@@ -6,10 +6,10 @@ import { QueryKeys } from '@constants/QueryKeys';
 import Container from '@components/atoms/container/Container';
 import { MAX_CONTENT_WIDTH } from '@styles/size';
 import { Text } from '@chakra-ui/react';
-import ProductDisplaySection from '@components/organisms/product/ProductDisplaySection';
 import { css } from '@emotion/react';
 import ProductSkeletonGrid from '@components/molecules/skeleton/ProductSkeletonGrid';
 import useInView from '@hooks/useInView';
+import WishesContent from '@components/organisms/mypage/WishesContent';
 import { WishedProductsRequestQuery } from '@/types/request';
 import { WishedProductsResponse } from '@/types/response';
 import { generateRandomId } from '@/utils';
@@ -58,12 +58,7 @@ function WishesSection() {
         const key = `${wishSectionId}-${index}`;
 
         return (
-          <ProductDisplaySection
-            products={page.content}
-            maxColumns={4}
-            minColumns={2}
-            key={key}
-          />
+          <WishesContent wishes={page.content} maxColumns={5} minColumns={5} key={key} />
         );
       })}
       {isFetchingNextPage ? (
