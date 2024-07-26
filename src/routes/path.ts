@@ -6,6 +6,7 @@ export const RouterPath = {
   productsDetail: '/products/:productId',
   order: '/order',
   login: '/login',
+  join: '/join',
   notFound: '*',
 };
 
