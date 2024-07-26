@@ -3,27 +3,28 @@ import { rest } from 'msw';
 const BASE_URL = 'http://localhost:3000/api';
 
 // 모의 데이터
-let wishlist = [
-  {
-    id: 1,
+const generateRandomName = (): string => {
+    const products = ["Product A", "Product B", "Product C", "Product D", "Product E", "Product F", "Product G", "Product H", "Product I", "Product J"];
+    return products[Math.floor(Math.random() * products.length)];
+  };
+  
+  const generateRandomPrice = (): number => {
+    return Math.floor(Math.random() * 10000) + 1;
+  };
+  
+  const generateRandomImageUrl = (): string => {
+    return "https://www.jungle.co.kr/image/ea06cd0346fa8777cb624e3f"; // Placeholder image URL
+  };
+  
+  let wishlist = Array.from({ length: 30 }, (_, id) => ({
+    id: id + 1,
     product: {
-      id: 1,
-      name: "Product A",
-      price: 100,
-      imageUrl: "http://example.com/product-a.jpg"
-    }
-  },
-  {
-    id: 2,
-    product: {
-      id: 2,
-      name: "Product B",
-      price: 150,
-      imageUrl: "http://example.com/product-b.jpg"
-    }
-  }
-];
-
+      id: id + 1,
+      name: generateRandomName(),
+      price: generateRandomPrice(),
+      imageUrl: generateRandomImageUrl(),
+    },
+  }));
 export const wishlistMockHandlers = [
   // 위시리스트 상품 추가
   rest.post(`${BASE_URL}/wishes`, (req, res, ctx) => {
