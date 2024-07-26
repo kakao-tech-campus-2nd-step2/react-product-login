@@ -1,6 +1,8 @@
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+
+import type { OrderHistory } from '@/types';
+
 import { OrderForm } from '.';
-import { OrderHistory } from '@/types';
 
 jest.mock('./OrderInfo', () => ({
     OrderFormOrderInfo: jest.fn(() => <div>Order Info Component</div>),

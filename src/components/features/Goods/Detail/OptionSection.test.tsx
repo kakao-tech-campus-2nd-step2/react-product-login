@@ -1,9 +1,11 @@
-import { render, screen, fireEvent } from '@testing-library/react';
-import { OptionSection } from './OptionSection';
+import { fireEvent,render, screen } from '@testing-library/react';
+import { BrowserRouter as Router } from 'react-router-dom';
+
 import { useGetProductDetail } from '@/api/hooks/useGetProductDetail';
 import { useGetProductOptions } from '@/api/hooks/useGetProductOptions';
 import { useAuth } from '@/provider/Auth';
-import { BrowserRouter as Router } from 'react-router-dom';
+
+import { OptionSection } from './OptionSection';
 
 // 모킹(Mocking) : 테스트 환경에서 실제 훅을 사용하지 않고, 필요한 데이터를 반환하도록 설정
 jest.mock('@/api/hooks/useGetProductDetail');

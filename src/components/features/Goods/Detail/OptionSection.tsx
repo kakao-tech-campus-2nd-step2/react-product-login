@@ -7,6 +7,7 @@ import {
   useGetProductDetail,
 } from '@/api/hooks/useGetProductDetail';
 import { useGetProductOptions } from '@/api/hooks/useGetProductOptions';
+import { useAddToWishlist } from '@/api/hooks/useGetWishList';
 import { Button } from '@/components/common/Button';
 import { useAuth } from '@/provider/Auth';
 import { getDynamicPath, RouterPath } from '@/routes/path';
@@ -19,6 +20,7 @@ type Props = ProductDetailRequestParams;
 export const OptionSection = ({ productId }: Props) => {
   const { data: detail } = useGetProductDetail({ productId });
   const { data: options } = useGetProductOptions({ productId });
+  const { addToWishlist, error: addError } = useAddToWishlist();
 
   const [countAsString, setCountAsString] = useState('1');
   const totalPrice = useMemo(() => {
@@ -45,6 +47,24 @@ export const OptionSection = ({ productId }: Props) => {
     navigate(RouterPath.order);
   };
 
+  const handleAddToWishlist = async () => {
+    if (!authInfo) {
+      const isConfirm = window.confirm(
+        '로그인이 필요한 메뉴입니다.\n로그인 페이지로 이동하시겠습니까?',
+      );
+
+      if (!isConfirm) return;
+      return navigate(getDynamicPath.login());
+    }
+
+    const result = await addToWishlist({ productId: parseInt(productId) }, authInfo.token);
+    if (result) {
+      alert('관심 등록 완료');
+    } else if (addError) {
+      alert(`위시리스트 추가에 실패했습니다: ${addError}`);
+    }
+  };
+
   return (
     <Wrapper>
       <CountOptionItem name={options[0].name} value={countAsString} onChange={setCountAsString} />
@@ -52,6 +72,9 @@ export const OptionSection = ({ productId }: Props) => {
         <PricingWrapper>
           총 결제 금액 <span>{totalPrice}원</span>
         </PricingWrapper>
+        <Button style={{ marginBottom: "10px" }} theme="black" size="large" onClick={handleAddToWishlist}>
+          Wish
+        </Button>
         <Button theme="black" size="large" onClick={handleClick}>
           나에게 선물하기
         </Button>

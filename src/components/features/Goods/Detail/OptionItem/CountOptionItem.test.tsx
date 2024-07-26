@@ -1,5 +1,6 @@
 // CountOptionItem.test.tsx
-import { render, screen, fireEvent } from '@testing-library/react';
+import { fireEvent,render, screen } from '@testing-library/react';
+
 import { CountOptionItem } from './CountOptionItem';
 
 describe('옵션 디테일 선택 확인', () => {
