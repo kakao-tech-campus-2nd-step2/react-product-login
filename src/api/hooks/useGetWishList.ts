@@ -3,7 +3,8 @@ import { type InfiniteData, useInfiniteQuery, type UseInfiniteQueryResult } from
 import { BASE_URL } from '../instance';
 import { fetchInstance } from './../instance/index';
 
-import type { WishListData } from '@/types';
+import type { WishListData, WishlistResponse } from '@/types';
+import { authSessionStorage } from '@/utils/storage';
 
 type RequestParams = {
   pageToken?: string;
@@ -11,11 +12,13 @@ type RequestParams = {
 };
 
 type WishListResponseData = {
-  content: WishListData[];
-  pageToken: string;
-  pageSize: number;
+  products: WishListData[];
+  nextPageToken?: string;
+  pageInfo: {
+    totalResults: number;
+    resultsPerPage: number;
+  };
 };
-
 export const getWishListPath = ({ pageToken, maxResults }: RequestParams) => {
   const params = new URLSearchParams();
 
@@ -27,17 +30,23 @@ export const getWishListPath = ({ pageToken, maxResults }: RequestParams) => {
 };
 
 export const getWishList = async (params: RequestParams): Promise<WishListResponseData> => {
-  const response = await fetchInstance.get(getWishListPath(params), {
+  const response = await fetchInstance.get<WishlistResponse>(getWishListPath(params), {
     headers: {
-      Authorization: `Bearer ${localStorage.getItem('token')}`,
+      Authorization: `Bearer ${authSessionStorage.get()?.token}`,
     },
   });
   const data = response.data;
 
   return {
-    content: data.content,
-    pageToken: data.last ? undefined : data.number + 1,
-    pageSize: data.size,
+    products: data.content.map((item) => ({
+      id: item.id,
+      product: item.product,
+    })),
+    nextPageToken: data.last === false ? (data.number + 1).toString() : undefined,
+    pageInfo: {
+      totalResults: data.totalElements,
+      resultsPerPage: data.size,
+    },
   };
 };
 
@@ -52,6 +61,6 @@ export const useGetWishList = ({
       return getWishList({ pageToken: pageParam, maxResults });
     },
     initialPageParam: initPageToken,
-    getNextPageParam: (lastPage) => lastPage.pageToken,
+    getNextPageParam: (lastPage) => lastPage.nextPageToken,
   });
 };

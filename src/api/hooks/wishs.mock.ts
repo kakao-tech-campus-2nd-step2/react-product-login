@@ -1,10 +1,38 @@
 import { rest } from 'msw';
 
+import { BASE_URL } from '../instance';
+
 import type { WishlistResponse } from '@/types';
 
 export const wishlistMockHandler = [
-  rest.get('/api/wishes', (_, res, ctx) => {
-    return res(ctx.json(WISHLIST_RESPONSE_DATA));
+  rest.get(`${BASE_URL}/api/wishes`, (_, res, ctx) => {
+    return res(ctx.status(200), ctx.json(WISHLIST_RESPONSE_DATA));
+  }),
+  rest.post(`${BASE_URL}/api/wishes`, (req, res, ctx) => {
+    const { productId } = req.body as { productId: number };
+
+    if (!productId) {
+      return res(
+        ctx.status(400),
+        ctx.json({
+          error: 'Bad Request',
+          message: 'Product ID is required',
+        }),
+      );
+    }
+    return res(ctx.status(201), ctx.json({ id: 1, productId: productId }));
+  }),
+  rest.delete(`${BASE_URL}/api/wishes/:wishId`, (req, res, ctx) => {
+    const { wishId } = req.params;
+    if (!wishId) {
+      return res(
+        ctx.status(404),
+        ctx.json({
+          message: 'Wish not found',
+        }),
+      );
+    }
+    return res(ctx.status(204));
   }),
 ];
 
