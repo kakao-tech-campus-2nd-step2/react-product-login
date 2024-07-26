@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 import { useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 
-import { useLogin } from '@/api/hooks/useGetLogin';
+import { useRegister } from '@/api/hooks/useGetRegister';
 import KAKAO_LOGO from '@/assets/kakao_logo.svg';
 import { Button } from '@/components/common/Button';
 import { UnderlineTextField } from '@/components/common/Form/Input/UnderlineTextField';
@@ -12,12 +12,12 @@ import { useAuth } from '@/provider/Auth';
 import { RouterPath } from '@/routes/path';
 import { breakpoints } from '@/styles/variants';
 
-export const LoginPage = () => {
+export const RegisterPage = () => {
   const [id, setId] = useState('');
   const [password, setPassword] = useState('');
   const [queryParams] = useSearchParams();
-  const loginMutation = useLogin();
   const { setAuthInfo } = useAuth();
+  const registerMutation = useRegister();
 
   const handleConfirm = async () => {
     if (!id || !password) {
@@ -26,19 +26,20 @@ export const LoginPage = () => {
     }
 
     try {
-      const data = await loginMutation.mutateAsync({ email: id, password });
+      const data = await registerMutation.mutateAsync({ email: id, password });
       setAuthInfo({ id: data.email, name: data.email, token: data.token });
 
+      alert('회원가입이 완료되었습니다.');
       const redirectUrl = queryParams.get('redirect') ?? `${window.location.origin}/`;
       window.location.replace(redirectUrl);
     } catch (error: unknown) {
-      alert('로그인 실패: ' + (error as Error).message);
+      alert('회원가입 실패: ' + (error as Error).message);
     }
   };
 
   return (
     <Wrapper>
-      <Logo src={KAKAO_LOGO} alt="카카고 CI" />
+      <Logo src={KAKAO_LOGO} alt="카카오 CI" />
       <FormWrapper>
         <UnderlineTextField placeholder="이름" value={id} onChange={(e) => setId(e.target.value)} />
         <Spacing />
@@ -55,13 +56,13 @@ export const LoginPage = () => {
             sm: 60,
           }}
         />
-        <Button onClick={handleConfirm}>로그인</Button>
+        <Button onClick={handleConfirm}>회원가입</Button>
       </FormWrapper>
       <Box display="flex" textAlign="center" alignItems="center" margin="10px">
-        <Text fontSize="12px">아직 가입 안하셨을까요~? &nbsp; </Text>
-        <Link to={RouterPath.register}>
+        <Text fontSize="12px">이미 가입하셨을까요? &nbsp; </Text>
+        <Link to={RouterPath.login}>
           <Text fontWeight="700" color="blue">
-            회원가입
+            로그인
           </Text>
         </Link>
       </Box>
