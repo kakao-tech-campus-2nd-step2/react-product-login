@@ -11,7 +11,7 @@
 - 상품 상세 페이지 통합 테스트 코드 작성
   - [x] test 설정 (mock 관련)
   - 랜더 테스트
-    - [ ] GoodsDetail
+    - [x] GoodsDetail
     - [ ] OptionSection
   - [ ] 페이지 수량 입력 테스트
 - Form 통합 테스트 작성
