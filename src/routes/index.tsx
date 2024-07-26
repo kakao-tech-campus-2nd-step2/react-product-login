@@ -4,6 +4,7 @@ import { Layout } from '@/components/features/Layout';
 import { CategoryPage } from '@/pages/Category';
 import { GoodsDetailPage } from '@/pages/Goods/Detail';
 import { HomePage } from '@/pages/Home';
+import { JoinPage } from '@/pages/Join';
 import { LoginPage } from '@/pages/Login';
 import { MyAccountPage } from '@/pages/MyAccount';
 import { OrderPage } from '@/pages/Order';
@@ -53,6 +54,10 @@ const router = createBrowserRouter([
         element: <Navigate to={RouterPath.home} />,
       },
     ],
+  },
+  {
+    path: RouterPath.join,
+    element: <JoinPage />,
   },
   {
     path: RouterPath.login,

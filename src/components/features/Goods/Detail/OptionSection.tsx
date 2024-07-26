@@ -2,10 +2,9 @@ import styled from '@emotion/styled';
 import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import {
-  type ProductDetailRequestParams,
-  useGetProductDetail,
-} from '@/api/hooks/useGetProductDetail';
+import { useAddWish } from '@/api/hooks/useAddWishList';
+import type { ProductDetailRequestParams } from '@/api/hooks/useGetProductDetail';
+import { useGetProductDetail } from '@/api/hooks/useGetProductDetail';
 import { useGetProductOptions } from '@/api/hooks/useGetProductOptions';
 import { Button } from '@/components/common/Button';
 import { useAuth } from '@/provider/Auth';
@@ -21,18 +20,37 @@ export const OptionSection = ({ productId }: Props) => {
   const { data: options } = useGetProductOptions({ productId });
 
   const [countAsString, setCountAsString] = useState('1');
-  const totalPrice = useMemo(() => {
-    return detail.price * Number(countAsString);
-  }, [detail, countAsString]);
-
+  const totalPrice = useMemo(() => detail.price * Number(countAsString), [detail, countAsString]);
+  const addWish = useAddWish();
   const navigate = useNavigate();
   const authInfo = useAuth();
+
+  const handleAddToWishlist = () => {
+    const token = authInfo?.token;
+
+    if (!token) {
+      alert('로그인이 필요합니다.');
+      navigate(getDynamicPath.login());
+      return;
+    }
+
+    if (productId) {
+      addWish.mutate(
+        { productId: Number(productId) },
+        {
+          onSuccess: () => {
+            alert('관심 등록 완료');
+          },
+        },
+      );
+    }
+  };
+
   const handleClick = () => {
     if (!authInfo) {
       const isConfirm = window.confirm(
         '로그인이 필요한 메뉴입니다.\n로그인 페이지로 이동하시겠습니까?',
       );
-
       if (!isConfirm) return;
       return navigate(getDynamicPath.login());
     }
@@ -54,6 +72,9 @@ export const OptionSection = ({ productId }: Props) => {
         </PricingWrapper>
         <Button theme="black" size="large" onClick={handleClick}>
           나에게 선물하기
+        </Button>
+        <Button theme="outline" size="large" onClick={handleAddToWishlist}>
+          관심 등록
         </Button>
       </BottomWrapper>
     </Wrapper>
