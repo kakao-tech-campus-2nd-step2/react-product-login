@@ -15,16 +15,19 @@ export const JoinPage = () => {
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
-  const handleConfirm = () => {
+  const handleRegister = () => {
     if (!email || !password) {
       alert('이메일과 비밀번호를 입력해주세요.');
       return;
     }
 
-    // 로그인 상태 저장
-    authSessionStorage.set(email);
+    // 가짜 API 호출로 회원가입 처리
+    const fakeToken = 'fake_token_123'; // 가짜 토큰
 
-    // 회원가입 후 메인 페이지 또는 원하는 페이지로 리다이렉트
+    // 로그인 상태 저장
+    authSessionStorage.set(fakeToken);
+
+    // 회원가입 후 로그인 페이지로 리다이렉트
     navigate('/');
   };
 
@@ -51,11 +54,11 @@ export const JoinPage = () => {
             sm: 60,
           }}
         />
-        <Button onClick={handleConfirm}>회원가입</Button>
+        <Button onClick={handleRegister}>회원가입</Button>
         <br />
         <Center>
           <Link to="/login">
-            <div>로그인</div>
+            <div>로그인하러 가기</div>
           </Link>
         </Center>
       </FormWrapper>
