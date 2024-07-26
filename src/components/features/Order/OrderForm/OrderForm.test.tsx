@@ -1,7 +1,9 @@
-import { render, screen, fireEvent, waitFor, act } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { OrderForm } from './index';
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
+
 import type { OrderHistory } from '@/types';
+
+import { OrderForm } from './index';
 
 const mockOrderHistory: OrderHistory = {
   id: 3145119,
@@ -125,5 +127,43 @@ describe('OrderForm', () => {
     await waitFor(() => {
       expect(window.alert).toHaveBeenCalledWith('메시지를 입력해주세요.');
     });
+  });
+
+  it('현금영수증 Checkbox가 false인 경우 현금영수증 종류, 현금영수증 번호 field가 비활성화 되어있는지 확인', async () => {
+    render(
+      <Wrapper>
+        <OrderForm orderHistory={mockOrderHistory} />
+      </Wrapper>
+    );
+
+    await waitFor(() => expect(screen.getByRole('form')).toBeInTheDocument());
+
+    const cashReceiptCheckbox = screen.getByRole('checkbox', { name: '현금영수증 신청' });
+    const cashReceiptType = screen.getByRole('combobox', { name: '현금영수증 종류' });
+    const cashReceiptNumber = screen.getByPlaceholderText('(-없이) 숫자만 입력해주세요.');
+
+    expect(cashReceiptCheckbox).not.toBeChecked();
+    expect(cashReceiptType).toBeDisabled();
+    expect(cashReceiptNumber).toBeDisabled();
+  });
+
+  it('현금영수증 Checkbox가 true인 경우 현금영수증 종류, 번호 field에 값이 입력 되어야 하는지 확인', async () => {
+    render(
+      <Wrapper>
+        <OrderForm orderHistory={mockOrderHistory} />
+      </Wrapper>
+    );
+
+    await waitFor(() => expect(screen.getByRole('form')).toBeInTheDocument());
+
+    const cashReceiptCheckbox = screen.getByRole('checkbox', { name: '현금영수증 신청' });
+    fireEvent.click(cashReceiptCheckbox);
+
+    const cashReceiptType = screen.getByRole('combobox', { name: '현금영수증 종류' });
+    const cashReceiptNumber = screen.getByPlaceholderText('(-없이) 숫자만 입력해주세요.');
+
+    expect(cashReceiptCheckbox).toBeChecked();
+    expect(cashReceiptType).not.toBeDisabled();
+    expect(cashReceiptNumber).not.toBeDisabled();
   });
 });

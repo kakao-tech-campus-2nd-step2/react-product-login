@@ -1,8 +1,10 @@
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { render, screen, waitFor, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import { OptionSection } from './OptionSection';
+
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { fireEvent,render, screen, waitFor } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
+
+import { OptionSection } from './OptionSection';
 
 beforeAll(() => {
   global.confirm = jest.fn(() => true);
