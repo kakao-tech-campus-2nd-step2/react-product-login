@@ -2,17 +2,16 @@ import { Divider } from '@chakra-ui/react';
 import styled from '@emotion/styled';
 import { useEffect } from 'react';
 import { useInView } from 'react-intersection-observer';
-import { Link } from 'react-router-dom';
 
 import useGetWishes from '@/api/hooks/useGetWishes';
 import type { WishesData } from '@/api/type';
 import { Button } from '@/components/common/Button';
-import { DefaultGoodsItems } from '@/components/common/GoodsItem/Default';
 import { Container } from '@/components/common/layouts/Container';
 import { Grid } from '@/components/common/layouts/Grid';
 import { Spacing } from '@/components/common/layouts/Spacing';
 import ListMapper from '@/components/common/ListMapper';
 import Loading from '@/components/common/Loading';
+import WishItems from '@/components/features/MyAccount/WishItems';
 import { useAuth } from '@/provider/Auth';
 import { RouterPath } from '@/routes/path';
 import { authSessionStorage } from '@/utils/storage';
@@ -61,16 +60,7 @@ export const MyAccountPage = () => {
         <Loading isLoading={isLoading} error={isError}>
           <ListMapper<WishesData>
             items={flattenWishsList}
-            ItemComponent={({ item }) => (
-              <Link to={`/products/${item.id}`}>
-                <DefaultGoodsItems
-                  key={item.id}
-                  imageSrc={item.product.imageUrl}
-                  title={item.product.name}
-                  amount={item.product.price}
-                />
-              </Link>
-            )}
+            ItemComponent={WishItems}
             Wrapper={Grid}
             wrapperProps={{
               columns: {
