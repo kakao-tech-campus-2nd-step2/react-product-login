@@ -47,45 +47,42 @@ export const OptionSection = ({ productId }: Props) => {
     navigate(RouterPath.order);
   };
 
-  const handleInterestClick = () => {
+  const handleInterestClick = async () => {
     if (!authInfo) {
-      alert('로그인이 필요합니다.');
-      return;
+      const isConfirm = window.confirm(
+        '로그인이 필요한 메뉴입니다.\n로그인 페이지로 이동하시겠습니까?',
+      );
+
+      if (!isConfirm) return;
+      return navigate(getDynamicPath.login());
     }
 
-    const token = authInfo.token; // 사용자의 인증 토큰을 가져옵니다.
-
-    axios
-      .post(
-        `/api/wishes`,
+    try {
+      const response = await axios.post(
+        '/api/wishes',
         { productId: parseInt(productId) },
         {
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${authInfo.token}`, // 로그인 토큰 추가
             'Content-Type': 'application/json',
           },
         },
-      )
-      .then((response) => {
-        alert('관심 등록 완료');
-        console.log('Success:', response.data);
-      })
-      .catch((error) => {
+      );
+
+      // 성공적으로 추가된 경우
+      if (response.status === 201) {
+        alert('관심 상품이 등록되었습니다.');
+      }
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
         if (error.response) {
-          const { status } = error.response;
-          if (status === 400) {
-            alert('잘못된 입력입니다.');
-          } else if (status === 404) {
-            alert('회원 또는 상품을 찾을 수 없습니다.');
-          } else if (status === 401) {
-            alert('유효하지 않거나 누락된 토큰입니다.');
-          } else {
-            alert('알 수 없는 오류가 발생했습니다.');
-          }
+          // 서버에서 반환한 에러 메시지 처리
+          alert(error.response.data.message || '오류가 발생했습니다.');
         } else {
           alert('네트워크 오류가 발생했습니다.');
         }
-      });
+      }
+    }
   };
 
   return (
