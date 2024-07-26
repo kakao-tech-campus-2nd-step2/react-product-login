@@ -8,7 +8,7 @@ beforeAll(() => {
   global.confirm = jest.fn(() => true);
 });
 
-test('renders OptionSection component and updates total price', async () => {
+test('옵션 구성요소 렌더링 및 총 가격 업데이트', async () => {
   render(
     <BrowserRouter>
       <QueryClientProvider client={new QueryClient()}>
@@ -32,7 +32,7 @@ test('renders OptionSection component and updates total price', async () => {
   });
 });
 
-test('displays a confirmation dialog when the user is not authenticated', async () => {
+test('사용자 인증되지 않은 경우 대화 상자 표시', async () => {
   jest.mock('@/provider/Auth', () => ({
     useAuth: () => null,
   }));
