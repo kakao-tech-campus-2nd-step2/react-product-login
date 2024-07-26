@@ -1,33 +1,14 @@
 import styled from '@emotion/styled';
-import { useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
 
+import { useAuth } from '@/api/hooks/useAuth';
 import KAKAO_LOGO from '@/assets/kakao_logo.svg';
 import { Button } from '@/components/common/Button';
 import { UnderlineTextField } from '@/components/common/Form/Input/UnderlineTextField';
 import { Spacing } from '@/components/common/layouts/Spacing';
 import { breakpoints } from '@/styles/variants';
-import { authSessionStorage } from '@/utils/storage';
 
 export const LoginPage = () => {
-  const [id, setId] = useState('');
-  const [password, setPassword] = useState('');
-  const [queryParams] = useSearchParams();
-
-  const handleConfirm = () => {
-    if (!id || !password) {
-      alert('아이디와 비밀번호를 입력해주세요.');
-      return;
-    }
-
-    // TODO: API 연동
-
-    // TODO: API 연동 전까지 임시 로그인 처리
-    authSessionStorage.set(id);
-
-    const redirectUrl = queryParams.get('redirect') ?? `${window.location.origin}/`;
-    return window.location.replace(redirectUrl);
-  };
+  const { id, setId, password, setPassword, login, register } = useAuth();
 
   return (
     <Wrapper>
@@ -48,7 +29,11 @@ export const LoginPage = () => {
             sm: 60,
           }}
         />
-        <Button onClick={handleConfirm}>로그인</Button>
+        <Button onClick={login}>로그인</Button>
+        <Spacing height={20} />
+        <Button theme="outline" onClick={register}>
+          회원가입
+        </Button>
       </FormWrapper>
     </Wrapper>
   );
