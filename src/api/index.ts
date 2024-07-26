@@ -37,11 +37,11 @@ export function useAxiosQueryWithPage<T>(
   axiosOptions: AxiosRequestConfig,
   keys: string[],
   getNextPageParam: (lastPage: T) => string | undefined,
+  axiosInstance: AxiosInstance = vercelApi,
   queryOptions?: Omit<
     UseInfiniteQueryOptions<InfiniteData<T>>,
     'queryKey' | 'queryFn' | 'initialPageParam' | 'getNextPageParam'
   >,
-  axiosInstance: AxiosInstance = vercelApi,
 ): UseAxiosQueryWithPageResult<T> {
   return useInfiniteQuery({
     queryKey: keys,

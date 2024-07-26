@@ -15,12 +15,14 @@ const vercelApi = axios.create({
   },
 });
 
-const vercelApiWithAuth = axios.create({
-  baseURL: VERCEL_API_URL,
-  headers: {
-    'Content-Type': 'application/json',
-    Authorization: `Bearer ${localStorage.getItem('authToken')}`,
-  },
-});
+const vercelApiWithAuth = (token: string) => {
+  return axios.create({
+    baseURL: VERCEL_API_URL,
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: token,
+    },
+  });
+};
 
 export { externalApi, VERCEL_API_URL, vercelApi, vercelApiWithAuth };

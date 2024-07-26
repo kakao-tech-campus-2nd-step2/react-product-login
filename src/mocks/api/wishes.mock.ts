@@ -2,6 +2,8 @@ import { LiveStorage } from '@mswjs/storage';
 import { rest } from 'msw';
 
 import { VERCEL_API_URL } from '@/api/axiosInstance';
+import { getDeleteWishesPath } from '@/api/hooks/useDeleteWishes';
+import { getWishesPath } from '@/api/hooks/useGetWishes';
 import { getPostWishesPath } from '@/api/hooks/usePostWishes';
 import type { ProductData, WishesData } from '@/api/type';
 import { getProductsById } from '@/mocks/api/products.mock';
@@ -19,6 +21,15 @@ const addWishes = (userId: string, product: ProductData) => {
     id: WISHES_LENGTH.getValue() + 1,
     product,
   };
+
+  if (!WISHES_STORAGE.getValue()[userId]) {
+    WISHES_STORAGE.update((prev) => {
+      return {
+        ...prev,
+        [userId]: [],
+      };
+    });
+  }
 
   WISHES_STORAGE.update((prev) => {
     const prevWishes = prev[userId] || [];
@@ -47,7 +58,7 @@ const getWishes = (userId: string) => {
 
 export const wishesMockHandler = [
   rest.post(VERCEL_API_URL + getPostWishesPath(), (req, res, ctx) => {
-    const { Authorization: token } = req.headers as unknown as { Authorization: string };
+    const token = req.headers.get('authorization') || '';
 
     if (checkToken(token)) {
       const { productId } = req.body as { productId: number };
@@ -58,14 +69,18 @@ export const wishesMockHandler = [
         return res(ctx.status(404), ctx.json({ message: 'Member or Product not found' }));
       }
 
+      if (WISHES_STORAGE.getValue()[token]?.find((w) => w.product.id === product.id)) {
+        return res(ctx.status(409), ctx.json({ message: 'Already added to wish list' }));
+      }
+
       addWishes(token, product);
       return res(ctx.status(201));
     } else {
       return res(ctx.status(401), ctx.json({ message: 'Invalid or missing token' }));
     }
   }),
-  rest.get(VERCEL_API_URL + '/api/wishes', (req, res, ctx) => {
-    const { Authorization: token } = req.headers as unknown as { Authorization: string };
+  rest.get(VERCEL_API_URL + getWishesPath({}), (req, res, ctx) => {
+    const token = req.headers.get('authorization') || '';
 
     if (checkToken(token)) {
       return res(ctx.json(getWishes(token)));
@@ -73,8 +88,8 @@ export const wishesMockHandler = [
       return res(ctx.status(401), ctx.json({ message: 'Invalid or missing token' }));
     }
   }),
-  rest.delete(VERCEL_API_URL + '/api/wishes/:wishId', (req, res, ctx) => {
-    const { Authorization: token } = req.headers as unknown as { Authorization: string };
+  rest.delete(VERCEL_API_URL + getDeleteWishesPath(), (req, res, ctx) => {
+    const token = req.headers.get('authorization') || '';
     const { wishId } = req.params as { wishId: string };
 
     if (checkToken(token)) {

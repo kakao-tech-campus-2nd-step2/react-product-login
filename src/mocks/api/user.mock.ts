@@ -42,6 +42,8 @@ const loginUser = (email: string, password: string) => {
   const USERLIST = USER_STORAGE.getValue();
   const user = USERLIST.find((u) => u.email === email && u.password === password);
 
+  console.log(USERLIST);
+
   if (!user) {
     throw new Error('Invalid email or password');
   }
@@ -62,7 +64,7 @@ export const userMockHandler = [
 
     try {
       const authToken = registerUser(email, password);
-      return res(ctx.status(201), ctx.json({ authToken }));
+      return res(ctx.status(201), ctx.json({ email, token: authToken }));
     } catch (e) {
       if (e instanceof Error) {
         return res(ctx.status(400), ctx.json({ message: e.message }));
@@ -76,7 +78,7 @@ export const userMockHandler = [
 
     try {
       const authToken = loginUser(email, password);
-      return res(ctx.status(200), ctx.json({ authToken }));
+      return res(ctx.status(200), ctx.json({ email, token: authToken }));
     } catch (e) {
       if (e instanceof Error) {
         return res(ctx.status(403), ctx.json({ message: e.message }));

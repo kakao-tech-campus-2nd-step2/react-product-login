@@ -1,10 +1,11 @@
 import { Button, Divider, Flex, IconButton, Image, Input, Text } from '@chakra-ui/react';
 import { useForm } from 'react-hook-form';
-import { IoIosHeart, IoIosHeartEmpty } from 'react-icons/io';
+import { IoIosHeartEmpty } from 'react-icons/io';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
 import useGetProductsDetail from '@/api/hooks/useGetProductsDetail';
 import useGetProductsOption from '@/api/hooks/useGetProductsOption';
+import usePostWishes from '@/api/hooks/usePostWishes';
 import Loading from '@/components/common/Loading';
 import { RouterPath } from '@/routes/path';
 import type { RegisterOption } from '@/utils/form';
@@ -22,6 +23,7 @@ const defaultInputs: Inputs = {
 
 export const ProductsPage = () => {
   const { productsId = '' } = useParams<{ productsId: string }>();
+
   const { data: productsDetail, isError, isLoading } = useGetProductsDetail({ productsId });
   const {
     data: productOptions,
@@ -30,6 +32,8 @@ export const ProductsPage = () => {
   } = useGetProductsOption({
     productsId,
   });
+  const { mutateAsync: postWishes } = usePostWishes();
+
   const currentAuthToken = authSessionStorage.get();
   const navigate = useNavigate();
   const location = useLocation();
@@ -99,6 +103,22 @@ export const ProductsPage = () => {
     }
   };
 
+  const handleWishClick = () => {
+    if (!currentAuthToken) {
+      if (window.confirm('로그인이 필요합니다. 로그인페이지로 이동하시겠습니까?')) {
+        navigate(RouterPath.login + `?redirect=${location.pathname}`);
+      }
+    } else if (productsDetail) {
+      postWishes({ productId: productsDetail.id })
+        .then(() => {
+          alert('관심 등록 완료');
+        })
+        .catch((e) => {
+          alert(e.response?.data.message || '알 수 없는 오류로 관심 등록에 실패했습니다.');
+        });
+    }
+  };
+
   return (
     <Flex h="calc(100vh - 54px)" w="100%" justify="center" py="10">
       <Loading
@@ -128,11 +148,10 @@ export const ProductsPage = () => {
                 ml="auto"
                 w="10"
                 h="10"
-                bg="transparent"
-                border="1px"
                 borderRadius="100%"
                 aria-label="share"
-                icon={<IoIosHeartEmpty size="20" /> || <IoIosHeart />}
+                onClick={handleWishClick}
+                icon={<IoIosHeartEmpty size="20" />}
               />
             </Flex>
           </Flex>
