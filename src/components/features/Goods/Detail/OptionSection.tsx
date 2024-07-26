@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import {
@@ -46,10 +46,15 @@ export const OptionSection = ({ productId }: Props) => {
     navigate(RouterPath.order);
   };
 
-  const toggleFavorite = () => {
-    setIsFavorite(prev => !prev);
-    // Handle the favorite state change (e.g., API call to save favorite state)
-  };
+  const toggleFavorite = useCallback(() => {
+    setIsFavorite(prev => {
+      const newState = !prev;
+      if (!prev && newState) {
+        alert('위시 등록 완료');
+      }
+      return newState;
+    });
+  }, []);
 
   return (
     <Wrapper>
@@ -60,7 +65,7 @@ export const OptionSection = ({ productId }: Props) => {
         </PricingWrapper>
         <ButtonWrapper>
           <HeartButton onClick={toggleFavorite} isFavorite={isFavorite}>
-            {isFavorite ? '❤️' : '🤍'} {/* Change this to an icon if needed */}
+            {isFavorite ? '❤️' : '🤍'}
           </HeartButton>
           <Button theme="black" size="large" onClick={handleClick}>
             나에게 선물하기
