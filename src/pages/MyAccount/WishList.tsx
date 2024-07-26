@@ -1,12 +1,20 @@
 import styled from '@emotion/styled';
 
 import { useGetWishList } from '@/api/hooks/useGetWishList';
+import { LoadingView } from '@/components/common/View/LoadingView';
 import type { ProductData } from '@/types';
 
 import { WishItem } from './WishItem';
 
 export const WishList = () => {
-  const { data } = useGetWishList();
+  const { data, isLoading, isError } = useGetWishList();
+
+  if (isLoading) {
+    return <LoadingView />;
+  }
+  if (isError) {
+    return <div>에러 입니다.</div>;
+  }
 
   return (
     <Wrapper>
