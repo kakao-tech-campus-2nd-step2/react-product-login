@@ -26,3 +26,4 @@ export const getProductsPath = ({
 };
 
 export const getLoginPath = () => `${BASE_URL}/api/members/login`;
+export const getRegisterPath = () => `${BASE_URL}/api/members/register`;

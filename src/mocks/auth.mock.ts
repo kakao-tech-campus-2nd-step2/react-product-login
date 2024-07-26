@@ -1,19 +1,34 @@
 import { HttpResponse, HttpResponseResolver, http } from 'msw';
 
 import { LoginRequestBody, LoginResposne } from '@/api/services/auth/login';
-import { getLoginPath } from '@/api/services/path';
+import {
+  RegisterRequestBody,
+  RegisterResposne,
+} from '@/api/services/auth/register';
+import { getLoginPath, getRegisterPath } from '@/api/services/path';
 
-type SdkRequest = LoginRequestBody;
-type SdkResponse = LoginResposne;
-
-function handleSdkRequest(
-  resolver: HttpResponseResolver<never, SdkRequest, SdkResponse>
+function handleLoginRequest(
+  resolver: HttpResponseResolver<never, LoginRequestBody, LoginResposne>
 ) {
   return http.post(getLoginPath(), resolver);
 }
 
+function handlRegisterRequest(
+  resolver: HttpResponseResolver<never, RegisterRequestBody, RegisterResposne>
+) {
+  return http.post(getRegisterPath(), resolver);
+}
+
 export const authMockHandler = [
-  handleSdkRequest(async ({ request }) => {
+  handleLoginRequest(async ({ request }) => {
+    const data = await request.json();
+
+    return HttpResponse.json({
+      email: data.email,
+      token: `mocked_token_${data.email}`,
+    });
+  }),
+  handlRegisterRequest(async ({ request }) => {
     const data = await request.json();
 
     return HttpResponse.json({
