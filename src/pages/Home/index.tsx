@@ -1,21 +1,14 @@
-import { Spacing } from '@/components/common/layouts/Spacing';
-import { AiDiscoveryBanner } from '@/components/features/Home/AiDiscoveryBanner';
-import { CategorySection } from '@/components/features/Home/CategorySection';
-import { SelectFriendsBanner } from '@/components/features/Home/SelectFriendsBanner';
+import React from 'react';
+import Layout from '@components/features/Layout';
+import { FriendSelector, FriendGiftRecommendation, ThemeCategory, TrendingGifts } from '@components/features/Home';
 
-export const HomePage = () => {
+export default function Home() {
   return (
-    <>
-      <SelectFriendsBanner />
-      <CategorySection />
-      <AiDiscoveryBanner />
-      <Spacing
-        height={{
-          initial: 40,
-          sm: 80,
-          md: 120,
-        }}
-      />
-    </>
+    <Layout>
+      <FriendSelector />
+      <ThemeCategory />
+      <FriendGiftRecommendation />
+      <TrendingGifts />
+    </Layout>
   );
-};
+}

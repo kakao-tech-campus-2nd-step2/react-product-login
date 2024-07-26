@@ -1,30 +1,16 @@
-import styled from '@emotion/styled';
-import { Outlet } from 'react-router-dom';
+import React, { ReactNode } from 'react';
+import { Header, Footer } from '@components/common';
 
-import { Footer } from './Footer';
-import { Header, HEADER_HEIGHT } from './Header';
-import { ScrollToTop } from './ScrollToTop';
+export interface PageWrapperProps {
+  children: ReactNode;
+}
 
-export const Layout = () => (
-  <Wrapper>
-    <ScrollToTop />
-    <Header />
-    <InnerWrapper>
-      <Outlet />
+export default function Layout({ children }: PageWrapperProps) {
+  return (
+    <>
+      <Header />
+      <main>{children}</main>
       <Footer />
-    </InnerWrapper>
-  </Wrapper>
-);
-
-const Wrapper = styled.div`
-  width: 100%;
-  position: relative;
-`;
-
-const InnerWrapper = styled.div`
-  width: 100%;
-  position: absolute;
-  top: 0;
-  left: 0;
-  margin-top: ${HEADER_HEIGHT};
-`;
+    </>
+  );
+}
