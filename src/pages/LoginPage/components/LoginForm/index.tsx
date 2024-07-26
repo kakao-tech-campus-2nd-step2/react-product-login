@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
 
 import { Button, Input, useDisclosure } from '@chakra-ui/react';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -8,25 +7,21 @@ import { useMutation } from '@tanstack/react-query';
 
 import { login } from '@/api/services/auth/login';
 import { API_ERROR_MESSAGES } from '@/constants/errorMessage';
-import { useAuth } from '@/provider/auth/useAuth';
 import { LoginFields, LoginSchema } from '@/schema/index';
 
 import { Alert } from '@/components/ui/Dialog/Alert';
 
+import { useLoginSuccess } from '../../hooks/handleLoginSuccess';
 import { buttonStyle, formContainerStyle } from './styles';
 
 export const LoginForm = () => {
-  const navigate = useNavigate();
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { setEmail } = useAuth();
   const [alertMessage, setAlertMessage] = useState('');
+
+  const { handleLoginSuccess } = useLoginSuccess();
   const { mutate, status } = useMutation({
     mutationFn: login,
-    onSuccess: (data) => {
-      sessionStorage.setItem('token', data.token);
-      setEmail(data.email);
-      navigate(-1);
-    },
+    onSuccess: (data) => handleLoginSuccess(data),
     onError: () => {
       setAlertMessage(API_ERROR_MESSAGES.UNKNOWN_ERROR);
     },
@@ -41,6 +36,14 @@ export const LoginForm = () => {
     },
   });
 
+  useEffect(() => {
+    if (alertMessage) {
+      onOpen();
+    } else {
+      onClose();
+    }
+  }, [alertMessage, onClose, onOpen]);
+
   const handleSubmit = form.handleSubmit(
     () => mutate(form.getValues()),
     (errors) => {
@@ -50,14 +53,6 @@ export const LoginForm = () => {
       setAlertMessage(errorMessages);
     }
   );
-
-  useEffect(() => {
-    if (alertMessage) {
-      onOpen();
-    } else {
-      onClose();
-    }
-  }, [alertMessage, onClose, onOpen]);
 
   return (
     <form onSubmit={(e) => e.preventDefault()} css={formContainerStyle}>
