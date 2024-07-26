@@ -24,3 +24,5 @@ export const getProductsPath = ({
 
   return `${BASE_URL}/api/products?${params.toString()}`;
 };
+
+export const getLoginPath = () => `${BASE_URL}/api/members/login`;
