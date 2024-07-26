@@ -7,14 +7,20 @@ import { Button } from '@/components/common/Button';
 import { UnderlineTextField } from '@/components/common/Form/Input/UnderlineTextField';
 import { Spacing } from '@/components/common/layouts/Spacing';
 import { breakpoints } from '@/styles/variants';
-import { authSessionStorage } from '@/utils/storage';
+// import { authSessionStorage } from '@/utils/storage';
+import { useAuth } from '@/provider/Auth';
+import { useLogin } from '@/api/hooks/useLogin';
+import { useSignup } from '@/api/hooks/useSignup';
 
 export const LoginPage = () => {
   const [id, setId] = useState('');
   const [password, setPassword] = useState('');
   const [queryParams] = useSearchParams();
+  const { setAuthInfo } = useAuth();
+  const loginMutation = useLogin();
+  const signupMutaion = useSignup();
 
-  const handleConfirm = () => {
+  const handleConfirm = async () => {
     if (!id || !password) {
       alert('아이디와 비밀번호를 입력해주세요.');
       return;
@@ -23,10 +29,33 @@ export const LoginPage = () => {
     // TODO: API 연동
 
     // TODO: API 연동 전까지 임시 로그인 처리
-    authSessionStorage.set(id);
+    try {
+      const data = await loginMutation.mutateAsync({ email: id, password });
+      setAuthInfo({ id: data.email, name: data.email, token: data.token });
 
-    const redirectUrl = queryParams.get('redirect') ?? `${window.location.origin}/`;
-    return window.location.replace(redirectUrl);
+      const redirectUrl = queryParams.get('redirect') ?? `${window.location.origin}/`;
+      window.location.replace(redirectUrl);
+    } catch (error: unknown) {
+      alert('로그인 실패: ' + (error as Error).message);
+    }
+  };
+
+  const handleSignup = async () => {
+    if (!id || !password) {
+      alert('아이디와 비밀번호를 입력해주세요.');
+      return;
+    }
+
+    try {
+      const data = await signupMutaion.mutateAsync({ email: id, password });
+      setAuthInfo({ id: data.email, name: data.email, token: data.token });
+
+      alert('회원가입이 완료되었습니다.');
+      const redirectUrl = queryParams.get('redirect') ?? `${window.location.origin}/`;
+      window.location.replace(redirectUrl);
+    } catch (error: unknown) {
+      alert('회원가입 실패: ' + (error as Error).message);
+    }
   };
 
   return (
@@ -49,6 +78,8 @@ export const LoginPage = () => {
           }}
         />
         <Button onClick={handleConfirm}>로그인</Button>
+        <Spacing />
+        <Button onClick={handleSignup}>회원가입</Button>
       </FormWrapper>
     </Wrapper>
   );
