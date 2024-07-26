@@ -15,8 +15,8 @@
 
 ### 프로젝트 요구사항
 - [ ] 테스트 코드 작성을 해보아요
-  - [ ] Jest와 React Testing Library를 사용하여 테스트 기반 환경 구축하기
-  - [ ] MSW를 사용하여 Mock API가 동작하도록 하기
+  - [X] Jest와 React Testing Library를 사용하여 테스트 기반 환경 구축하기
+  - [X] MSW를 사용하여 Mock API가 동작하도록 하기
   - [ ] 단위 테스트 코드 작성
   - [ ] 상품 상세 페이지와 관련된 통합 테스트 코드 작성
   - [ ] 결제하기 페이지 Form과 관련된 통합 테스트 코드 작성
@@ -24,3 +24,4 @@
     - [ ] form의 validation 로직이 정상 작동하는지 확인하는 테스트 코드 작성
 ---
 ### 프로젝트 링크
+[Week5 프로젝트 링크](https://joshuadesu.vercel.app/)
