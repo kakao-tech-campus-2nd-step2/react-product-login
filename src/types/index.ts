@@ -11,7 +11,7 @@ export type ProductData = {
   name: string;
   price: number;
   imageUrl: string;
-  categoryId: number;
+  categoryId?: number;
 };
 
 export type ProductOptionsData = {
