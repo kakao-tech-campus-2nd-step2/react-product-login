@@ -20,3 +20,5 @@ export const GoodsDetailPage = () => {
     </>
   );
 };
+
+export { GoodsDetail };

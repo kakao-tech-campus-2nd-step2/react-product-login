@@ -1,45 +1,42 @@
 import styled from '@emotion/styled';
 import { useState } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import KAKAO_LOGO from '@/assets/kakao_logo.svg';
 import { Button } from '@/components/common/Button';
 import { UnderlineTextField } from '@/components/common/Form/Input/UnderlineTextField';
 import { Spacing } from '@/components/common/layouts/Spacing';
 import { breakpoints } from '@/styles/variants';
-import { authSessionStorage } from '@/utils/storage';
 
-export const LoginPage = () => {
+export const SignupPage = () => {
   const [id, setId] = useState('');
   const [password, setPassword] = useState('');
-  const [] = useSearchParams();
+  const [confirmPassword, setConfirmPassword] = useState('');
   const navigate = useNavigate();
 
-  const handleLogin = () => {
-    if (!id || !password) {
-      alert('아이디와 비밀번호를 입력해주세요.');
+  const handleSignup = () => {
+    if (!id || !password || !confirmPassword) {
+      alert('모든 필드를 입력해주세요.');
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      alert('비밀번호가 일치하지 않습니다.');
       return;
     }
 
     const storedUsers = JSON.parse(localStorage.getItem('users') || '[]');
-    const user = storedUsers.find(
-      // eslint-disable-next-line @typescript-eslint/no-shadow
-      (user: { id: string; password: string }) => user.id === id && user.password === password,
-    );
+    const userExists = storedUsers.some((user: { id: string }) => user.id === id);
 
-    if (user) {
-      const mockToken = 'mock-token';
-      authSessionStorage.set(mockToken); // 로그인 시 token 저장
-      localStorage.setItem('user', JSON.stringify(user)); // 유저 정보 저장
-      alert('로그인 성공');
-      window.location.replace(`${window.location.origin}/`); // 메인 페이지로 리디렉션
-    } else {
-      alert('아이디 또는 비밀번호가 잘못되었습니다.');
+    if (userExists) {
+      alert('이미 존재하는 아이디입니다.');
+      return;
     }
-  };
 
-  const handleSignup = () => {
-    navigate('/signup');
+    storedUsers.push({ id, password });
+    localStorage.setItem('users', JSON.stringify(storedUsers));
+    alert('회원가입이 완료되었습니다.');
+    navigate('/login');
   };
 
   return (
@@ -58,12 +55,15 @@ export const LoginPage = () => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
+        <Spacing />
+        <UnderlineTextField
+          type="password"
+          placeholder="비밀번호 확인"
+          value={confirmPassword}
+          onChange={(e) => setConfirmPassword(e.target.value)}
+        />
         <Spacing height={{ initial: 40, sm: 60 }} />
-        <Button onClick={handleLogin}>로그인</Button>
-        <Spacing height={20} />
-        <Button theme="outline" onClick={handleSignup}>
-          회원가입
-        </Button>
+        <Button onClick={handleSignup}>회원가입</Button>
       </FormWrapper>
     </Wrapper>
   );

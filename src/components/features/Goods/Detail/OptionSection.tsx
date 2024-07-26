@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import type { AxiosError } from 'axios';
 import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -7,14 +8,19 @@ import {
   useGetProductDetail,
 } from '@/api/hooks/useGetProductDetail';
 import { useGetProductOptions } from '@/api/hooks/useGetProductOptions';
+import { fetchInstance } from '@/api/instance';
 import { Button } from '@/components/common/Button';
 import { useAuth } from '@/provider/Auth';
 import { getDynamicPath, RouterPath } from '@/routes/path';
-import { orderHistorySessionStorage } from '@/utils/storage';
+import { authSessionStorage, orderHistorySessionStorage } from '@/utils/storage';
 
 import { CountOptionItem } from './OptionItem/CountOptionItem';
 
 type Props = ProductDetailRequestParams;
+
+const getToken = () => {
+  return authSessionStorage.get();
+};
 
 export const OptionSection = ({ productId }: Props) => {
   const { data: detail } = useGetProductDetail({ productId });
@@ -27,6 +33,57 @@ export const OptionSection = ({ productId }: Props) => {
 
   const navigate = useNavigate();
   const authInfo = useAuth();
+
+  const handleAddToWishList = async () => {
+    const token = getToken();
+    if (!token) {
+      alert('로그인이 필요합니다.');
+      return;
+    }
+
+    console.log('Attempting to add to wishlist:', {
+      productId: parseInt(productId),
+      token,
+    });
+
+    try {
+      const response = await fetchInstance.post(
+        '/api/wishes',
+        { productId: parseInt(productId) },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+
+      console.log('API response:', response);
+
+      if (response.status === 201) {
+        alert('관심 등록 완료');
+      } else {
+        alert('관심 등록 실패');
+      }
+    } catch (error) {
+      const axiosError = error as AxiosError;
+      if (axiosError.response) {
+        console.error('API error response:', axiosError.response);
+        if (axiosError.response.status === 401) {
+          alert('인증이 필요합니다.');
+        } else if (axiosError.response.status === 400) {
+          alert('잘못된 요청입니다.');
+        } else if (axiosError.response.status === 404) {
+          alert('상품을 찾을 수 없습니다.');
+        } else {
+          alert('관심 등록 실패');
+        }
+      } else {
+        console.error('Failed to add to wishlist:', error);
+        alert('관심 등록 실패');
+      }
+    }
+  };
+
   const handleClick = () => {
     if (!authInfo) {
       const isConfirm = window.confirm(
@@ -52,9 +109,12 @@ export const OptionSection = ({ productId }: Props) => {
         <PricingWrapper>
           총 결제 금액 <span>{totalPrice}원</span>
         </PricingWrapper>
-        <Button theme="black" size="large" onClick={handleClick}>
-          나에게 선물하기
-        </Button>
+        <ButtonWrapper>
+          <Button onClick={handleAddToWishList}>관심 등록</Button>
+          <Button theme="black" size="large" onClick={handleClick}>
+            나에게 선물하기
+          </Button>
+        </ButtonWrapper>
       </BottomWrapper>
     </Wrapper>
   );
@@ -90,4 +150,9 @@ const PricingWrapper = styled.div`
     font-size: 20px;
     letter-spacing: -0.02em;
   }
+`;
+
+const ButtonWrapper = styled.div`
+  display: flex;
+  gap: 8px;
 `;
