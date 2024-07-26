@@ -1,13 +1,10 @@
-import React from 'react';
-import { renderHook, waitFor } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { server } from '@/mocks/server';
-import { useGetCategories } from '@/api/hooks/useGetCategorys';
-import { CATEGORIES_RESPONSE_DATA } from './categories.mock';
+import { renderHook, waitFor } from '@testing-library/react';
+import React from 'react';
 
-beforeAll(() => server.listen());
-afterEach(() => server.resetHandlers());
-afterAll(() => server.close());
+import { useGetCategories } from '@/api/hooks/useGetCategorys';
+
+import { CATEGORIES_RESPONSE_DATA } from './categories.mock';
 
 const createWrapper = () => {
   const queryClient = new QueryClient();

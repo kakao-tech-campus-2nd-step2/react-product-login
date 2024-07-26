@@ -1,14 +1,10 @@
-import React from 'react';
-import { renderHook, waitFor } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { server } from '@/mocks/server';
+import { renderHook, waitFor } from '@testing-library/react';
+import React from 'react';
+
 import { useGetProductDetail } from '@/api/hooks/useGetProductDetail';
 
 import { PRODUCTS_MOCK_DATA } from './products.mock';
-
-beforeAll(() => server.listen());
-afterEach(() => server.resetHandlers());
-afterAll(() => server.close());
 
 const createWrapper = () => {
   const queryClient = new QueryClient();
