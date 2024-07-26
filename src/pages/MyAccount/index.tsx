@@ -23,7 +23,7 @@ export const MyAccountPage = () => {
   const [wishes, setWishes] = useState<WishItem[]>([]);
   const [currentPage, setCurrentPage] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
-  const pageSize = 10;
+  const pageSize = 5;
 
   const handleLogout = () => {
     authSessionStorage.set(undefined);
@@ -91,7 +91,7 @@ export const MyAccountPage = () => {
             <div>
               <h3>{wish.product.name}</h3>
               <p>{wish.product.price}원</p>
-              <Button onClick={() => deleteWish(wish.id)}>삭제</Button>
+              <button onClick={() => deleteWish(wish.id)}>삭제</button>
             </div>
           </WishListItem>
         ))}
@@ -125,18 +125,21 @@ const Wrapper = styled.div`
 const WishList = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
   width: 100%;
+  max-width: 1024px;
+  flex-wrap: wrap;
 `;
 
 const WishListItem = styled.div`
   display: flex;
   align-items: center;
   margin: 10px 0;
+  width: 40%;
 
   img {
-    width: 50px;
-    height: 50px;
+    width: 150px;
+    height: 150px;
     margin-right: 10px;
   }
 
@@ -148,6 +151,15 @@ const WishListItem = styled.div`
   p {
     margin: 0;
     color: #888;
+    font-size: 20px;
+  }
+
+  button {
+    width: 50px;
+    height: 30px;
+    font-size: 18px;
+    background-color: rgb(255, 200, 200);
+    border-radius: 10px;
   }
 `;
 
@@ -160,11 +172,15 @@ const PageButton = styled.button<{ active?: boolean }>`
   margin: 0 5px;
   padding: 5px 10px;
   border: none;
+  width: 40px;
+  height: 40px;
+  font-size: 20px;
+  border-radius: 10px;
   background-color: ${({ active }) => (active ? '#333' : '#f5f5f5')};
   color: ${({ active }) => (active ? '#fff' : '#000')};
   cursor: pointer;
 
   &:hover {
-    background-color: #ddd;
+    background-color: #000;
   }
 `;
