@@ -13,25 +13,37 @@ type Props = {
 
 export const GoodsInfo = ({ orderHistory }: Props) => {
   const { id, count } = orderHistory;
-  const { data: detail } = useGetProductDetail({ productId: id.toString() });
+  const { data: detail, isLoading, error } = useGetProductDetail({ productId: id });
 
-  // Use a conditional check to handle the case where detail might be null or undefined
-  if (!detail) {
+  if (isLoading) {
     return (
       <Wrapper>
         <LabelText>선물내역</LabelText>
         <Spacing />
         <GoodsWrapper>
           <GoodsInfoWrapper>
-            <div>Loading...</div> {/* Or any fallback content */}
+            <div>Loading...</div>
           </GoodsInfoWrapper>
         </GoodsWrapper>
       </Wrapper>
     );
   }
 
-  // Now TypeScript understands that detail is not null here
-  const totalPrice = (detail.price ?? 0) * count; // Use optional chaining to safely access properties
+  if (error || !detail) {
+    return (
+      <Wrapper>
+        <LabelText>선물내역</LabelText>
+        <Spacing />
+        <GoodsWrapper>
+          <GoodsInfoWrapper>
+            <div>Error loading product details</div>
+          </GoodsInfoWrapper>
+        </GoodsWrapper>
+      </Wrapper>
+    );
+  }
+
+  const totalPrice = detail.price * count;
 
   return (
     <Wrapper>
@@ -46,7 +58,6 @@ export const GoodsInfo = ({ orderHistory }: Props) => {
             <GoodsInfoTextTitle>
               {detail.name} X {count}개
             </GoodsInfoTextTitle>
-            {/* You can also show the totalPrice if needed */}
             <TotalPrice>총 결제 금액: {totalPrice}원</TotalPrice>
           </GoodsInfoTextWrapper>
         </GoodsInfoWrapper>
@@ -54,7 +65,6 @@ export const GoodsInfo = ({ orderHistory }: Props) => {
     </Wrapper>
   );
 };
-
 const Wrapper = styled.section`
   width: 100%;
   padding: 16px;

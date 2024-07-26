@@ -1,38 +1,34 @@
 import { rest } from 'msw';
-import { z } from 'zod';
 
-import { getProductDetailPath } from './productDetailPath'; // getProductDetailPath 함수 import
+const BASE_URL = 'http://localhost:3000';
 
-// 제품 상세 정보 데이터 스키마 (zod)
-const productDetailResponseDataSchema = z.object({
-  id: z.number(),
-  name: z.string(),
-  price: z.number(),
-  imageUrl: z.string(),
-  categoryId: z.number(),
-});
+interface ProductDetail {
+  id: number;
+  name: string;
+  price: number;
+  imageUrl: string;
+  categoryId: number;
+}
 
-export type ProductDetailResponseData = z.infer<typeof productDetailResponseDataSchema>;
-
-// 샘플 제품 상세 정보 데이터
-const sampleProductDetail: ProductDetailResponseData = {
+const mockProductDetail: ProductDetail = {
   id: 1,
-  name: '[단독각인] 피렌체 1221 에디션 오드코롱 50ml (13종 택1)',
-  price: 145000,
+  name: 'Sample Product',
+  price: 100,
   imageUrl:
-    'https://st.kakaocdn.net/product/gift/product/20240215083306_8e1db057580145829542463a84971ae3.png',
-  categoryId: 2920,
+    'https://i.namu.wiki/i/lTIwu3NCJk-m5VOdugukoiVGzyZAVauahUc2qnrOX-j8XFCA7PXv95cioeTRqrixnTUYDdfZnapP2Fo-jz3OBl5VYyd5SJpft-ZcMedgg4QmJGEkeol2W-do5U3mL6_vqQYTPAr7QBwp7VTts7kmfiYUgQ_Hosv7gwcBxnFagmo.webp',
+  categoryId: 1,
 };
 
-// MSW 핸들러 (API 모킹)
 export const productDetailMockHandler = [
-  rest.get(getProductDetailPath(':productId'), (req, res, ctx) => {
+  rest.get(`${BASE_URL}/api/products/:productId`, (req, res, ctx) => {
     const { productId } = req.params;
 
-    if (productId === sampleProductDetail.id.toString()) {
-      return res(ctx.json(sampleProductDetail));
+    // 실제 환경에서는 여기서 productId를 사용하여 다양한 상품을 반환할 수 있습니다.
+    // 이 예제에서는 항상 같은 mockProductDetail을 반환합니다.
+    if (productId) {
+      return res(ctx.status(200), ctx.json(mockProductDetail));
+    } else {
+      return res(ctx.status(404), ctx.json({ message: 'Product not found' }));
     }
-
-    return res(ctx.status(404), ctx.json({ error: 'Product not found' }));
   }),
 ];
