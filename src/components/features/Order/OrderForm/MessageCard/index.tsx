@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import React from 'react';
 
 import { HeadingText } from '../Common/HeadingText';
 import { MessageCardFields } from '../Fields/MessageCardFields';

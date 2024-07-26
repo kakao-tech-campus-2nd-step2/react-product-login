@@ -11,6 +11,7 @@ module.exports = {
   // 모듈 이름 매핑을 통해 @/ 경로 별칭을 src 디렉터리로 매핑
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
+    '\\.css$': 'identity-obj-proxy',
   },
 
   // Babel을 사용하여 .js, .jsx, .ts, .tsx 파일을 트랜스파일
