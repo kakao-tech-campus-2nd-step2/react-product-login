@@ -1,8 +1,8 @@
 import styled from '@emotion/styled';
 import { useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 
-import { useLogin } from '@/api/hooks/useLogin'; // useLogin 훅을 불러옵니다.
+import { useLogin } from '@/api/hooks/useLogin';
 import KAKAO_LOGO from '@/assets/kakao_logo.svg';
 import { Button } from '@/components/common/Button';
 import { UnderlineTextField } from '@/components/common/Form/Input/UnderlineTextField';
@@ -39,7 +39,11 @@ export const LoginPage = () => {
     <Wrapper>
       <Logo src={KAKAO_LOGO} alt="카카오 CI" />
       <FormWrapper>
-        <UnderlineTextField placeholder="이름" value={id} onChange={(e) => setId(e.target.value)} />
+        <UnderlineTextField
+          placeholder="이메일"
+          value={id}
+          onChange={(e) => setId(e.target.value)}
+        />
         <Spacing />
         <UnderlineTextField
           type="password"
@@ -53,9 +57,12 @@ export const LoginPage = () => {
             sm: 60,
           }}
         />
-        <Button onClick={handleConfirm} disabled={status === 'pending'}>
+        <Button onClick={handleConfirm} disabled={status === 'loading'}>
           로그인
         </Button>
+        <SignUpLinkWrapper>
+          <SignUpLink to="/signup">회원가입</SignUpLink>
+        </SignUpLinkWrapper>
       </FormWrapper>
     </Wrapper>
   );
@@ -83,5 +90,18 @@ const FormWrapper = styled.article`
   @media screen and (min-width: ${breakpoints.sm}) {
     border: 1px solid rgba(0, 0, 0, 0.12);
     padding: 60px 52px;
+  }
+`;
+
+const SignUpLinkWrapper = styled.div`
+  margin-top: 16px;
+  text-align: center;
+`;
+
+const SignUpLink = styled(Link)`
+  color: #1a73e8;
+  text-decoration: none;
+  &:hover {
+    text-decoration: underline;
   }
 `;
