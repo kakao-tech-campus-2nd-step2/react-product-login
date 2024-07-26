@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import { useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
+import { useLogin } from '@/api/hooks/useGetLogin';
 import KAKAO_LOGO from '@/assets/kakao_logo.svg';
 import { Button } from '@/components/common/Button';
 import { UnderlineTextField } from '@/components/common/Form/Input/UnderlineTextField';
@@ -13,20 +14,22 @@ export const LoginPage = () => {
   const [id, setId] = useState('');
   const [password, setPassword] = useState('');
   const [queryParams] = useSearchParams();
+  const { login } = useLogin();
 
-  const handleConfirm = () => {
+  const handleConfirm = async () => {
     if (!id || !password) {
       alert('아이디와 비밀번호를 입력해주세요.');
       return;
     }
 
-    // TODO: API 연동
+    const result = await login({ email: id, password });
 
-    // TODO: API 연동 전까지 임시 로그인 처리
-    authSessionStorage.set(id);
+    if (result) {
+      authSessionStorage.set(result.token);
 
-    const redirectUrl = queryParams.get('redirect') ?? `${window.location.origin}/`;
-    return window.location.replace(redirectUrl);
+      const redirectUrl = queryParams.get('redirect') ?? `${window.location.origin}/`;
+      return window.location.replace(redirectUrl);
+    }
   };
 
   return (
@@ -49,6 +52,9 @@ export const LoginPage = () => {
           }}
         />
         <Button onClick={handleConfirm}>로그인</Button>
+        <CreateWrapper>
+          <a href="/create_account">회원가입</a>
+        </CreateWrapper>
       </FormWrapper>
     </Wrapper>
   );
@@ -78,3 +84,6 @@ const FormWrapper = styled.article`
     padding: 60px 52px;
   }
 `;
+
+const CreateWrapper = styled.div`
+`

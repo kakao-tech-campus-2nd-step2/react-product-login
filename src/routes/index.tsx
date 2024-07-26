@@ -2,6 +2,7 @@ import { createBrowserRouter, Navigate, RouterProvider } from 'react-router-dom'
 
 import { Layout } from '@/components/features/Layout';
 import { CategoryPage } from '@/pages/Category';
+import { CreateAccountPage } from '@/pages/CreateAccount';
 import { GoodsDetailPage } from '@/pages/Goods/Detail';
 import { HomePage } from '@/pages/Home';
 import { LoginPage } from '@/pages/Login';
@@ -23,6 +24,10 @@ const router = createBrowserRouter([
       {
         path: RouterPath.category,
         element: <CategoryPage />,
+      },
+      {
+        path: RouterPath.createAccount,
+        element: <CreateAccountPage />,
       },
       {
         path: RouterPath.productsDetail,
