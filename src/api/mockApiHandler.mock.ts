@@ -136,4 +136,22 @@ export const mockApiHandlers = [
       }),
     );
   }),
+  rest.delete('https://api.example.com/api/wishes/:productId', (req, res, ctx) => {
+    const token = req.headers.get('Authorization')?.split(' ')[1];
+    const { productId } = req.params;
+
+    if (!token) {
+      return res(ctx.status(401), ctx.json({ message: 'Invalid or missing token' }));
+    }
+
+    const wishIndex = tempWishlist.findIndex((itemId) => itemId === productId);
+
+    if (wishIndex === -1) {
+      return res(ctx.status(404), ctx.json({ message: 'Wish not found' }));
+    }
+
+    tempWishlist.splice(wishIndex, 1);
+
+    return res(ctx.status(204));
+  }),
 ];

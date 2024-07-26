@@ -49,3 +49,13 @@ export const getWishlist = async (page: number, size: number) => {
     throw new Error('위시 리스트 조회에 실패했습니다.');
   }
 };
+
+export const deleteFromWishlist = async (productId: number) => {
+  try {
+    const response = await fetchInstance.delete(`/api/wishes/${productId}`);
+
+    return response.data;
+  } catch (error) {
+    throw new Error('위시 리스트 삭제에 실패했습니다.');
+  }
+};
