@@ -10,7 +10,7 @@ import { useOrderFormContext } from '@/hooks/useOrderFormContext';
 export const CashReceiptFields = () => {
   const { register, control, watch } = useOrderFormContext();
   const hasCashReceipt = watch('hasCashReceipt');
-  
+
   return (
     <Wrapper>
       <Controller
