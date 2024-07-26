@@ -16,6 +16,17 @@ export const wishlistMockHandler = [
       ctx.json(WISHLIST_MOCK_DATA),
     );
   }),
+  rest.delete('/api/wishes/:wishId', (req, res, ctx) => {
+    const { wishId } = req.params;
+    const wishIndex = WISHLIST_MOCK_DATA.content.findIndex(
+      (item) => item.id === Number(wishId)
+    );
+    if (wishIndex !== -1) {
+      WISHLIST_MOCK_DATA.content.splice(wishIndex, 1);
+      return res(ctx.status(204));
+    }
+    return res(ctx.status(404), ctx.json({ message: 'Wish not found' }));
+  }),
 ];
 
 const WISHLIST_MOCK_DATA = {
