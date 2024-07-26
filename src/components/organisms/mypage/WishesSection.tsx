@@ -35,7 +35,7 @@ function WishesSection() {
     return response.data;
   }, []);
   const {
-    data, fetchNextPage, hasNextPage, isFetchingNextPage, refetch,
+    data, fetchNextPage, hasNextPage, isFetchingNextPage,
   } = useInfiniteQuery({
     initialData: undefined,
     initialPageParam: undefined,
