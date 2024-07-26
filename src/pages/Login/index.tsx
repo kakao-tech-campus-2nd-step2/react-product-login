@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { useState } from 'react';
-import { useNavigate,useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import KAKAO_LOGO from '@/assets/kakao_logo.svg';
 import { Button } from '@/components/common/Button';
@@ -10,31 +10,47 @@ import { breakpoints } from '@/styles/variants';
 import { authSessionStorage } from '@/utils/storage';
 
 export const LoginPage = () => {
-  const [id, setId] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [queryParams] = useSearchParams();
   const navigate = useNavigate();
 
-  const handleConfirm = () => {
-    if (!id || !password) {
+  const handleConfirm = async () => {
+    if (!email || !password) {
       alert('아이디와 비밀번호를 입력해주세요.');
       return;
     }
 
-    // TODO: API 연동
+    try {
+      const response = await fetch('/api/members/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+      });
 
-    // TODO: API 연동 전까지 임시 로그인 처리
-    authSessionStorage.set(id);
-
-    const redirectUrl = queryParams.get('redirect') ?? `${window.location.origin}/`;
-    return window.location.replace(redirectUrl);
+      if (response.status === 200) {
+        const data = await response.json();
+        authSessionStorage.set(JSON.stringify({ token: data.token, email: data.email }));
+        const redirectUrl = queryParams.get('redirect') ?? `${window.location.origin}/`;
+        window.location.replace(redirectUrl);
+      } else if (response.status === 403) {
+        alert('이메일 또는 비밀번호가 잘못되었습니다.');
+      } else {
+        alert('로그인에 실패했습니다.');
+      }
+    } catch (error) {
+      console.error('로그인 에러:', error);
+      alert('로그인 에러 발생');
+    }
   };
 
   return (
     <Wrapper>
       <Logo src={KAKAO_LOGO} alt="카카고 CI" />
       <FormWrapper>
-        <UnderlineTextField placeholder="이름" value={id} onChange={(e) => setId(e.target.value)} />
+        <UnderlineTextField placeholder="이메일" value={email} onChange={(e) => setEmail(e.target.value)} />
         <Spacing />
         <UnderlineTextField
           type="password"
@@ -42,7 +58,6 @@ export const LoginPage = () => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-
         <Spacing
           height={{
             initial: 40,
