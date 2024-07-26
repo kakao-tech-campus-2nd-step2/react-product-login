@@ -7,6 +7,7 @@ export const RouterPath = {
   order: '/order',
   login: '/login',
   signUp: '/sign-up',
+  wishlist: '/wishlist',
   notFound: '*',
 };
 
