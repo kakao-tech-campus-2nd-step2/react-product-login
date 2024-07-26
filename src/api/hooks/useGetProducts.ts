@@ -6,7 +6,7 @@ import {
 
 import type { ProductData } from '@/types';
 
-import { PRODUCTS_MOCK_DATA } from './products.mock';
+import { PRODUCTS_MOCK_DATA } from '../mocks/products.mock';
 
 type RequestParams = {
   categoryId: string;

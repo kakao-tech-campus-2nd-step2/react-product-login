@@ -1,7 +1,7 @@
 import { Box, Heading, Spinner, Text, VStack } from '@chakra-ui/react';
 import styled from '@emotion/styled';
 
-import { useRemoveWish, useWishList } from '@/api/hooks/useWishList';
+import { useRemoveWish, useWishList } from '@/api/hooks/useGetWishList';
 import { Button } from '@/components/common/Button';
 import { Spacing } from '@/components/common/layouts/Spacing';
 import { WishList } from '@/components/features/WishList';
