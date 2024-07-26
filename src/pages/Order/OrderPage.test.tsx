@@ -43,42 +43,41 @@ describe('OrderPage', () => {
   test('현금 영수증 체크박스가 false일 때 관련 필드가 비활성화되어야 한다', async () => {
     renderWithProviders(<OrderPage />);
 
-    const cashReceiptCheckbox = screen.getByLabelText('현금 영수증');
+    const cashReceiptCheckbox = await screen.findByRole('checkbox', { name: /현금영수증 신청/i });
     expect(cashReceiptCheckbox).toBeInTheDocument();
+    expect(cashReceiptCheckbox).not.toBeChecked();
 
-    const receiptTypeField = screen.queryByLabelText('현금영수증 종류');
-    const receiptNumberField = screen.queryByLabelText('현금영수증 번호');
+    const receiptTypeField = screen.queryByRole('combobox');
+    const receiptNumberField = screen.queryByPlaceholderText(/-없이 숫자만 입력해주세요./i);
 
     expect(receiptTypeField).not.toBeInTheDocument();
     expect(receiptNumberField).not.toBeInTheDocument();
-
-    fireEvent.click(cashReceiptCheckbox);
-
-    expect(screen.getByLabelText('현금영수증 종류')).toBeInTheDocument();
-    expect(screen.getByLabelText('현금영수증 번호')).toBeInTheDocument();
   });
 
   test('현금 영수증 체크박스가 true일 때 필수 입력 필드가 제대로 검증되어야 한다', async () => {
     renderWithProviders(<OrderPage />);
 
-    const cashReceiptCheckbox = screen.getByLabelText('현금 영수증');
+    const cashReceiptCheckbox = await screen.findByRole('checkbox', { name: /현금영수증 신청/i });
     fireEvent.click(cashReceiptCheckbox);
+    expect(cashReceiptCheckbox).toBeChecked();
 
-    const receiptTypeField = screen.getByLabelText('현금영수증 종류');
-    const receiptNumberField = screen.getByLabelText('현금영수증 번호');
-    const submitButton = screen.getByRole('button', { name: /제출/i });
+    const receiptTypeField = await screen.findByRole('combobox');
+    const receiptNumberField = await screen.findByPlaceholderText(/-없이 숫자만 입력해주세요./i);
 
-    fireEvent.change(receiptTypeField, { target: { value: '' } });
+    expect(receiptTypeField).toBeInTheDocument();
+    expect(receiptNumberField).toBeInTheDocument();
+
+    const submitButton = screen.getByRole('button', {
+      name: `${mockOrderHistory.count * 12345}원 결제하기`,
+    });
+
     fireEvent.change(receiptNumberField, { target: { value: '' } });
-
     fireEvent.click(submitButton);
 
     expect(await screen.findByText('현금영수증 번호를 입력해주세요.')).toBeInTheDocument();
     expect(await screen.findByText('현금영수증 번호는 숫자로만 입력해주세요.')).toBeInTheDocument();
 
-    fireEvent.change(receiptTypeField, { target: { value: '일반' } });
     fireEvent.change(receiptNumberField, { target: { value: '1234567890' } });
-
     fireEvent.click(submitButton);
 
     await waitFor(() => {
@@ -92,26 +91,27 @@ describe('OrderPage', () => {
   test('메시지 카드 텍스트 유효성 검사', async () => {
     renderWithProviders(<OrderPage />);
 
-    const cashReceiptCheckbox = screen.getByLabelText('현금 영수증');
+    const cashReceiptCheckbox = await screen.findByRole('checkbox', { name: /현금영수증 신청/i });
     fireEvent.click(cashReceiptCheckbox);
+    expect(cashReceiptCheckbox).toBeChecked();
 
-    const messageCardField = screen.getByLabelText('메시지 카드 텍스트');
-    const submitButton = screen.getByRole('button', { name: /제출/i });
+    const messageCardField =
+      await screen.findByPlaceholderText(/선물과 함께 보낼 메시지를 적어보세요/i);
+    const submitButton = screen.getByRole('button', {
+      name: `${mockOrderHistory.count * 12345}원 결제하기`,
+    });
 
     fireEvent.change(messageCardField, { target: { value: '' } });
-
     fireEvent.click(submitButton);
 
     expect(await screen.findByText('메시지를 입력해주세요.')).toBeInTheDocument();
 
     fireEvent.change(messageCardField, { target: { value: 'a'.repeat(101) } });
-
     fireEvent.click(submitButton);
 
     expect(await screen.findByText('메시지는 100자 이내로 입력해주세요.')).toBeInTheDocument();
 
     fireEvent.change(messageCardField, { target: { value: 'Valid message' } });
-
     fireEvent.click(submitButton);
 
     await waitFor(() => {
