@@ -50,14 +50,15 @@ test('orderForm 이 성공적으로 제출', async () => {
   fireEvent.click(cashReceiptCheckbox);
 
   // 현금 영수증 번호 입력
-  const cashReceiptNumberInput = screen.getByPlaceholderText('(-없이) 숫자만 입력해주세요.');
+  const cashReceiptNumberInput = screen.getByPlaceholderText('(-없이) 숫자만 입력해주세요.') as HTMLInputElement;
   fireEvent.change(cashReceiptNumberInput, { target: { value: '01012345678' } });
 
+  // 현재 입력 필드 값 확인 (디버깅 용)
+  console.log('Cash Receipt Number Input Value:', cashReceiptNumberInput.value);
+  
   // 폼 제출
   const submitButton = screen.getByTestId('submit-button');
   fireEvent.click(submitButton);
-
-  expect(submitButton).toBeInTheDocument();
 
   // 주문 완료 메시지 확인
   await waitFor(() => {
@@ -65,7 +66,7 @@ test('orderForm 이 성공적으로 제출', async () => {
   });
 });
 
-test('unexpected sumbit 에서 성공적으로 오류 메시지 출력', async () => {
+test('unexpected submit 에서 성공적으로 오류 메시지 출력', async () => {
   server.use(
     rest.get('/api/product/:productId', (_, res, ctx) => {
       return res(ctx.json(PRODUCTS_MOCK_DATA.content[0]));
@@ -121,6 +122,43 @@ test('OrderInfo 를 성공적으로 렌더링', async () => {
   // 결제 버튼 확인
   const submitButton = screen.getByTestId('submit-button');
   expect(submitButton).toBeInTheDocument();
+});
+
+test('cashReceipt Checkbox 상태에 따라 성공적으로 필드 활성화 및 비활성화', async () => {
+  server.use(
+    rest.get('/api/product/:productId', (_, res, ctx) => {
+      return res(ctx.json(PRODUCTS_MOCK_DATA.content[0]));
+    }),
+  );
+
+  TestComponent(<OrderForm orderHistory={orderHistoryMock} />);
+
+  // 현금 영수증 신청 체크박스
+  const cashReceiptCheckbox = screen.getByLabelText('현금영수증 신청');
+  const cashReceiptTypeSelect = screen.getByTestId('cash-receipt-type-select');
+  const cashReceiptNumberInput = screen.getByPlaceholderText('(-없이) 숫자만 입력해주세요.') as HTMLInputElement;
+
+  // 체크박스가 선택되지 않은 상태에서 필드가 비활성화 되어 있는지 확인
+  expect(cashReceiptTypeSelect).toBeDisabled();
+  expect(cashReceiptNumberInput).toBeDisabled();
+
+  // 체크박스를 클릭하여 선택
+  fireEvent.click(cashReceiptCheckbox);
+
+  // 체크박스가 선택된 상태에서 필드가 활성화 되어 있는지 확인
+  expect(cashReceiptTypeSelect).not.toBeDisabled();
+  expect(cashReceiptNumberInput).not.toBeDisabled();
+
+  // 필드에 값을 입력
+  fireEvent.change(cashReceiptNumberInput, { target: { value: '01012345678' } });
+  expect(cashReceiptNumberInput.value).toBe('01012345678');
+
+  // 체크박스를 다시 클릭하여 선택 해제
+  fireEvent.click(cashReceiptCheckbox);
+
+  // 체크박스가 선택 해제된 상태에서 필드가 비활성화 되어 있는지 확인
+  expect(cashReceiptTypeSelect).toBeDisabled();
+  expect(cashReceiptNumberInput).toBeDisabled();
 });
 
 test('Form Validation 를 성공적으로 수행', async () => {
