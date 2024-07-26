@@ -48,5 +48,4 @@ export interface WishedProductsRequestQuery {
   size: number;
   page: number;
   sort: string;
-  categoryId: number;
 }

@@ -46,6 +46,11 @@ export interface RegisterResponse {
   token: string;
 }
 
+export interface AddWishesResponse {
+  id: number,
+  productId: number,
+}
+
 export interface WishedProductsResponse {
   content: ProductData[];
   pageable: {
