@@ -2,38 +2,53 @@ import styled from '@emotion/styled';
 import { useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
+import { register } from '@/api/auth';
 import KAKAO_LOGO from '@/assets/kakao_logo.svg';
 import { Button } from '@/components/common/Button';
 import { UnderlineTextField } from '@/components/common/Form/Input/UnderlineTextField';
 import { Spacing } from '@/components/common/layouts/Spacing';
 import { breakpoints } from '@/styles/variants';
-import { authSessionStorage } from '@/utils/storage';
 
 export const SignUpPage = () => {
-  const [id, setId] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [queryParams] = useSearchParams();
 
-  const handleConfirm = () => {
-    if (!id || !password) {
+  const handleConfirm = async () => {
+    if (!email || !password) {
       alert('가입할 아이디와 비밀번호를 입력해주세요.');
       return;
+    }
+
+    try {
+      const data = await register(email, password);
+
+      sessionStorage.setItem('email', data.email);
+      sessionStorage.setItem('token', data.token);
+
+      alert('회원가입이 완료되었습니다.');
+
+      const redirectUrl = queryParams.get('redirect') ?? `${window.location.origin}/`;
+      return window.location.replace(redirectUrl);
+    } catch (error) {
+      alert('회원가입 중 오류가 발생했습니다.');
+      console.error(error);
     }
 
     // TODO: API 연동
 
     // TODO: API 연동 전까지 임시 로그인 처리
-    authSessionStorage.set(id);
+    // authSessionStorage.set(id);
 
-    const redirectUrl = queryParams.get('redirect') ?? `${window.location.origin}/`;
-    return window.location.replace(redirectUrl);
+    // const redirectUrl = queryParams.get('redirect') ?? `${window.location.origin}/`;
+    // return window.location.replace(redirectUrl);
   };
 
   return (
     <Wrapper>
       <Logo src={KAKAO_LOGO} alt="카카오 CI" />
       <FormWrapper>
-        <UnderlineTextField placeholder="이름" value={id} onChange={(e) => setId(e.target.value)} />
+        <UnderlineTextField placeholder="이메일" value={email} onChange={(e) => setEmail(e.target.value)} />
         <Spacing />
         <UnderlineTextField
           type="password"
