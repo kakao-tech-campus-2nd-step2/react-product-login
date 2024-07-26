@@ -1,4 +1,7 @@
 {
+  "ts-node": {
+    "files": true //ts를 js로 바꿔주는 코드
+  },
   "compilerOptions": {
     "target": "ES6",
     "lib": ["dom", "dom.iterable", "esnext"],
@@ -24,6 +27,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["src"],
+  "include": ["src", "src/setupTests.ts"],
   "exclude": ["node_modules", "build", "public"]
 }
