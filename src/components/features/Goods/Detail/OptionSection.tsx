@@ -59,7 +59,7 @@ export const OptionSection = ({ productId }: Props) => {
       console.error(error);
       alert('관심 상품 등록에 실패했습니다.');
     }
-  }
+  };
 
   return (
     <Wrapper>

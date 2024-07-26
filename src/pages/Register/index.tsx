@@ -41,7 +41,11 @@ export const RegisterPage = () => {
     <Wrapper>
       <Logo src={KAKAO_LOGO} alt="카카오 CI" />
       <FormWrapper>
-        <UnderlineTextField placeholder="이메일" value={email} onChange={(e) => setEmail(e.target.value)} />
+        <UnderlineTextField
+          placeholder="이메일"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
         <Spacing />
         <UnderlineTextField
           type="password"

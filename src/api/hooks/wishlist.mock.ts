@@ -5,22 +5,14 @@ export const wishlistMockHandler = [
     const token = req.headers.get('Authorization');
 
     if (!token) {
-      return res(
-        ctx.status(401),
-        ctx.json({ message: 'Invalid or missing token' })
-      );
+      return res(ctx.status(401), ctx.json({ message: 'Invalid or missing token' }));
     }
 
-    return res(
-      ctx.status(200),
-      ctx.json(WISHLIST_MOCK_DATA),
-    );
+    return res(ctx.status(200), ctx.json(WISHLIST_MOCK_DATA));
   }),
   rest.delete('/api/wishes/:wishId', (req, res, ctx) => {
     const { wishId } = req.params;
-    const wishIndex = WISHLIST_MOCK_DATA.content.findIndex(
-      (item) => item.id === Number(wishId)
-    );
+    const wishIndex = WISHLIST_MOCK_DATA.content.findIndex((item) => item.id === Number(wishId));
     if (wishIndex !== -1) {
       WISHLIST_MOCK_DATA.content.splice(wishIndex, 1);
       return res(ctx.status(204));

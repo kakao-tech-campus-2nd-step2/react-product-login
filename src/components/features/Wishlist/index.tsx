@@ -1,7 +1,7 @@
 import { Box, Button, Heading, List, ListItem, Text } from '@chakra-ui/react';
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 
-import { useAuth } from "@/provider/Auth";
+import { useAuth } from '@/provider/Auth';
 
 type WishlistItem = {
   id: number;
@@ -23,8 +23,8 @@ export const Wishlist = () => {
         try {
           const response = await fetch('/api/wishes', {
             headers: {
-              'Authorization': `Bearer ${authInfo.token}`
-            }
+              Authorization: `Bearer ${authInfo.token}`,
+            },
           });
           const wishData = await response.json();
           setWishList(wishData.content);
@@ -69,7 +69,9 @@ export const Wishlist = () => {
                   <Box display="flex" alignItems="center" gap="30px">
                     <img src={item.product.imageUrl} alt={item.product.name} />
                     <Box display="flex" flexDirection="column" gap="10px">
-                      <Text fontSize="20px" fontWeight={600}>{item.product.name}</Text>
+                      <Text fontSize="20px" fontWeight={600}>
+                        {item.product.name}
+                      </Text>
                       <Text fontSize="18px">{item.product.price}원</Text>
                     </Box>
                   </Box>

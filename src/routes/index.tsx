@@ -62,7 +62,7 @@ const router = createBrowserRouter([
   {
     path: RouterPath.register,
     element: <RegisterPage />,
-  }
+  },
 ]);
 
 export const Routes = () => {

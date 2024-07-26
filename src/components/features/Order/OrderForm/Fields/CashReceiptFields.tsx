@@ -35,7 +35,12 @@ export const CashReceiptFields = () => {
         )}
       />
       <Spacing height={8} />
-      <Input {...register('cashReceiptNumber')} placeholder="(-없이) 숫자만 입력해주세요." disabled={!hasCashReceipt} aria-label="현금영수증 번호" />
+      <Input
+        {...register('cashReceiptNumber')}
+        placeholder="(-없이) 숫자만 입력해주세요."
+        disabled={!hasCashReceipt}
+        aria-label="현금영수증 번호"
+      />
     </Wrapper>
   );
 };
