@@ -81,6 +81,11 @@
     "typescript": "^4.9.5",
     "webpack": "^5.90.3"
   },
+  "jest": {
+    "moduleNameMapper": {
+      "^axios$": "axios/dist/node/axios.cjs"
+    }
+  },
   "overrides": {
     "react-refresh": "0.11.0"
   }
