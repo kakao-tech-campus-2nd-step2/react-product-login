@@ -1,4 +1,4 @@
-import { Box, Button, HStack, Image, SimpleGrid, Text, useToast, VStack } from '@chakra-ui/react';
+import { Box, Button, Image, SimpleGrid, Text, useToast, VStack } from '@chakra-ui/react';
 import React from 'react';
 
 interface WishItem {
