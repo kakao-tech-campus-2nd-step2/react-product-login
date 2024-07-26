@@ -20,6 +20,7 @@ export const MyAccountPage = () => {
   return (
     <Wrapper>
       {authInfo?.email}님 안녕하세요! <Spacing height={64} />
+      <WishList />
       <Button
         size="small"
         theme="darkGray"
@@ -28,7 +29,6 @@ export const MyAccountPage = () => {
           maxWidth: '200px',
         }}
       >
-        <WishList />
         로그아웃
       </Button>
     </Wrapper>
