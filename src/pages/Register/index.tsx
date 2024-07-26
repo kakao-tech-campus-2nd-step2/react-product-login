@@ -8,23 +8,24 @@ import { Button } from '@/components/common/Button';
 import { UnderlineTextField } from '@/components/common/Form/Input/UnderlineTextField';
 import { Spacing } from '@/components/common/layouts/Spacing';
 import { breakpoints } from '@/styles/variants';
+import { authSessionStorage } from '@/utils/storage';
 
-export const SignUpPage = () => {
+export const RegisterPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [queryParams] = useSearchParams();
 
   const handleConfirm = async () => {
     if (!email || !password) {
-      alert('가입할 아이디와 비밀번호를 입력해주세요.');
+      alert('가입할 이메일과 비밀번호를 입력해주세요.');
       return;
     }
 
     try {
       const data = await register(email, password);
 
-      sessionStorage.setItem('email', data.email);
-      sessionStorage.setItem('token', data.token);
+      sessionStorage.setItem('authEmail', data.email);
+      authSessionStorage.set(data.token);
 
       alert('회원가입이 완료되었습니다.');
 
@@ -34,14 +35,6 @@ export const SignUpPage = () => {
       alert('회원가입 중 오류가 발생했습니다.');
       console.error(error);
     }
-
-    // TODO: API 연동
-
-    // TODO: API 연동 전까지 임시 로그인 처리
-    // authSessionStorage.set(id);
-
-    // const redirectUrl = queryParams.get('redirect') ?? `${window.location.origin}/`;
-    // return window.location.replace(redirectUrl);
   };
 
   return (
