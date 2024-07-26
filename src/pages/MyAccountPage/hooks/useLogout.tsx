@@ -6,7 +6,7 @@ export const useLogout = () => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    sessionStorage.removeItem('token');
+    sessionStorage.removeItem('authInfo');
     navigate(ROUTER_PATH.HOME);
   };
 

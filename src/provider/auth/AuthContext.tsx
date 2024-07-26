@@ -1,9 +1,14 @@
-import { Dispatch, SetStateAction, createContext } from 'react';
+import { createContext } from 'react';
+
+export type AuthInfo = {
+  email: string;
+  name: string; // 임시로 email 파싱해서 사용
+  token: string;
+};
 
 export type AuthContextType = {
   isLoggedIn: boolean;
-  email: string;
-  setEmail: Dispatch<SetStateAction<string>>;
+  authInfo?: AuthInfo;
 };
 
 export const AuthContext = createContext<AuthContextType | undefined>(

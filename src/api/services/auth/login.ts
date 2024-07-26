@@ -6,14 +6,14 @@ export type LoginRequestBody = {
   password: string;
 };
 
-export type LoginResposne = {
+export type LoginResponse = {
   email: string;
   token: string;
 };
 
 export const login = async ({ email, password }: LoginRequestBody) => {
   try {
-    const response = await BACKEND_API.post<LoginResposne>(
+    const response = await BACKEND_API.post<LoginResponse>(
       '/api/members/login',
       { email, password }
     );

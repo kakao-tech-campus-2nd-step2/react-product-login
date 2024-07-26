@@ -11,7 +11,6 @@ import { RegisterPage } from '@/pages/RegisterPage';
 import { AuthProvider } from '@/provider/auth/AuthProvider';
 
 import { AuthRoute } from './components/AuthRoute';
-import { ProtectedRoute } from './components/ProtectedRoute';
 import { ROUTER_PATH } from './path';
 
 export const Router = () => {
@@ -25,12 +24,8 @@ export const Router = () => {
             <Route path={ROUTER_PATH.LOGIN} element={<LoginPage />} />
             <Route path={ROUTER_PATH.REGISTER} element={<RegisterPage />} />
           </Route>
-          <Route path={ROUTER_PATH.MY_ACCOUNT} element={<ProtectedRoute />}>
-            <Route index element={<MyAccountPage />} />
-          </Route>
-          <Route path={ROUTER_PATH.ORDER} element={<ProtectedRoute />}>
-            <Route index element={<OrderPage />} />
-          </Route>
+          <Route path={ROUTER_PATH.MY_ACCOUNT} element={<MyAccountPage />} />
+          <Route path={ROUTER_PATH.ORDER} element={<OrderPage />} />
           <Route
             path={ROUTER_PATH.PRODUCTSDETAIL}
             element={<ProductsDetailPage />}

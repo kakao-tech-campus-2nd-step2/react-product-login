@@ -1,6 +1,6 @@
 import { HttpResponse, HttpResponseResolver, http } from 'msw';
 
-import { LoginRequestBody, LoginResposne } from '@/api/services/auth/login';
+import { LoginRequestBody, LoginResponse } from '@/api/services/auth/login';
 import {
   RegisterRequestBody,
   RegisterResposne,
@@ -8,7 +8,7 @@ import {
 import { getLoginPath, getRegisterPath } from '@/api/services/path';
 
 function handleLoginRequest(
-  resolver: HttpResponseResolver<never, LoginRequestBody, LoginResposne>
+  resolver: HttpResponseResolver<never, LoginRequestBody, LoginResponse>
 ) {
   return http.post(getLoginPath(), resolver);
 }

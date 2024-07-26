@@ -1,10 +1,10 @@
 import { BACKEND_API } from '@/api/config';
 import { API_ERROR_MESSAGES } from '@/constants/errorMessage';
 
-import { LoginRequestBody, LoginResposne } from './login';
+import { LoginRequestBody, LoginResponse } from './login';
 
 export type RegisterRequestBody = LoginRequestBody;
-export type RegisterResposne = LoginResposne;
+export type RegisterResposne = LoginResponse;
 
 export const register = async ({ email, password }: RegisterRequestBody) => {
   try {

@@ -1,13 +1,11 @@
 import { useLogout } from '@/pages/MyAccountPage/hooks/useLogout';
-import { useAuth } from '@/provider/auth/useAuth';
 
 import { Button } from '@/components/ui/Button';
 import { Container } from '@/components/ui/Layout/Container';
 
 import { buttonStyle, countainerStyle, titleStyle } from './styles';
 
-export const MyAccountConent = () => {
-  const { email } = useAuth();
+export const MyAccountConent = ({ userName }: { userName: string }) => {
   const { handleLogout } = useLogout();
 
   return (
@@ -18,7 +16,7 @@ export const MyAccountConent = () => {
       gap="3rem"
       css={countainerStyle}
     >
-      <h1 css={titleStyle}>{email}님 안녕하세요!</h1>
+      <h1 css={titleStyle}>{userName}님 안녕하세요!</h1>
       <Button
         size="medium"
         theme="darkGray"
