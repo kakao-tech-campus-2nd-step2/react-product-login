@@ -6,6 +6,8 @@ import { useAuth } from '@/provider/Auth';
 import { RouterPath } from '@/routes/path';
 import { authSessionStorage } from '@/utils/storage';
 
+import { WishList } from './WishList';
+
 export const MyAccountPage = () => {
   const authInfo = useAuth();
 
@@ -29,6 +31,11 @@ export const MyAccountPage = () => {
       >
         로그아웃
       </Button>
+      <Spacing height={50} />
+      <WishWrapper>
+        <Text>{authInfo?.name}님의 위시리스트</Text>
+        <WishList />
+      </WishWrapper>
     </Wrapper>
   );
 };
@@ -43,4 +50,10 @@ const Wrapper = styled.div`
   justify-content: center;
   font-weight: 700;
   font-size: 36px;
+`;
+
+const WishWrapper = styled.div``;
+
+const Text = styled.div`
+  font-size: 25px;
 `;

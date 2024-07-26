@@ -3,6 +3,7 @@ import { rest } from 'msw';
 import { getProductDetailPath } from './useGetProductDetail';
 import { getProductOptionsPath } from './useGetProductOptions';
 import { getProductsPath } from './useGetProducts';
+import { getWishListPath } from './useGetWishList';
 
 export const productsMockHandler = [
   rest.get(
@@ -41,6 +42,9 @@ export const productsMockHandler = [
         },
       ]),
     );
+  }),
+  rest.get(getWishListPath, (_, res, ctx) => {
+    return res(ctx.json(PRODUCTS_MOCK_DATA));
   }),
 ];
 
