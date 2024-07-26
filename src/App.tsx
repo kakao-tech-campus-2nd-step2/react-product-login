@@ -1,20 +1,17 @@
-import { ChakraProvider } from '@chakra-ui/react';
-import { QueryClientProvider } from '@tanstack/react-query';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
-import { queryClient } from './api/instance';
-import { AuthProvider } from './provider/Auth';
-import { Routes } from './routes';
+import { GoodsDetailPage } from '@/pages/Goods/Detail';
+import Wishlist from '@/pages/Wishlist';
 
-const App = () => {
+const AppRoutes = () => {
   return (
-    <ChakraProvider>
-      <QueryClientProvider client={queryClient}>
-        <AuthProvider>
-          <Routes />
-        </AuthProvider>
-      </QueryClientProvider>
-    </ChakraProvider>
+    <Router>
+      <Routes>
+        <Route path="/product/:id" element={<GoodsDetailPage />} />
+        <Route path="/wishlist" element={<Wishlist />} />
+      </Routes>
+    </Router>
   );
 };
 
-export default App;
+export default AppRoutes;
