@@ -16,13 +16,6 @@ export const LoginPage = () => {
   const [isEnrollButtonClicked, setIsEnrollButtonClicked] = useState(false);
 
   const handleConfirm = () => {
-    if (!email || !password) {
-      alert('아이디와 비밀번호를 입력해주세요.');
-      return;
-    }
-
-    // TODO: API 연동
-
     // TODO: API 연동 전까지 임시 로그인 처리
     authSessionStorage.set(email);
 

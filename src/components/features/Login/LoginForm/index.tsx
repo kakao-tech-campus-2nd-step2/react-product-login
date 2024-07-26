@@ -1,3 +1,4 @@
+import { loginUser } from '@/api/user/api';
 import { Button } from '@/components/common/Button';
 import { UnderlineTextField } from '@/components/common/Form/Input/UnderlineTextField';
 import { Spacing } from '@/components/common/layouts/Spacing';
@@ -12,6 +13,16 @@ export const LoginForm = ({
   setPassword,
   handleConfirm,
 }: ILoginForm) => {
+  const handleLogin = async () => {
+    try {
+      await loginUser(email, password);
+      handleConfirm();
+    } catch (error) {
+      console.error(error);
+      alert('로그인에 실패했습니다.');
+    }
+  };
+
   return (
     <form>
       <UnderlineTextField
@@ -32,7 +43,7 @@ export const LoginForm = ({
           sm: 60,
         }}
       />
-      <Button type="button" onClick={handleConfirm}>
+      <Button type="button" onClick={handleLogin}>
         로그인
       </Button>
     </form>
