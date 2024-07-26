@@ -17,7 +17,7 @@ const mockProductOptions = {
 
 // MSW 서버 설정
 const server = setupServer(
-  rest.get(getProductOptionsPath(':productId'), (req, res, ctx) => {
+  rest.get(getProductOptionsPath(':productId'), (_, res, ctx) => {
     return res(ctx.json(mockProductOptions));
   }),
 );
@@ -47,7 +47,7 @@ describe('useGetProductOptions', () => {
   it('should handle error correctly', async () => {
     // 에러 응답을 위한 서버 핸들러 오버라이드
     server.use(
-      rest.get(getProductOptionsPath(':productId'), (req, res, ctx) => {
+      rest.get(getProductOptionsPath(':productId'), (_, res, ctx) => {
         return res(ctx.status(500));
       }),
     );
