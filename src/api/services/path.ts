@@ -1,6 +1,6 @@
 import { ProductsRequestParams } from './themeProduct/types';
 
-const BASE_URL = process.env.VITE_API_BASE_URL;
+const BASE_URL = 'https://api.example.com';
 
 export const getCategoriesPath = () => `${BASE_URL}/api/categories`;
 
