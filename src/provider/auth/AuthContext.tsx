@@ -1,10 +1,9 @@
-import { createContext } from 'react';
+import { Dispatch, SetStateAction, createContext } from 'react';
 
 export type AuthContextType = {
-  user: string | undefined;
   isLoggedIn: boolean;
-  logout: () => void;
-  login: (username: string) => void;
+  email: string;
+  setEmail: Dispatch<SetStateAction<string>>;
 };
 
 export const AuthContext = createContext<AuthContextType | undefined>(

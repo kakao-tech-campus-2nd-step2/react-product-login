@@ -1,40 +1,18 @@
-import { ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { ReactNode, useMemo, useState } from 'react';
 
 import { AuthContext } from './AuthContext';
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const location = useLocation();
-
-  const [user, setUser] = useState(
-    sessionStorage.getItem('authToken') || undefined
-  );
-
-  useEffect(() => {
-    const storedUser = sessionStorage.getItem('authToken') || undefined;
-    setUser(storedUser);
-  }, [location]);
-
-  const isLoggedIn = !!user;
-
-  const login = useCallback((username: string) => {
-    sessionStorage.setItem('authToken', username);
-    setUser(username);
-  }, []);
-
-  const logout = useCallback(() => {
-    sessionStorage.clear();
-    setUser(undefined);
-  }, []);
+  const [email, setEmail] = useState('');
+  const isLoggedIn = !!sessionStorage.getItem('token');
 
   const contextValue = useMemo(
     () => ({
-      user,
       isLoggedIn,
-      login,
-      logout,
+      email,
+      setEmail,
     }),
-    [user, isLoggedIn, login, logout]
+    [isLoggedIn, email, setEmail]
   );
 
   return (

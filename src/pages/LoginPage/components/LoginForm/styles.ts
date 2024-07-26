@@ -5,7 +5,7 @@ import { colors } from '@/styles/variants/theme';
 export const formContainerStyle = css({
   display: 'flex',
   flexDirection: 'column',
-  gap: '0.5rem',
+  gap: '1rem',
   border: 'none',
   padding: '4rem 3rem',
   '@media (min-width: 768px)': {
@@ -14,5 +14,9 @@ export const formContainerStyle = css({
 });
 
 export const buttonStyle = css({
-  marginTop: '3.5rem',
+  marginTop: '2rem',
+  background: colors.yellow[100],
+  ':hover': {
+    background: colors.yellow[200],
+  },
 });
