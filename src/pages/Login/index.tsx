@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import KAKAO_LOGO from '@/assets/kakao_logo.svg';
 import { Button } from '@/components/common/Button';
@@ -14,6 +14,7 @@ export const LoginPage = () => {
   const [password, setPassword] = useState('');
   const [queryParams] = useSearchParams();
 
+  const navigate = useNavigate();
   const handleConfirm = () => {
     if (!id || !password) {
       alert('아이디와 비밀번호를 입력해주세요.');
@@ -27,6 +28,9 @@ export const LoginPage = () => {
 
     const redirectUrl = queryParams.get('redirect') ?? `${window.location.origin}/`;
     return window.location.replace(redirectUrl);
+  };
+  const handleSignup = () => {
+    navigate('/signup');
   };
 
   return (
@@ -49,6 +53,7 @@ export const LoginPage = () => {
           }}
         />
         <Button onClick={handleConfirm}>로그인</Button>
+        <RegButton onClick={handleSignup}>회원가입</RegButton>
       </FormWrapper>
     </Wrapper>
   );
@@ -76,5 +81,14 @@ const FormWrapper = styled.article`
   @media screen and (min-width: ${breakpoints.sm}) {
     border: 1px solid rgba(0, 0, 0, 0.12);
     padding: 60px 52px;
+  }
+`;
+
+const RegButton = styled(Button)`
+  background-color: rgb(235, 235, 235);
+  margin-top: 20px;
+  &:hover {
+    background-color: #000;
+    color: #fff;
   }
 `;
