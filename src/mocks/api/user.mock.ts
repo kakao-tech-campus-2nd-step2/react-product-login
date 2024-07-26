@@ -10,7 +10,13 @@ type User = {
   password: string;
 };
 
-const USERLIST: User[] = [];
+const USERLIST: User[] = [
+  {
+    id: 1,
+    loginId: 'test',
+    password: 'test',
+  },
+];
 
 const registerUser = (loginId: string, password: string) => {
   if (USERLIST.find((user) => user.loginId === loginId)) {
