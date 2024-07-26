@@ -1,30 +1,43 @@
-import { useSuspenseQuery } from '@tanstack/react-query';
+import type { UseQueryOptions } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 
-import type { ProductData } from '@/types';
+const BASE_URL = 'http://localhost:3000';
 
-import { BASE_URL, fetchInstance } from '../instance';
+export interface ProductDetail {
+  id: number;
+  name: string;
+  price: number;
+  imageUrl: string;
+  categoryId: number;
+}
 
-export type ProductDetailRequestParams = {
-  productId: string;
+export interface ProductDetailRequestParams {
+  productId: number;
+}
+
+const fetchProductDetail = async ({
+  productId,
+}: ProductDetailRequestParams): Promise<ProductDetail> => {
+  const response = await fetch(`${BASE_URL}/api/products/${productId}`);
+
+  if (!response.ok) {
+    throw new Error('Failed to fetch product detail');
+  }
+
+  return response.json();
 };
 
-type Props = ProductDetailRequestParams;
-
-export type GoodsDetailResponseData = ProductData;
-
-export const getProductDetailPath = (productId: string) => `${BASE_URL}/api/products/${productId}`;
-
-export const getProductDetail = async (params: ProductDetailRequestParams) => {
-  const response = await fetchInstance.get<GoodsDetailResponseData>(
-    getProductDetailPath(params.productId),
-  );
-
-  return response.data;
-};
-
-export const useGetProductDetail = ({ productId }: Props) => {
-  return useSuspenseQuery({
-    queryKey: [getProductDetailPath(productId)],
-    queryFn: () => getProductDetail({ productId }),
+export const useGetProductDetail = (
+  { productId }: ProductDetailRequestParams,
+  options?: Omit<
+    UseQueryOptions<ProductDetail, Error, ProductDetail, [string, number]>,
+    'queryKey' | 'queryFn'
+  >,
+) => {
+  return useQuery({
+    queryKey: ['productDetail', productId],
+    queryFn: () => fetchProductDetail({ productId }),
+    staleTime: 5 * 60 * 1000, // 5 minutes
+    ...options,
   });
 };

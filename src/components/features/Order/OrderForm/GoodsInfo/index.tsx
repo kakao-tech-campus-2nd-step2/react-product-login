@@ -10,9 +10,40 @@ import { LabelText } from '../Common/LabelText';
 type Props = {
   orderHistory: OrderHistory;
 };
+
 export const GoodsInfo = ({ orderHistory }: Props) => {
   const { id, count } = orderHistory;
-  const { data: detail } = useGetProductDetail({ productId: id.toString() });
+  const { data: detail, isLoading, error } = useGetProductDetail({ productId: id });
+
+  if (isLoading) {
+    return (
+      <Wrapper>
+        <LabelText>선물내역</LabelText>
+        <Spacing />
+        <GoodsWrapper>
+          <GoodsInfoWrapper>
+            <div>Loading...</div>
+          </GoodsInfoWrapper>
+        </GoodsWrapper>
+      </Wrapper>
+    );
+  }
+
+  if (error || !detail) {
+    return (
+      <Wrapper>
+        <LabelText>선물내역</LabelText>
+        <Spacing />
+        <GoodsWrapper>
+          <GoodsInfoWrapper>
+            <div>Error loading product details</div>
+          </GoodsInfoWrapper>
+        </GoodsWrapper>
+      </Wrapper>
+    );
+  }
+
+  const totalPrice = detail.price * count;
 
   return (
     <Wrapper>
@@ -27,13 +58,13 @@ export const GoodsInfo = ({ orderHistory }: Props) => {
             <GoodsInfoTextTitle>
               {detail.name} X {count}개
             </GoodsInfoTextTitle>
+            <TotalPrice>총 결제 금액: {totalPrice}원</TotalPrice>
           </GoodsInfoTextWrapper>
         </GoodsInfoWrapper>
       </GoodsWrapper>
     </Wrapper>
   );
 };
-
 const Wrapper = styled.section`
   width: 100%;
   padding: 16px;
@@ -68,5 +99,10 @@ const GoodsInfoTextTitle = styled.p`
   margin-top: 3px;
   color: #222;
   overflow: hidden;
-  font-weight: 400;
+`;
+
+const TotalPrice = styled.p`
+  font-size: 16px;
+  font-weight: 700;
+  color: #111;
 `;
