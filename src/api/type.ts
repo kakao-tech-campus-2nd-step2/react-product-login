@@ -77,6 +77,24 @@ export type AuthData = {
   password: string;
 };
 
+export type PageableData = {
+  sort: {
+    sorted: boolean;
+    unsorted: boolean;
+    empty: boolean;
+  };
+  offset: number;
+  pageNumber: number;
+  pageSize: number;
+  paged: boolean;
+  unpaged: boolean;
+};
+
+export type WishesData = {
+  id: number;
+  product: ProductData;
+};
+
 // RequestBody Types
 export type ProductOrderRequestBody = {
   productId: number;
@@ -106,6 +124,14 @@ export type PostLoginRequestBody = AuthData;
 
 export type PostRegisterRequestBody = AuthData;
 
+export type PostWishesRequestBody = {
+  productId: number;
+};
+
+export type DeleteWishesRequestBody = {
+  wishId: number;
+};
+
 // ResponseBody Types
 export type GetRankingProductsResponseBody = {
   products: ProductData[];
@@ -133,4 +159,22 @@ export type PostLoginResponseBody = {
 export type PostRegisterResponseBody = {
   email: string;
   token: string;
+};
+
+export type PostWishesResponseBody = {
+  id: number;
+  productId: number;
+};
+
+export type GetWishesResponseBody = {
+  content: WishesData[];
+  pageable: PageableData;
+  totalPage: number;
+  totalElements: number;
+  last: boolean;
+  number: number;
+  size: number;
+  numberOfElements: number;
+  first: boolean;
+  empty: boolean;
 };

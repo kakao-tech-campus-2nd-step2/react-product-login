@@ -60,6 +60,7 @@ export type UseAxiosMutationResult<T, U> = UseMutationResult<T, Error, U, unknow
 export function useAxiosMutation<T, U>(
   axiosOptions: AxiosRequestConfig,
   axiosInstance: AxiosInstance = vercelApi,
+  urlFn?: (body: U) => string,
   mutationOptions?: Omit<UseMutationOptions<T, Error, U>, 'mutationFn'>,
 ): UseAxiosMutationResult<T, U> {
   return useMutation({
@@ -67,6 +68,7 @@ export function useAxiosMutation<T, U>(
       axiosInstance({
         ...axiosOptions,
         data: body,
+        url: urlFn ? urlFn(body) : axiosOptions.url,
       }).then((res) => res.data),
     ...(mutationOptions || {}),
   });
