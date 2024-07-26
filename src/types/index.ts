@@ -54,12 +54,12 @@ export type MessageCardTemplateData = {
   imageUrl: string;
 };
 
-export type RegisterData = {
+export type UserData = {
   email: string;
   password: string;
 };
 
-export type RegisterResponseData = {
+export type UserResponseData = {
   email: string;
   token: string;
 };

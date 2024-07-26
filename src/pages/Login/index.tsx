@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import { useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
+import { FetchLogin } from '@/api/hooks/usePostLogin';
 import KAKAO_LOGO from '@/assets/kakao_logo.svg';
 import { Button } from '@/components/common/Button';
 import { UnderlineTextField } from '@/components/common/Form/Input/UnderlineTextField';
@@ -15,19 +16,28 @@ export const LoginPage = () => {
   const [password, setPassword] = useState('');
   const [queryParams] = useSearchParams();
   const navigate = useNavigate();
+  const mutation = FetchLogin({ email: id, password: password });
 
-  const handleConfirm = () => {
+  const handleConfirm = async () => {
     if (!id || !password) {
       alert('아이디와 비밀번호를 입력해주세요.');
       return;
     }
 
-    // TODO: API 연동
-
     // TODO: API 연동 전까지 임시 로그인 처리
     // 회원가입 시 서버 DB에서 회원가입한 ID를 찾는 로직이 들어가야함.
-    authSessionStorage.set(id);
 
+    mutation.mutateAsync();
+    let tokenValue;
+    if (mutation.data && mutation.data.length > 0) {
+      tokenValue = mutation.data[0].token;
+      localStorage.setItem('token', tokenValue);
+    } else {
+      tokenValue = 'Default or error handling value';
+      return;
+    }
+
+    authSessionStorage.set(id);
     const redirectUrl = queryParams.get('redirect') ?? `${window.location.origin}/`;
     return window.location.replace(redirectUrl);
   };
