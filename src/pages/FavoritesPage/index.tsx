@@ -1,54 +1,94 @@
 import { StarIcon } from '@chakra-ui/icons';
-import { Box, Flex, IconButton, Image, List, ListItem, Text } from '@chakra-ui/react';
+import {
+  Box,
+  Button,
+  Flex,
+  IconButton,
+  Image,
+  List,
+  ListItem,
+  Spinner,
+  Text,
+} from '@chakra-ui/react';
+import { useState } from 'react';
 
-const favoriteItems = [
-  {
-    id: 1,
-    name: 'Product 1',
-    image: 'https://via.placeholder.com/100',
-    description: 'This is product 1',
-  },
-  {
-    id: 2,
-    name: 'Product 2',
-    image: 'https://via.placeholder.com/100',
-    description: 'This is product 2',
-  },
-  {
-    id: 3,
-    name: 'Product 3',
-    image: 'https://via.placeholder.com/100',
-    description: 'This is product 3',
-  },
-];
+import { useRemoveWish, useWishList } from '@/api/hooks/fetchWishList';
+import { useAuth } from '@/provider/Auth';
 
 const FavoritesPage = () => {
+  const authInfo = useAuth();
+  const [page, setPage] = useState(0);
+  const { data, error, isLoading } = useWishList(page);
+  const removeWish = useRemoveWish();
+
+  const handleRemoveFavorite = (id: number) => {
+    removeWish.mutate(id);
+  };
+
+  const handleNextPage = () => {
+    if (data && page < data.totalPages - 1) {
+      setPage(page + 1);
+    }
+  };
+
+  const handlePreviousPage = () => {
+    if (page > 0) {
+      setPage(page - 1);
+    }
+  };
+
+  if (!authInfo) {
+    return <Text>로그인이 필요합니다.</Text>;
+  }
+
   return (
     <Box p={5}>
       <Text fontSize="2xl" mb={4}>
         관심 목록
       </Text>
-      <List spacing={3}>
-        {favoriteItems.map((item) => (
-          <ListItem key={item.id} p={4} borderWidth="1px" borderRadius="lg">
-            <Flex align="center">
-              <Image boxSize="100px" src={item.image} alt={item.name} mr={4} />
-              <Box flex="1">
-                <Text fontSize="lg" fontWeight="bold">
-                  {item.name}
-                </Text>
-                <Text>{item.description}</Text>
-              </Box>
-              <IconButton
-                icon={<StarIcon />}
-                aria-label="Remove from favorites"
-                variant="outline"
-                colorScheme="red"
-              />
-            </Flex>
-          </ListItem>
-        ))}
-      </List>
+      {isLoading ? (
+        <Spinner />
+      ) : error ? (
+        <Text>오류가 발생했습니다.</Text>
+      ) : (
+        <>
+          <List spacing={3}>
+            {data?.content.map((item) => (
+              <ListItem key={item.id} p={4} borderWidth="1px" borderRadius="lg">
+                <Flex align="center">
+                  <Image
+                    boxSize="100px"
+                    src={item.product.imageUrl}
+                    alt={item.product.name}
+                    mr={4}
+                  />
+                  <Box flex="1">
+                    <Text fontSize="lg" fontWeight="bold">
+                      {item.product.name}
+                    </Text>
+                    <Text>{item.product.price}원</Text>
+                  </Box>
+                  <IconButton
+                    icon={<StarIcon />}
+                    aria-label="Remove from favorites"
+                    variant="outline"
+                    colorScheme="red"
+                    onClick={() => handleRemoveFavorite(item.id)}
+                  />
+                </Flex>
+              </ListItem>
+            ))}
+          </List>
+          <Flex justify="space-between" mt={4}>
+            <Button onClick={handlePreviousPage} disabled={page === 0}>
+              이전
+            </Button>
+            <Button onClick={handleNextPage} disabled={data && page >= data.totalPages - 1}>
+              다음
+            </Button>
+          </Flex>
+        </>
+      )}
     </Box>
   );
 };

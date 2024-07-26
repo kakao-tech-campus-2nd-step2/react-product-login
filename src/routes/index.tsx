@@ -2,7 +2,7 @@ import { createBrowserRouter, Navigate, RouterProvider } from 'react-router-dom'
 
 import { Layout } from '@/components/features/Layout';
 import { CategoryPage } from '@/pages/Category';
-import FavoritesPage from '@/pages/FavoritesPage';
+import FavoritesPage from '@/pages/FavoritesPage'; // 올바르게 import
 import { GoodsDetailPage } from '@/pages/Goods/Detail';
 import { HomePage } from '@/pages/Home';
 import { LoginPage } from '@/pages/Login';
