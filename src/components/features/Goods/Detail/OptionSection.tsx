@@ -8,6 +8,7 @@ import {
   useGetProductDetail,
 } from '@/api/hooks/useGetProductDetail';
 import { useGetProductOptions } from '@/api/hooks/useGetProductOptions';
+import { FetchPutWish } from '@/api/hooks/usePostWish';
 import { Button } from '@/components/common/Button';
 import { useAuth } from '@/provider/Auth';
 import { getDynamicPath, RouterPath } from '@/routes/path';
@@ -28,7 +29,8 @@ export const OptionSection = ({ productId }: Props) => {
 
   const navigate = useNavigate();
   const authInfo = useAuth();
-  const handleClick = () => {
+  const mutation = FetchPutWish();
+  const handleOrderClick = () => {
     if (!authInfo) {
       const isConfirm = window.confirm(
         '로그인이 필요한 메뉴입니다.\n로그인 페이지로 이동하시겠습니까?',
@@ -46,6 +48,22 @@ export const OptionSection = ({ productId }: Props) => {
     navigate(RouterPath.order);
   };
 
+  const handleWishClick = () => {
+    const token = localStorage.getItem('token');
+    if (!authInfo || !token) {
+      const isConfirm = window.confirm(
+        '로그인이 필요한 메뉴입니다.\n로그인 페이지로 이동하시겠습니까?',
+      );
+
+      if (!isConfirm) return;
+      return navigate(getDynamicPath.login());
+    } else {
+      const req = { productId: parseInt(productId) };
+      mutation.mutate({ req, token });
+      alert('관심 등록 완료 ');
+    }
+  };
+
   return (
     <Wrapper>
       <CountOptionItem name={options[0].name} value={countAsString} onChange={setCountAsString} />
@@ -54,10 +72,10 @@ export const OptionSection = ({ productId }: Props) => {
           총 결제 금액 <span>{totalPrice}원</span>
         </PricingWrapper>
         <Flex>
-          <Button theme="outline" size="large" onClick={handleClick}>
+          <Button theme="outline" size="large" onClick={handleWishClick}>
             💛
           </Button>
-          <Button theme="black" size="large" onClick={handleClick}>
+          <Button theme="black" size="large" onClick={handleOrderClick}>
             나에게 선물하기
           </Button>
         </Flex>

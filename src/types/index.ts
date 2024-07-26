@@ -63,3 +63,7 @@ export type UserResponseData = {
   email: string;
   token: string;
 };
+
+export type WishData = {
+  productId: number;
+};
