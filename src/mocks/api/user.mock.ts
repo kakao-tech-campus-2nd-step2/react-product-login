@@ -28,7 +28,7 @@ const registerUser = (loginId: string, password: string) => {
       password,
     });
 
-    const authToken = 'dummy-auth-token';
+    const authToken = loginId;
     return authToken;
   }
 };
@@ -40,7 +40,7 @@ const loginUser = (loginId: string, password: string) => {
     throw new Error('아이디 또는 비밀번호가 틀렸습니다.');
   }
 
-  const authToken = 'dummy-auth-token';
+  const authToken = loginId;
 
   return authToken;
 };

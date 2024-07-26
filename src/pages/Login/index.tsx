@@ -4,7 +4,8 @@ import { useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
 import usePostLogin from '@/api/hooks/usePostLogin';
-import type { PostLoginResponseBody } from '@/api/type';
+import usePostRegister from '@/api/hooks/usePostRegister';
+import type { PostLoginResponseBody, PostRegisterResponseBody } from '@/api/type';
 import KAKAO_LOGO from '@/assets/kakao_logo.svg';
 import { Button } from '@/components/common/Button';
 import { UnderlineTextField } from '@/components/common/Form/Input/UnderlineTextField';
@@ -22,6 +23,14 @@ export const LoginPage = () => {
   const [queryParams] = useSearchParams();
 
   const { mutateAsync: login } = usePostLogin();
+  const { mutateAsync: register } = usePostRegister();
+
+  const afterGetToken = (authToken: string) => {
+    authSessionStorage.set(authToken);
+
+    const redirectUrl = queryParams.get('redirect') ?? `${window.location.origin}/`;
+    return window.location.replace(redirectUrl);
+  };
 
   const handleConfirm = () => {
     if (!id || !password) {
@@ -31,48 +40,33 @@ export const LoginPage = () => {
 
     login({ loginId: id, password })
       .then((res: PostLoginResponseBody) => {
-        authSessionStorage.set(res.authToken);
-
-        const redirectUrl = queryParams.get('redirect') ?? `${window.location.origin}/`;
-        return window.location.replace(redirectUrl);
+        return afterGetToken(res.authToken);
       })
       .catch((err) => {
         alert(err?.response?.data?.message ?? '알 수 없는 오류가 발생했습니다.');
       });
   };
 
-  const handleRegister = () => {};
+  const handleRegister = () => {
+    if (!newId || !newPassword) {
+      alert('아이디와 비밀번호를 입력해주세요.');
+      return;
+    }
+
+    register({ loginId: newId, password: newPassword })
+      .then((res: PostRegisterResponseBody) => {
+        return afterGetToken(res.authToken);
+      })
+      .catch((err) => {
+        alert(err?.response?.data?.message ?? '알 수 없는 오류가 발생했습니다.');
+      });
+  };
 
   return (
     <Wrapper>
       <Logo src={KAKAO_LOGO} alt="카카고 CI" />
       <FormWrapper>
-        <Accordion allowToggle defaultIndex={[0]}>
-          <AccordionItem w="full">
-            <FormHeader as={AccordionButton}>로그인</FormHeader>
-            <AccordionPanel>
-              <UnderlineTextField
-                placeholder="이름"
-                value={id}
-                onChange={(e) => setId(e.target.value)}
-              />
-              <Spacing />
-              <UnderlineTextField
-                type="password"
-                placeholder="비밀번호"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-
-              <Spacing
-                height={{
-                  initial: 40,
-                  sm: 60,
-                }}
-              />
-              <Button onClick={handleConfirm}>로그인</Button>
-            </AccordionPanel>
-          </AccordionItem>
+        <Accordion allowToggle defaultIndex={1}>
           <AccordionItem w="full">
             <FormHeader as={AccordionButton}>회원가입</FormHeader>
             <AccordionPanel>
@@ -96,6 +90,31 @@ export const LoginPage = () => {
                 }}
               />
               <Button onClick={handleRegister}>로그인</Button>
+            </AccordionPanel>
+          </AccordionItem>
+          <AccordionItem w="full">
+            <FormHeader as={AccordionButton}>로그인</FormHeader>
+            <AccordionPanel>
+              <UnderlineTextField
+                placeholder="이름"
+                value={id}
+                onChange={(e) => setId(e.target.value)}
+              />
+              <Spacing />
+              <UnderlineTextField
+                type="password"
+                placeholder="비밀번호"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+
+              <Spacing
+                height={{
+                  initial: 40,
+                  sm: 60,
+                }}
+              />
+              <Button onClick={handleConfirm}>로그인</Button>
             </AccordionPanel>
           </AccordionItem>
         </Accordion>
