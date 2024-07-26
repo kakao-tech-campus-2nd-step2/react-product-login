@@ -1,7 +1,7 @@
 import {
   LegacyProductData,
   ProductData,
-  CategoryData,
+  CategoryData, WishData,
 } from '@/dto';
 
 export interface RankingProductsResponse {
@@ -52,7 +52,7 @@ export interface AddWishesResponse {
 }
 
 export interface WishedProductsResponse {
-  content: ProductData[];
+  content: WishData[];
   pageable: {
     sort: {
       sorted: boolean;
