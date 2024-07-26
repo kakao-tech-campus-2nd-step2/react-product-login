@@ -1,8 +1,10 @@
+import { Flex } from '@chakra-ui/react';
 import styled from '@emotion/styled';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
 
 import { fetchInstance } from '@/api/instance';
+import { Button } from '@/components/common/Button';
 import { DefaultGoodsItems } from '@/components/common/GoodsItem/Default';
 import { Container } from '@/components/common/layouts/Container';
 import { Grid } from '@/components/common/layouts/Grid';
@@ -49,6 +51,18 @@ const initdata = {
 };
 
 export const WishList = () => {
+  const { mutate } = useMutation({
+    mutationFn: async (id: number) => {
+      await fetchInstance.delete(`/api/wishes/${id}`);
+    },
+    onSuccess: () => {
+      alert('삭제되었습니다.');
+    },
+    onError: () => {
+      alert('삭제에 실패했습니다.');
+    },
+  });
+
   const {
     data = initdata,
     isLoading,
@@ -79,15 +93,25 @@ export const WishList = () => {
           gap={16}
         >
           {flattenGoodsList.map(({ id, product }) => (
-            <Link key={id} to={getDynamicPath.productsDetail(id)}>
-              <DefaultGoodsItems
-                key={id}
-                imageSrc={product.imageUrl}
-                title={product.name}
-                amount={product.price}
-                subtitle={''}
-              />
-            </Link>
+            <Flex flexDirection={'column'}>
+              <Link key={id} to={getDynamicPath.productsDetail(id)}>
+                <DefaultGoodsItems
+                  key={id}
+                  imageSrc={product.imageUrl}
+                  title={product.name}
+                  amount={product.price}
+                  subtitle={''}
+                />
+              </Link>
+              <Button
+                size="small"
+                onClick={() => {
+                  mutate(id);
+                }}
+              >
+                삭제
+              </Button>
+            </Flex>
           ))}
         </Grid>
       </Container>
