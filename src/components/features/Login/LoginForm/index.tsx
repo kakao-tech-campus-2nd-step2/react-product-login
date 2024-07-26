@@ -25,17 +25,13 @@ export const LoginForm = ({
 
   return (
     <form>
-      <UnderlineTextField
-        placeholder="이름"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-      />
+      <UnderlineTextField placeholder="이메일" value={email} onChange={setEmail} />
       <Spacing />
       <UnderlineTextField
         type="password"
         placeholder="비밀번호"
         value={password}
-        onChange={(e) => setPassword(e.target.value)}
+        onChange={setPassword}
       />
       <Spacing
         height={{

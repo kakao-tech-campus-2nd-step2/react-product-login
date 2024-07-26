@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { useState } from 'react';
+import { ChangeEventHandler, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
 import KAKAO_LOGO from '@/assets/kakao_logo.svg';
@@ -14,6 +14,10 @@ export const LoginPage = () => {
   const [password, setPassword] = useState('');
   const [queryParams] = useSearchParams();
   const [isEnrollButtonClicked, setIsEnrollButtonClicked] = useState(false);
+
+  const onEmailChange: ChangeEventHandler<HTMLInputElement> = (e) => setEmail(e.target.value);
+  const onPasswordChange: ChangeEventHandler<HTMLInputElement> = (e) => setPassword(e.target.value);
+  const onNavigationButtonClick = () => setIsEnrollButtonClicked(!isEnrollButtonClicked);
 
   const handleConfirm = () => {
     // TODO: API 연동 전까지 임시 로그인 처리
@@ -30,17 +34,17 @@ export const LoginPage = () => {
         {isEnrollButtonClicked ? (
           <EnrollForm
             email={email}
-            setEmail={setEmail}
+            setEmail={onEmailChange}
             password={password}
-            setPassword={setPassword}
+            setPassword={onPasswordChange}
             handleConfirm={handleConfirm}
           />
         ) : (
           <LoginForm
             email={email}
-            setEmail={setEmail}
+            setEmail={onEmailChange}
             password={password}
-            setPassword={setPassword}
+            setPassword={onPasswordChange}
             handleConfirm={handleConfirm}
           />
         )}
@@ -50,7 +54,7 @@ export const LoginPage = () => {
             sm: 20,
           }}
         />
-        <UnderlineButton onClick={() => setIsEnrollButtonClicked(!isEnrollButtonClicked)}>
+        <UnderlineButton onClick={onNavigationButtonClick}>
           {isEnrollButtonClicked ? '로그인하기' : '회원가입하기'}
         </UnderlineButton>
       </FormWrapper>
