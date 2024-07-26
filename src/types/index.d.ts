@@ -1,7 +1,7 @@
 import { CSSProperties, InputHTMLAttributes, ReactNode } from 'react';
 import FetchStatus from '@constants/FetchStatus';
 import { OrderRequestBody } from '@types/request';
-import { CategoryData, LegacyProductDetailData } from '@/dto';
+import { CategoryData } from '@/dto';
 import { CashReceiptOptions } from '@/constants';
 
 export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
@@ -62,11 +62,6 @@ interface SizedSkeletonProps {
   radius?: string;
 }
 
-interface ProductOrderPageState {
-  productDetails: LegacyProductDetailData;
-  count: number;
-}
-
 export interface FixedSize {
   width: string,
   height: string,
@@ -91,7 +86,3 @@ export type FetchStatusType = typeof FetchStatus[string];
 export type ContainerSize = FixedSize | 'full-width';
 
 export type ElementSize = FixedSize | 'responsive' | 'small' | 'big';
-
-export type TargetFilter = 'ALL' | 'FEMALE' | 'MALE' | 'TEEN';
-
-export type RankFilter = 'MANY_WISH' | 'MANY_RECEIVE' | 'MANY_WISH_RECEIVE';
