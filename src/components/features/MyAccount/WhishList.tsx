@@ -29,10 +29,7 @@ export const Wishlist = () => {
   const deleteMutation = useMutation<void, Error, number>({
     mutationFn: deleteFromWishlist,
     onSuccess: () => {
-      queryClient
-        .invalidateQueries({ queryKey: ['wishlist', page, size] })
-        // TODO: 알람까지 띄워야 하는지
-        .then(() => alert('관심 물품 삭제에 성공했습니다.'));
+      return queryClient.invalidateQueries({ queryKey: ['wishlist', page, size] });
     },
     onError: () => {
       alert('관심 물품 삭제에 실패했습니다.');
@@ -40,7 +37,8 @@ export const Wishlist = () => {
   });
 
   const handleDelete = (productId: number) => async () => {
-    deleteMutation.mutate(productId);
+    // TODO: 알람까지 띄워야 하는지
+    deleteMutation.mutateAsync(productId).then(() => alert('관심 물품 삭제에 성공했습니다.'));
   };
 
   return (
