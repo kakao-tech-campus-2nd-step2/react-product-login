@@ -26,7 +26,7 @@ export const wishlistHandlers = [
       );
     }
 
-    const product = { id: productId, name: `Product ${productId}`, price: 100, imageUrl: `http://example.com/product-${productId}.jpg` };
+    const product = { id: productId, name: `Product ${productId}`, price: 100, imageUrl: `https://st.kakaocdn.net/product/gift/product/20240215083306_8e1db057580145829542463a84971ae3.png` };
     const newWish = { id: nextWishId++, product };
     wishes.push(newWish);
 

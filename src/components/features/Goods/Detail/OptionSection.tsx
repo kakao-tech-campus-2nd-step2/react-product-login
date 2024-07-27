@@ -3,10 +3,7 @@ import styled from '@emotion/styled';
 import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import {
-  type ProductDetailRequestParams,
-  useGetProductDetail,
-} from '@/api/hooks/useGetProductDetail';
+import { type ProductDetailRequestParams, useGetProductDetail } from '@/api/hooks/useGetProductDetail';
 import { useGetProductOptions } from '@/api/hooks/useGetProductOptions';
 import { useAuth } from '@/provider/Auth';
 import { getDynamicPath, RouterPath } from '@/routes/path';
@@ -31,19 +28,15 @@ export const OptionSection = ({ productId }: Props) => {
 
   const handleClick = () => {
     if (!authInfo) {
-      const isConfirm = window.confirm(
-        '로그인이 필요한 메뉴입니다.\n로그인 페이지로 이동하시겠습니까?',
-      );
-
+      const isConfirm = window.confirm('로그인이 필요한 메뉴입니다.\n로그인 페이지로 이동하시겠습니까?');
       if (!isConfirm) return;
-      return navigate(getDynamicPath.login());
+      navigate(getDynamicPath.login());
     }
 
     orderHistorySessionStorage.set({
       id: parseInt(productId),
       count: parseInt(countAsString),
     });
-
     navigate(RouterPath.order);
   };
 
@@ -53,20 +46,23 @@ export const OptionSection = ({ productId }: Props) => {
       return;
     }
 
-    const response = await fetch('/api/wishes', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${authInfo.token}`,
-      },
-      body: JSON.stringify({ productId: Number(productId) }),
-    });
+    try {
+      const response = await fetch('/api/wishes', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${authInfo.token}`,
+        },
+        body: JSON.stringify({ productId: Number(productId) }),
+      });
 
-    if (response.ok) {
-      alert('관심 등록 완료')
-    } else {
-      const data = await response.json();
-      toast({ title: "추가 중 오류 발생", description: data.error, status: "error" });
+      if (response.ok) {
+        alert('관심 상품 등록')
+      } else {
+        alert('error');
+      }
+    } catch (error) {
+      alert('error');
     }
   };
 
@@ -77,10 +73,10 @@ export const OptionSection = ({ productId }: Props) => {
         <PricingWrapper>
           총 결제 금액 <span>{totalPrice}원</span>
         </PricingWrapper>
-        <Button variant="solid" colorScheme="blackAlpha" size="lg" onClick={handleClick}>
+        <Button colorScheme="blue" size="lg" onClick={handleClick}>
           나에게 선물하기
         </Button>
-        <Button variant="solid" colorScheme="blue" size="lg" onClick={handleAddToWishlist}>
+        <Button colorScheme="green" size="lg" onClick={handleAddToWishlist}>
           관심 등록
         </Button>
       </BottomWrapper>
