@@ -16,7 +16,7 @@ export const LoginPage = () => {
   const [queryParams] = useSearchParams();
   const navigate = useNavigate();
 
-  const handleConfirm = async () => {
+  const handleLogin = async () => {
     if (!id || !password) {
       alert('아이디와 비밀번호를 입력해주세요.');
       return;
@@ -28,6 +28,7 @@ export const LoginPage = () => {
         headers: {
           'Content-Type': 'application/json',
         },
+        // JSON 형식의 문자열로 변환
         body: JSON.stringify({ id: id, password }),
       });
 
@@ -36,8 +37,6 @@ export const LoginPage = () => {
       }
 
       const data = await response.json();
-
-      // 로그인 성공 시 토큰 저장
       authSessionStorage.set(data.id);
 
       const redirectUrl = queryParams.get('redirect') ?? `${window.location.origin}/`;
@@ -68,7 +67,7 @@ export const LoginPage = () => {
             sm: 60,
           }}
         />
-        <Button onClick={handleConfirm}>로그인</Button>
+        <Button onClick={handleLogin}>로그인</Button>
         <Spacing height={20} />
         <Button onClick={() => navigate('/signup')}>회원 가입</Button>
       </FormWrapper>
