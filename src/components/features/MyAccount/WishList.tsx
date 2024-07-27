@@ -2,6 +2,7 @@ import { Box, Button, Flex, Image, Text } from "@chakra-ui/react";
 import React from "react";
 
 import type { WishContentData } from "@/api/hooks/useWish";
+import { useDeleteWish } from "@/api/hooks/useWish";
 import { useGetWishList } from "@/api/hooks/useWish";
 import { useAuth } from "@/provider/Auth";
 
@@ -9,10 +10,22 @@ export const WishList: React.FC = () => {
   const authInfo = useAuth();
   const token = authInfo?.token || "";
 
-  const { data } = useGetWishList(0, 10, "createdDate,desc", token);
+  const { data, refetch } = useGetWishList(0, 10, "createdDate,desc", token);
+  const deleteWishMutation = useDeleteWish(token);
 
   const handleDelete = (id: number) => {
-    console.log(`Delete wish with id: ${id}`);
+    deleteWishMutation.mutate(
+      { productId: id },
+      {
+        onSuccess: () => {
+          alert("위시리스트에서 상품이 삭제되었습니다.");
+          refetch();
+        },
+        onError: () => {
+          alert("오류가 발생했습니다.");
+        },
+      },
+    );
   };
 
   return (

@@ -35,7 +35,7 @@ export const memberMockHandler = [
       return res(ctx.status(400), ctx.json({ error: "이미 등록된 이메일입니다." }));
     }
 
-    users.push({ email, password });
+    users.push({ email: email, password: password });
 
     const token = "mockToken";
     return res(ctx.status(201), ctx.json({ email, token }));

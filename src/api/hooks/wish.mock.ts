@@ -14,11 +14,11 @@ interface Wish {
   product: Product;
 }
 
-const wishes: Wish[] = [
+let wishes: Wish[] = [
   {
     id: 1,
     product: {
-      id: 1,
+      id: 11,
       name: "Product A",
       price: 1000,
       imageUrl:
@@ -28,7 +28,7 @@ const wishes: Wish[] = [
   {
     id: 2,
     product: {
-      id: 2,
+      id: 12,
       name: "Product B",
       price: 2000,
       imageUrl:
@@ -51,7 +51,8 @@ export const wishlistMockHandler = [
       return res(ctx.status(404), ctx.json({ error: "Wish not found" }));
     }
 
-    wishes.splice(wishIndex, 1);
+    wishes = wishes.filter((wish) => wish.id !== parseInt(wishId as string));
+    console.log(wishes);
     return res(ctx.status(204));
   }),
 
