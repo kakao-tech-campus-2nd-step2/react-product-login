@@ -1,5 +1,6 @@
 import { Divider } from '@chakra-ui/react';
 import styled from '@emotion/styled';
+import { useMutation } from '@tanstack/react-query';
 
 import type { ProductDetailRequestParams } from '@/api/hooks/useGetProductDetail';
 import { useGetProductDetail } from '@/api/hooks/useGetProductDetail';
@@ -13,15 +14,18 @@ type Props = ProductDetailRequestParams;
 export const GoodsDetailHeader = ({ productId }: Props) => {
   const { data: detail } = useGetProductDetail({ productId });
   const authInfo = useAuth();
+  const addWishlistMutation = useMutation({
+    mutationFn: addToWishlist,
+    onSuccess: () => {
+      alert('관심 등록 완료');
+    },
+    onError: () => {
+      alert('위시리스트 추가 실패(서버)');
+    },
+  });
 
   const handleAddToWishlist = async () => {
-    try {
-      await addToWishlist(productId);
-
-      alert('관심 등록 완료');
-    } catch (error) {
-      alert('위시리스트 추가 실패(서버)');
-    }
+    addWishlistMutation.mutate(productId);
   };
 
   return (

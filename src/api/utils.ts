@@ -1,5 +1,6 @@
 import { fetchInstance } from '@/api/instance';
 import type {
+  AddToWishlistResponse,
   LoginUserRequest,
   LoginUserResponse,
   RegisterUserRequest,
@@ -38,7 +39,7 @@ export const loginUser = async ({ email, password }: LoginUserRequest) => {
 
 export const addToWishlist = async (productId: string) => {
   try {
-    const response = await fetchInstance.post('/api/wishes', { productId });
+    const response = await fetchInstance.post<AddToWishlistResponse>('/api/wishes', { productId });
 
     return response.data;
   } catch (error) {

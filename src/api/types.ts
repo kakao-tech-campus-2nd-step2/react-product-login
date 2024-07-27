@@ -15,3 +15,8 @@ export type LoginUserRequest = {
 export type LoginUserResponse = {
   token: string;
 };
+
+export type AddToWishlistResponse = {
+  success: boolean;
+  message: string;
+};
