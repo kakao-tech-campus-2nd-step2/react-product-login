@@ -26,7 +26,7 @@ export const OrderForm = ({ orderHistory }: Props) => {
       hasCashReceipt: false,
     },
   });
-  const { handleSubmit } = methods;
+  const { handleSubmit, watch } = methods;
 
   const handleForm = (values: OrderFormData) => {
     const { errorMessage, isValid } = validateOrderForm(values);
@@ -40,13 +40,14 @@ export const OrderForm = ({ orderHistory }: Props) => {
     alert('주문이 완료되었습니다.');
   };
 
-  // Submit 버튼을 누르면 form이 제출되는 것을 방지하기 위한 함수
   const preventEnterKeySubmission = (e: React.KeyboardEvent<HTMLFormElement>) => {
     const target = e.target as HTMLFormElement;
     if (e.key === 'Enter' && !['TEXTAREA'].includes(target.tagName)) {
       e.preventDefault();
     }
   };
+
+  const hasCashReceipt = watch('hasCashReceipt');
 
   return (
     <FormProvider {...methods}>
@@ -56,6 +57,49 @@ export const OrderForm = ({ orderHistory }: Props) => {
             <OrderFormMessageCard />
             <Spacing height={8} backgroundColor="#ededed" />
             <GoodsInfo orderHistory={orderHistory} />
+            <label className="chakra-checkbox" data-testid="cash-receipt-checkbox">
+              <input
+                className="chakra-checkbox__input"
+                name="hasCashReceipt"
+                type="checkbox"
+                {...methods.register('hasCashReceipt')}
+              />
+              <span aria-hidden="true" className="chakra-checkbox__control" />
+              <span className="chakra-checkbox__label">현금영수증 신청</span>
+            </label>
+            <div className="chakra-select__wrapper">
+              <select
+                className="chakra-select"
+                data-testid="cash-receipt-type"
+                disabled={!hasCashReceipt}
+                {...methods.register('cashReceiptType')}
+              >
+                <option value="PERSONAL">개인소득공제</option>
+                <option value="BUSINESS">사업자증빙용</option>
+              </select>
+              <div className="chakra-select__icon-wrapper" data-disabled="">
+                <svg
+                  aria-hidden="true"
+                  className="chakra-select__icon"
+                  focusable="false"
+                  role="presentation"
+                  style={{ width: '1em', height: '1em', color: 'currentColor' }}
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z"
+                    fill="currentColor"
+                  />
+                </svg>
+              </div>
+            </div>
+            <input
+              className="chakra-input"
+              data-testid="cash-receipt-number"
+              disabled={!hasCashReceipt}
+              placeholder="(-없이) 숫자만 입력해주세요."
+              {...methods.register('cashReceiptNumber')}
+            />
           </Wrapper>
         </SplitLayout>
       </form>
