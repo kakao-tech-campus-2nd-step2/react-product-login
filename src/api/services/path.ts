@@ -32,7 +32,7 @@ export const getRegisterPath = () => `${BASE_URL}/api/members/register`;
 export const getWishAddPath = () => `${BASE_URL}/api/wishes`;
 export const getWishDeletePath = (wishId: number) =>
   `${BASE_URL}/api/wishes/${wishId}`;
-export const getWishDeleteApi = `${BASE_URL}/api/wishes/:wishId`;
+export const getWishDeleteApi = `${BASE_URL}/api/wishes/:wishId`; // MSW에서 사용하는 임시 api
 export const getWishListPath = ({
   pageToken,
   maxResults,

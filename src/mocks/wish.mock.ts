@@ -12,20 +12,13 @@ export const wishMockHandler = [
     const productId = await request.json();
 
     if (!productId) {
-      return HttpResponse.json(
-        { error: 'Bad Request' },
-        {
-          status: 400,
-        }
-      );
+      return HttpResponse.json({ error: 'Bad Request' }, { status: 400 });
     }
 
     if (!request.headers.has('Authorization')) {
       return HttpResponse.json(
         { error: 'Invalid or missing token' },
-        {
-          status: 401,
-        }
+        { status: 401 }
       );
     }
 
@@ -40,12 +33,9 @@ export const wishMockHandler = [
     if (!request.headers.has('Authorization')) {
       return HttpResponse.json(
         { error: 'Invalid or missing token' },
-        {
-          status: 401,
-        }
+        { status: 401 }
       );
     }
-
     return HttpResponse.json(WISH_LIST_MOCK_DATA);
   }),
   http.delete(getWishDeleteApi, async ({ request }) => {

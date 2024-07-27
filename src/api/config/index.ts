@@ -27,7 +27,7 @@ export const AUTHROIZATION_API = initInstance({
 AUTHROIZATION_API.interceptors.request.use((request) => {
   const getAuthInfo = sessionStorage.getItem('authInfo');
   if (!getAuthInfo) {
-    return Promise.reject(new Error('토큰이 없습니다.'));
+    return Promise.reject(new Error('다시 로그인 해주세요.'));
   }
 
   const authInfo: AuthInfo = JSON.parse(getAuthInfo);

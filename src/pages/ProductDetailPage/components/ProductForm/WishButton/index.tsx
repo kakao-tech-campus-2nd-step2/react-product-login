@@ -5,7 +5,6 @@ import { useMutation } from '@tanstack/react-query';
 
 import { addWish } from '@/api/services/wish';
 import heart from '@/assets/icons/heart-regular.svg';
-import { API_ERROR_MESSAGES } from '@/constants/errorMessage';
 
 import { Alert } from '@/components/ui/Dialog/Alert';
 import { Container } from '@/components/ui/Layout/Container';
@@ -21,8 +20,9 @@ export const WishButton = ({ productId }: { productId: string }) => {
       setAlertMessage('위시 리스트에 추가했습니다.');
       onOpen();
     },
-    onError: () => {
-      setAlertMessage(API_ERROR_MESSAGES.UNKNOWN_ERROR);
+    onError: (error) => {
+      setAlertMessage(error.message);
+      onOpen();
     },
   });
 

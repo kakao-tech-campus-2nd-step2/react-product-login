@@ -16,36 +16,42 @@ export type WishRequestBody = {
   productId: string;
 };
 export type WishResponse = Wish;
-
 export const addWish = async ({ productId }: WishRequestBody) => {
-  const response = await AUTHROIZATION_API.post<WishResponse>(
-    getWishAddPath(),
-    {
-      productId,
-    }
-  );
+  try {
+    const response = await AUTHROIZATION_API.post<WishResponse>(
+      getWishAddPath(),
+      {
+        productId,
+      }
+    );
 
-  return response.data;
+    return response.data;
+  } catch (error) {
+    throw new Error('위시 리스트에 추가하는 데 실패했습니다.');
+  }
 };
 
 export const fetchWishList = async (
   params: WishListRequestParams
 ): Promise<WishListResponse> => {
-  const response = await AUTHROIZATION_API.get<WishListResponseRaw>(
-    getWishListPath(params)
-  );
+  try {
+    const response = await AUTHROIZATION_API.get<WishListResponseRaw>(
+      getWishListPath(params)
+    );
+    const { data } = response;
 
-  const { data } = response;
-
-  return {
-    wishList: data.content,
-    nextPageToken:
-      data.last === false ? (data.number + 1).toString() : undefined,
-    pageInfo: {
-      totalResults: data.totalElements,
-      resultsPerPage: data.size,
-    },
-  };
+    return {
+      wishList: data.content,
+      nextPageToken:
+        data.last === false ? (data.number + 1).toString() : undefined,
+      pageInfo: {
+        totalResults: data.totalElements,
+        resultsPerPage: data.size,
+      },
+    };
+  } catch (error) {
+    throw new Error('위시 상품 목록을 불러오는 데 실패했습니다.');
+  }
 };
 
 export type DeleteWishRequestParams = {
@@ -54,7 +60,11 @@ export type DeleteWishRequestParams = {
 export type DeleteWishResponse = string;
 
 export const deleteWishItem = async (params: DeleteWishRequestParams) => {
-  await AUTHROIZATION_API.delete<DeleteWishResponse>(
-    getWishDeletePath(params.wishId)
-  );
+  try {
+    await AUTHROIZATION_API.delete<DeleteWishResponse>(
+      getWishDeletePath(params.wishId)
+    );
+  } catch (error) {
+    throw new Error('위시 상품을 삭제하는 데 실패했습니다.');
+  }
 };

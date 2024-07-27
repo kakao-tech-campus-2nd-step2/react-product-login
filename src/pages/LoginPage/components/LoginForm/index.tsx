@@ -7,11 +7,11 @@ import { useMutation } from '@tanstack/react-query';
 
 import { login } from '@/api/services/auth/login';
 import { API_ERROR_MESSAGES } from '@/constants/errorMessage';
+import { useLoginSuccess } from '@/pages/LoginPage/hooks/handleLoginSuccess';
 import { LoginFields, LoginSchema } from '@/schema/index';
 
 import { Alert } from '@/components/ui/Dialog/Alert';
 
-import { useLoginSuccess } from '../../hooks/handleLoginSuccess';
 import { buttonStyle, formContainerStyle } from './styles';
 
 export const LoginForm = () => {
