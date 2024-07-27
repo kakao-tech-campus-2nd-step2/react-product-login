@@ -1,43 +1,62 @@
 import styled from '@emotion/styled';
 import { useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import KAKAO_LOGO from '@/assets/kakao_logo.svg';
 import { Button } from '@/components/common/Button';
 import { UnderlineTextField } from '@/components/common/Form/Input/UnderlineTextField';
 import { Spacing } from '@/components/common/layouts/Spacing';
 import { breakpoints } from '@/styles/variants';
-import { authSessionStorage } from '@/utils/storage';
+
+interface SignUpRequest {
+  email: string;
+  password: string;
+}
 
 export const SignUpPage = () => {
-  const [id, setId] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [queryParams] = useSearchParams();
+  const [error, setError] = useState('');
+  const navigate = useNavigate();
 
-  const handleConfirm = () => {
-    if (!id || !password) {
-      alert('아이디와 비밀번호를 입력해주세요.');
+  const handleConfirm = async () => {
+    if (!email || !password) {
+      setError('이메일과 비밀번호를 확인해주세요.');
       return;
     }
+    try {
+      const response = await fetch('/api/members/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password } as SignUpRequest),
+      });
 
-    // TODO: API 연동
-
-    // TODO: API 연동 전까지 임시 로그인 처리
-    authSessionStorage.set(id);
-
-    const redirectUrl = queryParams.get('redirect') ?? `${window.location.origin}/`;
-    return window.location.replace(redirectUrl);
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message);
+      }
+      alert('회원가입에 성공했습니다.');
+      navigate('/login');
+    } catch (err) {
+      setError('회원가입에 실패했습니다.');
+    }
   };
 
   return (
     <Wrapper>
       <Logo src={KAKAO_LOGO} alt="카카오 CI" />
-      <SignUpTitle>카카오계정으로 사용할 이름과 비밀번호를 입력해 주세요.</SignUpTitle>
+      <SignUpTitle>카카오계정으로 사용할 이메일과 비밀번호를 입력해 주세요.</SignUpTitle>
 
       <FormWrapper>
         <Spacing />
 
-        <UnderlineTextField placeholder="이름" value={id} onChange={(e) => setId(e.target.value)} />
+        <UnderlineTextField
+          placeholder="이메일"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
         <Spacing />
         <UnderlineTextField
           type="password"
@@ -46,12 +65,9 @@ export const SignUpPage = () => {
           onChange={(e) => setPassword(e.target.value)}
         />
 
-        <Spacing
-          height={{
-            initial: 40,
-            sm: 60,
-          }}
-        />
+        {error && <ErrorText>{error}</ErrorText>}
+
+        <Spacing height={{ initial: 40, sm: 60 }} />
         <Button onClick={handleConfirm}>회원가입</Button>
       </FormWrapper>
     </Wrapper>
@@ -88,4 +104,9 @@ const SignUpTitle = styled.div`
   margin-bottom: 16px;
   font-size: 16px;
   color: #999;
+`;
+
+const ErrorText = styled.div`
+  color: red;
+  margin-top: 16px;
 `;
