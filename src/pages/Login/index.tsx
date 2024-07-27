@@ -10,32 +10,55 @@ import { RouterPath } from '@/routes/path';
 import { breakpoints } from '@/styles/variants';
 import { authSessionStorage } from '@/utils/storage';
 
+interface LoginResponse {
+  token: string;
+}
+
 export const LoginPage = () => {
   const navigate = useNavigate();
-  const [id, setId] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
   const [queryParams] = useSearchParams();
+  const [error, setError] = useState<string>('');
 
-  const handleConfirm = () => {
-    if (!id || !password) {
-      alert('아이디와 비밀번호를 입력해주세요.');
+  const handleConfirm = async () => {
+    if (!email || !password) {
+      setError('이메일과 비밀번호를 입력해주세요.');
       return;
     }
 
-    // TODO: API 연동
+    try {
+      const response = await fetch('/api/members/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+      });
 
-    // TODO: API 연동 전까지 임시 로그인 처리
-    authSessionStorage.set(id);
+      if (response.ok) {
+        const { token }: LoginResponse = await response.json();
+        authSessionStorage.set(token);
 
-    const redirectUrl = queryParams.get('redirect') ?? `${window.location.origin}/`;
-    return window.location.replace(redirectUrl);
+        const redirectUrl = queryParams.get('redirect') ?? `${window.location.origin}/`;
+        return window.location.replace(redirectUrl);
+      } else {
+        setError('이메일 또는 비밀번호가 잘못되었습니다.');
+      }
+    } catch (err) {
+      setError('에러가 발생하였습니다.');
+    }
   };
 
   return (
     <Wrapper>
-      <Logo src={KAKAO_LOGO} alt="카카고 CI" />
+      <Logo src={KAKAO_LOGO} alt="카카오 CI" />
       <FormWrapper>
-        <UnderlineTextField placeholder="이름" value={id} onChange={(e) => setId(e.target.value)} />
+        <UnderlineTextField
+          placeholder="이메일"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
         <Spacing />
         <UnderlineTextField
           type="password"
@@ -43,7 +66,6 @@ export const LoginPage = () => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-
         <Spacing
           height={{
             initial: 40,
@@ -51,6 +73,7 @@ export const LoginPage = () => {
           }}
         />
         <Button onClick={handleConfirm}>로그인</Button>
+        {error && <ErrorMessage>{error}</ErrorMessage>}
         <InfoUser>
           <a style={{ cursor: 'pointer' }} onClick={() => navigate(RouterPath.signUp)}>
             회원가입
@@ -90,4 +113,9 @@ const InfoUser = styled.div`
   margin-top: 16px;
   font-size: 14px;
   color: #999;
+`;
+
+const ErrorMessage = styled.div`
+  color: red;
+  margin-top: 10px;
 `;
