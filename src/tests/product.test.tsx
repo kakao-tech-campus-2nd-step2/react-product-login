@@ -1,28 +1,37 @@
 import '@testing-library/jest-dom';
 
 import { QueryClientProvider } from '@tanstack/react-query';
-import { render, screen, waitForElementToBeRemoved } from '@testing-library/react';
+import { render, screen, waitFor, waitForElementToBeRemoved } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 import type { ReactElement } from 'react';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 
 import { queryClient } from '@/api/instance';
 import { GoodsDetailPage } from '@/pages/Goods/Detail';
+import { AuthProvider } from '@/provider/Auth';
+import { authSessionStorage } from '@/utils/storage';
 
 import { worker } from '../../server';
 
-beforeAll(() => worker.listen());
+beforeAll(() => {
+  worker.listen({
+    onUnhandledRequest: 'warn',
+  });
+  window.alert = jest.fn();
+});
 afterEach(() => worker.resetHandlers());
 afterAll(() => worker.close());
 
 const renderWithProviders = (ui: ReactElement, { route = '/' } = {}) => {
   return render(
     <QueryClientProvider client={queryClient}>
-      <MemoryRouter initialEntries={[route]}>
-        <Routes>
-          <Route path="/products/:productId" element={ui} />
-        </Routes>
-      </MemoryRouter>
+      <AuthProvider>
+        <MemoryRouter initialEntries={[route]}>
+          <Routes>
+            <Route path="/products/:productId" element={ui} />
+          </Routes>
+        </MemoryRouter>
+      </AuthProvider>
     </QueryClientProvider>,
   );
 };
@@ -66,4 +75,17 @@ test('Counting buttons', async () => {
   await user.click(decrementButton);
 
   expect(totalPrice).toHaveTextContent('145000');
+});
+
+test('Add to wishlist', async () => {
+  authSessionStorage.set('mock-token');
+  const user = userEvent.setup();
+  renderWithProviders(<GoodsDetailPage />, { route: '/products/3245119' });
+  const addButton = screen.getByText('위시리스트에 추가');
+
+  await user.click(addButton);
+
+  await waitFor(() => {
+    expect(window.alert).toHaveBeenCalledWith('관심 등록 완료');
+  });
 });
