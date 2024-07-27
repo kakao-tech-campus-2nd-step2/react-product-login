@@ -6,7 +6,7 @@
     "start:mock": "cross-env REACT_APP_RUN_MSW=true npm run start",
     "start": "craco start",
     "build": "craco build",
-    "test": "jest",
+    "test": "craco test --transformIgnorePatterns \"node_modules/(?!axios)/\"",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
   },
@@ -38,6 +38,7 @@
     "react-router-dom": "^6.22.1"
   },
   "devDependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@craco/craco": "^7.1.0",
     "@emotion/eslint-plugin": "^11.11.0",
     "@storybook/addon-essentials": "^7.6.17",
