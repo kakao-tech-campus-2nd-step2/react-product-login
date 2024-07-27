@@ -14,6 +14,7 @@ module.exports = {
     'plugin:storybook/recommended',
   ],
   parser: '@typescript-eslint/parser',
+  ignorePatterns: ['__mocks__/*'],
   parserOptions: {
     project: path.resolve(__dirname, './tsconfig.json'),
     tsconfigRootDir: path.resolve(__dirname),
