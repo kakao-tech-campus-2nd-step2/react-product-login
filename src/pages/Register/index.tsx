@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import axios from 'axios';
 import { useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
@@ -14,17 +15,27 @@ export const RegisterPage = () => {
   const [password, setPassword] = useState('');
   const [queryParams] = useSearchParams();
 
-  const handleConfirm = () => {
+  const handleConfirm = async () => {
     if (!email || !password) {
       alert('이메일과 비밀번호를 입력해주세요.');
       return;
     }
 
-    // TODO: API 연동 전까지 임시 로그인 처리
-    authSessionStorage.set(email);
+    try {
+      const response = await axios.post('/api/members/register', {
+        email,
+        password,
+      });
 
-    const redirectUrl = queryParams.get('redirect') ?? `${window.location.origin}/`;
-    return window.location.replace(redirectUrl);
+      const { token } = response.data;
+      authSessionStorage.set(token);
+
+      const redirectUrl = queryParams.get('redirect') ?? `${window.location.origin}/`;
+      return window.location.replace(redirectUrl);
+    } catch (error: any) {
+      const message = error.response?.data?.message || '회원가입에 실패했습니다.';
+      alert(message);
+    }
   };
 
   return (
