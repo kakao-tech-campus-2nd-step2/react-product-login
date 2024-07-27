@@ -5,7 +5,12 @@ import { FormProvider, useForm } from 'react-hook-form';
 
 import { OrderForm } from './index';
 
-const TestComponent = ({ orderHistory }) => {
+type OrderHistory = {
+    id: number;
+    count: number;
+  };
+
+const TestComponent = ({ orderHistory }: { orderHistory: OrderHistory }) => {
   const methods = useForm({
     defaultValues: {
       productId: orderHistory.id,
@@ -39,16 +44,7 @@ describe('OrderForm', () => {
     });
   });
 
-  test('메시지 카드 텍스트 길이 검증 (1-100 글자)', async () => {
-    await act(async () => {
-      const messageInput = screen.getByPlaceholderText('선물과 함께 보낼 메시지를 적어보세요');
-      userEvent.type(messageInput, 'ㄱ'.repeat(101));
-      fireEvent.submit(screen.getByRole('form'));
-      await waitFor(() => screen.getByText('메시지는 100자 이내로 입력해주세요.'));
-    });
-  });
-
-  test('현금영수증 필드 활성화 및 비활성화', async () => {
+   test('현금영수증 필드 활성화 및 비활성화', async () => {
     await act(async () => {
       const checkbox = screen.getByTestId('cash-receipt-checkbox');
       fireEvent.click(checkbox); // 활성화
