@@ -81,7 +81,9 @@ export const LoginPage = () => {
             sm: 15,
           }}
         />
-        <Button onClick={handleSignUp}>회원가입</Button>
+        <Button theme="lightGray" onClick={handleSignUp}>
+          회원가입
+        </Button>
       </FormWrapper>
     </Wrapper>
   );
