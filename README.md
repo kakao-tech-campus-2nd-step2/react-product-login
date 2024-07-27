@@ -12,7 +12,7 @@
   - [x] test 설정 (mock 관련)
   - 랜더 테스트
     - [x] GoodsDetail
-    - [ ] OptionSection
+    - [x] OptionSection
   - [ ] 페이지 수량 입력 테스트
 - Form 통합 테스트 작성
   - [ ] 현금영수증 Checkbox가 false인 경우 현금영수증 종류, 현금영수증 번호 field가 비활성화 되어있는지 확인하는 테스트 코드를 작성해요. (만약 true인 경우 현금영수증 종류, 번호 field에 값이 입력 되어야 해요)

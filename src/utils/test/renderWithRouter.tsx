@@ -2,7 +2,12 @@ import { render } from '@testing-library/react';
 import React from 'react';
 import { createMemoryRouter, RouterProvider } from 'react-router-dom';
 
-export function renderWithRouter(children: React.ReactElement, routes = []) {
+interface RouterChildren {
+  element: React.ReactElement;
+  path: string;
+}
+
+export function renderWithRouter(children: React.ReactElement, routes: RouterChildren[] = []) {
   const options = { element: children, path: '/' };
 
   const router = createMemoryRouter([{ ...options }, ...routes], {
