@@ -1,17 +1,15 @@
 import styled from '@emotion/styled';
 import { useState } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 
 import KAKAO_LOGO from '@/assets/kakao_logo.svg';
 import { Button } from '@/components/common/Button';
 import { UnderlineTextField } from '@/components/common/Form/Input/UnderlineTextField';
 import { Spacing } from '@/components/common/layouts/Spacing';
-import { RouterPath } from '@/routes/path';
 import { breakpoints } from '@/styles/variants';
 import { authSessionStorage } from '@/utils/storage';
 
-export const LoginPage = () => {
-  const navigate = useNavigate();
+export const SignUpPage = () => {
   const [id, setId] = useState('');
   const [password, setPassword] = useState('');
   const [queryParams] = useSearchParams();
@@ -33,8 +31,12 @@ export const LoginPage = () => {
 
   return (
     <Wrapper>
-      <Logo src={KAKAO_LOGO} alt="카카고 CI" />
+      <Logo src={KAKAO_LOGO} alt="카카오 CI" />
+      <SignUpTitle>카카오계정으로 사용할 이름과 비밀번호를 입력해 주세요.</SignUpTitle>
+
       <FormWrapper>
+        <Spacing />
+
         <UnderlineTextField placeholder="이름" value={id} onChange={(e) => setId(e.target.value)} />
         <Spacing />
         <UnderlineTextField
@@ -50,12 +52,7 @@ export const LoginPage = () => {
             sm: 60,
           }}
         />
-        <Button onClick={handleConfirm}>로그인</Button>
-        <InfoUser>
-          <a style={{ cursor: 'pointer' }} onClick={() => navigate(RouterPath.signUp)}>
-            회원가입
-          </a>
-        </InfoUser>
+        <Button onClick={handleConfirm}>회원가입</Button>
       </FormWrapper>
     </Wrapper>
   );
@@ -86,8 +83,9 @@ const FormWrapper = styled.article`
   }
 `;
 
-const InfoUser = styled.div`
+const SignUpTitle = styled.div`
   margin-top: 16px;
-  font-size: 14px;
+  margin-bottom: 16px;
+  font-size: 16px;
   color: #999;
 `;
