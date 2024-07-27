@@ -3,9 +3,12 @@ import { AddIcon, MinusIcon } from '@chakra-ui/icons';
 import { IconButton, Input, useNumberInput } from '@chakra-ui/react';
 import styled from '@emotion/styled';
 import { HeartOutlined, HeartFilled } from '@ant-design/icons';
+import { BASE_URL } from '@/api/instance';
+import { authSessionStorage } from '@/utils/storage';
 
 type Props = {
   name: string;
+  productId: number;
   minValues?: number;
   maxValues?: number;
   value: string;
@@ -14,6 +17,7 @@ type Props = {
 
 export const CountOptionItem = ({
   name,
+  productId,
   minValues = 1,
   maxValues = 100,
   value,
@@ -34,14 +38,26 @@ export const CountOptionItem = ({
   const decrement = getDecrementButtonProps();
   const input = getInputProps();
 
-  const wishhandler = () => {
-    setIsChecked((prev) => {
-      const newChecked = !prev;
-      if (newChecked) {
+  const wishhandler = async () => {
+    setIsChecked((prev) => !prev);
+    try {
+      const response = await fetch(`${BASE_URL}/api/wishes`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${authSessionStorage.get()}`,
+        },
+        body: JSON.stringify({ productId }),
+      });
+      if (response.status === 201) {
         alert('관심 등록 완료');
+      } else {
+        alert('관심 등록 실패');
       }
-      return newChecked;
-    });
+    } catch (error) {
+      console.error('Error:', error);
+      alert('관심 등록 중 오류가 발생했습니다.');
+    }
   };
 
   return (
