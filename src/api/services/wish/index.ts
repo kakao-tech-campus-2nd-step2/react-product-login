@@ -1,26 +1,60 @@
-import { BACKEND_API } from '@/api/config';
-import { getWishPath } from '@/api/services/path';
-import { API_ERROR_MESSAGES } from '@/constants/errorMessage';
+import { AUTHROIZATION_API } from '@/api/config';
+import {
+  getWishAddPath,
+  getWishDeletePath,
+  getWishListPath,
+} from '@/api/services/path';
 import { Wish } from '@/types/wishType';
+
+import {
+  WishListRequestParams,
+  WishListResponse,
+  WishListResponseRaw,
+} from './types';
 
 export type WishRequestBody = {
   productId: string;
 };
-
 export type WishResponse = Wish;
 
-export const AddWish = async ({ productId }: WishRequestBody) => {
-  try {
-    const response = await BACKEND_API.post<WishResponse>(getWishPath(), {
+export const addWish = async ({ productId }: WishRequestBody) => {
+  const response = await AUTHROIZATION_API.post<WishResponse>(
+    getWishAddPath(),
+    {
       productId,
-    });
-
-    return response.data;
-  } catch (error) {
-    if (error instanceof Error) {
-      throw error;
     }
+  );
 
-    throw new Error(API_ERROR_MESSAGES.UNKNOWN_ERROR);
-  }
+  return response.data;
+};
+
+export const fetchWishList = async (
+  params: WishListRequestParams
+): Promise<WishListResponse> => {
+  const response = await AUTHROIZATION_API.get<WishListResponseRaw>(
+    getWishListPath(params)
+  );
+
+  const { data } = response;
+
+  return {
+    wishList: data.content,
+    nextPageToken:
+      data.last === false ? (data.number + 1).toString() : undefined,
+    pageInfo: {
+      totalResults: data.totalElements,
+      resultsPerPage: data.size,
+    },
+  };
+};
+
+export type DeleteWishRequestParams = {
+  wishId: number;
+};
+export type DeleteWishResponse = string;
+
+export const deleteWishItem = async (params: DeleteWishRequestParams) => {
+  await AUTHROIZATION_API.delete<DeleteWishResponse>(
+    getWishDeletePath(params.wishId)
+  );
 };
