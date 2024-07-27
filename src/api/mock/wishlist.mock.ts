@@ -1,6 +1,7 @@
 import { rest } from 'msw';
 
 import { getPostWishlistPath } from '../hooks/postWishlist';
+import { getDeleteWishlistPath } from '../hooks/useDeleteWishlist';
 import { getWishlistPath } from '../hooks/useGetWishlist';
 
 export const wishlistMockHandler = [
@@ -17,6 +18,10 @@ export const wishlistMockHandler = [
       return res(ctx.json(WISHLIST_GET_MOCK_DATA));
     },
   ),
+
+  rest.delete(getDeleteWishlistPath(':productId'), (_, res, ctx) => {
+    return res(ctx.json(WISHLIST_GET_MOCK_DATA));
+  }),
 ];
 
 const WISHLIST_MOCK_DATA = {

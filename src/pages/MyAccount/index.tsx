@@ -2,6 +2,7 @@ import { Flex, Grid } from '@chakra-ui/react';
 import styled from '@emotion/styled';
 import { useState } from 'react';
 
+import { useDeleteWishlist } from '@/api/hooks/useDeleteWishlist';
 import { useGetWishlist } from '@/api/hooks/useGetWishlist';
 import { Button } from '@/components/common/Button';
 import { DefaultGoodsItems } from '@/components/common/GoodsItem/Default';
@@ -20,6 +21,7 @@ export const MyAccountPage = () => {
     size: DEFAULT_PAGE_SIZE,
     sort: '',
   });
+  const { mutate: deleteWishlist } = useDeleteWishlist();
 
   if (!wishlistData) {
     return null;
@@ -34,18 +36,21 @@ export const MyAccountPage = () => {
     window.location.replace(redirectURL);
   };
 
+  const handleDeleteWishlist = (productId: string) => {
+    deleteWishlist({ productId });
+  };
+
   return (
     <Wrapper>
       {authInfo?.name}님 안녕하세요! <Spacing height={64} />
-      <Grid templateColumns="repeat(5, 1fr)">
+      <Grid templateColumns="repeat(5, 1fr)" gap={'1rem'}>
         {wishlistData.content.map(({ id, product: { name, imageUrl, price } }) => (
-          <DefaultGoodsItems
-            key={id}
-            amount={price}
-            imageSrc={imageUrl}
-            subtitle={name}
-            title={name}
-          />
+          <div key={id}>
+            <DefaultGoodsItems amount={price} imageSrc={imageUrl} subtitle={name} title={name} />
+            <Button size="small" theme="darkGray" onClick={() => handleDeleteWishlist(`${id}`)}>
+              삭제
+            </Button>
+          </div>
         ))}
       </Grid>
       <Spacing height={64} />
