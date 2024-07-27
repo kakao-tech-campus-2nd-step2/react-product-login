@@ -1,5 +1,6 @@
 import { rest } from 'msw';
 
+import { getDeleteWishPath } from './useDeleteWish';
 import { getWishesPath } from './useGetWish';
 import { getPutWishPath } from './usePostWish';
 
@@ -14,6 +15,10 @@ export const wishesMockHandler = [
 
   rest.get(getWishesPath({}), (_, res, ctx) => {
     return res(ctx.json(WISHES_MOCK_DATA));
+  }),
+
+  rest.delete(getDeleteWishPath(':wishId'), (_, res, ctx) => {
+    return res(ctx.status(204));
   }),
 ];
 

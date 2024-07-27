@@ -1,16 +1,16 @@
 import styled from '@emotion/styled';
-import { Link } from 'react-router-dom';
 
+import { useDeleteWish } from '@/api/hooks/useDeleteWish';
 import { useGetWishes } from '@/api/hooks/useGetWish';
 import { DefaultGoodsItems } from '@/components/common/GoodsItem/Default';
 import { Container } from '@/components/common/layouts/Container';
 import { Grid } from '@/components/common/layouts/Grid';
 import { LoadingView } from '@/components/common/View/LoadingView';
 import { VisibilityLoader } from '@/components/common/VisibilityLoader';
-import { getDynamicPath } from '@/routes/path';
 import { breakpoints } from '@/styles/variants';
 
 export const WishListPage = () => {
+  const mutation = useDeleteWish();
   const { data, isError, isLoading, hasNextPage, fetchNextPage, isFetchingNextPage } = useGetWishes(
     {
       maxResults: 20,
@@ -24,7 +24,10 @@ export const WishListPage = () => {
   if (data.pages[0].wishes.length <= 0) return <TextView>찜한 상품이 없어요.</TextView>;
 
   const flattenGoodsList = data.pages.map((page) => page?.wishes ?? []).flat();
-
+  const handleDeleteWish = (id: number) => {
+    alert(id);
+    mutation.mutate({ wishId: String(id) });
+  };
   return (
     <Wrapper>
       <Container>
@@ -36,15 +39,14 @@ export const WishListPage = () => {
           gap={16}
         >
           {flattenGoodsList.map(({ id, product }) => (
-            <Link key={id} to={getDynamicPath.productsDetail(id)}>
-              <DefaultGoodsItems
-                key={id}
-                imageSrc={product.imageUrl}
-                title={product.name}
-                amount={product.price}
-                subtitle={''}
-              />
-            </Link>
+            <DefaultGoodsItems
+              key={id}
+              imageSrc={product.imageUrl}
+              title={product.name}
+              amount={product.price}
+              subtitle={''}
+              onClick={() => handleDeleteWish(id)}
+            />
           ))}
         </Grid>
         {hasNextPage && (
