@@ -53,3 +53,22 @@ export type MessageCardTemplateData = {
   thumbUrl: string;
   imageUrl: string;
 };
+
+export type LoginData = {
+  email: string;
+  password: string;
+};
+
+export type LoginResponseData = {
+  email: string;
+  token: string;
+};
+
+export type WishData = {
+  productId: number;
+};
+
+export type WishResponseData = {
+  id: number;
+  productId: number;
+};
