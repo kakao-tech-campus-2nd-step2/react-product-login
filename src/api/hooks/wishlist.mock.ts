@@ -1,13 +1,12 @@
 import { rest } from 'msw';
 
-import { BASE_URL } from '../instance';
-import { getWishlistPath } from './useGetWishlist';
+import { WISH_LIST_PATH } from './useGetWishlist';
 
 export const wishlistMockHandler = [
-  rest.get(getWishlistPath(), (_, res, ctx) => {
+  rest.get(WISH_LIST_PATH, (_, res, ctx) => {
     return res(ctx.json(WISHLIST_RESPONSE_DATA));
   }),
-  rest.delete(`${BASE_URL}/api/wishes/:id`, (req, res, ctx) => {
+  rest.delete(`${WISH_LIST_PATH}/:id`, (req, res, ctx) => {
     const { id } = req.params;
     WISHLIST_RESPONSE_DATA.content = WISHLIST_RESPONSE_DATA.content.filter(
       (item) => item.id !== parseInt(id as string),

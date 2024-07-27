@@ -33,7 +33,7 @@ export const useLogin = () => {
     onSuccess: (data) => {
       authSessionStorage.set(data.token);
       alert('로그인이 완료되었습니다.');
-      const redirectUrl = queryParams.get('redirect') ?? `${window.location.origin}/`;
+      const redirectUrl = queryParams.get('redirect') ?? window.location.origin;
       window.location.replace(redirectUrl);
     },
     onError: (error) => {

@@ -38,7 +38,8 @@ export interface WishlistResponseData {
   empty: boolean;
 }
 
-export const getWishlistPath = () => `${BASE_URL}/api/wishes`;
+export const WISH_LIST_PATH = `${BASE_URL}/api/wishes`;
+
 const wishlistQueryKey = (page: number, size: number, sort: string) => [
   'wishlist',
   page,
@@ -47,7 +48,7 @@ const wishlistQueryKey = (page: number, size: number, sort: string) => [
 ];
 
 export const getWishlist = async () => {
-  const response = await fetchInstance.get<WishlistResponseData>(getWishlistPath(), {
+  const response = await fetchInstance.get<WishlistResponseData>(WISH_LIST_PATH, {
     headers: {
       Authorization: `Bearer ${localStorage.getItem('token')}`, // TODO: 추후 수정 필요
     },
