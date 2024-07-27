@@ -4,7 +4,10 @@ import BaseLayout from '@/layouts/BaseLayout';
 import { useAuth } from '@/provider/auth/useAuth';
 import { ROUTER_PATH } from '@/routes/path';
 
+import { Container } from '@/components/ui/Layout/Container';
+
 import { MyAccountConent } from './components/MyAccountContent';
+import { WishList } from './components/WishList';
 
 export const MyAccountPage = () => {
   const { authInfo } = useAuth();
@@ -15,7 +18,10 @@ export const MyAccountPage = () => {
 
   return (
     <BaseLayout>
-      <MyAccountConent userName={authInfo.name} />
+      <Container flexDirection="column" alignItems="center">
+        <MyAccountConent userName={authInfo.name} />
+        <WishList />
+      </Container>
     </BaseLayout>
   );
 };

@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { Button, Text, useDisclosure } from '@chakra-ui/react';
 import { useMutation } from '@tanstack/react-query';
 
-import { AddWish } from '@/api/services/wish';
+import { addWish } from '@/api/services/wish';
 import heart from '@/assets/icons/heart-regular.svg';
 import { API_ERROR_MESSAGES } from '@/constants/errorMessage';
 
@@ -16,11 +16,10 @@ export const WishButton = ({ productId }: { productId: string }) => {
   const [alertMessage, setAlertMessage] = useState('');
 
   const { mutate, status } = useMutation({
-    mutationFn: AddWish,
-    onSuccess: (data) => {
+    mutationFn: addWish,
+    onSuccess: () => {
       setAlertMessage('위시 리스트에 추가했습니다.');
       onOpen();
-      console.log(data);
     },
     onError: () => {
       setAlertMessage(API_ERROR_MESSAGES.UNKNOWN_ERROR);
