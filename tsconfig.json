@@ -24,6 +24,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["src"],
+  "include": ["src", "babel.config.cjs", "jest.config.js"],
   "exclude": ["node_modules", "build", "public"]
 }
