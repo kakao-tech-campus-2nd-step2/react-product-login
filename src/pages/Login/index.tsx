@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import axios from 'axios';
 import { useState } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
 import KAKAO_LOGO from '@/assets/kakao_logo.svg';
@@ -14,19 +15,27 @@ export const LoginPage = () => {
   const [password, setPassword] = useState('');
   const [queryParams] = useSearchParams();
 
-  const handleConfirm = () => {
+  const handleConfirm = async () => {
     if (!id || !password) {
       alert('아이디와 비밀번호를 입력해주세요.');
       return;
     }
 
-    // TODO: API 연동
+    try {
+      const response = await axios.post('/api/members/login', {
+        email: id,
+        password,
+      });
 
-    // TODO: API 연동 전까지 임시 로그인 처리
-    authSessionStorage.set(id);
+      const { token } = response.data;
+      authSessionStorage.set(token);
 
-    const redirectUrl = queryParams.get('redirect') ?? `${window.location.origin}/`;
-    return window.location.replace(redirectUrl);
+      const redirectUrl = queryParams.get('redirect') ?? `${window.location.origin}/`;
+      return window.location.replace(redirectUrl);
+    } catch (error: any) {
+      const message = error.response?.data?.message || '로그인에 실패했습니다.';
+      alert(message);
+    }
   };
 
   return (
