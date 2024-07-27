@@ -1,5 +1,7 @@
 import { rest } from 'msw';
 
+import { ERROR_MESSAGES, ErrorCode } from '@/constants/errorCodes';
+
 import { BASE_URL } from '../instance';
 
 interface LoginRequestBody {
@@ -21,9 +23,9 @@ export const authMockHandler = [
       );
     } else {
       return res(
-        ctx.status(403),
+        ctx.status(ErrorCode.Forbidden),
         ctx.json({
-          message: '유효하지 않은 이메일(또는 비밀번호)입니다.',
+          message: ERROR_MESSAGES[ErrorCode.Forbidden],
         }),
       );
     }
@@ -41,9 +43,9 @@ export const authMockHandler = [
       );
     } else {
       return res(
-        ctx.status(400),
+        ctx.status(ErrorCode.InvalidRequest),
         ctx.json({
-          message: '유효하지 않은 입력입니다.',
+          message: ERROR_MESSAGES[ErrorCode.InvalidRequest],
         }),
       );
     }
