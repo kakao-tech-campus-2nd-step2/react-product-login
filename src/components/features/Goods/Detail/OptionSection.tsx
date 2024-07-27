@@ -1,18 +1,18 @@
-import styled from '@emotion/styled';
-import { useMemo, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import styled from "@emotion/styled";
+import { useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import {
   type ProductDetailRequestParams,
   useGetProductDetail,
-} from '@/api/hooks/useGetProductDetail';
-import { useGetProductOptions } from '@/api/hooks/useGetProductOptions';
-import { Button } from '@/components/common/Button';
-import { useAuth } from '@/provider/Auth';
-import { getDynamicPath, RouterPath } from '@/routes/path';
-import { orderHistorySessionStorage } from '@/utils/storage';
+} from "@/api/hooks/useGetProductDetail";
+import { useGetProductOptions } from "@/api/hooks/useGetProductOptions";
+import { Button } from "@/components/common/Button";
+import { useAuth } from "@/provider/Auth";
+import { getDynamicPath, RouterPath } from "@/routes/path";
+import { orderHistorySessionStorage } from "@/utils/storage";
 
-import { CountOptionItem } from './OptionItem/CountOptionItem';
+import { CountOptionItem } from "./OptionItem/CountOptionItem";
 
 type Props = ProductDetailRequestParams;
 
@@ -20,7 +20,7 @@ export const OptionSection = ({ productId }: Props) => {
   const { data: detail } = useGetProductDetail({ productId });
   const { data: options } = useGetProductOptions({ productId });
 
-  const [countAsString, setCountAsString] = useState('1');
+  const [countAsString, setCountAsString] = useState("1");
   const totalPrice = useMemo(() => {
     return detail.price * Number(countAsString);
   }, [detail, countAsString]);
@@ -30,7 +30,7 @@ export const OptionSection = ({ productId }: Props) => {
   const handleClick = () => {
     if (!authInfo) {
       const isConfirm = window.confirm(
-        '로그인이 필요한 메뉴입니다.\n로그인 페이지로 이동하시겠습니까?',
+        "로그인이 필요한 메뉴입니다.\n로그인 페이지로 이동하시겠습니까?",
       );
 
       if (!isConfirm) return;

@@ -1,15 +1,15 @@
-import { createBrowserRouter, Navigate, RouterProvider } from 'react-router-dom';
+import { createBrowserRouter, Navigate, RouterProvider } from "react-router-dom";
 
-import { Layout } from '@/components/features/Layout';
-import { CategoryPage } from '@/pages/Category';
-import { GoodsDetailPage } from '@/pages/Goods/Detail';
-import { HomePage } from '@/pages/Home';
-import { LoginPage } from '@/pages/Login';
-import { MyAccountPage } from '@/pages/MyAccount';
-import { OrderPage } from '@/pages/Order';
+import { Layout } from "@/components/features/Layout";
+import { CategoryPage } from "@/pages/Category";
+import { GoodsDetailPage } from "@/pages/Goods/Detail";
+import { HomePage } from "@/pages/Home";
+import { LoginPage } from "@/pages/Login";
+import { MyAccountPage } from "@/pages/MyAccount";
+import { OrderPage } from "@/pages/Order";
 
-import { PrivateRoute } from './components/PrivateRoute';
-import { RouterPath } from './path';
+import { PrivateRoute } from "./components/PrivateRoute";
+import { RouterPath } from "./path";
 
 const router = createBrowserRouter([
   {

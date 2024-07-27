@@ -1,7 +1,7 @@
-import { AsyncBoundary } from '@/components/common/AsyncBoundary';
-import { LoadingView } from '@/components/common/View/LoadingView';
-import { OrderForm } from '@/components/features/Order/OrderForm';
-import { useHandleOrderHistory } from '@/hooks/useHandleOrderHistory';
+import { AsyncBoundary } from "@/components/common/AsyncBoundary";
+import { LoadingView } from "@/components/common/View/LoadingView";
+import { OrderForm } from "@/components/features/Order/OrderForm";
+import { useHandleOrderHistory } from "@/hooks/useHandleOrderHistory";
 
 export const OrderPage = () => {
   const { orderHistory } = useHandleOrderHistory();

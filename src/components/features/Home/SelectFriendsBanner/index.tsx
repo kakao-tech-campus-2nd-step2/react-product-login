@@ -1,8 +1,8 @@
-import styled from '@emotion/styled';
+import styled from "@emotion/styled";
 
-import { Image } from '@/components/common/Image';
-import { Container as CommonContainer } from '@/components/common/layouts/Container';
-import { breakpoints } from '@/styles/variants';
+import { Image } from "@/components/common/Image";
+import { Container as CommonContainer } from "@/components/common/layouts/Container";
+import { breakpoints } from "@/styles/variants";
 
 export const SelectFriendsBanner = () => (
   <Wrapper>
@@ -11,7 +11,7 @@ export const SelectFriendsBanner = () => (
         src="https://gift-s.kakaocdn.net/dn/gift/images/m640/bg_profile_default.png"
         alt="친구 선택 유도 아이콘"
         onClick={() => {
-          alert('선물 받을 친구 선택하기');
+          alert("선물 받을 친구 선택하기");
         }}
       />
       <Text>선물 받을 친구를 선택해주세요.</Text>

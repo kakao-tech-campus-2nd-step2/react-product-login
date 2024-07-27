@@ -1,7 +1,7 @@
-import { useMemo } from 'react';
+import { useMemo } from "react";
 
-import { useGetCategories } from '@/api/hooks/useGetCategorys';
-import { getCurrentCategory } from '@/components/features/Category/CategoryHeroSection';
+import { useGetCategories } from "@/api/hooks/useGetCategorys";
+import { getCurrentCategory } from "@/components/features/Category/CategoryHeroSection";
 
 type Props = { categoryId: string };
 

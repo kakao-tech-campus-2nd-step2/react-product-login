@@ -1,9 +1,9 @@
-import styled from '@emotion/styled';
+import styled from "@emotion/styled";
 
-import type { ProductDetailRequestParams } from '@/api/hooks/useGetProductDetail';
-import { breakpoints } from '@/styles/variants';
+import type { ProductDetailRequestParams } from "@/api/hooks/useGetProductDetail";
+import { breakpoints } from "@/styles/variants";
 
-import { GoodsDetailHeader } from './Header';
+import { GoodsDetailHeader } from "./Header";
 
 type Props = ProductDetailRequestParams;
 

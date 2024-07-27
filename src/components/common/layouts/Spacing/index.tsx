@@ -1,6 +1,6 @@
-import styled from '@emotion/styled';
+import styled from "@emotion/styled";
 
-import { vars } from '@/styles';
+import { vars } from "@/styles";
 
 type ResponseGridStyle = {
   [key in keyof typeof vars.breakpoints]?: number;
@@ -11,17 +11,17 @@ type Props = {
   backgroundColor?: string;
 } & React.HTMLAttributes<HTMLDivElement>;
 
-export const Spacing = ({ height, backgroundColor = 'inherit', ...props }: Props) => {
+export const Spacing = ({ height, backgroundColor = "inherit", ...props }: Props) => {
   return <Wrapper height={height} backgroundColor={backgroundColor} {...props} />;
 };
 
-const Wrapper = styled.div<Pick<Props, 'height' | 'backgroundColor'>>(
+const Wrapper = styled.div<Pick<Props, "height" | "backgroundColor">>(
   {
-    width: '100%',
+    width: "100%",
   },
   ({ backgroundColor }) => ({ backgroundColor }),
   ({ height = 16 }) => {
-    if (typeof height === 'number') {
+    if (typeof height === "number") {
       return {
         height: `${height}px`,
       };
@@ -32,6 +32,6 @@ const Wrapper = styled.div<Pick<Props, 'height' | 'backgroundColor'>>(
       .map((breakpoint) => {
         return `@media screen and (min-width: ${vars.breakpoints[breakpoint]}) { height: ${height[breakpoint]}px; }`;
       })
-      .join(' ');
+      .join(" ");
   },
 );

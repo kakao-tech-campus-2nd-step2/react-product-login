@@ -1,10 +1,10 @@
-import styled from '@emotion/styled';
+import styled from "@emotion/styled";
 
-import { Button } from '@/components/common/Button';
-import { Spacing } from '@/components/common/layouts/Spacing';
-import { useAuth } from '@/provider/Auth';
-import { RouterPath } from '@/routes/path';
-import { authSessionStorage } from '@/utils/storage';
+import { Button } from "@/components/common/Button";
+import { Spacing } from "@/components/common/layouts/Spacing";
+import { useAuth } from "@/provider/Auth";
+import { RouterPath } from "@/routes/path";
+import { authSessionStorage } from "@/utils/storage";
 
 export const MyAccountPage = () => {
   const authInfo = useAuth();
@@ -24,7 +24,7 @@ export const MyAccountPage = () => {
         theme="darkGray"
         onClick={handleLogout}
         style={{
-          maxWidth: '200px',
+          maxWidth: "200px",
         }}
       >
         로그아웃

@@ -3,7 +3,6 @@ module.exports = {
     browser: true,
     es2021: true,
     node: true,
-    jest: true,
   },
   extends: [
     "plugin:@typescript-eslint/recommended",
@@ -11,7 +10,6 @@ module.exports = {
     "airbnb-typescript",
     "prettier",
     "plugin:storybook/recommended",
-    "plugin:jest/recommended",
   ],
   parser: "@typescript-eslint/parser",
   parserOptions: {
@@ -31,7 +29,6 @@ module.exports = {
     "simple-import-sort",
     "@emotion",
     "prettier",
-    "jest",
   ],
   rules: {
     "react/react-in-jsx-scope": "off",

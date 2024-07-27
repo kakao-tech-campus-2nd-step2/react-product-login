@@ -1,9 +1,9 @@
-import { Divider } from '@chakra-ui/react';
-import styled from '@emotion/styled';
+import { Divider } from "@chakra-ui/react";
+import styled from "@emotion/styled";
 
-import type { ProductDetailRequestParams } from '@/api/hooks/useGetProductDetail';
-import { useGetProductDetail } from '@/api/hooks/useGetProductDetail';
-import { breakpoints } from '@/styles/variants';
+import type { ProductDetailRequestParams } from "@/api/hooks/useGetProductDetail";
+import { useGetProductDetail } from "@/api/hooks/useGetProductDetail";
+import { breakpoints } from "@/styles/variants";
 
 type Props = ProductDetailRequestParams;
 

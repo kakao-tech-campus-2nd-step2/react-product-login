@@ -1,7 +1,7 @@
-import styled from '@emotion/styled';
+import styled from "@emotion/styled";
 
-import { HeadingText } from '../Common/HeadingText';
-import { MessageCardFields } from '../Fields/MessageCardFields';
+import { HeadingText } from "../Common/HeadingText";
+import { MessageCardFields } from "../Fields/MessageCardFields";
 
 export const OrderFormMessageCard = () => {
   return (
