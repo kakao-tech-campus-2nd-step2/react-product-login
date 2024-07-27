@@ -24,7 +24,6 @@ export const AccountPage = () => {
       return;
     }
 
-    // 로컬 스토리지에 저장
     const storedUsers = JSON.parse(localStorage.getItem('users') || '[]');
     if (storedUsers.some((user: { id: string;}) => user.id === id)) {
       alert('이미 존재하는 아이디입니다.');
