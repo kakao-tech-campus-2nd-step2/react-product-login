@@ -1,5 +1,6 @@
+import { Text } from '@chakra-ui/react';
 import styled from '@emotion/styled';
-import { useState } from 'react';
+import { useEffect,useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { useGetProductDetail } from '@/api/hooks/useGetProductDetail';
@@ -12,6 +13,7 @@ import { orderHistorySessionStorage } from '@/utils/storage';
 
 import { CountOptionItem } from './OptionItem/CountOptionItem';
 
+
 type Props = { productId: string };
 
 export const OptionSection = ({ productId }: Props) => {
@@ -19,6 +21,7 @@ export const OptionSection = ({ productId }: Props) => {
   const { data: detail } = useGetProductDetail({ productId });
   const { data: options } = useGetProductOptions({ productId });
   const [countAsString, setCountAsString] = useState('1');
+  const [isLiked, setIsLiked] = useState(false);
 
   const totalPrice = detail?.price * Number(countAsString);
 
@@ -26,6 +29,19 @@ export const OptionSection = ({ productId }: Props) => {
   const authInfo = useAuth();
   const { fetchWishlist } = useWishlist();
   const { addToWishlist, loading: adding } = useAddToWishlist(fetchWishlist);
+
+  useEffect(() => {
+    const checkIfLiked = async () => {
+      try {
+        const response = await fetch('/api/wishes'); // 관심 목록을 가져와서 체크
+        const wishlist = await response.json();
+        setIsLiked(wishlist.some((wish: { product: { id: number } }) => wish.product.id === numericProductId));
+      } catch (error) {
+        console.error('관심 목록 확인 실패', error);
+      }
+    };
+    checkIfLiked();
+  }, [numericProductId]);
 
   const handleClick = () => {
     if (!authInfo) {
@@ -41,6 +57,7 @@ export const OptionSection = ({ productId }: Props) => {
   const handleLike = async () => {
     try {
       await addToWishlist(numericProductId);
+      setIsLiked(true); // 하트를 빨간색으로 변경
       alert('관심 상품에 등록되었습니다.');
     } catch (error) {
       console.error('관심 상품 등록 실패', error);
@@ -56,8 +73,14 @@ export const OptionSection = ({ productId }: Props) => {
           총 결제 금액 <span>{totalPrice}원</span>
         </PricingWrapper>
         <ButtonWrapper>
-          <Button theme='black' size='large' onClick={handleLike} disabled={adding}>
-            ♡
+          <Button
+            theme='black'
+            size='large'
+            onClick={handleLike}
+            disabled={adding}
+            style={{ color: isLiked ? 'red' : 'white' }} // 하트 색상 변경
+          >
+            <Text fontSize={30}>{isLiked ? '♥' : '♡'}</Text>
           </Button>
           <Button theme="black" size="large" onClick={handleClick}>
             나에게 선물하기
