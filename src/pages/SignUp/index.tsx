@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { useState } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import KAKAO_LOGO from '@/assets/kakao_logo.svg';
 import { Button } from '@/components/common/Button';
@@ -9,10 +9,9 @@ import { Spacing } from '@/components/common/layouts/Spacing';
 import { breakpoints } from '@/styles/variants';
 import { authSessionStorage } from '@/utils/storage';
 
-export const LoginPage = () => {
+export const SignUpPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [queryParams] = useSearchParams();
   const navigate = useNavigate();
 
   const handleConfirm = async () => {
@@ -22,28 +21,25 @@ export const LoginPage = () => {
     }
 
     try {
-      const response = await fetch('/api/members/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password })
-      });
-
-      const data = await response.json();
-      if (response.ok) {
-        authSessionStorage.set(data.token);
-        const redirectUrl = queryParams.get('redirect') ?? `${window.location.origin}/`;
-        window.location.replace(redirectUrl);
-      } else {
-        alert(data.error);
+        const response = await fetch('/api/members/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password })
+        });
+  
+        const data = await response.json();
+        if (response.ok) {
+          authSessionStorage.set(data.token);
+          alert('회원가입이 완료되었습니다.');
+          navigate('/');
+        } else {
+          alert(data.error);
+        }
+      } catch (error) {
+        alert('회원가입 중 문제가 발생했습니다.');
       }
-    } catch (error) {
-      alert('로그인 중 문제가 발생했습니다.');
-    }
-  };
+    };
 
-    const handleRegister = () => {
-    navigate('/signup'); 
-  };
   return (
     <Wrapper>
       <Logo src={KAKAO_LOGO} alt="카카고 CI" />
@@ -63,14 +59,7 @@ export const LoginPage = () => {
             sm: 60,
           }}
         />
-        <Button onClick={handleConfirm}>로그인</Button>
-        <Spacing
-          height={{
-            initial: 10,
-            sm: 20,
-          }}
-        />
-        <Button onClick={handleRegister}>회원가입</Button>
+        <Button onClick={handleConfirm}>회원가입</Button>
       </FormWrapper>
     </Wrapper>
   );

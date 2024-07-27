@@ -1,13 +1,10 @@
+import { Button, useToast } from '@chakra-ui/react';
 import styled from '@emotion/styled';
 import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import {
-  type ProductDetailRequestParams,
-  useGetProductDetail,
-} from '@/api/hooks/useGetProductDetail';
+import { type ProductDetailRequestParams, useGetProductDetail } from '@/api/hooks/useGetProductDetail';
 import { useGetProductOptions } from '@/api/hooks/useGetProductOptions';
-import { Button } from '@/components/common/Button';
 import { useAuth } from '@/provider/Auth';
 import { getDynamicPath, RouterPath } from '@/routes/path';
 import { orderHistorySessionStorage } from '@/utils/storage';
@@ -27,22 +24,46 @@ export const OptionSection = ({ productId }: Props) => {
 
   const navigate = useNavigate();
   const authInfo = useAuth();
+  const toast = useToast();
+
   const handleClick = () => {
     if (!authInfo) {
-      const isConfirm = window.confirm(
-        '로그인이 필요한 메뉴입니다.\n로그인 페이지로 이동하시겠습니까?',
-      );
-
+      const isConfirm = window.confirm('로그인이 필요한 메뉴입니다.\n로그인 페이지로 이동하시겠습니까?');
       if (!isConfirm) return;
-      return navigate(getDynamicPath.login());
+      navigate(getDynamicPath.login());
     }
 
     orderHistorySessionStorage.set({
       id: parseInt(productId),
       count: parseInt(countAsString),
     });
-
     navigate(RouterPath.order);
+  };
+
+  const handleAddToWishlist = async () => {
+    if (!authInfo?.token) {
+      toast({ title: "로그인이 필요합니다.", status: "warning" });
+      return;
+    }
+
+    try {
+      const response = await fetch('/api/wishes', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${authInfo.token}`,
+        },
+        body: JSON.stringify({ productId: Number(productId) }),
+      });
+
+      if (response.ok) {
+        alert('관심 상품 등록')
+      } else {
+        alert('error');
+      }
+    } catch (error) {
+      alert('error');
+    }
   };
 
   return (
@@ -52,8 +73,11 @@ export const OptionSection = ({ productId }: Props) => {
         <PricingWrapper>
           총 결제 금액 <span>{totalPrice}원</span>
         </PricingWrapper>
-        <Button theme="black" size="large" onClick={handleClick}>
+        <Button colorScheme="blue" size="lg" onClick={handleClick}>
           나에게 선물하기
+        </Button>
+        <Button colorScheme="green" size="lg" onClick={handleAddToWishlist}>
+          관심 등록
         </Button>
       </BottomWrapper>
     </Wrapper>

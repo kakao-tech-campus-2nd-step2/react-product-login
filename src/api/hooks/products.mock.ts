@@ -2,25 +2,17 @@ import { rest } from 'msw';
 
 import { getProductDetailPath } from './useGetProductDetail';
 import { getProductOptionsPath } from './useGetProductOptions';
-import { getProductsPath } from './useGetProducts';
 
 export const productsMockHandler = [
-  rest.get(
-    getProductsPath({
-      categoryId: '2920',
-    }),
-    (_, res, ctx) => {
+  rest.get('https://api.example.com/api/products', (req, res, ctx) => {
+    const categoryId = req.url.searchParams.get('categoryId');
+
+    if (categoryId === '2920' || categoryId === '2930') {
       return res(ctx.json(PRODUCTS_MOCK_DATA));
-    },
-  ),
-  rest.get(
-    getProductsPath({
-      categoryId: '2930',
-    }),
-    (_, res, ctx) => {
-      return res(ctx.json(PRODUCTS_MOCK_DATA));
-    },
-  ),
+    }
+
+    return res(ctx.status(404), ctx.json({ message: 'Category not found' }));
+  }),
   rest.get(getProductDetailPath(':productId'), (_, res, ctx) => {
     return res(ctx.json(PRODUCTS_MOCK_DATA.content[0]));
   }),
