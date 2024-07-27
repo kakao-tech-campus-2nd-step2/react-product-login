@@ -1,42 +1,47 @@
-import { ReactNode, useEffect, useMemo, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
 
 import { LoginResponse } from '@/api/services/auth/login';
+import { authLocalStorage } from '@/utils/storage';
+
+import { UpDownDots } from '@/components/Loading/UpDownDots';
 
 import { AuthContext, AuthInfo } from './AuthContext';
 
-type CurrentToken = LoginResponse | undefined;
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const location = useLocation();
+  const currentAuthToken = authLocalStorage.get();
+  const [isReady, setIsReady] = useState(false);
+
   const [authInfo, setAuthInfo] = useState<AuthInfo | undefined>(undefined);
 
-  useEffect(() => {
-    const currentTokenString = sessionStorage.getItem('authInfo');
-    const currentToken: CurrentToken = currentTokenString
-      ? JSON.parse(currentTokenString)
-      : undefined;
-
-    if (currentToken) {
-      setAuthInfo({
-        email: currentToken.email,
-        name: getUsernameFromEmail(currentToken.email),
-        token: currentToken.token,
-      });
+  const updateAuthInfo = useCallback((authToken?: LoginResponse) => {
+    if (!authToken) {
+      setAuthInfo(undefined);
       return;
     }
 
-    setAuthInfo(undefined);
-  }, [location]);
+    setAuthInfo({
+      email: authToken.email,
+      name: getUsernameFromEmail(authToken.email),
+      token: authToken.token,
+    });
+  }, []);
 
-  const isLoggedIn = !!authInfo?.token || false;
+  useEffect(() => {
+    if (currentAuthToken && !authInfo) {
+      updateAuthInfo(currentAuthToken);
+    }
+    setIsReady(true);
+  }, [currentAuthToken, authInfo, updateAuthInfo]);
 
   const contextValue = useMemo(
     () => ({
-      isLoggedIn,
       authInfo,
+      updateAuthInfo,
     }),
-    [isLoggedIn, authInfo]
+    [authInfo, updateAuthInfo]
   );
+
+  if (!isReady) return <UpDownDots />;
 
   return (
     <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>

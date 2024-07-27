@@ -1,6 +1,6 @@
 import { AxiosError } from 'axios';
 
-import { AuthInfo } from '@/provider/auth/AuthContext';
+import { authLocalStorage } from '@/utils/storage';
 
 import { getErrorMessage } from './errorHandler';
 import { initInstance } from './instance';
@@ -25,12 +25,11 @@ export const AUTHROIZATION_API = initInstance({
   withCredentials: true,
 });
 AUTHROIZATION_API.interceptors.request.use((request) => {
-  const getAuthInfo = sessionStorage.getItem('authInfo');
-  if (!getAuthInfo) {
+  const authInfo = authLocalStorage.get();
+  if (!authInfo) {
     return Promise.reject(new Error('다시 로그인 해주세요.'));
   }
 
-  const authInfo: AuthInfo = JSON.parse(getAuthInfo);
   request.headers.Authorization = `Bearer ${authInfo.token}`;
 
   return request;

@@ -26,7 +26,7 @@ export const ProductForm = ({ productId }: ProductFormProps) => {
   const { totalPrice, quantity, updateQuantity } = useTotalPrice(productId);
 
   const navigate = useNavigate();
-  const { isLoggedIn } = useAuth();
+  const { authInfo } = useAuth();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   if (error) {
@@ -34,7 +34,7 @@ export const ProductForm = ({ productId }: ProductFormProps) => {
   }
 
   const onClick = () => {
-    if (!isLoggedIn) {
+    if (!authInfo) {
       onOpen();
       return;
     }
