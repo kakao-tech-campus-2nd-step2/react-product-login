@@ -36,7 +36,7 @@ export const OrderForm = ({ orderHistory }: Props) => {
       return;
     }
 
-    console.log("values", values);
+    // console.log("values", values);
     alert("주문이 완료되었습니다.");
   };
 
