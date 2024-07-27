@@ -56,6 +56,6 @@ export const wishlistMockHandler = [
   }),
 
   rest.get(`${BASE_URL}/api/wishes`, (_, res, ctx) => {
-    return res(ctx.status(200), ctx.json(wishes));
+    return res(ctx.status(200), ctx.json({ content: wishes }));
   }),
 ];
