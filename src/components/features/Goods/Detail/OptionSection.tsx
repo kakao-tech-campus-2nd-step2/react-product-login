@@ -30,7 +30,7 @@ export const OptionSection = ({ productId }: Props) => {
   const navigate = useNavigate();
   const authInfo = useAuth();
 
-  const handleWishButtonClick = () => {
+  const handleWishButtonClick = async () => {
     if (!authInfo) {
       const isConfirm = window.confirm(
         '로그인이 필요한 메뉴입니다.\n로그인 페이지로 이동하시겠습니까?',
@@ -44,8 +44,28 @@ export const OptionSection = ({ productId }: Props) => {
       setIsFavorited(false);
       return;
     }
-    alert('관심 등록 완료');
-    setIsFavorited(true);
+
+    try {
+      const response = await fetch('/api/wishes', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer valid-token',
+        },
+        body: JSON.stringify({ productId }),
+      });
+
+      if (!response.ok) {
+        throw new Error('관심 등록 실패');
+      }
+
+      alert('관심 등록 완료');
+      setIsFavorited(true);
+    } catch (err) {
+      if (err instanceof Error) {
+        alert('관심 등록 실패: ' + err.message);
+      }
+    }
   };
 
   const handleClick = () => {
@@ -68,10 +88,12 @@ export const OptionSection = ({ productId }: Props) => {
 
   return (
     <Wrapper>
-      <CountOptionItem name={options[0].name} value={countAsString} onChange={setCountAsString} />
+      {options && options.length > 0 && (
+        <CountOptionItem name={options[0].name} value={countAsString} onChange={setCountAsString} />
+      )}
       <BottomWrapper>
         <PricingWrapper>
-          총 결제 금액 <span>{totalPrice}원</span>
+          총 결제 금액 <span>{totalPrice.toLocaleString()}원</span>
         </PricingWrapper>
         <ButtonWrapper>
           <WishButton isFavorited={isFavorited} onClick={handleWishButtonClick} />

@@ -1,3 +1,4 @@
+import { Container } from '@chakra-ui/react';
 import styled from '@emotion/styled';
 
 import { Button } from '@/components/common/Button';
@@ -36,8 +37,9 @@ export const MyAccountPage = () => {
   );
 };
 
-const Wrapper = styled.div`
-  display: flex;
+const Wrapper = styled(Container)`
+  margin: 0 auto;
+  display: absolute;
   flex-direction: column;
   align-items: center;
   justify-content: center;
