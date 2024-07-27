@@ -12,9 +12,9 @@ export type LoginResponseData = {
   token: string;
 };
 
-export const loginPath = `${BASE_URL}/api/members/login`;
+const loginPath = `${BASE_URL}/api/members/login`;
 
-export const getLogin = async (params: LoginRequestParams) => {
+const getLogin = async (params: LoginRequestParams) => {
   const response = await fetchInstance.post<LoginResponseData>(loginPath, params);
 
   return response.data;

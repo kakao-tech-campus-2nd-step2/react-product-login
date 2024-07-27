@@ -2,23 +2,20 @@ import styled from "@emotion/styled";
 import { AxiosError } from "axios";
 import { useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
 
-import { useLogin } from "@/api/hooks/useLogin";
+import { useSignUp } from "@/api/hooks/useSignup";
 import KAKAO_LOGO from "@/assets/kakao_logo.svg";
 import { Button } from "@/components/common/Button";
 import { UnderlineTextField } from "@/components/common/Form/Input/UnderlineTextField";
 import { Spacing } from "@/components/common/layouts/Spacing";
-import { getDynamicPath } from "@/routes/path";
 import { breakpoints } from "@/styles/variants";
 import { authSessionStorage } from "@/utils/storage";
 
-export const LoginPage = () => {
+export const SignUpPage = () => {
   const [id, setId] = useState("");
   const [password, setPassword] = useState("");
   const [queryParams] = useSearchParams();
-  const { mutate: login } = useLogin();
-  const navigate = useNavigate();
+  const { mutate: signUp } = useSignUp();
 
   const handleConfirm = () => {
     if (!id || !password) {
@@ -35,7 +32,7 @@ export const LoginPage = () => {
       }
     };
 
-    login(
+    signUp(
       { email: id, password },
       {
         onSuccess: () => {
@@ -48,11 +45,6 @@ export const LoginPage = () => {
         },
       },
     );
-  };
-
-  const handleSignUp = () => {
-    const redirect = queryParams.get("redirect") ?? "/";
-    navigate(getDynamicPath.signUp(redirect));
   };
 
   return (
@@ -74,14 +66,7 @@ export const LoginPage = () => {
             sm: 60,
           }}
         />
-        <Button onClick={handleConfirm}>로그인</Button>
-        <Spacing
-          height={{
-            initial: 10,
-            sm: 15,
-          }}
-        />
-        <Button onClick={handleSignUp}>회원가입</Button>
+        <Button onClick={handleConfirm}>회원가입</Button>
       </FormWrapper>
     </Wrapper>
   );

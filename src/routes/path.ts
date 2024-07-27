@@ -16,6 +16,9 @@ export const getDynamicPath = {
     const currentRedirect = redirect ?? window.location.href;
     return `${RouterPath.login}?redirect=${encodeURIComponent(currentRedirect)}`;
   },
+  signUp: (redirect: string) => {
+    return `${RouterPath.signUp}?redirect=${redirect}`;
+  },
   productsDetail: (goodsId: number | string) =>
     RouterPath.productsDetail.replace(
       ":productId",
