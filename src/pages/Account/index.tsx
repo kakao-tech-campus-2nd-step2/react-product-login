@@ -1,38 +1,41 @@
 import styled from '@emotion/styled';
 import { useState } from 'react';
-import { Link, useSearchParams } from 'react-router-dom';
-import { RouterPath } from '@/routes/path';
+import { useNavigate } from 'react-router-dom';
 import KAKAO_LOGO from '@/assets/kakao_logo.svg';
 import { Button } from '@/components/common/Button';
 import { UnderlineTextField } from '@/components/common/Form/Input/UnderlineTextField';
 import { Spacing } from '@/components/common/layouts/Spacing';
 import { breakpoints } from '@/styles/variants';
 
-export const LoginPage = () => {
+export const AccountPage = () => {
   const [id, setId] = useState('');
   const [password, setPassword] = useState('');
-  const [queryParams] = useSearchParams();
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const navigate = useNavigate();
 
-  const handleConfirm = () => {
-    if (!id || !password) {
-      alert('아이디와 비밀번호를 입력해주세요.');
+  const handleSignUp = () => {
+    if (!id || !password || !confirmPassword) {
+      alert('모든 필드를 입력해주세요.');
       return;
     }
 
-    // 로컬 스토리지에서 사용자 정보 확인
+    if (password !== confirmPassword) {
+      alert('비밀번호가 일치하지 않습니다.');
+      return;
+    }
+
+    // 로컬 스토리지에 저장
     const storedUsers = JSON.parse(localStorage.getItem('users') || '[]');
-    const user = storedUsers.find((user: { id: string; password:string;}) => user.id === id && user.password === password);
-
-    if (!user) {
-      alert('아이디가 틀렸습니다.');
+    if (storedUsers.some((user: { id: string;}) => user.id === id)) {
+      alert('이미 존재하는 아이디입니다.');
       return;
     }
 
-    // 로그인 성공 시 세션 스토리지에 저장
-    sessionStorage.setItem('id', id);
+    storedUsers.push({ id, password });
+    localStorage.setItem('users', JSON.stringify(storedUsers));
 
-    const redirectUrl = queryParams.get('redirect') ?? `${window.location.origin}/`;
-    window.location.replace(redirectUrl);
+    alert('회원가입이 완료되었습니다. 로그인 페이지로 이동합니다.');
+    navigate('/login');
   };
 
   return (
@@ -47,6 +50,13 @@ export const LoginPage = () => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
+        <Spacing />
+        <UnderlineTextField
+          type="password"
+          placeholder="비밀번호 확인"
+          value={confirmPassword}
+          onChange={(e) => setConfirmPassword(e.target.value)}
+        />
 
         <Spacing
           height={{
@@ -54,12 +64,7 @@ export const LoginPage = () => {
             sm: 60,
           }}
         />
-        <ButtonContainer>
-          <Button onClick={handleConfirm}>로그인</Button>
-          <Link to={RouterPath.account}>
-            <Button>회원가입</Button>
-          </Link>
-        </ButtonContainer>
+        <Button onClick={handleSignUp}>회원가입</Button>
       </FormWrapper>
     </Wrapper>
   );
@@ -87,19 +92,5 @@ const FormWrapper = styled.article`
   @media screen and (min-width: ${breakpoints.sm}) {
     border: 1px solid rgba(0, 0, 0, 0.12);
     padding: 60px 52px;
-  }
-`;
-
-const ButtonContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-
-  & > * {
-    flex: 1;
-  }
-
-  & > *:not(:last-child) {
-    margin-right: 10px;
   }
 `;
