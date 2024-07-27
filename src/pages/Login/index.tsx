@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import KAKAO_LOGO from '@/assets/kakao_logo.svg';
 import { Button } from '@/components/common/Button';
@@ -13,6 +13,7 @@ export const LoginPage = () => {
   const [id, setId] = useState('');
   const [password, setPassword] = useState('');
   const [queryParams] = useSearchParams();
+  const navigate = useNavigate();
 
   const handleConfirm = () => {
     if (!id || !password) {
@@ -27,7 +28,11 @@ export const LoginPage = () => {
 
     const redirectUrl = queryParams.get('redirect') ?? `${window.location.origin}/`;
     return window.location.replace(redirectUrl);
-  };
+  }
+
+  const handleSignUp = () => {
+    navigate('/signup');
+  }
 
   return (
     <Wrapper>
@@ -49,6 +54,8 @@ export const LoginPage = () => {
           }}
         />
         <Button onClick={handleConfirm}>로그인</Button>
+        <Spacing />
+        <Button onClick={handleSignUp}>회원가입</Button>
       </FormWrapper>
     </Wrapper>
   );
