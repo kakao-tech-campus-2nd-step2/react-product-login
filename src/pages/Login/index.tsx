@@ -9,6 +9,7 @@ import { Spacing } from '@/components/common/layouts/Spacing';
 import { breakpoints } from '@/styles/variants';
 import { authSessionStorage } from '@/utils/storage';
 import { RouterPath } from '@/routes/path';
+import { BASE_URL } from '@/api/instance';
 
 export const LoginPage = () => {
   const [id, setId] = useState('');
@@ -16,19 +17,39 @@ export const LoginPage = () => {
   const [queryParams] = useSearchParams();
   const navigate = useNavigate();
 
-  const handleConfirm = () => {
+  const handleConfirm = async () => {
     if (!id || !password) {
       alert('아이디와 비밀번호를 입력해주세요.');
       return;
     }
 
-    // TODO: API 연동
+    try {
+      const response = await fetch(`${BASE_URL}/api/members/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: id,
+          password: password,
+        }),
+      });
 
-    // TODO: API 연동 전까지 임시 로그인 처리
-    authSessionStorage.set(id);
+      if (response.status === 200) {
+        const data = await response.json();
+        authSessionStorage.set(data.token);
 
-    const redirectUrl = queryParams.get('redirect') ?? `${window.location.origin}/`;
-    return window.location.replace(redirectUrl);
+        const redirectUrl = queryParams.get('redirect') ?? `${window.location.origin}/`;
+        window.location.replace(redirectUrl);
+      } else if (response.status === 403) {
+        alert('아이디 또는 비밀번호가 잘못되었습니다.');
+      } else {
+        alert('로그인에 실패했습니다.');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      alert('로그인 중 오류가 발생했습니다.');
+    }
   };
 
   const handleSignUp = () => {
