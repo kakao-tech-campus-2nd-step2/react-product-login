@@ -50,9 +50,12 @@ export const CountOptionItem = ({
         <Title>{name}</Title>
         <div className="icons-list">
           {isChecked ? (
-            <HeartFilled style={{ color: 'red', fontSize: '20px' }} onClick={wishhandler} />
+            <HeartFilled
+              style={{ color: 'red', fontSize: '20px', outline: 'none' }}
+              onClick={wishhandler}
+            />
           ) : (
-            <HeartOutlined style={{ fontSize: '20px' }} onClick={wishhandler} />
+            <HeartOutlined style={{ fontSize: '20px', outline: 'none' }} onClick={wishhandler} />
           )}
         </div>
       </div>
