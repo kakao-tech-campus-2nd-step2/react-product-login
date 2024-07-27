@@ -5,7 +5,7 @@ import { HEADER_HEIGHT } from '@/components/features/Layout/Header';
 import { Spinner } from '../Spinner';
 
 export const LoadingView = () => (
-  <SpinnerWrapper>
+  <SpinnerWrapper data-testid="loading-view">
     <Spinner />
   </SpinnerWrapper>
 );
