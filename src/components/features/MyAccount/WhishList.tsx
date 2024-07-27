@@ -1,5 +1,5 @@
 import { Box, Button, Container, VStack } from '@chakra-ui/react';
-import { useSuspenseQuery } from '@tanstack/react-query';
+import { useMutation, useSuspenseQuery } from '@tanstack/react-query';
 import { Fragment } from 'react';
 
 import { queryClient } from '@/api/instance';
@@ -7,7 +7,7 @@ import { deleteFromWishlist, getWishlist } from '@/api/utils';
 import { DefaultGoodsItems } from '@/components/common/GoodsItem/Default';
 import { Spacing } from '@/components/common/layouts/Spacing';
 
-interface WishlistItem {
+export interface WishlistItem {
   id: number;
   product: {
     id: number;
@@ -16,6 +16,7 @@ interface WishlistItem {
     imageUrl: string;
   };
 }
+
 export const Wishlist = () => {
   const page = 0;
   const size = 10;
@@ -24,14 +25,22 @@ export const Wishlist = () => {
     queryFn: () => getWishlist(page, size),
   });
 
-  const handleDelete = (productId: number) => async () => {
-    try {
-      await deleteFromWishlist(productId);
-
-      await queryClient.invalidateQueries({ queryKey: ['wishlist', page, size] });
-    } catch (error) {
+  // NOTE: 타입 명시 가능
+  const deleteMutation = useMutation<void, Error, number>({
+    mutationFn: deleteFromWishlist,
+    onSuccess: () => {
+      queryClient
+        .invalidateQueries({ queryKey: ['wishlist', page, size] })
+        // TODO: 알람까지 띄워야 하는지
+        .then(() => alert('관심 물품 삭제에 성공했습니다.'));
+    },
+    onError: () => {
       alert('관심 물품 삭제에 실패했습니다.');
-    }
+    },
+  });
+
+  const handleDelete = (productId: number) => async () => {
+    deleteMutation.mutate(productId);
   };
 
   return (

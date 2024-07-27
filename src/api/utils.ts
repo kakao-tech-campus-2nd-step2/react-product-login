@@ -63,7 +63,7 @@ export const getWishlist = async (page: number, size: number) => {
   }
 };
 
-export const deleteFromWishlist = async (productId: number) => {
+export const deleteFromWishlist = async (productId: number): Promise<void> => {
   try {
     const response = await fetchInstance.delete(`/api/wishes/${productId}`);
 
