@@ -1,3 +1,4 @@
+import { Button, useToast } from '@chakra-ui/react';
 import styled from '@emotion/styled';
 import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -7,7 +8,6 @@ import {
   useGetProductDetail,
 } from '@/api/hooks/useGetProductDetail';
 import { useGetProductOptions } from '@/api/hooks/useGetProductOptions';
-import { Button } from '@/components/common/Button';
 import { useAuth } from '@/provider/Auth';
 import { getDynamicPath, RouterPath } from '@/routes/path';
 import { orderHistorySessionStorage } from '@/utils/storage';
@@ -27,6 +27,8 @@ export const OptionSection = ({ productId }: Props) => {
 
   const navigate = useNavigate();
   const authInfo = useAuth();
+  const toast = useToast();
+
   const handleClick = () => {
     if (!authInfo) {
       const isConfirm = window.confirm(
@@ -45,6 +47,29 @@ export const OptionSection = ({ productId }: Props) => {
     navigate(RouterPath.order);
   };
 
+  const handleAddToWishlist = async () => {
+    if (!authInfo?.token) {
+      toast({ title: "로그인이 필요합니다.", status: "warning" });
+      return;
+    }
+
+    const response = await fetch('/api/wishes', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${authInfo.token}`,
+      },
+      body: JSON.stringify({ productId: Number(productId) }),
+    });
+
+    if (response.ok) {
+      alert('관심 등록 완료')
+    } else {
+      const data = await response.json();
+      toast({ title: "추가 중 오류 발생", description: data.error, status: "error" });
+    }
+  };
+
   return (
     <Wrapper>
       <CountOptionItem name={options[0].name} value={countAsString} onChange={setCountAsString} />
@@ -52,8 +77,11 @@ export const OptionSection = ({ productId }: Props) => {
         <PricingWrapper>
           총 결제 금액 <span>{totalPrice}원</span>
         </PricingWrapper>
-        <Button theme="black" size="large" onClick={handleClick}>
+        <Button variant="solid" colorScheme="blackAlpha" size="lg" onClick={handleClick}>
           나에게 선물하기
+        </Button>
+        <Button variant="solid" colorScheme="blue" size="lg" onClick={handleAddToWishlist}>
+          관심 등록
         </Button>
       </BottomWrapper>
     </Wrapper>
