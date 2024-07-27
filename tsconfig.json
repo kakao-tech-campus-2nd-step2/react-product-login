@@ -21,7 +21,8 @@
     "incremental": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@/mocks/*": ["src/mocks/*"]
     }
   },
   "include": ["src", "setupTests.ts", "jest.config.js"],
