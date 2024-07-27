@@ -1,5 +1,5 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 
 import { GoodsDetail } from "@/components/features/Goods/Detail";
@@ -34,11 +34,9 @@ test('상품의 상세 정보를 올바르게 렌더링', async () => {
   const image = screen.getByAltText(GoodsData.name);
   const price = screen.getByText(`${GoodsData.price}원`);
 
-  await waitFor(() => {
-    expect(name).toBeInTheDocument();
-    expect(image).toBeInTheDocument();
-    expect(price).toBeInTheDocument();
-  });
+  expect(name).toBeInTheDocument();
+  expect(image).toBeInTheDocument();
+  expect(price).toBeInTheDocument();
 });
 
 test('상품 수량 변경하면 총 결제 금액 업데이트', async () => {
