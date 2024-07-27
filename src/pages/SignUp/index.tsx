@@ -8,25 +8,46 @@ import { UnderlineTextField } from '@/components/common/Form/Input/UnderlineText
 import { Spacing } from '@/components/common/layouts/Spacing';
 import { breakpoints } from '@/styles/variants';
 import { authSessionStorage } from '@/utils/storage';
+import { BASE_URL } from '@/api/instance';
 
 export const SignUpPage = () => {
   const [id, setId] = useState('');
   const [password, setPassword] = useState('');
   const [queryParams] = useSearchParams();
 
-  const handleSignUp = () => {
+  const handleSignUp = async () => {
     if (!id || !password) {
       alert('아이디와 비밀번호를 입력해주세요.');
       return;
     }
 
-    // TODO: API 연동
+    try {
+      const response = await fetch(`${BASE_URL}/api/members/register`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: id,
+          password: password,
+        }),
+      });
 
-    // TODO: API 연동 전까지 임시 로그인 처리
-    authSessionStorage.set(id);
+      if (response.status === 201) {
+        const data = await response.json();
+        authSessionStorage.set(data.token);
 
-    const redirectUrl = queryParams.get('redirect') ?? `${window.location.origin}/`;
-    return window.location.replace(redirectUrl);
+        const redirectUrl = queryParams.get('redirect') ?? `${window.location.origin}/`;
+        window.location.replace(redirectUrl);
+      } else if (response.status === 400) {
+        alert('입력값이 올바르지 않습니다.\n 다시 시도해주세요.');
+      } else {
+        alert('회원가입에 실패했습니다.');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      alert('회원가입 중 오류가 발생했습니다.');
+    }
   };
 
   return (
