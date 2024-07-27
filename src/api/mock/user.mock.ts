@@ -1,7 +1,7 @@
 import { rest } from 'msw';
 
-import { getPostUserJoinPath } from './usePostUserJoin';
-import { getPostUserLoginPath } from './userPostUserLogin';
+import { getPostUserJoinPath } from '../hooks/usePostUserJoin';
+import { getPostUserLoginPath } from '../hooks/userPostUserLogin';
 
 export const userMockhandler = [
   rest.post(getPostUserJoinPath(), (_, res, ctx) => {

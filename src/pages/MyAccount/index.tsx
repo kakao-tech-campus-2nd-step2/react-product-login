@@ -1,13 +1,31 @@
+import { Flex, Grid } from '@chakra-ui/react';
 import styled from '@emotion/styled';
+import { useState } from 'react';
 
+import { useGetWishlist } from '@/api/hooks/useGetWishlist';
 import { Button } from '@/components/common/Button';
+import { DefaultGoodsItems } from '@/components/common/GoodsItem/Default';
 import { Spacing } from '@/components/common/layouts/Spacing';
 import { useAuth } from '@/provider/Auth';
 import { RouterPath } from '@/routes/path';
 import { authSessionStorage } from '@/utils/storage';
 
+const DEFAULT_PAGE_SIZE = 10;
+
 export const MyAccountPage = () => {
+  const [page, setPage] = useState(0);
   const authInfo = useAuth();
+  const { data: wishlistData } = useGetWishlist({
+    page,
+    size: DEFAULT_PAGE_SIZE,
+    sort: '',
+  });
+
+  if (!wishlistData) {
+    return null;
+  }
+
+  const { totalPages } = wishlistData;
 
   const handleLogout = () => {
     authSessionStorage.set(undefined);
@@ -19,6 +37,40 @@ export const MyAccountPage = () => {
   return (
     <Wrapper>
       {authInfo?.name}님 안녕하세요! <Spacing height={64} />
+      <Grid templateColumns="repeat(5, 1fr)">
+        {wishlistData.content.map(({ id, product: { name, imageUrl, price } }) => (
+          <DefaultGoodsItems
+            key={id}
+            amount={price}
+            imageSrc={imageUrl}
+            subtitle={name}
+            title={name}
+          />
+        ))}
+      </Grid>
+      <Spacing height={64} />
+      <Flex gap={'1rem'}>
+        <Button
+          size="small"
+          theme="darkGray"
+          onClick={() => setPage((prev) => (prev <= 0 ? 0 : prev - 1))}
+          style={{
+            maxWidth: '200px',
+          }}
+        >
+          {'<'}
+        </Button>
+        <Button
+          size="small"
+          theme="darkGray"
+          onClick={() => setPage((prev) => (prev >= totalPages ? totalPages : prev + 1))}
+          style={{
+            maxWidth: '200px',
+          }}
+        >
+          {'>'}
+        </Button>
+      </Flex>
       <Button
         size="small"
         theme="darkGray"

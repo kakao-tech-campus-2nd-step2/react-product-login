@@ -1,8 +1,8 @@
 import { rest } from 'msw';
 
-import { getProductDetailPath } from './useGetProductDetail';
-import { getProductOptionsPath } from './useGetProductOptions';
-import { getProductsPath } from './useGetProducts';
+import { getProductDetailPath } from '../hooks/useGetProductDetail';
+import { getProductOptionsPath } from '../hooks/useGetProductOptions';
+import { getProductsPath } from '../hooks/useGetProducts';
 
 export const productsMockHandler = [
   rest.get(

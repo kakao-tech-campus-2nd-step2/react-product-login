@@ -1,9 +1,9 @@
 import { setupWorker } from 'msw';
 
-import { categoriesMockHandler } from '@/api/hooks/categories.mock';
-import { productsMockHandler } from '@/api/hooks/products.mock';
-import { userMockhandler } from '@/api/hooks/user.mock';
-import { wishlistMockHandler } from '@/api/hooks/wishlist.mock';
+import { categoriesMockHandler } from '@/api/mock/categories.mock';
+import { productsMockHandler } from '@/api/mock/products.mock';
+import { userMockhandler } from '@/api/mock/user.mock';
+import { wishlistMockHandler } from '@/api/mock/wishlist.mock';
 
 export const worker = setupWorker(
   ...categoriesMockHandler,
