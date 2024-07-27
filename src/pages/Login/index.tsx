@@ -1,39 +1,50 @@
 import styled from '@emotion/styled';
 import { useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
+import { usePostLogin } from '@/api/hooks/usePostLogin';
 import KAKAO_LOGO from '@/assets/kakao_logo.svg';
 import { Button } from '@/components/common/Button';
 import { UnderlineTextField } from '@/components/common/Form/Input/UnderlineTextField';
 import { Spacing } from '@/components/common/layouts/Spacing';
+import { useAuth } from '@/provider/Auth';
+import { RouterPath } from '@/routes/path';
 import { breakpoints } from '@/styles/variants';
-import { authSessionStorage } from '@/utils/storage';
 
 export const LoginPage = () => {
-  const [id, setId] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [queryParams] = useSearchParams();
+
+  const { mutate } = usePostLogin();
+  const { handleAuthInfo } = useAuth();
+  const navigate = useNavigate();
 
   const handleConfirm = () => {
-    if (!id || !password) {
+    if (!email || !password) {
       alert('아이디와 비밀번호를 입력해주세요.');
       return;
     }
 
-    // TODO: API 연동
-
-    // TODO: API 연동 전까지 임시 로그인 처리
-    authSessionStorage.set(id);
-
-    const redirectUrl = queryParams.get('redirect') ?? `${window.location.origin}/`;
-    return window.location.replace(redirectUrl);
+    mutate(
+      { email, password },
+      {
+        onSuccess: () => {
+          handleAuthInfo();
+          navigate(RouterPath.home);
+        },
+      },
+    );
   };
 
   return (
     <Wrapper>
       <Logo src={KAKAO_LOGO} alt="카카고 CI" />
       <FormWrapper>
-        <UnderlineTextField placeholder="이름" value={id} onChange={(e) => setId(e.target.value)} />
+        <UnderlineTextField
+          placeholder="이름"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
         <Spacing />
         <UnderlineTextField
           type="password"
@@ -49,6 +60,9 @@ export const LoginPage = () => {
           }}
         />
         <Button onClick={handleConfirm}>로그인</Button>
+        <Link to={RouterPath.membership}>
+          <Button style={{ marginTop: 20 }}>회원 가입</Button>
+        </Link>
       </FormWrapper>
     </Wrapper>
   );
