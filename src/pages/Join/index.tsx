@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import { useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
-//import { fetchWithTokenInstance } from '@/api/instance';
+import { fetchWithTokenInstance } from '@/api/instance';
 import KAKAO_LOGO from '@/assets/kakao_logo.svg';
 import { Button } from '@/components/common/Button';
 import { UnderlineTextField } from '@/components/common/Form/Input/UnderlineTextField';
@@ -22,22 +22,21 @@ export const JoinPage = () => {
     }
 
     try {
-        // TODO: API 연동
-        // const response = await fetchWithTokenInstance.post('/register', {
-        //     id, password
-        // })
-        // const { token } = response.data
-        // authSessionStorage.set(token)
-
-        authSessionStorage.set(id);   //API 연동 전까지 임시 로그인 처리
+        //TODO: API 연동
+        const response = await fetchWithTokenInstance.post('/register', {
+            id, password
+        })
+        const { token } = response.data
+        authSessionStorage.set(token)
         
-
         const redirectUrl = queryParams.get('redirect') ?? `${window.location.origin}/`;
         return window.location.replace(redirectUrl);
     } catch (error) {
         console.error('회원가입 실패', error)
         alert('회원가입에 실패했습니다.')
     }
+
+    authSessionStorage.set(id);   //API 연동 전까지 임시 로그인 처리
 
 
   };

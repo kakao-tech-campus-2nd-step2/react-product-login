@@ -4,7 +4,7 @@ import { createContext, useContext, useEffect, useState } from 'react';
 import { authSessionStorage } from '@/utils/storage';
 
 type AuthInfo = {
-  id: string;
+  email: string;
   name: string;
   token: string;
 };
@@ -12,7 +12,7 @@ type AuthInfo = {
 type AuthContextData = {
   authInfo: AuthInfo | undefined;
   setAuthInfo: (authInfo: AuthInfo) => void;
-  login: (token: string, id: string, name: string) => void; // 로그인 함수
+  login: (token: string, email: string, name: string) => void; // 로그인 함수
   logout: () => void; // 로그아웃 함수
 };
 
@@ -29,8 +29,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     authSessionStorage.set(currentAuthInfo.token);
   };
 
-  const login = (token: string, id: string, name: string) => {
-    handleAuthInfo({ id, name, token });
+  const login = (token: string, email: string, name: string) => {
+    handleAuthInfo({ email, name, token });
   };
 
   const logout = () => {
@@ -45,7 +45,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         try {
           // 여기서 실제 사용자 정보를 가져오는 로직을 추가
           const userInfo = {
-            id: currentAuthToken,
+            email: currentAuthToken,
             name: currentAuthToken,
             token: currentAuthToken,
           };
