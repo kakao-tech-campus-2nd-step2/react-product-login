@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import { useNavigate } from 'react-router-dom';
 
 import { Button } from '@/components/common/Button';
 import { Spacing } from '@/components/common/layouts/Spacing';
@@ -8,6 +9,7 @@ import { authSessionStorage } from '@/utils/storage';
 
 export const MyAccountPage = () => {
   const authInfo = useAuth();
+  const navigate = useNavigate();
 
   const handleLogout = () => {
     authSessionStorage.set(undefined);
@@ -19,6 +21,19 @@ export const MyAccountPage = () => {
   return (
     <Wrapper>
       {authInfo?.name}님 안녕하세요! <Spacing height={64} />
+      <Button
+        size="small"
+        theme="outline"
+        onClick={() => {
+          navigate(RouterPath.wishList);
+        }}
+        style={{
+          maxWidth: '200px',
+        }}
+      >
+        위시리스트 목록
+      </Button>
+      <Spacing />
       <Button
         size="small"
         theme="darkGray"
