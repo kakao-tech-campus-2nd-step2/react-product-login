@@ -1,3 +1,4 @@
+import { Button as ChakraButton } from '@chakra-ui/react';
 import styled from '@emotion/styled';
 import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -7,6 +8,7 @@ import {
   useGetProductDetail,
 } from '@/api/hooks/useGetProductDetail';
 import { useGetProductOptions } from '@/api/hooks/useGetProductOptions';
+import { usePutWishList } from '@/api/hooks/WishList/usePutWishList';
 import { Button } from '@/components/common/Button';
 import { useAuth } from '@/provider/Auth';
 import { getDynamicPath, RouterPath } from '@/routes/path';
@@ -27,6 +29,8 @@ export const OptionSection = ({ productId }: Props) => {
 
   const navigate = useNavigate();
   const authInfo = useAuth();
+  const { mutate } = usePutWishList();
+
   const handleClick = () => {
     if (!authInfo) {
       const isConfirm = window.confirm(
@@ -45,10 +49,21 @@ export const OptionSection = ({ productId }: Props) => {
     navigate(RouterPath.order);
   };
 
+  const handlePut = () => {
+    mutate({ productId });
+    alert('관심상품이 등록되었습니다.');
+  };
+
   return (
     <Wrapper>
       <CountOptionItem name={options[0].name} value={countAsString} onChange={setCountAsString} />
       <BottomWrapper>
+        <WishWrapper>
+          관심 상품 등록
+          <ChakraButton backgroundColor={'yellow'} onClick={handlePut}>
+            등록
+          </ChakraButton>
+        </WishWrapper>
         <PricingWrapper>
           총 결제 금액 <span>{totalPrice}원</span>
         </PricingWrapper>
@@ -90,4 +105,14 @@ const PricingWrapper = styled.div`
     font-size: 20px;
     letter-spacing: -0.02em;
   }
+`;
+
+const WishWrapper = styled.div`
+  background-color: #f5f5f5;
+  margin-bottom: 20px;
+  padding: 18px 20px;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 `;
