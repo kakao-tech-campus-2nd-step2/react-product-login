@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { usePostUserLogin } from '@/api/hooks/userPostUserLogin';
+import { usePostUserJoin } from '@/api/hooks/usePostUserJoin';
 import KAKAO_LOGO from '@/assets/kakao_logo.svg';
 import { Button } from '@/components/common/Button';
 import { UnderlineTextField } from '@/components/common/Form/Input/UnderlineTextField';
@@ -10,26 +10,38 @@ import { Spacing } from '@/components/common/layouts/Spacing';
 import { breakpoints } from '@/styles/variants';
 import { authSessionStorage } from '@/utils/storage';
 
-export const LoginPage = () => {
+export const JoinPage = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [passwordConfirm, setPasswordConfirm] = useState('');
 
   const onSuccess = () => {
-    alert('로그인이 완료되었습니다.');
+    alert('회원가입이 완료되었습니다.');
     authSessionStorage.set(email);
-    navigate('/');
+    navigate('/login');
+  };
+  const onError = () => {
+    alert('회원가입에 실패했습니다.');
   };
 
-  const { mutate: postUserLogin } = usePostUserLogin({ onSuccess });
+  const { mutate: postUserJoin, isPending: isJoinPending } = usePostUserJoin({
+    onSuccess,
+    onError,
+  });
 
   const handleConfirm = () => {
-    if (!email || !password) {
-      alert('아이디와 비밀번호를 입력해주세요.');
+    if (!email || !password || !passwordConfirm) {
+      alert('모든 필드를 입력해주세요.');
       return;
     }
 
-    postUserLogin({ email, password });
+    if (password !== passwordConfirm) {
+      alert('비밀번호가 일치하지 않습니다.');
+      return;
+    }
+
+    postUserJoin({ email, password });
   };
 
   return (
@@ -37,7 +49,7 @@ export const LoginPage = () => {
       <Logo src={KAKAO_LOGO} alt="카카고 CI" />
       <FormWrapper>
         <UnderlineTextField
-          placeholder="이름"
+          placeholder="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
@@ -47,6 +59,13 @@ export const LoginPage = () => {
           placeholder="비밀번호"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+        />{' '}
+        <Spacing />
+        <UnderlineTextField
+          type="password"
+          placeholder="비밀번호 확인"
+          value={passwordConfirm}
+          onChange={(e) => setPasswordConfirm(e.target.value)}
         />
         <Spacing
           height={{
@@ -54,14 +73,9 @@ export const LoginPage = () => {
             sm: 60,
           }}
         />
-        <Button onClick={handleConfirm}>로그인</Button>
-        <Link
-          onClick={() => {
-            navigate('/join');
-          }}
-        >
-          회원이 아니신가요? 회원가입 하러 가기 {'->'}
-        </Link>
+        <Button onClick={handleConfirm} disabled={isJoinPending}>
+          회원가입
+        </Button>
       </FormWrapper>
     </Wrapper>
   );
@@ -90,8 +104,4 @@ const FormWrapper = styled.article`
     border: 1px solid rgba(0, 0, 0, 0.12);
     padding: 60px 52px;
   }
-`;
-
-const Link = styled.p`
-  cursor: pointer;
 `;

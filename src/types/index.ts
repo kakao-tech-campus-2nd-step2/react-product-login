@@ -53,3 +53,8 @@ export type MessageCardTemplateData = {
   thumbUrl: string;
   imageUrl: string;
 };
+
+export type UserAccountInput = {
+  email: string;
+  password: string;
+};
