@@ -1,5 +1,10 @@
 import { fetchInstance } from '@/api/instance';
-import type { RegisterUserRequest, RegisterUserResponse } from '@/api/types';
+import type {
+  LoginUserRequest,
+  LoginUserResponse,
+  RegisterUserRequest,
+  RegisterUserResponse,
+} from '@/api/types';
 
 export const registerUser = async ({ email, password }: RegisterUserRequest) => {
   try {
@@ -16,9 +21,12 @@ export const registerUser = async ({ email, password }: RegisterUserRequest) => 
   }
 };
 
-export const loginUser = async (email: string, password: string) => {
+export const loginUser = async ({ email, password }: LoginUserRequest) => {
   try {
-    const response = await fetchInstance.post('/api/members/login', { email, password });
+    const response = await fetchInstance.post<LoginUserResponse>('/api/members/login', {
+      email,
+      password,
+    });
     const { token } = response.data;
     localStorage.setItem('token', token);
 

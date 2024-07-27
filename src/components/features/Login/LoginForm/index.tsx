@@ -1,3 +1,5 @@
+import { useMutation } from '@tanstack/react-query';
+
 import { loginUser } from '@/api/utils';
 import { Button } from '@/components/common/Button';
 import { UnderlineTextField } from '@/components/common/Form/Input/UnderlineTextField';
@@ -13,14 +15,18 @@ export const LoginForm = ({
   setPassword,
   handleConfirm,
 }: ILoginForm) => {
-  const handleLogin = async () => {
-    try {
-      await loginUser(email, password);
+  const loginMutation = useMutation({
+    mutationFn: loginUser,
+    onSuccess: () => {
       handleConfirm();
-    } catch (error) {
-      console.error(error);
+    },
+    onError: () => {
       alert('로그인에 실패했습니다.');
-    }
+    },
+  });
+
+  const handleLogin = () => {
+    loginMutation.mutate({ email, password });
   };
 
   return (

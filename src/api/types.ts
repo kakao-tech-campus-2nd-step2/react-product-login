@@ -6,3 +6,12 @@ export type RegisterUserRequest = {
 export type RegisterUserResponse = {
   token: string;
 };
+
+export type LoginUserRequest = {
+  email: string;
+  password: string;
+};
+
+export type LoginUserResponse = {
+  token: string;
+};
