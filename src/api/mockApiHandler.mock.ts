@@ -81,31 +81,6 @@ export const mockApiHandlers = [
 
     const paginatedItems = wishlistItems.slice(page * size, (page + 1) * size);
 
-    /**
-     * NOTE : 주어진 명세서에는 아래와 같은 목데이터를 반환해서 조금 수정
-     *
-     *  "content": [
-     *         {
-     *             "id": 1,
-     *             "product": {
-     *                 "id": 1,
-     *                 "name": "Product A",
-     *                 "price": 100,
-     *                 "imageUrl": "http://example.com/product-a.jpg"
-     *             }
-     *         },
-     *         {
-     *             "id": 2,
-     *             "product": {
-     *                 "id": 2,
-     *                 "name": "Product B",
-     *                 "price": 150,
-     *                 "imageUrl": "http://example.com/product-b.jpg"
-     *             }
-     *         }
-     *     ],
-     *
-     */
     return res(
       ctx.status(200),
       ctx.json({
