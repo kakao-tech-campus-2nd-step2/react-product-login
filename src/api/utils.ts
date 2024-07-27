@@ -1,8 +1,12 @@
 import { fetchInstance } from '@/api/instance';
+import type { RegisterUserRequest, RegisterUserResponse } from '@/api/types';
 
-export const registerUser = async (email: string, password: string) => {
+export const registerUser = async ({ email, password }: RegisterUserRequest) => {
   try {
-    const response = await fetchInstance.post('/api/members/register', { email, password });
+    const response = await fetchInstance.post<RegisterUserResponse>('/api/members/register', {
+      email,
+      password,
+    });
     const { token } = response.data;
     localStorage.setItem('token', token);
 

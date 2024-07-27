@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import { useMutation } from '@tanstack/react-query';
 import type { ChangeEventHandler } from 'react';
 
 import { registerUser } from '@/api/utils';
@@ -30,18 +31,24 @@ export const EnrollForm = ({
   setPassword,
   handleConfirm,
 }: IEnrollForm) => {
+  //NOTE: 훅으로 빼서 handleConfirm을 매개변수로 받아올 수도 있다.
+  const enrollMutation = useMutation({
+    mutationFn: registerUser,
+    onSuccess: () => {
+      handleConfirm();
+    },
+    onError: () => {
+      alert('회원가입에 실패했습니다.');
+    },
+  });
+
   const handleEnroll = async () => {
     if (!isValidEmail(email) || !isValidPassword(password)) {
       alert('적절한 이메일과 비밀번호를 입력해주세요');
       return;
     }
 
-    try {
-      await registerUser(email, password);
-      handleConfirm();
-    } catch (err) {
-      alert('회원가입에 실패했습니다.');
-    }
+    enrollMutation.mutate({ email, password });
   };
 
   return (
