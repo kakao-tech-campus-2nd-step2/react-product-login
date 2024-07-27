@@ -1,7 +1,7 @@
 import { Center } from '@chakra-ui/react';
 import styled from '@emotion/styled';
 import { useState } from 'react';
-import { Link, useSearchParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import KAKAO_LOGO from '@/assets/kakao_logo.svg';
 import { Button } from '@/components/common/Button';
@@ -10,19 +10,18 @@ import { Spacing } from '@/components/common/layouts/Spacing';
 import { breakpoints } from '@/styles/variants';
 import { authSessionStorage } from '@/utils/storage';
 
-export const LoginPage = () => {
+export const JoinPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [queryParams] = useSearchParams();
 
-  const handleLogin = async () => {
+  const handleRegister = async () => {
     if (!email || !password) {
       alert('이메일과 비밀번호를 입력해주세요.');
       return;
     }
 
     try {
-      const response = await fetch('/api/members/login', {
+      const response = await fetch('/api/members/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -30,19 +29,18 @@ export const LoginPage = () => {
         body: JSON.stringify({ email, password }),
       });
 
-      if (response.status === 200) {
+      if (response.status === 201) {
         const data = await response.json();
         authSessionStorage.set(data.token);
 
-        const redirectUrl = queryParams.get('redirect') ?? `${window.location.origin}/`;
-
-        window.location.replace(redirectUrl);
+        window.location.replace(window.location.origin);
       } else {
         const err = await response.json();
-        alert(`로그인 실패: ${err.message}`);
+        alert(`회원가입 실패: ${err.message}`);
       }
     } catch (error) {
-      console.error('로그인 중 에러 발생:', error);
+      console.error('회원가입 중 에러 발생:', error);
+      alert('회원가입 중 에러가 발생했습니다.');
     }
   };
 
@@ -69,11 +67,11 @@ export const LoginPage = () => {
             sm: 60,
           }}
         />
-        <Button onClick={handleLogin}>로그인</Button>
+        <Button onClick={handleRegister}>회원가입</Button>
         <br />
         <Center>
-          <Link to="/join">
-            <div>회원가입</div>
+          <Link to="/login">
+            <div>로그인하러 가기</div>
           </Link>
         </Center>
       </FormWrapper>
