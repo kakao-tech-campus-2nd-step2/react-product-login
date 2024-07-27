@@ -13,6 +13,7 @@ export const LoginPage = () => {
   const [id, setId] = useState('');
   const [password, setPassword] = useState('');
   const [queryParams] = useSearchParams();
+  const [isSignUp, setIsSignUp] = useState(false);
 
   const handleConfirm = () => {
     if (!id || !password) {
@@ -22,12 +23,22 @@ export const LoginPage = () => {
 
     // TODO: API 연동
 
-    // TODO: API 연동 전까지 임시 로그인 처리
-    authSessionStorage.set(id);
+    // 회원가입 또는 로그인 처리
+    if (isSignUp) {
+      alert('회원가입이 완료되었습니다.');
+    } else {
+      alert('로그인이 완료되었습니다.');
+    }
 
+    authSessionStorage.set(id);
     const redirectUrl = queryParams.get('redirect') ?? `${window.location.origin}/`;
     return window.location.replace(redirectUrl);
   };
+
+  const toggleSignUp = () => {
+    setIsSignUp((prev) => !prev);
+  };
+
 
   return (
     <Wrapper>
@@ -49,6 +60,12 @@ export const LoginPage = () => {
           }}
         />
         <Button onClick={handleConfirm}>로그인</Button>
+        <Spacing
+          height={{
+            initial: 20,
+            sm: 40,
+          }} />
+        <Button onClick={toggleSignUp}>회원가입</Button>
       </FormWrapper>
     </Wrapper>
   );
