@@ -1,11 +1,12 @@
 import { Text } from '@chakra-ui/react';
 import styled from '@emotion/styled';
-import { useEffect,useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { useGetProductDetail } from '@/api/hooks/useGetProductDetail';
 import { useGetProductOptions } from '@/api/hooks/useGetProductOptions';
 import { useAddToWishlist, useWishlist } from '@/api/hooks/useWishlist';
+import { fetchWithTokenInstance } from '@/api/instance';
 import { Button } from '@/components/common/Button';
 import { useAuth } from '@/provider/Auth';
 import { getDynamicPath, RouterPath } from '@/routes/path';
@@ -13,28 +14,28 @@ import { orderHistorySessionStorage } from '@/utils/storage';
 
 import { CountOptionItem } from './OptionItem/CountOptionItem';
 
-
 type Props = { productId: string };
 
 export const OptionSection = ({ productId }: Props) => {
   const numericProductId = Number(productId);
   const { data: detail } = useGetProductDetail({ productId });
-  const { data: options } = useGetProductOptions({ productId });
+  const { data: options } = useGetProductOptions({ productId }); 
   const [countAsString, setCountAsString] = useState('1');
   const [isLiked, setIsLiked] = useState(false);
 
   const totalPrice = detail?.price * Number(countAsString);
 
   const navigate = useNavigate();
-  const authInfo = useAuth();
+  const { authInfo } = useAuth();
   const { fetchWishlist } = useWishlist();
   const { addToWishlist, loading: adding } = useAddToWishlist(fetchWishlist);
 
   useEffect(() => {
     const checkIfLiked = async () => {
       try {
-        const response = await fetch('/api/wishes'); // 관심 목록을 가져와서 체크
-        const wishlist = await response.json();
+        const response = await fetchWithTokenInstance.get('/api/wishes'); // 관심 목록을 가져와서 체크
+        console.log('Check if liked response:', response.data); // 응답 데이터 확인
+        const wishlist = response.data.content;
         setIsLiked(wishlist.some((wish: { product: { id: number } }) => wish.product.id === numericProductId));
       } catch (error) {
         console.error('관심 목록 확인 실패', error);

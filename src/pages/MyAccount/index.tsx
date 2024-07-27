@@ -24,6 +24,7 @@ export const MyAccountPage = () => {
     try {
       setLoading(true)
       const response = await fetchWithTokenInstance.get('/api/wishes');
+      console.log('위시리스트 response', response.data)
       setWishlist(response.data.content)
     } catch (error) {
       console.error('관심 목록 불러오기 실패', error)

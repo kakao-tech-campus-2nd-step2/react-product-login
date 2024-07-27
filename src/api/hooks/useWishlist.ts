@@ -18,7 +18,8 @@ export const useWishlist = () => {
   const fetchWishlist = async () => {
     try {
       setLoading(true);
-      const response = await fetchWithTokenInstance.get('/api/wishes');
+      const response = await fetchWithTokenInstance.get('/api/wishes')
+      console.log('위시리스트 fetch response', response.data)
       setWishlist(response.data.content);
     } catch (error) {
       if (error instanceof AxiosError) {
@@ -26,6 +27,7 @@ export const useWishlist = () => {
       } else {
         setFetchError('An unexpected error occurred');
       }
+      console.error('위시 리스트 fetch 에러', error)
     } finally {
       setLoading(false);
     }
@@ -45,7 +47,8 @@ export const useAddToWishlist = (fetchWishlist: () => void) => {
   const addToWishlist = async (productId: number) => {
     try {
       setLoading(true);
-      await fetchWithTokenInstance.post('/api/wishes', { productId });
+      const response = await fetchWithTokenInstance.post('/api/wishes', { productId });
+      console.log('위시리스트 reponse add', response.data)
       await fetchWishlist();
     } catch (error) {
       if (error instanceof AxiosError) {
@@ -53,6 +56,7 @@ export const useAddToWishlist = (fetchWishlist: () => void) => {
       } else {
         setAddError('An unexpected error occurred');
       }
+      console.error('위시리스트 에러 add', error)
     } finally {
       setLoading(false);
     }
