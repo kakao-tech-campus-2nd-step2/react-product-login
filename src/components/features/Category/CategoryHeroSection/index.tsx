@@ -1,30 +1,29 @@
 import styled from '@emotion/styled';
 
+import type { CategoryData } from '@/api/type';
 import { Container } from '@/components/common/layouts/Container';
-import { useCurrentCategory } from '@/hooks/useCurrentCategory';
 import { breakpoints } from '@/styles/variants';
-import type { CategoryData } from '@/types';
 
 type Props = {
   categoryId: string;
+  categoryList: CategoryData[];
 };
 
-export const CategoryHeroSection = ({ categoryId }: Props) => {
-  const { isRender, currentTheme } = useCurrentCategory({ categoryId });
-
-  if (!isRender) return null;
+export const CategoryHeroSection = ({ categoryId, categoryList }: Props) => {
+  const currentTheme = getCurrentCategory(categoryId, categoryList);
 
   if (!currentTheme) {
     return null;
   }
 
-  const { color, name, description } = currentTheme;
+  const { color, name, title, description } = currentTheme;
 
   return (
     <Wrapper backgroundColor={color}>
       <Container>
         <Label>{name}</Label>
-        <Title>{description}</Title>
+        <Title>{title}</Title>
+        {description && <Description>{description}</Description>}
       </Container>
     </Wrapper>
   );
@@ -67,6 +66,20 @@ const Title = styled.h1`
     line-height: 40px;
     padding-top: 12px;
     word-break: break-word;
+  }
+`;
+
+const Description = styled.p`
+  padding-top: 5px;
+  font-size: 14px;
+  line-height: 20px;
+  color: rgba(255, 255, 255, 0.55);
+  word-break: break-all;
+
+  @media screen and (min-width: ${breakpoints.sm}) {
+    padding-top: 12px;
+    font-size: 24px;
+    line-height: 32px;
   }
 `;
 

@@ -1,35 +1,39 @@
 import styled from '@emotion/styled';
 import { Link } from 'react-router-dom';
 
-import { useGetCategories } from '@/api/hooks/useGetCategorys';
+import useGetCategories from '@/api/hooks/useGetCategories';
+import type { CategoryData } from '@/api/type';
 import { Container } from '@/components/common/layouts/Container';
 import { Grid } from '@/components/common/layouts/Grid';
+import ListMapper from '@/components/common/ListMapper';
+import Loading from '@/components/common/Loading';
+import { CategoryItem } from '@/components/features/Home/CategorySection/CategoryItem';
 import { getDynamicPath } from '@/routes/path';
 import { breakpoints } from '@/styles/variants';
 
-import { CategoryItem } from './CategoryItem';
-
 export const CategorySection = () => {
-  const { data, isLoading, isError } = useGetCategories();
-
-  if (isLoading || isError) return null;
-  if (!data) return null;
+  const { data: categories, isLoading, isError } = useGetCategories();
 
   return (
     <Wrapper>
       <Container>
-        <Grid
-          columns={{
-            initial: 4,
-            md: 6,
-          }}
-        >
-          {data.map((category) => (
-            <Link key={category.id} to={getDynamicPath.category(category.id.toString())}>
-              <CategoryItem image={category.imageUrl} label={category.name} />
-            </Link>
-          ))}
-        </Grid>
+        <Loading isLoading={isLoading} error={isError}>
+          <ListMapper<CategoryData>
+            items={categories}
+            ItemComponent={({ item }) => (
+              <Link key={item.id} to={getDynamicPath.category(item.id.toString())}>
+                <CategoryItem image={item.imageUrl} label={item.name} />
+              </Link>
+            )}
+            Wrapper={Grid}
+            wrapperProps={{
+              columns: {
+                initial: 4,
+                md: 6,
+              },
+            }}
+          />
+        </Loading>
       </Container>
     </Wrapper>
   );

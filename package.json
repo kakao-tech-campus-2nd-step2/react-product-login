@@ -3,10 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start:mock": "cross-env REACT_APP_RUN_MSW=true npm run start",
     "start": "craco start",
+    "start:mock": "cross-env REACT_APP_RUN_MSW=true npm run start",
     "build": "craco build",
-    "test": "craco test",
+    "test": "craco test --watchAll",
+    "test:mock": "cross-env REACT_APP_RUN_MSW=true npm run test",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
   },
@@ -23,23 +24,23 @@
     ]
   },
   "dependencies": {
-    "@chakra-ui/icons": "^2.1.1",
     "@chakra-ui/react": "^2.8.2",
-    "@emotion/react": "^11.11.3",
-    "@emotion/styled": "^11.11.0",
-    "@tanstack/react-query": "^5.24.1",
-    "axios": "^1.6.7",
-    "framer-motion": "^11.0.6",
+    "@emotion/react": "^11.11.4",
+    "@emotion/styled": "^11.11.5",
+    "@tanstack/react-query": "^5.51.1",
+    "axios": "^1.7.2",
+    "framer-motion": "^11.3.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-error-boundary": "^4.0.12",
-    "react-hook-form": "^7.50.1",
-    "react-intersection-observer": "^9.8.1",
+    "react-hook-form": "^7.52.1",
+    "react-icons": "^5.2.1",
+    "react-intersection-observer": "^9.13.0",
     "react-router-dom": "^6.22.1"
   },
   "devDependencies": {
     "@craco/craco": "^7.1.0",
     "@emotion/eslint-plugin": "^11.11.0",
+    "@mswjs/storage": "^0.1.0",
     "@storybook/addon-essentials": "^7.6.17",
     "@storybook/addon-interactions": "^7.6.17",
     "@storybook/addon-links": "^7.6.17",
@@ -83,5 +84,10 @@
   },
   "overrides": {
     "react-refresh": "0.11.0"
+  },
+  "jest": {
+    "transformIgnorePatterns": [
+      "node_modules/(?!axios)/"
+    ]
   }
 }

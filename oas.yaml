@@ -1,0 +1,563 @@
+openapi: 3.0.1
+info:
+  title: 'API'
+  description: 'API'
+  version: 1.0.0
+paths:
+  /api/v1/ranking/products:
+    get:
+      parameters:
+        - in: query
+          name: targetType
+          schema:
+            type: string
+            enum: [ALL, FEMALE, MALE, TEEN]
+            default: ALL
+          required: false
+          description: 선물 랭킹 대상자 filter에요. 순서대로 "모두가", "여성이", "남성이", "청소년이" 를 의미해요.
+        - in: query
+          name: rankType
+          schema:
+            type: string
+            enum: [MANY_WISH, MANY_RECEIVE, MANY_WISH_RECEIVE]
+            default: MANY_WISH_RECEIVE
+          required: false
+          description: 선물 랭킹 정렬 filter에요. 순서대로 "받고 싶어한", "많이 선물한", "위시로 받은"을 의미해요.
+      responses:
+        200:
+          description: 선물 랭킹 목록을 가져왔어요.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  products:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ProductData'
+                required:
+                  - products
+
+  /api/v1/themes:
+    get:
+      description: 모임 홈의 선물 테마 카테고리 목록을 불러와요.
+      responses:
+        200:
+          description: 선물 테마 카테고리 목록
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  themes:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ThemeData'
+                required:
+                  - themes
+
+  /api/v1/themes/{themeKey}/products:
+    get:
+      description: 선물 테마 Key에 해당하는 선물 목록을 불러와요.
+      parameters:
+        - in: path
+          name: themeKey
+          schema:
+            type: string
+          required: true
+          description: 선물 테마 Key
+        - in: query
+          name: pageToken
+          schema:
+            type: string
+          required: false
+          description: 목록 불러오기에 사용할 페이지 토큰
+        - in: query
+          name: maxResults
+          schema:
+            type: integer
+            default: 10
+          required: false
+          description: API 호출 시 최대로 가져올 선물 개수
+      responses:
+        200:
+          description: 선물 목록
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  products:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ProductData'
+                  nextPageToken:
+                    type: string
+                    description: 다음 페이지를 불러오기 위한 토큰 (만약 없다면 null)
+                    example: CAUQAA
+                  pageInfo:
+                    type: object
+                    properties:
+                      totalResults:
+                        type: integer
+                        description: 전체 선물 개수
+                        example: 100
+                      resultsPerPage:
+                        type: integer
+                        description: 한 페이지에 보여줄 선물 개수
+                        example: 10
+                required:
+                  - products
+                  - pageInfo
+        404:
+          description: 선물 테마 Key에 해당하는 선물 테마가 없어요.
+
+  /api/v1/products/{productId}/detail:
+    get:
+      description: 선물 id에 해당하는 선물 상세 정보를 불러와요.
+      parameters:
+        - in: path
+          name: productId
+          schema:
+            type: string
+          required: true
+          description: 선물 id
+      responses:
+        200:
+          description: 선물 정보
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductDetailData'
+
+  /api/v1/products/{productId}/options:
+    get:
+      description: 선물 id에 해당하는 선물 상세 옵션을 불러와요.
+      parameters:
+        - in: path
+          name: productId
+          schema:
+            type: string
+          required: true
+          description: 선물 id
+      responses:
+        200:
+          description: (WIP)재귀적으로 option object를 가지고 있을 때엔 어떻게 해야하지?
+            https://gift.kakao.com/product/6126227 (deps 2개)
+            https://gift.kakao.com/product/6875548 (deps 1개)
+            https://gift.kakao.com/product/5022423 (deps 0개) (0개여도 1개를 내려주면 좋을 듯)
+
+  /api/v1/message-card/templates:
+    get:
+      description: 메시지 카드 템플릿 목록을 불러와요. (별도의 카테고리는 없어요.)
+      responses:
+        200:
+          description: 메시지 카드 템플릿 목록 (https://gift.kakao.com/a/v2/message-card/templates/?productId=5022423&giftGame=false&_=1704637209805)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  templates:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/MessageCardTemplateData'
+
+  /api/v1/my-account/info:
+    get:
+      description: 내 정보를 불러와요.
+      responses:
+        200:
+          description: 내 정보
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MyAccountInfoData'
+
+  /api/v1/my-account/wish/products:
+    get:
+      description: 내가 받고 싶어하는 선물 목록을 불러와요.
+      parameters:
+        - in: query
+          name: pageToken
+          schema:
+            type: string
+          required: false
+          description: 목록 불러오기에 사용할 페이지 토큰
+        - in: query
+          name: maxResults
+          schema:
+            type: integer
+            default: 10
+          required: false
+          description: API 호출 시 최대로 가져올 선물 개수
+      responses:
+        200:
+          description: 선물 목록
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  products:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ProductData'
+                  nextPageToken:
+                    type: string
+                    description: 다음 페이지를 불러오기 위한 토큰 (만약 없다면 null)
+                    example: CAUQAA
+                  pageInfo:
+                    type: object
+                    properties:
+                      totalResults:
+                        type: integer
+                        description: 전체 선물 개수
+                        example: 100
+                      resultsPerPage:
+                        type: integer
+                        description: 한 페이지에 보여줄 선물 개수
+                        example: 10
+                required:
+                  - products
+                  - pageInfo
+
+  /api/v1/my-account/point:
+    put:
+      description: 내 포인트를 충전해요.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                point:
+                  type: integer
+                  description: 내 포인트
+                  example: 1000
+              required:
+                - point
+      responses:
+        204:
+          description: 내 포인트를 수정했어요.
+
+  /api/v1/order:
+    post:
+      description: 상품 주문 요청을 보내요.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductOrderRequestBody'
+      responses:
+        204:
+          description: 상품 주문 요청을 보냈어요.
+        400:
+          description: 상품 주문 요청을 보내는데 실패했어요.
+
+components:
+  schemas:
+    ## Request Body ##
+    ProductOrderRequestBody:
+      type: object
+      properties:
+        productId:
+          type: integer
+          description: 선물 id
+          example: 123
+        productOptionId:
+          type: integer
+          description: 선물 옵션 id
+          example: 123
+        productQuantity:
+          type: integer
+          description: 주문 수량
+          example: 1
+        messageCardTemplateId:
+          type: integer
+          description: 메시지 카드 템플릿 id
+          example: 1
+        messageCardTextMessage:
+          type: string
+          description: 메시지 카드 문구
+          example: 새해 복 많이 받으세요~
+        senderId:
+          type: integer
+          description: 선물 보내는 사람 id
+          example: 123
+        receiverId:
+          type: integer
+          description: 선물 받는 사람 id
+          example: 123
+        hasCashReceipt:
+          type: boolean
+          description: 현금영수증 발행 여부
+          example: true
+        cashReceiptType:
+          type: string
+          enum: [PERSONAL, BUSINESS]
+          description: 현금영수증 발행 타입
+        cashReceiptNumber:
+          type: string
+          description: 현금영수증 번호
+          example: 1234567890
+      required:
+        - productId
+        - productOptionId
+        - productQuantity
+        - messageCardTemplateId
+        - messageCardTextMessage
+        - senderId
+        - receiverId
+        - hasCashReceipt
+
+    ## Data Types ##
+    ProductData:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: 선물 id
+          example: 123
+        name:
+          type: string
+          description: 선물 이름
+          example: 'BBQ 양념치킨+크림치즈볼+콜라1.25L'
+        imageURL:
+          type: string
+          description: 선물 이미지 url
+          example: https://st.kakaocdn.net/product/gift/product/20231030175450_53e90ee9708f45ffa45b3f7b4bc01c7c.jpg
+        wish:
+          type: object
+          properties:
+            wishCount:
+              type: integer
+              description: 선물을 받고 싶어하는 사람 수
+              example: 201
+            isWished:
+              type: boolean
+              description: 내가 선물을 받고 싶어하는지 여부 (로그인을 안했다면 false)
+              example: false
+          required:
+            - wishCount
+            - isWished
+        price:
+          type: object
+          properties:
+            basicPrice:
+              type: integer
+              description: 원래 가격
+              example: 29000
+            discountRate:
+              type: integer
+              description: 할인율
+              example: 0
+            sellingPrice:
+              type: integer
+              description: 할인된 가격
+              example: 29000
+          required:
+            - basicPrice
+            - discountRate
+            - sellingPrice
+        brandInfo:
+          type: object
+          properties:
+            id:
+              type: integer
+              description: 브랜드 id
+              example: 2088
+            name:
+              type: string
+              description: 브랜드 이름
+              example: BBQ
+            imageURL:
+              type: string
+              description: 브랜드 로고 url
+              example: https://st.kakaocdn.net/product/gift/gift_brand/20220216170226_38ba26d8eedf450683200d6730757204.png
+          required:
+            - id
+            - name
+            - imageURL
+      required:
+        - id
+        - name
+        - imageURL
+        - wish
+        - price
+        - brandInfo
+
+    ProductDetailData:
+      allOf:
+        - $ref: '#/components/schemas/ProductData'
+        - type: object
+          properties:
+            isAccessableProductPage:
+              type: boolean
+              description: 외부에서 상품 접근이 가능한가요? (접근 불가해야한다면 false)
+              example: true
+            review:
+              type: object
+              properties:
+                averageRating:
+                  type: number
+                  description: 리뷰 평균 별점
+                  example: 4.5
+                totalReviewCount:
+                  type: integer
+                  description: 리뷰 총 개수
+                  example: 100
+              required:
+                - averageRating
+                - totalReviewCount
+            productDescription:
+              type: object
+              description: 상품 상세 설명에 사용되는 정보
+              properties:
+                images:
+                  type: array
+                  items:
+                    type: string
+                    description: 선물 상세 설명에 사용되는 이미지 url
+                    example: https://st.kakaocdn.net/product/gift/editor/20230707140702_38f13cbf7a7b4379863f78f1efec4c14.jpg
+              required:
+                - images
+            productDetailInfo:
+              type: object
+              description: 상품 상세 정보에 사용되는 정보
+              properties:
+                announcements:
+                  type: array
+                  description: 상품고시정보
+                  items:
+                    type: object
+                    properties:
+                      displayOrder:
+                        type: integer
+                        description: 고시정보 순서
+                        example: 1
+                      name:
+                        type: string
+                        description: 고시정보 이름
+                        example: 식품의 유형
+                      value:
+                        type: string
+                        description: 고시정보 값
+                        example: 과자(가열하지 않고 섭취하는 냉동식품)
+                    required:
+                      - displayOrder
+                      - name
+                      - value
+                terms:
+                  type: array
+                  description: 기타 상품 정보
+                  items:
+                    type: object
+                    properties:
+                      displayOrder:
+                        type: integer
+                        description: 기타정보 순서
+                        example: 1
+                      title:
+                        type: string
+                        description: 정보 제목
+                        example: 배송지 입력방법 및 배송 안내
+                      description:
+                        type: string
+                        description: 기타정보 설명 (줄바꿈이 필요한 경우 \n을 사용해주세요.)
+                        example: 배송지 입력 방법 \n1) 구매자가 선물받는 분의 주소를 알고 계시는 경우 구매단계에서 배송지를 대신 입력할 수 있습니다. 상품 구매 후 48시간 내에 선물 받으시는 분이 주소를 변경하거나 확정할 수 있습니다.
+                    required:
+                      - displayOrder
+                      - title
+                      - description
+              required:
+                - announcements
+                - terms
+          required:
+            - isAccessableProductPage
+            - review
+            - productDescription
+            - productDetailInfo
+
+    ThemeData:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: 선물 테마 카테고리 id
+          example: 1
+        key:
+          type: string
+          description: 선물 테마 카테고리 key
+          example: life_small_gift
+        label:
+          type: string
+          description: 선물 테마 카테고리 label
+          example: 가벼운 선물
+        title:
+          type: string
+          description: 선물 테마 카테고리 title (줄바꿈이 필요한 경우 \n을 사용해주세요.)
+          example: 예산은 가볍게, 감동은 무겁게❤️
+        description:
+          type: string
+          description: 선물 테마 카테고리 설명 (줄바꿈이 필요한 경우 \n을 사용해주세요.)
+          example: 당신의 센스를 뽐내줄 부담 없는 선물
+        backgroundColor:
+          type: string
+          description: 선물 테마 카테고리 배경색
+          example: '#F5F5F5'
+      required:
+        - id
+        - key
+        - label
+        - title
+
+    MessageCardTemplateData:
+      type: object
+      description: 메시지 카드 템플릿 정보
+      properties:
+        id:
+          type: integer
+          description: 메시지 카드 템플릿 id
+          example: 1
+        defaultTextMessage:
+          type: string
+          description: 메시지 카드 템플릿 기본 문구
+          example: 새해 복 많이 받으세요~
+        thumbURL:
+          type: string
+          description: 메시지 카드 템플릿 썸네일 url
+          example: https://t1.daumcdn.net/gift/message-card/template/image/20231228_HKPYY.png
+        imageURL:
+          type: string
+          description: 메시지 카드 템플릿 이미지 url
+          example: https://t1.daumcdn.net/gift/message-card/template/image/20231228_FJQKU.gif
+
+    MyAccountInfoData:
+      type: object
+      description: 내 정보
+      properties:
+        id:
+          type: integer
+          description: 내 id
+          example: 123
+        name:
+          type: string
+          description: 내 이름
+          example: '김카카오'
+        birthday:
+          type: string
+          description: 내 생일
+        profileImageURL:
+          type: string
+          description: 내 프로필 이미지 url
+          example: https://p.kakaocdn.net/th/talkp/wnkiL6MwHV/iteScBgZ8Yb76BqdI9a9K/7isevt_110x110_c.jpg
+        point:
+          type: integer
+          description: 내 포인트
+          example: 1000
+      required:
+        - id
+        - name
+        - profileImageURL
+        - point

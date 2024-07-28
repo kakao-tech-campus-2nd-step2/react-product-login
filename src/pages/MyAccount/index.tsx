@@ -1,12 +1,28 @@
+import { Divider } from '@chakra-ui/react';
 import styled from '@emotion/styled';
+import { useEffect } from 'react';
+import { useInView } from 'react-intersection-observer';
 
+import useGetWishes from '@/api/hooks/useGetWishes';
+import type { WishesData } from '@/api/type';
 import { Button } from '@/components/common/Button';
+import { Container } from '@/components/common/layouts/Container';
+import { Grid } from '@/components/common/layouts/Grid';
 import { Spacing } from '@/components/common/layouts/Spacing';
+import ListMapper from '@/components/common/ListMapper';
+import Loading from '@/components/common/Loading';
+import WishItems from '@/components/features/MyAccount/WishItems';
 import { useAuth } from '@/provider/Auth';
 import { RouterPath } from '@/routes/path';
 import { authSessionStorage } from '@/utils/storage';
 
 export const MyAccountPage = () => {
+  const { ref, inView } = useInView();
+
+  const { data, isLoading, isError, hasNextPage, fetchNextPage } = useGetWishes({});
+
+  const flattenWishsList = data?.pages.map((page) => page?.content ?? []).flat();
+
   const authInfo = useAuth();
 
   const handleLogout = () => {
@@ -15,6 +31,12 @@ export const MyAccountPage = () => {
     const redirectURL = `${window.location.origin}${RouterPath.home}`;
     window.location.replace(redirectURL);
   };
+
+  useEffect(() => {
+    if (inView && hasNextPage) {
+      fetchNextPage();
+    }
+  }, [inView, hasNextPage, fetchNextPage]);
 
   return (
     <Wrapper>
@@ -29,6 +51,28 @@ export const MyAccountPage = () => {
       >
         로그아웃
       </Button>
+      <Spacing height={32} />
+      <Divider />
+      <h1>찜한 상품</h1>
+      <Divider />
+      <Spacing height={32} />
+      <Container>
+        <Loading isLoading={isLoading} error={isError}>
+          <ListMapper<WishesData>
+            items={flattenWishsList}
+            ItemComponent={WishItems}
+            Wrapper={Grid}
+            wrapperProps={{
+              columns: {
+                initial: 2,
+                md: 4,
+              },
+              gap: 16,
+            }}
+          />
+          <div ref={ref} />
+        </Loading>
+      </Container>
     </Wrapper>
   );
 };

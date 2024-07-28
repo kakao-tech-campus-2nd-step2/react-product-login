@@ -1,24 +1,35 @@
 import { Navigate, useParams } from 'react-router-dom';
 
-import { CategoryHeroSection } from '@/components/features/Category/CategoryHeroSection';
-import { CategoryProductsSection } from '@/components/features/Category/CategoryProductsSection';
-import { useCurrentCategory } from '@/hooks/useCurrentCategory';
+import useGetCategories from '@/api/hooks/useGetCategories';
+import Loading from '@/components/common/Loading';
+import { CategoryGoodsSection } from '@/components/features/Category/CategoryGoodsSection';
+import {
+  CategoryHeroSection,
+  getCurrentCategory,
+} from '@/components/features/Category/CategoryHeroSection';
 import { RouterPath } from '@/routes/path';
 
 export const CategoryPage = () => {
   const { categoryId = '' } = useParams<{ categoryId: string }>();
-  const { isRender, currentTheme } = useCurrentCategory({ categoryId });
 
-  if (!isRender) return null;
+  const {
+    data: categoryList,
+    isLoading: isThemeListLoading,
+    isError: isThemeListError,
+  } = useGetCategories();
 
-  if (!currentTheme) {
+  const currentTheme = getCurrentCategory(categoryId, categoryList || []);
+
+  if (!isThemeListLoading && !currentTheme) {
     return <Navigate to={RouterPath.notFound} />;
   }
 
   return (
     <>
-      <CategoryHeroSection categoryId={categoryId} />
-      <CategoryProductsSection categoryId={categoryId} />
+      <Loading isLoading={isThemeListLoading} error={isThemeListError}>
+        <CategoryHeroSection categoryId={categoryId} categoryList={categoryList || []} />
+      </Loading>
+      <CategoryGoodsSection categoryId={categoryId} />
     </>
   );
 };
