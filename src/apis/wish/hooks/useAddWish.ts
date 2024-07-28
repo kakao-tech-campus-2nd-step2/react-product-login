@@ -2,11 +2,11 @@ import { AxiosError, AxiosResponse } from 'axios';
 import axiosInstance from '@apis/instance';
 import { AddWishRequest } from '@internalTypes/requestTypes';
 import { AddWishResponse } from '@internalTypes/responseTypes';
-import { PRODUCTS_PATHS } from '@apis/products/path';
+import { WISH_PATHS } from '@apis/wish/path';
 import { useMutation, UseMutationResult } from '@tanstack/react-query';
 
 const addWish = async (request: AddWishRequest): Promise<AddWishResponse> => {
-  const res = await axiosInstance.post(PRODUCTS_PATHS.ADD_WISH, request, {
+  const res = await axiosInstance.post(WISH_PATHS.ADD_WISH, request, {
     headers: {
       Authorization: `Bearer ${localStorage.getItem('authToken')}`,
     },

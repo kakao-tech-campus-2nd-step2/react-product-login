@@ -1,10 +1,10 @@
 import { ThemeProductsRequest } from '@internalTypes/requestTypes';
-import { ThemeProductsResponse, ThemesResponse } from '@internalTypes/responseTypes';
+import { ThemeProductsResponse } from '@internalTypes/responseTypes';
 import axiosInstance from '../instance';
 import { THEME_PATHS } from './path';
 
-export const getThemes = async (): Promise<ThemesResponse> => {
-  const res = await axiosInstance.get<ThemesResponse>(THEME_PATHS.THEMES);
+export const getThemes = async (): Promise<ThemeProductsResponse> => {
+  const res = await axiosInstance.get<ThemeProductsResponse>(THEME_PATHS.THEMES);
   return res.data;
 };
 

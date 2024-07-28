@@ -1,7 +1,41 @@
-import { ProductData, MessageCardTemplateData } from './dataTypes';
+import { ProductData, MessageCardTemplateData, ThemeData } from './dataTypes';
 
 export interface RankingProductsResponse {
   products: ProductData[];
+}
+
+export interface WishProduct {
+  id: number;
+  product: {
+    id: number;
+    name: string;
+    price: number;
+    imageUrl: string;
+  };
+}
+
+export interface GetWishesResponse {
+  content: WishProduct[];
+  pageable: {
+    sort: {
+      sorted: boolean;
+      unsorted: boolean;
+      empty: boolean;
+    };
+    pageNumber: number;
+    pageSize: number;
+    offset: number;
+    unpaged: boolean;
+    paged: boolean;
+  };
+  totalPages: number;
+  totalElements: number;
+  last: boolean;
+  number: number;
+  size: number;
+  numberOfElements: number;
+  first: boolean;
+  empty: boolean;
 }
 
 export interface AddWishResponse {
@@ -9,9 +43,9 @@ export interface AddWishResponse {
   productId: number;
 }
 
-// export interface ThemesResponse {
-//   themes: ThemeData[];
-// }
+export interface ThemesResponse {
+  themes: ThemeData[];
+}
 
 export interface ThemeProductsResponse {
   products: ProductData[];

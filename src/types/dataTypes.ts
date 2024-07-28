@@ -1,3 +1,5 @@
+export type ThemeData = [];
+
 export type CategoryData = {
   id: number;
   name: string;
@@ -25,7 +27,7 @@ export type GoodsDetailOptionItemData = {
   key: string;
   value: string;
   level: number;
-  options: GoodsDetailOptionItemData[]; // 재귀적으로 동일한 구조를 가질 수 있음
+  options: GoodsDetailOptionItemData[];
   id?: number;
   price?: number;
   stockQuantity: number;
