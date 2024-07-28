@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
+import axios from 'axios';
 import { useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import KAKAO_LOGO from '@/assets/kakao_logo.svg';
 import { Button } from '@/components/common/Button';
@@ -13,6 +14,7 @@ export const LoginPage = () => {
   const [id, setId] = useState('');
   const [password, setPassword] = useState('');
   const [queryParams] = useSearchParams();
+  const navigate = useNavigate();
 
   const handleConfirm = () => {
     if (!id || !password) {
@@ -21,12 +23,27 @@ export const LoginPage = () => {
     }
 
     // TODO: API 연동
+    axios
+      .post('/api/members/login', {
+        email: id,
+        password: password,
+      })
+      .then((response) => {
+        const token = response.data.token;
+        localStorage.setItem('token', token);
+        authSessionStorage.set(token);
 
-    // TODO: API 연동 전까지 임시 로그인 처리
-    authSessionStorage.set(id);
+      })
+      .catch((error) => {
+        console.error('Login failed:', error);
+      });
 
     const redirectUrl = queryParams.get('redirect') ?? `${window.location.origin}/`;
     return window.location.replace(redirectUrl);
+  };
+
+  const handleSignup = () => {
+    navigate('/signup');
   };
 
   return (
@@ -49,6 +66,12 @@ export const LoginPage = () => {
           }}
         />
         <Button onClick={handleConfirm}>로그인</Button>
+        <Spacing
+          height={{
+            initial: 20,
+          }}
+        />
+        <Button onClick={handleSignup}>회원가입</Button>
       </FormWrapper>
     </Wrapper>
   );
