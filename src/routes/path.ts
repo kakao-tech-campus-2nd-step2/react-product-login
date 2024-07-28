@@ -3,6 +3,7 @@ export const RouterPath = {
   home: '/',
   category: '/category/:categoryId',
   myAccount: '/my-account',
+  wishlist: '/wishlist',
   productsDetail: '/products/:productId',
   order: '/order',
   login: '/login',

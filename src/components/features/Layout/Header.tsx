@@ -23,6 +23,7 @@ export const Header = () => {
           />
         </Link>
         <RightWrapper>
+          <StyledLink to={RouterPath.wishlist}>위시리스트</StyledLink>
           {authInfo ? (
             <LinkButton onClick={() => navigate(RouterPath.myAccount)}>내 계정</LinkButton>
           ) : (
@@ -49,7 +50,12 @@ export const Wrapper = styled.header`
 const Logo = styled.img`
   height: ${HEADER_HEIGHT};
 `;
-const RightWrapper = styled.div``;
+
+const RightWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 16px;
+`;
 
 const LinkButton = styled.p`
   align-items: center;
@@ -57,4 +63,17 @@ const LinkButton = styled.p`
   color: #000;
   text-decoration: none;
   cursor: pointer;
+`;
+
+const StyledLink = styled(Link)`
+  align-items: center;
+  font-size: 14px;
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+  padding: 8px;
+  
+  &:hover {
+    text-decoration: underline;
+  }
 `;

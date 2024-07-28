@@ -13,6 +13,7 @@ export const LoginPage = () => {
   const [id, setId] = useState('');
   const [password, setPassword] = useState('');
   const [queryParams] = useSearchParams();
+  const [isSignup, setIsSignup] = useState(false);
 
   const handleConfirm = () => {
     if (!id || !password) {
@@ -20,6 +21,9 @@ export const LoginPage = () => {
       return;
     }
 
+    if (isSignup) {
+      alert('회원가입이 완료되었습니다. 자동으로 로그인합니다.');
+    }
     // TODO: API 연동
 
     // TODO: API 연동 전까지 임시 로그인 처리
@@ -41,14 +45,16 @@ export const LoginPage = () => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-
         <Spacing
           height={{
             initial: 40,
             sm: 60,
           }}
         />
-        <Button onClick={handleConfirm}>로그인</Button>
+        <Button onClick={handleConfirm}>{isSignup ? '회원가입' : '로그인'}</Button>
+        <SignupSwitch onClick={() => setIsSignup(!isSignup)}>
+          {isSignup ? '로그인 화면으로 돌아가기' : '회원가입'}
+        </SignupSwitch>
       </FormWrapper>
     </Wrapper>
   );
@@ -77,4 +83,12 @@ const FormWrapper = styled.article`
     border: 1px solid rgba(0, 0, 0, 0.12);
     padding: 60px 52px;
   }
+`;
+
+const SignupSwitch = styled.div`
+  font-size: 15px;
+  margin-top: 10px;
+  cursor: pointer;
+  color: #555;
+  text-align: left;
 `;
