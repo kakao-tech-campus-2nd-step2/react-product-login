@@ -7,6 +7,7 @@ import { ProductDetailRequestParams } from '@/api/services/productDetail';
 import { useTotalPrice } from '@/pages/ProductDetailPage/hooks/useTotalPrice';
 import { useAuth } from '@/provider/auth/useAuth';
 import { ROUTER_PATH } from '@/routes/path';
+import { OrderHistory } from '@/types/orderType';
 
 import { OneTextContainer } from '@/components/OneTextContainer';
 import { Button } from '@/components/ui/Button';
@@ -37,9 +38,9 @@ export const ProductForm = ({ productId }: ProductFormProps) => {
       return;
     }
 
-    const state = {
+    const state: OrderHistory = {
       productId,
-      quantity,
+      productQuantity: quantity,
     };
 
     navigate(ROUTER_PATH.ORDER, { state });

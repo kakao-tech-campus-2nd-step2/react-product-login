@@ -1,14 +1,13 @@
-import { BASE_URL } from '@/api/config';
-
 import { ProductsRequestParams } from './themeProduct/types';
 
-export const getCategoriesPath = () => `${BASE_URL}/api/categories`;
+export const getCategoriesPath = () =>
+  `${process.env.VITE_API_BASE_URL}/api/categories`;
 
 export const getProductDetailPath = (productId: string) =>
-  `${BASE_URL}/api/products/${productId}`;
+  `${process.env.VITE_API_BASE_URL}/api/products/${productId}`;
 
 export const getProductOptionsPath = (productId: string) =>
-  `${BASE_URL}/api/products/${productId}/options`;
+  `${process.env.VITE_API_BASE_URL}/api/products/${productId}/options`;
 
 export const getProductsPath = ({
   categoryId,
@@ -22,5 +21,5 @@ export const getProductsPath = ({
   if (pageToken) params.append('page', pageToken);
   if (maxResults) params.append('size', maxResults.toString());
 
-  return `${BASE_URL}/api/products?${params.toString()}`;
+  return `${process.env.VITE_API_BASE_URL}/api/products?${params.toString()}`;
 };

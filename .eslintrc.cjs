@@ -17,6 +17,7 @@ module.exports = {
     {
       env: {
         node: true,
+        jest: true,
       },
       files: ['.eslintrc.{js,cjs}'],
       parserOptions: {
@@ -29,13 +30,18 @@ module.exports = {
         'import/no-extraneous-dependencies': 'off',
       },
     },
+    {
+      files: ['tests/**/*'],
+      env: {
+        jest: true,
+      },
+    },
   ],
   ignorePatterns: ['vite.config.ts'],
   parser: '@typescript-eslint/parser',
   parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.app.json'],
+    project: './tsconfig.json',
+    tsconfigRootDir: __dirname,
   },
   plugins: ['@typescript-eslint', 'react', 'import'],
   rules: {

@@ -39,9 +39,10 @@ export const QuantityInput = ({
         <IconButton
           aria-label="Decrease Quantity"
           icon={<MinusIcon />}
+          data-testid="quantity-increase-button"
           {...dec}
         />
-        <Input {...input} />
+        <Input {...input} data-testid="quantity-input" />
         <IconButton
           aria-label="Increase Quantity"
           icon={<AddIcon />}

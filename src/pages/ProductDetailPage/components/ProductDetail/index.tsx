@@ -23,8 +23,12 @@ export const ProductDetail = ({ productId }: ProductDetailProps) => {
       <Image src={productDetail.imageUrl} ratio="square" />
       <Container flexDirection="column" gap="2rem" css={{ paddingTop: '1rem' }}>
         <Container flexDirection="column" gap="1rem">
-          <Text fontSize="2xl">{productDetail.name}</Text>
-          <Text fontSize="3xl">{productDetail.price}원</Text>
+          <Text fontSize="2xl" data-testid="product-detail-name">
+            {productDetail.name}
+          </Text>
+          <Text fontSize="3xl" data-testid="product-detail-price">
+            {productDetail.price}원
+          </Text>
         </Container>
         <Divider />
         <Text fontSize="sm" as="b">

@@ -17,8 +17,3 @@ BACKEND_API.interceptors.response.use(
     return Promise.reject(customError);
   }
 );
-
-export const BASE_URL =
-  import.meta.env.VITE_API_MOCKING === 'enable'
-    ? 'https://api.example.com'
-    : tempBaseUrl;
