@@ -10,26 +10,39 @@ import { breakpoints } from '@/styles/variants';
 import { authSessionStorage } from '@/utils/storage';
 
 export const SignupPage = () => {
-  const [id, setId] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
-  const handleSignup = () => {
-    if (!id || !password) {
-      alert('아이디와 비밀번호를 입력해주세요.');
-      return;
-    }
+  const handleSignup = async () => {
+    try {
+      const response = await fetch('/api/members/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      });
 
-    // TODO: API 연동
-    authSessionStorage.set(id);
-    navigate('/'); // 로그인 후 리다이렉트
+      if (response.ok) {
+        const { token } = await response.json();
+        authSessionStorage.set(token); // 토큰을 세션 스토리지에 저장
+        navigate('/');
+      } else {
+        alert('회원가입에 실패했습니다.');
+      }
+    } catch (error) {
+      alert('회원가입 중 오류가 발생했습니다.');
+    }
   };
 
   return (
     <Wrapper>
       <Logo src={KAKAO_LOGO} alt="카카고 CI" />
       <FormWrapper>
-        <UnderlineTextField placeholder="이름" value={id} onChange={(e) => setId(e.target.value)} />
+        <UnderlineTextField
+          placeholder="이메일"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
         <Spacing />
         <UnderlineTextField
           type="password"
