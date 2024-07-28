@@ -78,7 +78,8 @@ test('Counting buttons', async () => {
 });
 
 test('Add to wishlist', async () => {
-  authSessionStorage.set('mock-token');
+  authSessionStorage.set('qqqq@qqq.com');
+  localStorage.setItem('token', 'mock-token');
   const user = userEvent.setup();
   renderWithProviders(<GoodsDetailPage />, { route: '/products/3245119' });
   const addButton = screen.getByText('위시리스트에 추가');

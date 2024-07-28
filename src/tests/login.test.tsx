@@ -40,10 +40,10 @@ test('successful login', async () => {
   const passwordInput = screen.getByPlaceholderText('비밀번호');
   const loginButton = screen.getByRole('button', { name: /로그인/i });
 
-  await user.type(emailInput, 'qqqq');
-  await user.type(passwordInput, 'wwww');
+  await user.type(emailInput, 'qqqq@qqq.com');
+  await user.type(passwordInput, 'wwwwww');
 
   await user.click(loginButton);
 
-  expect(authSessionStorage.get()).toBe('qqqq');
+  expect(authSessionStorage.get()).toBe('qqqq@qqq.com');
 });

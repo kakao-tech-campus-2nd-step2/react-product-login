@@ -25,7 +25,7 @@ export const mockApiHandlers = [
     const { email, password } = await req.json<{ email: string; password: string }>();
 
     // temporary mock user
-    if (email === 'qqqq' && password === 'wwww') {
+    if (email === 'qqqq@qqq.com' && password === 'wwwwww') {
       return res(
         ctx.status(200),
         ctx.json({
@@ -39,12 +39,11 @@ export const mockApiHandlers = [
   }),
   rest.post('https://api.example.com/api/wishes', async (req, res, ctx) => {
     const { productId } = await req.json<{ productId: string }>();
-    // TODO: jest에서 401나옴
-    // const token = req.headers.get('Authorization')?.split(' ')[1];
+    const token = req.headers.get('Authorization')?.split(' ')[1];
 
-    // if (!token) {
-    //   return res(ctx.status(401), ctx.json({ message: 'Invalid or missing token' }));
-    // }
+    if (!token) {
+      return res(ctx.status(401), ctx.json({ message: 'Invalid or missing token' }));
+    }
 
     if (!productId) {
       return res(ctx.status(400), ctx.json({ message: 'Invalid input' }));
