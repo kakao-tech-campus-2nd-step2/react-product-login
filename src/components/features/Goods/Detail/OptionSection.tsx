@@ -8,21 +8,10 @@ import { useGetProductOptions } from '@/api/hooks/useGetProductOptions';
 import { Button } from '@/components/common/Button';
 import { useAuth } from '@/provider/Auth';
 import { getDynamicPath, RouterPath } from '@/routes/path';
+import { type InterestItem } from '@/types';
 import { orderHistorySessionStorage } from '@/utils/storage';
 
 import { CountOptionItem } from './OptionItem/CountOptionItem';
-
-type Product = {
-  id: number;
-  name: string;
-  price: number;
-  imageUrl: string;
-}
-
-type InterestItem = {
-  productId: number;
-  product: Product;
-}
 
 type Props = ProductDetailRequestParams;
 
