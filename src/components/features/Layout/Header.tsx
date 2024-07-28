@@ -7,7 +7,7 @@ import { getDynamicPath, RouterPath } from '@/routes/path';
 
 export const Header = () => {
   const navigate = useNavigate();
-  const authInfo = useAuth();
+  const { authInfo } = useAuth();
 
   const handleLogin = () => {
     navigate(getDynamicPath.login());

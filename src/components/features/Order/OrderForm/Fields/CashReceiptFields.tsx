@@ -16,7 +16,14 @@ export const CashReceiptFields = () => {
         control={control}
         name="hasCashReceipt"
         render={({ field: { onChange, value, ref } }) => (
-          <Checkbox ref={ref} onChange={onChange} isChecked={value} colorScheme="yellow" size="lg">
+          <Checkbox
+            ref={ref}
+            onChange={onChange}
+            isChecked={value}
+            colorScheme="yellow"
+            aria-label="현금영수증 신청"
+            size="lg"
+          >
             <LabelText>현금영수증 신청</LabelText>
           </Checkbox>
         )}
