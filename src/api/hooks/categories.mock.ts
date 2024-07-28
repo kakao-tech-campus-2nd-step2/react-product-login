@@ -1,14 +1,7 @@
 import { rest } from 'msw';
 
-import { getCategoriesPath } from './useGetCategorys';
-
-export const categoriesMockHandler = [
-  rest.get(getCategoriesPath(), (_, res, ctx) => {
-    return res(ctx.json(CATEGORIES_RESPONSE_DATA));
-  }),
-];
-
-const CATEGORIES_RESPONSE_DATA = [
+// 기존에 정의된 카테고리 데이터
+export const CATEGORIES_RESPONSE_DATA = [
   {
     id: 2920,
     name: '생일',
@@ -25,4 +18,14 @@ const CATEGORIES_RESPONSE_DATA = [
     imageUrl:
       'https://img1.daumcdn.net/thumb/S104x104/?fname=https%3A%2F%2Fst.kakaocdn.net%2Fproduct%2Fgift%2Fproduct%2F20240131153049_5a22b137a8d346e9beb020a7a7f4254a.jpg',
   },
+];
+
+// 카테고리 API 경로
+export const getCategoriesPath = () => '/api/categories';
+
+// MSW 핸들러 정의
+export const categoriesMockHandler = [
+  rest.get(getCategoriesPath(), (_, res, ctx) => {
+    return res(ctx.json(CATEGORIES_RESPONSE_DATA));
+  }),
 ];

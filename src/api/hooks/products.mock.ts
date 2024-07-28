@@ -1,50 +1,14 @@
 import { rest } from 'msw';
 
-import { getProductDetailPath } from './useGetProductDetail';
-import { getProductOptionsPath } from './useGetProductOptions';
-import { getProductsPath } from './useGetProducts';
+const BASE_URL = 'http://localhost:3000';
 
-export const productsMockHandler = [
-  rest.get(
-    getProductsPath({
-      categoryId: '2920',
-    }),
-    (_, res, ctx) => {
-      return res(ctx.json(PRODUCTS_MOCK_DATA));
-    },
-  ),
-  rest.get(
-    getProductsPath({
-      categoryId: '2930',
-    }),
-    (_, res, ctx) => {
-      return res(ctx.json(PRODUCTS_MOCK_DATA));
-    },
-  ),
-  rest.get(getProductDetailPath(':productId'), (_, res, ctx) => {
-    return res(ctx.json(PRODUCTS_MOCK_DATA.content[0]));
-  }),
-  rest.get(getProductOptionsPath(':productId'), (_, res, ctx) => {
-    return res(
-      ctx.json([
-        {
-          id: 1,
-          name: 'Option A',
-          quantity: 10,
-          productId: 1,
-        },
-        {
-          id: 2,
-          name: 'Option B',
-          quantity: 20,
-          productId: 1,
-        },
-      ]),
-    );
-  }),
-];
+type RequestParams = {
+  categoryId: string;
+  pageToken?: string;
+  maxResults?: number;
+};
 
-const PRODUCTS_MOCK_DATA = {
+export const PRODUCTS_MOCK_DATA = {
   content: [
     {
       id: 3245119,
@@ -52,6 +16,7 @@ const PRODUCTS_MOCK_DATA = {
       imageUrl:
         'https://st.kakaocdn.net/product/gift/product/20240215083306_8e1db057580145829542463a84971ae3.png',
       price: 145000,
+      categoryId: 2920,
     },
     {
       id: 2263833,
@@ -59,6 +24,7 @@ const PRODUCTS_MOCK_DATA = {
       imageUrl:
         'https://st.kakaocdn.net/product/gift/product/20200513102805_4867c1e4a7ae43b5825e9ae14e2830e3.png',
       price: 100000,
+      categoryId: 2930,
     },
     {
       id: 6502823,
@@ -66,6 +32,7 @@ const PRODUCTS_MOCK_DATA = {
       imageUrl:
         'https://st.kakaocdn.net/product/gift/product/20240215112140_11f857e972bc4de6ac1d2f1af47ce182.jpg',
       price: 108000,
+      categoryId: 2930,
     },
     {
       id: 1181831,
@@ -73,6 +40,7 @@ const PRODUCTS_MOCK_DATA = {
       imageUrl:
         'https://st.kakaocdn.net/product/gift/product/20240214150740_ad25267defa64912a7c030a7b57dc090.jpg',
       price: 122000,
+      categoryId: 2920,
     },
     {
       id: 1379982,
@@ -80,6 +48,7 @@ const PRODUCTS_MOCK_DATA = {
       imageUrl:
         'https://st.kakaocdn.net/product/gift/product/20240118135914_a6e1a7442ea04aa49add5e02ed62b4c3.jpg',
       price: 133000,
+      categoryId: 2920,
     },
   ],
   number: 0,
@@ -87,3 +56,25 @@ const PRODUCTS_MOCK_DATA = {
   size: 10,
   last: true,
 };
+
+// 카테고리별 제품 목록 API 경로
+export const getProductsPath = ({ categoryId, pageToken, maxResults }: RequestParams) => {
+  const params = new URLSearchParams();
+
+  params.append('categoryId', categoryId);
+  params.append('sort', 'name,asc');
+  if (pageToken) params.append('page', pageToken);
+  if (maxResults) params.append('size', maxResults.toString());
+
+  return `${BASE_URL}/api/products?${params.toString()}`;
+};
+
+// MSW 핸들러 정의
+export const productsMockHandler = [
+  rest.get(getProductsPath({ categoryId: '2920' }), (_, res, ctx) => {
+    return res(ctx.json(PRODUCTS_MOCK_DATA));
+  }),
+  rest.get(getProductsPath({ categoryId: '2930' }), (_, res, ctx) => {
+    return res(ctx.json(PRODUCTS_MOCK_DATA));
+  }),
+];
