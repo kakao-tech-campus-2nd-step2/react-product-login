@@ -1,5 +1,10 @@
 import { setupServer } from 'msw/node';
 import { categoriesMockHandler } from '../api/hooks/categories.mock';
 import { productsMockHandler } from '../api/hooks/products.mock';
+import { userMockHandlers } from '../api/hooks/user.mock';
 
-export const server = setupServer(...categoriesMockHandler, ...productsMockHandler);
+export const server = setupServer(
+  ...categoriesMockHandler,
+  ...productsMockHandler,
+  ...userMockHandlers,
+);
