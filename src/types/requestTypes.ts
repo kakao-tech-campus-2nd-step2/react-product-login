@@ -3,6 +3,10 @@ export interface RankingProductsRequest {
   rankType?: 'MANY_WISH' | 'MANY_RECEIVE' | 'MANY_WISH_RECEIVE';
 }
 
+export interface DeleteWishRequest {
+  wishId: number;
+}
+
 export interface GetWishesRequest {
   page: number;
   size: number;

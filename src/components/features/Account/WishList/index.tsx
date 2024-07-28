@@ -2,11 +2,10 @@ import React from 'react';
 import styled from '@emotion/styled';
 import { useGetWishes } from '@apis/wish/hooks/useGetWishes';
 import { CenteredContainer } from '@components/common';
-import GoodsItemImage from '@assets/images/goodsItem.jpg';
 import WishListItem from './WishLIstItem';
 
 export default function WishList() {
-  const { data: wishesData } = useGetWishes({ page: 0, size: 10, sort: 'createdDate,desc' });
+  const { data: wishesData, refetch } = useGetWishes({ page: 0, size: 10, sort: 'createdDate,desc' });
 
   return (
     <CenteredContainer maxWidth="md">
@@ -15,9 +14,11 @@ export default function WishList() {
         {wishesData?.content.map((wishItem) => (
           <WishListItem
             key={wishItem.id}
+            id={wishItem.id}
             image={wishItem.product.imageUrl}
             name={wishItem.product.name}
             price={wishItem.product.price}
+            onDelete={() => refetch()}
           />
         ))}
       </WishListContainer>

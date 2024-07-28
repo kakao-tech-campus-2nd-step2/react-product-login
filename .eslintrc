@@ -44,7 +44,8 @@
     "react/jsx-no-useless-fragment": "off",
     "react/no-unstable-nested-components": "off",
     "react/button-has-type": "off",
-    "react-hooks/rules-of-hooks": "off"
+    "react-hooks/rules-of-hooks": "off",
+    "no-const-assign": "off"
   },
   "settings": {
     "import/resolver": {

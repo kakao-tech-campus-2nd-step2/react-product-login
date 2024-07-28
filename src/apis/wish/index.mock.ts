@@ -1,5 +1,4 @@
 import { rest } from 'msw';
-import { WISH_PATHS } from './path';
 
 export const wishMockHandler = [
   rest.get('/api/wishes', (req, res, ctx) => {
@@ -9,9 +8,19 @@ export const wishMockHandler = [
 
     return res(ctx.status(200), ctx.json(WISHES_MOCK_DATA));
   }),
+  rest.delete(`/api/wishes/:wishId`, (req, res, ctx) => {
+    const wishId = req.params.wishId as string;
+    const wishIdNumber = Array.isArray(wishId) ? parseInt(wishId[0], 10) : parseInt(wishId, 10);
+
+    WISHES_MOCK_DATA = {
+      ...WISHES_MOCK_DATA,
+      content: WISHES_MOCK_DATA.content.filter((item) => item.id !== wishIdNumber),
+    };
+    return res(ctx.status(200));
+  }),
 ];
 
-const WISHES_MOCK_DATA = {
+let WISHES_MOCK_DATA = {
   content: [
     {
       id: 1,

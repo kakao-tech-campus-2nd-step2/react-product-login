@@ -1,13 +1,29 @@
 import React from 'react';
 import styled from '@emotion/styled';
+import useDeleteWish from '@apis/wish/hooks/useDeleteWish';
 
 export interface WishListItemProps {
+  id: number;
   image: string;
   name: string;
   price: number;
+  onDelete: () => void;
 }
 
-export default function WishListItem({ image, name, price }: WishListItemProps) {
+export default function WishListItem({ id, image, name, price, onDelete }: WishListItemProps) {
+  const { mutate: deleteWish } = useDeleteWish({
+    onSuccess: () => {
+      onDelete();
+    },
+    onError: (error) => {
+      console.error('Failed to delete wish item', error);
+    },
+  });
+
+  const handleDelete = () => {
+    deleteWish({ wishId: id });
+  };
+
   return (
     <WishListItemContainer>
       <InnerContainer>
@@ -20,7 +36,7 @@ export default function WishListItem({ image, name, price }: WishListItemProps) 
             <Price>{price}원</Price>
           </div>
         </WishListDetail>
-        <button>삭제하기</button>
+        <button onClick={handleDelete}>삭제하기</button>
       </InnerContainer>
     </WishListItemContainer>
   );
