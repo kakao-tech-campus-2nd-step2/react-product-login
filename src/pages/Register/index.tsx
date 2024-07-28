@@ -1,31 +1,26 @@
 import styled from '@emotion/styled';
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 
-import { useLogin } from '@/api/hooks/useLogin';
+import { useRegister } from '@/api/hooks/useRegister';
 import KAKAO_LOGO from '@/assets/kakao_logo.svg';
 import { Button } from '@/components/common/Button';
 import { UnderlineTextField } from '@/components/common/Form/Input/UnderlineTextField';
 import { Spacing } from '@/components/common/layouts/Spacing';
 import { breakpoints } from '@/styles/variants';
 
-export const LoginPage = () => {
+export const RegisterPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const navigate = useNavigate();
-  const { mutate: login } = useLogin();
 
-  const handleConfirm = () => {
+  const { mutate: register } = useRegister();
+
+  const handleRegister = () => {
     if (!email || !password) {
-      alert('아이디와 비밀번호를 입력해주세요.');
+      alert('이메일과 비밀번호를 입력해주세요.');
       return;
     }
 
-    login({ email, password });
-  };
-
-  const handleRegister = () => {
-    navigate('/register');
+    register({ email, password });
   };
 
   return (
@@ -33,7 +28,7 @@ export const LoginPage = () => {
       <Logo src={KAKAO_LOGO} alt="카카오 CI" />
       <FormWrapper>
         <UnderlineTextField
-          placeholder="이름"
+          placeholder="이메일"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
@@ -45,15 +40,8 @@ export const LoginPage = () => {
           onChange={(e) => setPassword(e.target.value)}
         />
 
-        <Spacing
-          height={{
-            initial: 40,
-            sm: 60,
-          }}
-        />
-        <Button onClick={handleConfirm}>로그인</Button>
-        <Spacing height={20} />
-        <Button onClick={handleRegister}>회원가입</Button>
+        <Spacing height={{ initial: 40, sm: 60 }} />
+        <Button onClick={handleRegister}>확인</Button>
       </FormWrapper>
     </Wrapper>
   );
