@@ -17,12 +17,13 @@ import { Container } from '@/components/ui/Layout/Container';
 export const WishList = () => {
   const [alertMessage, setAlertMessage] = useState('');
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { wishList, status, error } = useWishList({});
+  const { wishList, status, error, refetch } = useWishList({});
   const { mutate } = useMutation({
     mutationFn: deleteWishItem,
     onSuccess: () => {
       setAlertMessage('위시 상품이 삭제되었습니다.');
       onOpen();
+      refetch();
     },
     onError: (e) => {
       setAlertMessage(e.message);

@@ -11,13 +11,16 @@ export const useWishList = ({
   maxResults = 20,
   initPageToken,
 }: WishListParams) => {
-  const { data, status, error, fetchNextPage, hasNextPage } = useInfiniteQuery({
-    queryKey: ['wish', maxResults, initPageToken],
-    queryFn: ({ pageParam = initPageToken }) =>
-      fetchWishList({ pageToken: pageParam, maxResults }),
-    initialPageParam: initPageToken,
-    getNextPageParam: (lastPage) => lastPage.nextPageToken,
-  });
+  const { data, status, error, fetchNextPage, hasNextPage, refetch } =
+    useInfiniteQuery({
+      queryKey: ['wish', maxResults, initPageToken],
+      queryFn: ({ pageParam = initPageToken }) =>
+        fetchWishList({ pageToken: pageParam, maxResults }),
+      initialPageParam: initPageToken,
+      getNextPageParam: (lastPage) => lastPage.nextPageToken,
+      gcTime: 0,
+      staleTime: 0,
+    });
 
   const wishList = data?.pages.flatMap((page) => page.wishList);
 
@@ -27,5 +30,6 @@ export const useWishList = ({
     error,
     fetchNextPage,
     hasNextPage,
+    refetch,
   };
 };

@@ -2,33 +2,68 @@ import { HttpResponse, http } from 'msw';
 
 import {
   getWishAddPath,
-  getWishDeleteApi,
+  getWishDeletePath,
   getWishListPath,
 } from '@/api/services/path';
-import { WishResponse } from '@/api/services/wish';
+import { WishRequestBody, WishResponse } from '@/api/services/wish';
+
+import { PRODUCTS_MOCK_DATA } from './products.mock';
 
 export const wishMockHandler = [
   http.post(getWishAddPath(), async ({ request }) => {
-    const productId = await request.json();
+    const data = await request.json();
+    const { productId } = data as WishRequestBody;
+
+    const index = WISH_LIST_MOCK_DATA.content.findIndex(
+      (item) => item.product.id === Number(productId)
+    );
 
     if (!productId) {
-      return HttpResponse.json({ error: 'Bad Request' }, { status: 400 });
+      return HttpResponse.json(
+        { error: 'Invalid input' },
+        { status: 400, statusText: 'Bad Request' }
+      );
+    }
+
+    if (index !== -1) {
+      return HttpResponse.json(
+        { error: 'already exists product' },
+        { status: 400, statusText: 'Duplicate Product' }
+      );
     }
 
     if (!request.headers.has('Authorization')) {
       return HttpResponse.json(
         { error: 'Invalid or missing token' },
-        { status: 401 }
+        { status: 401, statusText: 'Unauthorized' }
+      );
+    }
+
+    const id = WISH_LIST_MOCK_DATA.content.length + 1;
+    const product = PRODUCTS_MOCK_DATA.content.find(
+      (item) => item.id === Number(productId)
+    );
+
+    if (!product) {
+      return HttpResponse.json(
+        { error: `Not Found ${productId}` },
+        { status: 404, statusText: 'Member or Product not found' }
       );
     }
 
     const response: WishResponse = {
-      id: 1,
-      productId: productId.toString(),
+      id,
+      productId: product.toString(),
     };
+
+    WISH_LIST_MOCK_DATA.content.push({
+      id,
+      product,
+    });
 
     return HttpResponse.json(response);
   }),
+
   http.get(getWishListPath({}), ({ request }) => {
     if (!request.headers.has('Authorization')) {
       return HttpResponse.json(
@@ -36,9 +71,11 @@ export const wishMockHandler = [
         { status: 401 }
       );
     }
+
     return HttpResponse.json(WISH_LIST_MOCK_DATA);
   }),
-  http.delete(getWishDeleteApi, async ({ request }) => {
+
+  http.delete(getWishDeletePath(':wishId'), async ({ request }) => {
     if (!request.headers.has('Authorization')) {
       return HttpResponse.json(
         { error: 'Invalid or missing token' },
@@ -48,11 +85,29 @@ export const wishMockHandler = [
       );
     }
 
+    const url = new URL(request.url);
+    const wishId = url.pathname.split('/').pop();
+
+    const index = WISH_LIST_MOCK_DATA.content.findIndex(
+      (wish) => wish.id === Number(wishId)
+    );
+
+    if (index === -1) {
+      return HttpResponse.json(
+        { error: 'Wish not found' },
+        {
+          status: 404,
+        }
+      );
+    }
+
+    WISH_LIST_MOCK_DATA.content.splice(index, 1);
+
     return HttpResponse.json('');
   }),
 ];
 
-const WISH_LIST_MOCK_DATA = {
+let WISH_LIST_MOCK_DATA = {
   content: [
     {
       id: 1,
