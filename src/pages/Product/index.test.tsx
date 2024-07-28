@@ -19,20 +19,19 @@ const routes = [
   },
 ];
 
+const renderProduct = (initialEntries: string[]) =>
+  render(
+    <QueryClientProvider client={queryClient}>
+      <RouterProvider router={createMemoryRouter(routes, { initialEntries })} />
+    </QueryClientProvider>,
+  );
+
 test('productId에 맞는 상품 정보가 올바르게 렌더링되는지 확인', async () => {
   // Given: productId가 주어진다.
   const productId = '3245119';
 
-  const router = createMemoryRouter(routes, {
-    initialEntries: [`/products/${productId}`],
-  });
-
   // When: Product 페이지 컴포넌트 렌더링시 모의 데이터를 가져온다.
-  render(
-    <QueryClientProvider client={queryClient}>
-      <RouterProvider router={router} />
-    </QueryClientProvider>,
-  );
+  renderProduct([`/products/${productId}`]);
 
   // Then
   await waitFor(() => {
@@ -57,16 +56,8 @@ test('수량 증가 버튼을 클릭하면 숫자가 증가하는지 확인', as
   // Given: productId가 주어진다.
   const productId = '3245119';
 
-  const router = createMemoryRouter(routes, {
-    initialEntries: [`/products/${productId}`],
-  });
-
   // When: ProductOrder 페이지 컴포넌트 렌더링시 모의 데이터를 가져온다.
-  render(
-    <QueryClientProvider client={queryClient}>
-      <RouterProvider router={router} />
-    </QueryClientProvider>,
-  );
+  renderProduct([`/products/${productId}`]);
 
   const incrementButton = screen.getByTestId('increment-button');
   expect(screen.getByDisplayValue('1')).toBeInTheDocument();
@@ -80,16 +71,8 @@ test('수량 감소 버튼을 클릭하면 숫자가 감소하는지 확인', as
   // Given: productId가 주어진다.
   const productId = '3245119';
 
-  const router = createMemoryRouter(routes, {
-    initialEntries: [`/products/${productId}`],
-  });
-
   // When: ProductOrder 페이지 컴포넌트 렌더링시 모의 데이터를 가져온다.
-  render(
-    <QueryClientProvider client={queryClient}>
-      <RouterProvider router={router} />
-    </QueryClientProvider>,
-  );
+  renderProduct([`/products/${productId}`]);
 
   const decrementButton = screen.getByTestId('decrement-button');
   expect(screen.getByDisplayValue('1')).toBeInTheDocument();
