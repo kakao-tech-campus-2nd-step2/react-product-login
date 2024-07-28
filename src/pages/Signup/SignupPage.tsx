@@ -1,54 +1,43 @@
-import styled from '@emotion/styled';
+import { Text } from '@chakra-ui/layout';
 import axios from 'axios';
 import { useState } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import styled from 'styled-components';
 
-import KAKAO_LOGO from '@/assets/kakao_logo.svg';
 import { Button } from '@/components/common/Button';
 import { UnderlineTextField } from '@/components/common/Form/Input/UnderlineTextField';
 import { Spacing } from '@/components/common/layouts/Spacing';
 import { breakpoints } from '@/styles/variants';
 import { authSessionStorage } from '@/utils/storage';
 
-export const LoginPage = () => {
+export const SignupPage = () => {
   const [id, setId] = useState('');
   const [password, setPassword] = useState('');
-  const [queryParams] = useSearchParams();
-  const navigate = useNavigate();
 
-  const handleConfirm = () => {
-    if (!id || !password) {
-      alert('아이디와 비밀번호를 입력해주세요.');
-      return;
+  const handleSignup = async () => {
+    {
+      axios
+        .post('/api/members/register', {
+          email: id,
+          password: password,
+        })
+        .then((response) => {
+          const token = response.data.token;
+          localStorage.setItem('token', token);
+          authSessionStorage.set(token);
+        })
+        .catch((error) => {
+          console.error('Signup failed:', error);
+        });
+
+      return window.location.replace('/home');
     }
-
-    // TODO: API 연동
-    axios
-      .post('/api/members/login', {
-        email: id,
-        password: password,
-      })
-      .then((response) => {
-        const token = response.data.token;
-        localStorage.setItem('token', token);
-        authSessionStorage.set(token);
-
-      })
-      .catch((error) => {
-        console.error('Login failed:', error);
-      });
-
-    const redirectUrl = queryParams.get('redirect') ?? `${window.location.origin}/`;
-    return window.location.replace(redirectUrl);
-  };
-
-  const handleSignup = () => {
-    navigate('/signup');
   };
 
   return (
     <Wrapper>
-      <Logo src={KAKAO_LOGO} alt="카카고 CI" />
+      <Text fontSize="30px" pb="15px" fontWeight={500}>
+        SignUp
+      </Text>
       <FormWrapper>
         <UnderlineTextField placeholder="이름" value={id} onChange={(e) => setId(e.target.value)} />
         <Spacing />
@@ -65,12 +54,6 @@ export const LoginPage = () => {
             sm: 60,
           }}
         />
-        <Button onClick={handleConfirm}>로그인</Button>
-        <Spacing
-          height={{
-            initial: 20,
-          }}
-        />
         <Button onClick={handleSignup}>회원가입</Button>
       </FormWrapper>
     </Wrapper>
@@ -84,11 +67,6 @@ const Wrapper = styled.div`
   justify-content: center;
   align-items: center;
   flex-direction: column;
-`;
-
-const Logo = styled.img`
-  width: 88px;
-  color: #333;
 `;
 
 const FormWrapper = styled.article`
