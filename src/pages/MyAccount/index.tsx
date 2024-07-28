@@ -1,16 +1,16 @@
 import styled from '@emotion/styled';
 
+import type { WishlistResponseData } from '@/api/hooks/useWishlist';
+import { useDeleteWishlist, useFetchWishlist} from '@/api/hooks/useWishlist';
 import { Button } from '@/components/common/Button';
 import { Spacing } from '@/components/common/layouts/Spacing';
 import { useAuth } from '@/provider/Auth';
 import { RouterPath } from '@/routes/path';
 import { authSessionStorage } from '@/utils/storage';
-import { useFetchWishlist, usePostWishlist, useDeleteWishlist, WishlistResponseData } from '@/api/hooks/useWishlist';
 
 export const MyAccountPage = () => {
   const authInfo = useAuth();
   const { data: wishlist, isLoading } = useFetchWishlist();
-  const postWishlistMutation = usePostWishlist();
   const deleteWishlistMutation = useDeleteWishlist();
 
   const handleLogout = () => {
@@ -18,10 +18,6 @@ export const MyAccountPage = () => {
 
     const redirectURL = `${window.location.origin}${RouterPath.home}`;
     window.location.replace(redirectURL);
-  };
-
-  const handleAddWishlist = (productId: string) => {
-    postWishlistMutation.mutate({ productId });
   };
 
   const handleDelete = (wishId: number) => {
@@ -36,8 +32,6 @@ export const MyAccountPage = () => {
     <Wrapper>
       {authInfo?.name}님 안녕하세요! 
       <Spacing height={64} />
-
-      <Button onClick={() => handleAddWishlist('example-product-id')}>위시리스트에 추가</Button>
 
       <Spacing height={64} />
 

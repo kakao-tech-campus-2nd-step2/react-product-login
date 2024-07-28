@@ -1,4 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+
 import { BASE_URL, fetchInstance } from '../instance';
 
 interface WishlistRequestParams {
