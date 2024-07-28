@@ -10,13 +10,13 @@ import { breakpoints } from '@/styles/variants';
 import { authSessionStorage } from '@/utils/storage';
 
 export const LoginPage = () => {
-  const [id, setId] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [queryParams] = useSearchParams();
   const navigate = useNavigate();
 
   const handleConfirm = () => {
-    if (!id || !password) {
+    if (!username || !password) {
       alert('아이디와 비밀번호를 입력해주세요.');
       return;
     }
@@ -24,13 +24,13 @@ export const LoginPage = () => {
     // TODO: API 연동
 
     // TODO: API 연동 전까지 임시 로그인 처리
-    authSessionStorage.set(id);
+    authSessionStorage.set(username);
 
     const redirectUrl = queryParams.get('redirect') ?? `${window.location.origin}/`;
     return window.location.replace(redirectUrl);
   }
 
-  const handleSignUp = () => {
+  const goToSignUp = () => {
     navigate('/signup');
   }
 
@@ -38,7 +38,7 @@ export const LoginPage = () => {
     <Wrapper>
       <Logo src={KAKAO_LOGO} alt="카카고 CI" />
       <FormWrapper>
-        <UnderlineTextField placeholder="이름" value={id} onChange={(e) => setId(e.target.value)} />
+        <UnderlineTextField placeholder="이름" value={username} onChange={(e) => setUsername(e.target.value)} />
         <Spacing />
         <UnderlineTextField
           type="password"
@@ -55,7 +55,7 @@ export const LoginPage = () => {
         />
         <Button onClick={handleConfirm}>로그인</Button>
         <Spacing />
-        <Button onClick={handleSignUp}>회원가입</Button>
+        <Button onClick={goToSignUp}>회원가입</Button>
       </FormWrapper>
     </Wrapper>
   );
