@@ -45,6 +45,36 @@ export const OptionSection = ({ productId }: Props) => {
     navigate(RouterPath.order);
   };
 
+  const handleRegisterClick = async () => {
+    const { token } = authInfo || {};
+
+    if (!token) {
+      alert('사용자 인증 정보가 없습니다.');
+      return;
+    }
+    const productId = 1;
+
+    try {
+      const response = await fetch('/api/wishes', {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ productId }),
+      });
+
+      if (response.ok) {
+        alert('관심 등록 완료');
+      } else {
+        const errorData = await response.json();
+        alert(`관심 목록 추가 실패: ${errorData.message || '알 수 없는 에러가 발생했습니다.'}`);
+      }
+    } catch (error: any) {
+      alert(`관심 목록 추가 중 오류 발생: ${error.message}`);
+    }
+  };
+
   return (
     <Wrapper>
       <CountOptionItem name={options[0].name} value={countAsString} onChange={setCountAsString} />
@@ -52,8 +82,11 @@ export const OptionSection = ({ productId }: Props) => {
         <PricingWrapper>
           총 결제 금액 <span>{totalPrice}원</span>
         </PricingWrapper>
-        <Button theme="black" size="large" onClick={handleClick}>
+        <Button theme="black" size="large" onClick={handleClick} style={{ marginBottom: '10px' }}>
           나에게 선물하기
+        </Button>
+        <Button theme="black" size="large" onClick={handleRegisterClick}>
+          관심 등록
         </Button>
       </BottomWrapper>
     </Wrapper>

@@ -3,7 +3,7 @@ import { render, screen, waitFor } from '@testing-library/react';
 import { ChakraProvider } from '@chakra-ui/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { BrowserRouter } from 'react-router-dom';
-import { server } from '../mocks/browser';
+import { server } from '../mocks/server';
 
 import { GoodsDetail } from '@/components/features/Goods/Detail';
 import { OptionSection } from '@/components/features/Goods/Detail/OptionSection';

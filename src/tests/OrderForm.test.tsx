@@ -4,7 +4,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import type { OrderFormData } from '@/types';
 import { CashReceiptFields } from '@/components/features/Order/OrderForm/Fields/CashReceiptFields';
-import { server } from '../mocks/browser';
+import { server } from '../mocks/server';
 
 const queryClient = new QueryClient();
 

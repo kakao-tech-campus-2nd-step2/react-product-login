@@ -1,29 +1,29 @@
 import styled from '@emotion/styled';
 import axios from 'axios';
 import { useState } from 'react';
-import { useSearchParams, Link } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
+
 import KAKAO_LOGO from '@/assets/kakao_logo.svg';
 import { Button } from '@/components/common/Button';
 import { UnderlineTextField } from '@/components/common/Form/Input/UnderlineTextField';
 import { Spacing } from '@/components/common/layouts/Spacing';
 import { breakpoints } from '@/styles/variants';
 import { authSessionStorage } from '@/utils/storage';
-import { RouterPath } from '@/routes/path';
 
-export const LoginPage = () => {
-  const [id, setId] = useState('');
+export const RegisterPage = () => {
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [queryParams] = useSearchParams();
 
   const handleConfirm = async () => {
-    if (!id || !password) {
-      alert('아이디와 비밀번호를 입력해주세요.');
+    if (!email || !password) {
+      alert('이메일과 비밀번호를 입력해주세요.');
       return;
     }
 
     try {
-      const response = await axios.post('/api/members/login', {
-        email: id,
+      const response = await axios.post('/api/members/register', {
+        email,
         password,
       });
 
@@ -33,7 +33,7 @@ export const LoginPage = () => {
       const redirectUrl = queryParams.get('redirect') ?? `${window.location.origin}/`;
       return window.location.replace(redirectUrl);
     } catch (error: any) {
-      const message = error.response?.data?.message || '로그인에 실패했습니다.';
+      const message = error.response?.data?.message || '회원가입에 실패했습니다.';
       alert(message);
     }
   };
@@ -42,7 +42,11 @@ export const LoginPage = () => {
     <Wrapper>
       <Logo src={KAKAO_LOGO} alt="카카고 CI" />
       <FormWrapper>
-        <UnderlineTextField placeholder="이름" value={id} onChange={(e) => setId(e.target.value)} />
+        <UnderlineTextField
+          placeholder="이메일"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
         <Spacing />
         <UnderlineTextField
           type="password"
@@ -50,17 +54,13 @@ export const LoginPage = () => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-
         <Spacing
           height={{
             initial: 40,
             sm: 60,
           }}
         />
-        <Button onClick={handleConfirm}>로그인</Button>
-        <RegisterWrapper>
-          <Link to={RouterPath.register}>회원가입</Link>
-        </RegisterWrapper>
+        <Button onClick={handleConfirm}>회원가입</Button>
       </FormWrapper>
     </Wrapper>
   );
@@ -89,14 +89,4 @@ const FormWrapper = styled.article`
     border: 1px solid rgba(0, 0, 0, 0.12);
     padding: 60px 52px;
   }
-`;
-
-const RegisterWrapper = styled.div`
-  margin-top: 10px;
-  text-align: center;
-  text-decoration: none;
-  &:hover {
-    text-decoration: underline;
-  }
-  font-size: 12px;
 `;
