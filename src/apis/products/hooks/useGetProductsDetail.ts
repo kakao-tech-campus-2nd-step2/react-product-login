@@ -5,7 +5,8 @@ import { AxiosError } from 'axios';
 import axiosInstance from '@apis/instance';
 import { PRODUCTS_PATHS } from '../path';
 
-const getProductsDetail = async (params: ProductDetailRequest): Promise<ProductDetailResponse> => {
+const getProductsDetail = async (params?: ProductDetailRequest): Promise<ProductDetailResponse> => {
+  if (!params) throw new Error('params is required');
   const { productId } = params;
   const res = await axiosInstance.get<ProductDetailResponse>(PRODUCTS_PATHS.PRODUCTS_DETAIL(productId));
 

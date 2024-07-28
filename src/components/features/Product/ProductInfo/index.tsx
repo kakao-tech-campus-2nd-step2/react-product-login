@@ -18,8 +18,8 @@ export default function ProductInfo({ name, image, price }: ProductInfoProps) {
         <Container justifyContent="space-between">
           <Image src={image} maxW={IMAGE_SIZE} maxH={IMAGE_SIZE} mr={6} data-testid="product-image" />
           <div>
-            <ProductTitle>{name}</ProductTitle>
-            <ProductPrice>{price}원</ProductPrice>
+            <ProductTitle data-testid="product-name">{name}</ProductTitle>
+            <ProductPrice data-testid="product-price">{price}원</ProductPrice>
             <GiftInfo>
               <hr />
               <p>카톡 친구가 아니어도 선물 코드로 선물 할 수 있어요!</p>

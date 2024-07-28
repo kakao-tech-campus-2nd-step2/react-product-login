@@ -11,6 +11,19 @@ export const productsMockHandler = [
     }
     return res(ctx.status(404), ctx.json({ message: 'Product not found' }));
   }),
+  rest.get(`${BASE_URL}${PRODUCTS_PATHS.PRODUCTS_OPTIONS(':productId')}`, (req, res, ctx) => {
+    const { productId } = req.params;
+    if (productId === '3245119') {
+      return res(
+        ctx.json({
+          options: {
+            giftOrderLimit: 100,
+          },
+        }),
+      );
+    }
+    return res(ctx.status(404), ctx.json({ message: 'Product not found' }));
+  }),
 ];
 
 const PRODUCTS_MOCK_DATA = {

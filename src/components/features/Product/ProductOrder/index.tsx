@@ -39,7 +39,7 @@ export default function ProductOrder({ name, giftOrderLimit }: ProductOrderProps
   return (
     <ProductOrderContainer>
       <QuantitySelectorContainer>
-        <Title>{name}</Title>
+        <Title data-testid="option-name">{name}</Title>
         <QuantitySelector giftOrderLimit={giftOrderLimit} setValue={setValue} />
       </QuantitySelectorContainer>
       <div>

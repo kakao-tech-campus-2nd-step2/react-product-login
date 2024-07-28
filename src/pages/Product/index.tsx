@@ -6,11 +6,11 @@ import ProductInfo from '@components/features/Product/ProductInfo';
 import { Home } from '@pages/index';
 import { ROUTE_PATH } from '@routes/path';
 import useRedirectIfNoParam from '@hooks/useRedirectIfNoParam';
-// import ProductOrder from '@components/features/Product/ProductOrder';
+import ProductOrder from '@components/features/Product/ProductOrder';
 import useProductData from './hooks/useProductData';
 
 export default function Product() {
-  const { productDetailData } = useProductData();
+  const { productDetailData, productOptionData } = useProductData();
   useRedirectIfNoParam('productId', ROUTE_PATH.HOME);
 
   return (
@@ -23,10 +23,10 @@ export default function Product() {
               image={productDetailData?.detail.imageURL}
               price={productDetailData?.detail.price.basicPrice}
             />
-            {/* <ProductOrder
+            <ProductOrder
               name={productDetailData?.detail.name}
               giftOrderLimit={productOptionData?.options.giftOrderLimit}
-            /> */}
+            />
           </InnerContainer>
         </CenteredContainer>
       </Layout>

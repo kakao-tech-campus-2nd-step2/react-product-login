@@ -1,7 +1,7 @@
 import { useParams } from 'react-router-dom';
-import { ProductDetailResponse, ProductOptionResponse } from '@internalTypes/responseTypes';
 import { useGetProductsDetail } from '@apis/products/hooks/useGetProductsDetail';
 import { useGetProductsOption } from '@apis/products/hooks/useGetProductsOption';
+import { ProductDetailResponse, ProductOptionResponse } from '@internalTypes/responseTypes';
 
 interface UseProductDataResult {
   productDetailData?: ProductDetailResponse;
