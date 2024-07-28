@@ -88,7 +88,7 @@ describe('form의 validation 테스트', () => {
   it('현금영수증 번호를 입력하지 않으면 에러 메시지가 표시된다.', async () => {
     const cashReceiptCheckbox = screen.getByLabelText('현금영수증 신청');
     await userEvent.click(cashReceiptCheckbox);
-    const submitButton = screen.getByRole('button', { name: /submit/i });
+    const submitButton = screen.getByTestId('payment-button');
 
     await userEvent.click(submitButton);
 
@@ -98,12 +98,12 @@ describe('form의 validation 테스트', () => {
   });
 
   it('현금영수증 번호에 숫자가 아닌 값을 입력하면 에러 메시지가 표시된다.', async () => {
-    const cashReceiptCheckbox = screen.getByLabelText('현금영수증 신청');
+    const cashReceiptCheckbox = screen.getByLabelText('현금영수증 신청') as HTMLInputElement;
     await userEvent.click(cashReceiptCheckbox);
     const cashReceiptNumberInput = screen.getByPlaceholderText('(-없이) 숫자만 입력해주세요.');
     await userEvent.type(cashReceiptNumberInput, 'abcd');
 
-    const submitButton = screen.getByRole('button', { name: /submit/i });
+    const submitButton = screen.getByTestId('payment-button');
     await userEvent.click(submitButton);
 
     await waitFor(() => {
@@ -112,7 +112,7 @@ describe('form의 validation 테스트', () => {
   });
 
   it('메시지를 입력하지 않으면 에러 메시지가 표시된다.', async () => {
-    const submitButton = screen.getByRole('button', { name: /submit/i });
+    const submitButton = screen.getByTestId('payment-button');
 
     await userEvent.click(submitButton);
 
@@ -122,10 +122,10 @@ describe('form의 validation 테스트', () => {
   });
 
   it('메시지가 100자를 초과하면 에러 메시지가 표시된다.', async () => {
-    const messageInput = screen.getByPlaceholderText('메시지 입력');
+    const messageInput = screen.getByPlaceholderText('선물과 함께 보낼 메시지를 적어보세요');
     await userEvent.type(messageInput, 'a'.repeat(101));
 
-    const submitButton = screen.getByRole('button', { name: /submit/i });
+    const submitButton = screen.getByTestId('payment-button');
     await userEvent.click(submitButton);
 
     await waitFor(() => {
