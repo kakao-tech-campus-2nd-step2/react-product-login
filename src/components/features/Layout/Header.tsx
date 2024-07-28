@@ -1,9 +1,9 @@
-import styled from '@emotion/styled';
-import { Link, useNavigate } from 'react-router-dom';
+import styled from "@emotion/styled";
+import { Link, useNavigate } from "react-router-dom";
 
-import { Container } from '@/components/common/layouts/Container';
-import { useAuth } from '@/provider/Auth';
-import { getDynamicPath, RouterPath } from '@/routes/path';
+import { Container } from "@/components/common/layouts/Container";
+import { useAuth } from "@/provider/Auth";
+import { getDynamicPath, RouterPath } from "@/routes/path";
 
 export const Header = () => {
   const navigate = useNavigate();
@@ -34,7 +34,7 @@ export const Header = () => {
   );
 };
 
-export const HEADER_HEIGHT = '54px';
+export const HEADER_HEIGHT = "54px";
 
 export const Wrapper = styled.header`
   position: fixed;

@@ -1,14 +1,14 @@
-import { useParams } from 'react-router-dom';
+import { useParams } from "react-router-dom";
 
-import type { ProductDetailRequestParams } from '@/api/hooks/useGetProductDetail';
-import { AsyncBoundary } from '@/components/common/AsyncBoundary';
-import { SplitLayout } from '@/components/common/layouts/SplitLayout';
-import { LoadingView } from '@/components/common/View/LoadingView';
-import { GoodsDetail } from '@/components/features/Goods/Detail';
-import { OptionSection } from '@/components/features/Goods/Detail/OptionSection';
+import type { ProductDetailRequestParams } from "@/api/hooks/useGetProductDetail";
+import { AsyncBoundary } from "@/components/common/AsyncBoundary";
+import { SplitLayout } from "@/components/common/layouts/SplitLayout";
+import { LoadingView } from "@/components/common/View/LoadingView";
+import { GoodsDetail } from "@/components/features/Goods/Detail";
+import { OptionSection } from "@/components/features/Goods/Detail/OptionSection";
 
 export const GoodsDetailPage = () => {
-  const { productId = '' } = useParams<ProductDetailRequestParams>();
+  const { productId = "" } = useParams<ProductDetailRequestParams>();
 
   return (
     <>

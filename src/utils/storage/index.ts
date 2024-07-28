@@ -1,4 +1,4 @@
-import type { OrderHistory } from '@/types';
+import type { OrderHistory } from "@/types";
 
 const initStorage = <T extends keyof StorageKey>(key: T, storage: Storage) => {
   const storageKey = `${key}`;
@@ -21,8 +21,8 @@ const initStorage = <T extends keyof StorageKey>(key: T, storage: Storage) => {
   return { get, set };
 };
 
-export const authSessionStorage = initStorage('authToken', sessionStorage);
-export const orderHistorySessionStorage = initStorage('orderHistory', sessionStorage);
+export const authSessionStorage = initStorage("authToken", sessionStorage);
+export const orderHistorySessionStorage = initStorage("orderHistory", sessionStorage);
 
 interface StorageKey {
   authToken?: string;

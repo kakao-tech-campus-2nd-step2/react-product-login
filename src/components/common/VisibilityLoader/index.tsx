@@ -1,11 +1,11 @@
-import styled from '@emotion/styled';
+import styled from "@emotion/styled";
 
 import {
   useIntersectionObserver,
   type UseIntersectionObserverProps,
-} from '@/hooks/useIntersectionObserver';
+} from "@/hooks/useIntersectionObserver";
 
-import { Spinner } from '../Spinner';
+import { Spinner } from "../Spinner";
 
 type Props = {
   children?: React.ReactNode;
@@ -25,5 +25,5 @@ const Wrapper = styled.div`
   width: 100%;
   display: flex;
   justify-content: center;
-  padding: '32px 48px';
+  padding: "32px 48px";
 `;

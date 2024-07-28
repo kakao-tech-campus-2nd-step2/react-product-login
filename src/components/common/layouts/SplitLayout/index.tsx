@@ -1,9 +1,9 @@
-import styled from '@emotion/styled';
+import styled from "@emotion/styled";
 
-import { HEADER_HEIGHT } from '@/components/features/Layout/Header';
-import { breakpoints } from '@/styles/variants';
+import { HEADER_HEIGHT } from "@/components/features/Layout/Header";
+import { breakpoints } from "@/styles/variants";
 
-import { Container } from '../Container';
+import { Container } from "../Container";
 
 type Props = {
   children: React.ReactNode;

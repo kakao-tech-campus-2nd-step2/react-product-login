@@ -1,5 +1,5 @@
-import { keyframes } from '@emotion/react';
-import styled from '@emotion/styled';
+import { keyframes } from "@emotion/react";
+import styled from "@emotion/styled";
 
 type Props = {
   size?: number;
@@ -17,7 +17,7 @@ const spin = keyframes`
   }
 `;
 
-const Wrapper = styled.div<Pick<Props, 'size'>>`
+const Wrapper = styled.div<Pick<Props, "size">>`
   border: 4px solid rgba(177, 177, 177, 0.01);
   width: ${({ size }) => size}px;
   height: ${({ size }) => size}px;

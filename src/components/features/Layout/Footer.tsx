@@ -1,7 +1,7 @@
-import styled from '@emotion/styled';
+import styled from "@emotion/styled";
 
-import { Container } from '@/components/common/layouts/Container';
-import { breakpoints } from '@/styles/variants';
+import { Container } from "@/components/common/layouts/Container";
+import { breakpoints } from "@/styles/variants";
 
 export const Footer = () => {
   return (

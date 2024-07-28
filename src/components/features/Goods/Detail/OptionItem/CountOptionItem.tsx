@@ -1,6 +1,6 @@
-import { AddIcon, MinusIcon } from '@chakra-ui/icons';
-import { IconButton, Input, useNumberInput } from '@chakra-ui/react';
-import styled from '@emotion/styled';
+import { AddIcon, MinusIcon } from "@chakra-ui/icons";
+import { IconButton, Input, useNumberInput } from "@chakra-ui/react";
+import styled from "@emotion/styled";
 
 type Props = {
   name: string;

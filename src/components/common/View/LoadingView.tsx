@@ -1,8 +1,8 @@
-import styled from '@emotion/styled';
+import styled from "@emotion/styled";
 
-import { HEADER_HEIGHT } from '@/components/features/Layout/Header';
+import { HEADER_HEIGHT } from "@/components/features/Layout/Header";
 
-import { Spinner } from '../Spinner';
+import { Spinner } from "../Spinner";
 
 export const LoadingView = () => (
   <SpinnerWrapper>

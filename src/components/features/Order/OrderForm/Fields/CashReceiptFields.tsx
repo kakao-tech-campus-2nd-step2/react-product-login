@@ -1,14 +1,15 @@
-import { Checkbox, Input, Select } from '@chakra-ui/react';
-import styled from '@emotion/styled';
-import { Controller } from 'react-hook-form';
+import { Checkbox, Input, Select } from "@chakra-ui/react";
+import styled from "@emotion/styled";
+import { Controller } from "react-hook-form";
 
-import { Spacing } from '@/components/common/layouts/Spacing';
-import { useOrderFormContext } from '@/hooks/useOrderFormContext';
+import { Spacing } from "@/components/common/layouts/Spacing";
+import { useOrderFormContext } from "@/hooks/useOrderFormContext";
 
-import { LabelText } from '../Common/LabelText';
+import { LabelText } from "../Common/LabelText";
 
 export const CashReceiptFields = () => {
-  const { register, control } = useOrderFormContext();
+  const { register, control, watch } = useOrderFormContext();
+  const hasCashReceipt = watch("hasCashReceipt");
 
   return (
     <Wrapper>
@@ -27,14 +28,18 @@ export const CashReceiptFields = () => {
         control={control}
         name="cashReceiptType"
         render={({ field }) => (
-          <Select {...field}>
+          <Select {...field} isDisabled={!hasCashReceipt}>
             <option value="PERSONAL">개인소득공제</option>
             <option value="BUSINESS">사업자증빙용</option>
           </Select>
         )}
       />
       <Spacing height={8} />
-      <Input {...register('cashReceiptNumber')} placeholder="(-없이) 숫자만 입력해주세요." />
+      <Input
+        {...register("cashReceiptNumber")}
+        placeholder="(-없이) 숫자만 입력해주세요."
+        isDisabled={!hasCashReceipt}
+      />
     </Wrapper>
   );
 };

@@ -1,6 +1,6 @@
-import { useEffect } from 'react';
-import type { IntersectionOptions } from 'react-intersection-observer';
-import { useInView } from 'react-intersection-observer';
+import { useEffect } from "react";
+import type { IntersectionOptions } from "react-intersection-observer";
+import { useInView } from "react-intersection-observer";
 
 export type UseIntersectionObserverProps = {
   callback: () => void;

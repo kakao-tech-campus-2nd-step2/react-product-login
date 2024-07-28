@@ -1,14 +1,14 @@
-import styled from '@emotion/styled';
-import { Link } from 'react-router-dom';
+import styled from "@emotion/styled";
+import { Link } from "react-router-dom";
 
-import { useGetProducts } from '@/api/hooks/useGetProducts';
-import { DefaultGoodsItems } from '@/components/common/GoodsItem/Default';
-import { Container } from '@/components/common/layouts/Container';
-import { Grid } from '@/components/common/layouts/Grid';
-import { LoadingView } from '@/components/common/View/LoadingView';
-import { VisibilityLoader } from '@/components/common/VisibilityLoader';
-import { getDynamicPath } from '@/routes/path';
-import { breakpoints } from '@/styles/variants';
+import { useGetProducts } from "@/api/hooks/useGetProducts";
+import { DefaultGoodsItems } from "@/components/common/GoodsItem/Default";
+import { Container } from "@/components/common/layouts/Container";
+import { Grid } from "@/components/common/layouts/Grid";
+import { LoadingView } from "@/components/common/View/LoadingView";
+import { VisibilityLoader } from "@/components/common/VisibilityLoader";
+import { getDynamicPath } from "@/routes/path";
+import { breakpoints } from "@/styles/variants";
 
 type Props = {
   categoryId: string;
@@ -44,7 +44,7 @@ export const CategoryProductsSection = ({ categoryId }: Props) => {
                 imageSrc={imageUrl}
                 title={name}
                 amount={price}
-                subtitle={''}
+                subtitle={""}
               />
             </Link>
           ))}

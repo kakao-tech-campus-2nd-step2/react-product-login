@@ -1,32 +1,58 @@
-import styled from '@emotion/styled';
-import { useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import styled from "@emotion/styled";
+import { AxiosError } from "axios";
+import { useState } from "react";
+import { useSearchParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
-import KAKAO_LOGO from '@/assets/kakao_logo.svg';
-import { Button } from '@/components/common/Button';
-import { UnderlineTextField } from '@/components/common/Form/Input/UnderlineTextField';
-import { Spacing } from '@/components/common/layouts/Spacing';
-import { breakpoints } from '@/styles/variants';
-import { authSessionStorage } from '@/utils/storage';
+import { useLogin } from "@/api/hooks/useLogin";
+import KAKAO_LOGO from "@/assets/kakao_logo.svg";
+import { Button } from "@/components/common/Button";
+import { UnderlineTextField } from "@/components/common/Form/Input/UnderlineTextField";
+import { Spacing } from "@/components/common/layouts/Spacing";
+import { getDynamicPath } from "@/routes/path";
+import { breakpoints } from "@/styles/variants";
+import { authSessionStorage } from "@/utils/storage";
 
 export const LoginPage = () => {
-  const [id, setId] = useState('');
-  const [password, setPassword] = useState('');
+  const [id, setId] = useState("");
+  const [password, setPassword] = useState("");
   const [queryParams] = useSearchParams();
+  const { mutate: login } = useLogin();
+  const navigate = useNavigate();
 
   const handleConfirm = () => {
     if (!id || !password) {
-      alert('아이디와 비밀번호를 입력해주세요.');
+      alert("아이디와 비밀번호를 입력해주세요.");
       return;
     }
 
-    // TODO: API 연동
+    const handleError = (error: Error) => {
+      if (error instanceof AxiosError) {
+        const errorMessage = error.response?.data?.error || error.message;
+        alert(`로그인에 실패했습니다: ${errorMessage}`);
+      } else {
+        alert(`로그인에 실패했습니다: ${error.message}`);
+      }
+    };
 
-    // TODO: API 연동 전까지 임시 로그인 처리
-    authSessionStorage.set(id);
+    login(
+      { email: id, password },
+      {
+        onSuccess: () => {
+          authSessionStorage.set(id);
+          const redirectUrl = queryParams.get("redirect") ?? `${window.location.origin}/`;
+          return window.location.replace(redirectUrl);
+        },
+        onError: (error) => {
+          handleError(error);
+        },
+      },
+    );
+  };
 
-    const redirectUrl = queryParams.get('redirect') ?? `${window.location.origin}/`;
-    return window.location.replace(redirectUrl);
+  const handleSignUp = () => {
+    const redirect = queryParams.get("redirect") ?? "/";
+    navigate(getDynamicPath.signUp(redirect));
   };
 
   return (
@@ -49,6 +75,15 @@ export const LoginPage = () => {
           }}
         />
         <Button onClick={handleConfirm}>로그인</Button>
+        <Spacing
+          height={{
+            initial: 10,
+            sm: 15,
+          }}
+        />
+        <Button theme="lightGray" onClick={handleSignUp}>
+          회원가입
+        </Button>
       </FormWrapper>
     </Wrapper>
   );
