@@ -2,12 +2,13 @@ import styled from '@emotion/styled';
 
 import { Button } from '@/components/common/Button';
 import { Spacing } from '@/components/common/layouts/Spacing';
+import WishList from '@/components/features/MyAccount/WishList';
 import { useAuth } from '@/provider/Auth';
 import { RouterPath } from '@/routes/path';
 import { authSessionStorage } from '@/utils/storage';
 
 export const MyAccountPage = () => {
-  const authInfo = useAuth();
+  const { authInfo } = useAuth();
 
   const handleLogout = () => {
     authSessionStorage.set(undefined);
@@ -29,6 +30,7 @@ export const MyAccountPage = () => {
       >
         로그아웃
       </Button>
+      <WishList />
     </Wrapper>
   );
 };
