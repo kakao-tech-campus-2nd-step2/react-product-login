@@ -2,7 +2,7 @@ import React, { ChangeEvent, ReactNode } from 'react';
 import styled from '@emotion/styled';
 import { InputField } from '@components/common';
 
-interface AuthFormProps {
+export interface AuthFormProps {
   userInfo: {
     email: string;
     password: string;
