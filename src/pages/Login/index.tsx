@@ -1,6 +1,7 @@
+// src/pages/Login/index.tsx
 import styled from '@emotion/styled';
 import { useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, useNavigate } from 'react-router-dom';
 
 import KAKAO_LOGO from '@/assets/kakao_logo.svg';
 import { Button } from '@/components/common/Button';
@@ -13,27 +14,42 @@ export const LoginPage = () => {
   const [id, setId] = useState('');
   const [password, setPassword] = useState('');
   const [queryParams] = useSearchParams();
+  const navigate = useNavigate();
 
-  const handleConfirm = () => {
+  const handleConfirm = async () => {
     if (!id || !password) {
       alert('아이디와 비밀번호를 입력해주세요.');
       return;
     }
 
-    // TODO: API 연동
+    try {
+      const response = await fetch('https://api.example.com/api/members/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: id, password }),
+      });
 
-    // TODO: API 연동 전까지 임시 로그인 처리
-    authSessionStorage.set(id);
+      if (response.ok) {
+        const data = await response.json();
+        authSessionStorage.set({ email: id, token: data.token });
 
-    const redirectUrl = queryParams.get('redirect') ?? `${window.location.origin}/`;
-    return window.location.replace(redirectUrl);
+        const redirectUrl = queryParams.get('redirect') ?? '/';
+        navigate(redirectUrl);
+        window.location.reload();
+      } else {
+        alert('로그인 실패, 아이디와 비밀번호를 다시 확인해주세요.');
+      }
+    } catch (error) {
+      console.error('로그인 요청 중 오류 발생: ', error);
+      alert('로그인 요청 중 오류가 발생하였습니다.');
+    }
   };
 
   return (
     <Wrapper>
-      <Logo src={KAKAO_LOGO} alt="카카고 CI" />
+      <Logo src={KAKAO_LOGO} alt="카카오 CI" />
       <FormWrapper>
-        <UnderlineTextField placeholder="이름" value={id} onChange={(e) => setId(e.target.value)} />
+        <UnderlineTextField placeholder="이메일" value={id} onChange={(e) => setId(e.target.value)} />
         <Spacing />
         <UnderlineTextField
           type="password"
@@ -41,14 +57,10 @@ export const LoginPage = () => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-
-        <Spacing
-          height={{
-            initial: 40,
-            sm: 60,
-          }}
-        />
+        <Spacing height={{ initial: 40, sm: 60 }} />
         <Button onClick={handleConfirm}>로그인</Button>
+        <Spacing height={20} />
+        <Button onClick={() => navigate('/register')}>회원가입</Button>
       </FormWrapper>
     </Wrapper>
   );
