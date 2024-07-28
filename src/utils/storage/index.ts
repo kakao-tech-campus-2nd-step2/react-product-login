@@ -24,6 +24,13 @@ const initStorage = <T extends keyof StorageKey>(key: T, storage: Storage) => {
 export const authSessionStorage = initStorage('authToken', sessionStorage);
 export const orderHistorySessionStorage = initStorage('orderHistory', sessionStorage);
 
+/*
+export type OrderHistory = {
+  id: number;
+  count: number;
+};
+*/
+
 interface StorageKey {
   authToken?: string;
   orderHistory?: OrderHistory;
