@@ -16,7 +16,7 @@ const renderWithProviders = (ui: React.ReactElement) => {
   );
 };
 
-test('상품 상세페이지가 올바르게 렌더링된다.', async () => {
+test('상품 상세페이지에 상품 이미지, 이름, 가격, 안내문이 올바르게 렌더링된다.', async () => {
   renderWithProviders(<GoodsDetailHeader productId={'3245119'} />);
 
   await waitFor(() => {
