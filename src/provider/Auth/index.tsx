@@ -5,7 +5,7 @@ import { authSessionStorage } from '@/utils/storage';
 
 type AuthInfo = {
   id: string;
-  name: string;
+  username: string;
   token: string;
 };
 
@@ -21,7 +21,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     if (currentAuthToken) {
       setAuthInfo({
         id: currentAuthToken, // TODO: 임시로 로그인 페이지에서 입력한 이름을 ID, token, name으로 사용
-        name: currentAuthToken,
+        username: currentAuthToken,
         token: currentAuthToken,
       });
       setIsReady(true);
