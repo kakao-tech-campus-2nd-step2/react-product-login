@@ -1,5 +1,7 @@
-import { Divider } from '@chakra-ui/react';
+import { Button, Divider } from '@chakra-ui/react';
 import styled from '@emotion/styled';
+import axios from 'axios';
+import { useState } from 'react';
 
 import type { ProductDetailRequestParams } from '@/api/hooks/useGetProductDetail';
 import { useGetProductDetail } from '@/api/hooks/useGetProductDetail';
@@ -9,6 +11,33 @@ type Props = ProductDetailRequestParams;
 
 export const GoodsDetailHeader = ({ productId }: Props) => {
   const { data: detail } = useGetProductDetail({ productId });
+  const [isRegistration, setIsRegistration] = useState(false);
+
+  const handleRegistration = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await axios.post(
+        '/api/wishes',
+        {
+          productId: productId,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`, 
+            'Content-Type': 'application/json',
+          },
+        },
+      );
+
+      if (response.status === 201) {
+        setIsRegistration(true);
+        alert('관심 등록 완료');
+      }
+    } catch (error) {
+      console.error('관심 등록 실패:', error);
+      alert('관심 등록에 실패했습니다.');
+    }
+  };
 
   return (
     <Wrapper>
@@ -19,6 +48,9 @@ export const GoodsDetailHeader = ({ productId }: Props) => {
         <Divider color="#f5f5f5" />
         <Notice>카톡 친구가 아니어도 선물 코드로 선물 할 수 있어요!</Notice>
         <Divider color="#f5f5f5" />
+        <Button width="362px" height="60px" mt="110px" onClick={handleRegistration} disabled={isRegistration}>
+          {isRegistration ? '관심등록 상품' : '관심등록 하기'}
+        </Button>
       </InfoWrapper>
     </Wrapper>
   );
