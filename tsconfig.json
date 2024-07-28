@@ -24,6 +24,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["src"],
+  "include": ["src", "babel.config.js",  "setupTests.ts", "__tests__"],
   "exclude": ["node_modules", "build", "public"]
 }

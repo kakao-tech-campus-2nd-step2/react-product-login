@@ -1,38 +1,38 @@
 import styled from '@emotion/styled';
 import { useState } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 
-import { login } from '@/api/auth';
+import { register } from '@/api/auth';
 import KAKAO_LOGO from '@/assets/kakao_logo.svg';
 import { Button } from '@/components/common/Button';
 import { UnderlineTextField } from '@/components/common/Form/Input/UnderlineTextField';
 import { Spacing } from '@/components/common/layouts/Spacing';
-import { RouterPath } from '@/routes/path';
 import { breakpoints } from '@/styles/variants';
 import { authSessionStorage } from '@/utils/storage';
 
-export const LoginPage = () => {
+export const RegisterPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [queryParams] = useSearchParams();
-  const navigate = useNavigate();
 
   const handleConfirm = async () => {
     if (!email || !password) {
-      alert('이메일과 비밀번호를 입력해주세요.');
+      alert('가입할 이메일과 비밀번호를 입력해주세요.');
       return;
     }
 
     try {
-      const data = await login(email, password);
+      const data = await register(email, password);
 
       sessionStorage.setItem('authEmail', data.email);
       authSessionStorage.set(data.token);
 
+      alert('회원가입이 완료되었습니다.');
+
       const redirectUrl = queryParams.get('redirect') ?? `${window.location.origin}/`;
-      window.location.replace(redirectUrl);
+      return window.location.replace(redirectUrl);
     } catch (error) {
-      alert('로그인 중 오류가 발생했습니다.');
+      alert('회원가입 중 오류가 발생했습니다.');
       console.error(error);
     }
   };
@@ -53,17 +53,13 @@ export const LoginPage = () => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-
         <Spacing
           height={{
             initial: 40,
             sm: 60,
           }}
         />
-        <Button onClick={handleConfirm}>로그인</Button>
-        <UserInfoWrapper>
-          <LinkButton onClick={() => navigate(RouterPath.register)}>회원가입</LinkButton>
-        </UserInfoWrapper>
+        <Button onClick={handleConfirm}>회원가입</Button>
       </FormWrapper>
     </Wrapper>
   );
@@ -92,16 +88,4 @@ const FormWrapper = styled.article`
     border: 1px solid rgba(0, 0, 0, 0.12);
     padding: 60px 52px;
   }
-`;
-
-const UserInfoWrapper = styled.div`
-  margin-top: 26px;
-`;
-
-const LinkButton = styled.a`
-  float: left;
-  font-size: 12px;
-  color: #191919;
-  text-decoration: none;
-  cursor: pointer;
 `;

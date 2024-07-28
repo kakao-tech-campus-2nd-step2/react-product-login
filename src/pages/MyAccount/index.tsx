@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 
 import { Button } from '@/components/common/Button';
 import { Spacing } from '@/components/common/layouts/Spacing';
+import { Wishlist } from '@/components/features/Wishlist';
 import { useAuth } from '@/provider/Auth';
 import { RouterPath } from '@/routes/path';
 import { authSessionStorage } from '@/utils/storage';
@@ -29,6 +30,10 @@ export const MyAccountPage = () => {
       >
         로그아웃
       </Button>
+      <Spacing height={64} />
+      <WishlistWrapper>
+        <Wishlist />
+      </WishlistWrapper>
     </Wrapper>
   );
 };
@@ -43,4 +48,9 @@ const Wrapper = styled.div`
   justify-content: center;
   font-weight: 700;
   font-size: 36px;
+`;
+
+const WishlistWrapper = styled.div`
+  width: 100%;
+  padding: 80px;
 `;
