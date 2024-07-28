@@ -2,6 +2,7 @@ import React from 'react';
 import styled from '@emotion/styled';
 import { Image } from '@chakra-ui/react';
 import { Container } from '@components/common';
+import WishButton from '../WishButton';
 
 const IMAGE_SIZE = 450;
 
@@ -25,6 +26,7 @@ export default function ProductInfo({ name, image, price }: ProductInfoProps) {
               <p>카톡 친구가 아니어도 선물 코드로 선물 할 수 있어요!</p>
               <hr />
             </GiftInfo>
+            <WishButton />
           </div>
         </Container>
       </article>

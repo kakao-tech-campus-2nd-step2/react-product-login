@@ -1,4 +1,4 @@
-import { useSuspenseQuery } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { ProductOptionsRequest } from '@internalTypes/requestTypes';
 import { ProductOptionResponse } from '@internalTypes/responseTypes';
 import { AxiosError } from 'axios';
@@ -14,7 +14,7 @@ export const getProductsOptions = async (params?: ProductOptionsRequest): Promis
 };
 
 export const useGetProductsOption = ({ productId }: ProductOptionsRequest) =>
-  useSuspenseQuery<ProductOptionResponse, AxiosError>({
+  useQuery<ProductOptionResponse, AxiosError>({
     queryKey: ['productOption', productId],
     queryFn: () => getProductsOptions({ productId }),
   });

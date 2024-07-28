@@ -1,10 +1,10 @@
 import type { ComponentProps, Ref } from 'react';
-import React, { forwardRef, Suspense, useImperativeHandle, useRef } from 'react';
+import React, { forwardRef, Suspense, useImperativeHandle, useRef, ReactNode } from 'react';
 import type { ErrorBoundaryProps } from 'react-error-boundary';
 import { ErrorBoundary } from 'react-error-boundary';
 
 type Props = {
-  children: React.ReactNode;
+  children: ReactNode;
   rejectedFallback?: ErrorBoundaryProps['fallback'];
   pendingFallback?: ComponentProps<typeof Suspense>['fallback'];
 };
