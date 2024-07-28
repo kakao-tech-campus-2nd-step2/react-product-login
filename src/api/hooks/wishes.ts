@@ -1,4 +1,4 @@
-import { rest, setupWorker } from 'msw';
+import { rest } from 'msw';
 
 import { getProductDetailPath } from './useGetProductDetail';
 
@@ -137,5 +137,3 @@ export const wishMockHandler = [
     return res(ctx.status(404), ctx.json({ message: 'Product not found' }));
   }),
 ];
-
-export const worker = setupWorker(...wishMockHandler);
