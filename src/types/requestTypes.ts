@@ -3,6 +3,10 @@ export interface RankingProductsRequest {
   rankType?: 'MANY_WISH' | 'MANY_RECEIVE' | 'MANY_WISH_RECEIVE';
 }
 
+export interface AddWishRequest {
+  productId: number;
+}
+
 export interface ThemeProductsRequest {
   themeKey: string | undefined;
   pageToken?: string;

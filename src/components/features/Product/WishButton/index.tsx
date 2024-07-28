@@ -1,9 +1,16 @@
 import React from 'react';
 import { Button } from '@components/common';
+import { useParams } from 'react-router-dom';
+import useAddWishMutation from '@/apis/products/hooks/useAddWish';
 
+const SUCCESS_ADD_WISH_ALERT = '관심등록 완료';
 export default function WishButton() {
+  const { productId } = useParams<{ productId: string }>();
+  const { data, mutate } = useAddWishMutation();
+
   const handleClick = () => {
-    console.info('clicked!');
+    alert(SUCCESS_ADD_WISH_ALERT);
+    console.info(data);
   };
 
   return (

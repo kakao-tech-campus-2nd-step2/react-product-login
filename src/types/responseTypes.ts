@@ -1,12 +1,17 @@
-import { ProductData, ThemeData, MessageCardTemplateData } from './dataTypes';
+import { ProductData, MessageCardTemplateData } from './dataTypes';
 
 export interface RankingProductsResponse {
   products: ProductData[];
 }
 
-export interface ThemesResponse {
-  themes: ThemeData[];
+export interface AddWishResponse {
+  id: number;
+  productId: number;
 }
+
+// export interface ThemesResponse {
+//   themes: ThemeData[];
+// }
 
 export interface ThemeProductsResponse {
   products: ProductData[];
