@@ -1,59 +1,57 @@
 import styled from '@emotion/styled';
 import { useState } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import KAKAO_LOGO from '@/assets/kakao_logo.svg';
 import { Button } from '@/components/common/Button';
 import { UnderlineTextField } from '@/components/common/Form/Input/UnderlineTextField';
 import { Spacing } from '@/components/common/layouts/Spacing';
-import { RouterPath } from '@/routes/path';
 import { breakpoints } from '@/styles/variants';
-import { authSessionStorage } from '@/utils/storage';
 
-interface LoginResponse {
-  token: string;
+interface SignUpRequest {
+  email: string;
+  password: string;
 }
 
-export const LoginPage = () => {
+export const SignUpPage = () => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
   const navigate = useNavigate();
-  const [email, setEmail] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
-  const [queryParams] = useSearchParams();
-  const [error, setError] = useState<string>('');
 
   const handleConfirm = async () => {
     if (!email || !password) {
-      setError('이메일과 비밀번호를 입력해주세요.');
+      setError('이메일과 비밀번호를 확인해주세요.');
       return;
     }
-
     try {
-      const response = await fetch('/api/members/login', {
+      const response = await fetch('/api/members/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ email, password } as SignUpRequest),
       });
 
-      if (response.ok) {
-        const { token }: LoginResponse = await response.json();
-        authSessionStorage.set(token);
-
-        const redirectUrl = queryParams.get('redirect') ?? `${window.location.origin}/`;
-        return window.location.replace(redirectUrl);
-      } else {
-        setError('이메일 또는 비밀번호가 잘못되었습니다.');
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message);
       }
+      alert('회원가입에 성공했습니다.');
+      navigate('/login');
     } catch (err) {
-      setError('에러가 발생하였습니다.');
+      setError('회원가입에 실패했습니다.');
     }
   };
 
   return (
     <Wrapper>
       <Logo src={KAKAO_LOGO} alt="카카오 CI" />
+      <SignUpTitle>카카오계정으로 사용할 이메일과 비밀번호를 입력해 주세요.</SignUpTitle>
+
       <FormWrapper>
+        <Spacing />
+
         <UnderlineTextField
           placeholder="이메일"
           value={email}
@@ -66,19 +64,11 @@ export const LoginPage = () => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        <Spacing
-          height={{
-            initial: 40,
-            sm: 60,
-          }}
-        />
-        <Button onClick={handleConfirm}>로그인</Button>
-        {error && <ErrorMessage>{error}</ErrorMessage>}
-        <InfoUser>
-          <a style={{ cursor: 'pointer' }} onClick={() => navigate(RouterPath.signUp)}>
-            회원가입
-          </a>
-        </InfoUser>
+
+        {error && <ErrorText>{error}</ErrorText>}
+
+        <Spacing height={{ initial: 40, sm: 60 }} />
+        <Button onClick={handleConfirm}>회원가입</Button>
       </FormWrapper>
     </Wrapper>
   );
@@ -109,13 +99,14 @@ const FormWrapper = styled.article`
   }
 `;
 
-const InfoUser = styled.div`
+const SignUpTitle = styled.div`
   margin-top: 16px;
-  font-size: 14px;
+  margin-bottom: 16px;
+  font-size: 16px;
   color: #999;
 `;
 
-const ErrorMessage = styled.div`
+const ErrorText = styled.div`
   color: red;
-  margin-top: 10px;
+  margin-top: 16px;
 `;
