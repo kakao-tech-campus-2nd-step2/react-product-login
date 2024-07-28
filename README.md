@@ -1,4 +1,3 @@
-
 # React Product msw
 
 ## 개요
@@ -21,6 +20,34 @@
 - [x] React Testing Library 테스트 환경 설정
 
 ### MSW를 사용하여 Mock API 설정
+
+- [ ] 상세 API 엔드포인트 추가
+- [ ] 옵션 API 엔드포인트 추가
+
+### 단위 테스트 작성
+
+- CashReceiptFields 컴포넌트
+  - [x] 렌더링 테스트: 현금영수증 관련 입력 컴포넌트(체크박스, 셀렉트, input)가 화면에 정상적으로 표시되는지 확인
+  - [x] 사용자 상호작용 테스트: 체크박스 클릭, 셀렉트 옵션 선택, input 값 입력 등 사용자 입력에 대한 테스트
+- MessageCardFields 컴포넌트
+  - [x] 렌더링 테스트: 메시지 카드 입력 textarea가 화면에 정상적으로 표시되는지 확인
+  - [x] 사용자 입력 테스트: textarea에 메시지 입력 후 값이 제대로 반영되는지 확인
+
+### 통합 테스트 작성
+
+- 상품 상세 페이지
+  - [x] useGetCategorys.test
+  - [x] useGetProducts.test
+  - [x] useGetProductDetail.test
+  - [x] useGetProductOptions.test
+
+- 결제하기 페이지
+  - 현금영수증
+    - [x] Checkbox 상태에 따른 필드 활성화/비활성화 테스트
+    - [x] Checkbox가 `true`인 경우 필드 값 입력 테스트
+  - Form
+    - [x] 필수 입력 필드 검사
+    - [x] 입력 값 형식 검사
 
 - [x] 상세 API 엔드포인트 추가
 - [x] 옵션 API 엔드포인트 추가
@@ -45,8 +72,6 @@
   - Form의 validation 로직이 정상 동작하는지 확인하는 테스트 코드 작성
     - [ ] 필수 입력 필드 검사
     - [ ] 입력 값 형식 검사
-
----
 
 ## 2단계 - 로그인, 관심 상품 등록 / 삭제, 관심 목록 구현
 
