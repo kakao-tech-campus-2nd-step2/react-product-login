@@ -1,7 +1,13 @@
-// Dom 브라우저 에러 회피하기 위하여 사용
 import { setupServer } from 'msw/node';
 
+import { authMockHandler } from '@/api/hooks/auth.mock';
 import { categoriesMockHandler } from '@/api/hooks/categories.mock';
 import { productsMockHandler } from '@/api/hooks/products.mock';
+import { wishMockHandler } from '@/api/hooks/wishes';
 
-export const worker = setupServer(...categoriesMockHandler, ...productsMockHandler);
+export const server = setupServer(
+  ...categoriesMockHandler,
+  ...productsMockHandler,
+  ...authMockHandler,
+  ...wishMockHandler,
+);
