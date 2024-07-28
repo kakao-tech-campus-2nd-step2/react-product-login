@@ -1,6 +1,6 @@
 import React from 'react';
 import { createBrowserRouter } from 'react-router-dom';
-import { App, Home, Theme, Login, MyAccount, Product, Order } from '@pages/index';
+import { App, Home, Theme, Auth, MyAccount, Product, Order } from '@pages/index';
 import PrivateRoute from './components/PrivateRoute';
 import { ROUTE_PATH } from './path';
 
@@ -15,7 +15,11 @@ export const router = createBrowserRouter([
       },
       {
         path: ROUTE_PATH.LOGIN,
-        element: <Login />,
+        element: <Auth />,
+      },
+      {
+        path: ROUTE_PATH.SIGN_UP,
+        element: <Auth />,
       },
       {
         path: ROUTE_PATH.PRODUCT,

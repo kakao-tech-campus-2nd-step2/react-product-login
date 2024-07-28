@@ -6,4 +6,5 @@ export const ROUTE_PATH = {
   MY_ACCOUNT: '/my-account',
   PRODUCT: '/products/:productId',
   ORDER: '/order',
+  SIGN_UP: '/sign-up'
 };
