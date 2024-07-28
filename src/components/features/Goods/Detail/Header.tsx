@@ -3,6 +3,7 @@ import styled from '@emotion/styled';
 
 import type { ProductDetailRequestParams } from '@/api/hooks/useGetProductDetail';
 import { useGetProductDetail } from '@/api/hooks/useGetProductDetail';
+import { Button } from '@/components/common/Button';
 import { breakpoints } from '@/styles/variants';
 
 type Props = ProductDetailRequestParams;
@@ -18,6 +19,10 @@ export const GoodsDetailHeader = ({ productId }: Props) => {
         <Price>{detail.price}원</Price>
         <Divider color="#f5f5f5" />
         <Notice>카톡 친구가 아니어도 선물 코드로 선물 할 수 있어요!</Notice>
+        <Divider color="#f5f5f5" />
+        <Button theme="lightGray" size="large">
+          관심 리스트에 추가
+        </Button>
         <Divider color="#f5f5f5" />
       </InfoWrapper>
     </Wrapper>
