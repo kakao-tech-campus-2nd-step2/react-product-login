@@ -2,7 +2,6 @@ import React from 'react';
 import styled from '@emotion/styled';
 import { useFormContext } from 'react-hook-form';
 import { Textarea } from '@chakra-ui/react';
-import GiftDetail from '../GiftDetail';
 
 const MAX_MESSAGE_LENGTH = 100;
 
@@ -19,7 +18,6 @@ export default function OrderMessage() {
           maxLength={MAX_MESSAGE_LENGTH}
         />
       </Message>
-      <GiftDetail />
     </OrderMessageContainer>
   );
 }
