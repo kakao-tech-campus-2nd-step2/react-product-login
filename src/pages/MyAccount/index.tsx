@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 
 import { Button } from '@/components/common/Button';
 import { Spacing } from '@/components/common/layouts/Spacing';
+import InterestList from '@/components/features/MyAccount/InterestList';
 import { useAuth } from '@/provider/Auth';
 import { RouterPath } from '@/routes/path';
 import { authSessionStorage } from '@/utils/storage';
@@ -29,6 +30,7 @@ export const MyAccountPage = () => {
       >
         로그아웃
       </Button>
+      <InterestList/>
     </Wrapper>
   );
 };
