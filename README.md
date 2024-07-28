@@ -1,4 +1,4 @@
-# 카카오 테크 캠퍼스 Step2 과제(4주차)
+# 카카오 테크 캠퍼스 Step2 과제(5주차)
 ###  기술 스택
 <img src="https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=TypeScript&logoColor=white">
 <img src="https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=React&logoColor=black">
