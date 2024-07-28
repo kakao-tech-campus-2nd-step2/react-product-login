@@ -32,7 +32,7 @@ const renderWithProviders = (ui: ReactElement, { route = '/' } = {}) => {
   );
 };
 
-test('empty fields', async () => {
+test('이메일 또는 비밀번호의 필드가 비워져 있을 때, 필드를 채워 달라는 알러트 잘 뜨는지.', async () => {
   const user = userEvent.setup();
   renderWithProviders(<LoginPage />, { route: '/login' });
   const loginButton = screen.getByRole('button', { name: /로그인/i });
@@ -42,7 +42,7 @@ test('empty fields', async () => {
   expect(window.alert).toHaveBeenCalledWith('이메일과 비밀번호 모두 입력해주세요.');
 });
 
-test('successful login', async () => {
+test('이메일과 비밀번호 필드들 모두 값이 들어 있고 로그인이 성공했을 때, 토큰이 authSessionStorage에 잘 저장 되는지.', async () => {
   const user = userEvent.setup();
   renderWithProviders(<LoginPage />, { route: '/login' });
 
@@ -58,7 +58,7 @@ test('successful login', async () => {
   expect(authSessionStorage.get()).toBe('qqqq@qqq.com');
 });
 
-test('wrong password', async () => {
+test('두 필드 모두 값이 채워져 있지만 로그인에 실패했을 때, 로그인 실패 했음을 알러트로 잘 알리는지.', async () => {
   renderWithProviders(<LoginPage />, { route: '/login' });
   const user = userEvent.setup();
 
@@ -74,7 +74,7 @@ test('wrong password', async () => {
   expect(window.alert).toHaveBeenCalledWith('로그인에 실패했습니다.');
 });
 
-test('invalid form fields on enroll', async () => {
+test('회원 가입할 때, 부적절한 이메일 및 비밀번호 입력시 사용불가 표시가 화면에 잘 뜨는지.', async () => {
   const user = userEvent.setup();
   renderWithProviders(<LoginPage />, { route: '/login' });
   const toEnrollForm = screen.getByText('회원가입하기');
@@ -99,7 +99,7 @@ test('invalid form fields on enroll', async () => {
   expect(window.alert).toHaveBeenCalledWith('적절한 이메일과 비밀번호를 입력해주세요');
 });
 
-test('valid form fields on enroll', async () => {
+test('회원 가입할 때, 적절한 이메일 및 비밀번호 입력시 사용 가능 표시가 화면에 잘 뜨는지.', async () => {
   const user = userEvent.setup();
   renderWithProviders(<LoginPage />, { route: '/login' });
   const toEnrollForm = screen.getByText('회원가입하기');
