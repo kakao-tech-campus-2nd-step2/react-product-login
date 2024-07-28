@@ -1,22 +1,22 @@
-import styled from '@emotion/styled';
 import React from 'react';
+import styled from '@emotion/styled';
 import { Image } from '@chakra-ui/react';
 import { Container } from '@components/common';
 
 const IMAGE_SIZE = 450;
 
 interface ProductInfoProps {
-  image?: string;
   name?: string;
+  image?: string;
   price?: number;
 }
 
-export default function ProductInfo({ image, name, price }: ProductInfoProps) {
+export default function ProductInfo({ name, image, price }: ProductInfoProps) {
   return (
     <ProductContainer>
       <article>
         <Container justifyContent="space-between">
-          <Image src={image} maxW={IMAGE_SIZE} maxH={IMAGE_SIZE} mr={6} />
+          <Image src={image} maxW={IMAGE_SIZE} maxH={IMAGE_SIZE} mr={6} data-testid="product-image" />
           <div>
             <ProductTitle>{name}</ProductTitle>
             <ProductPrice>{price}원</ProductPrice>
@@ -51,11 +51,11 @@ const GiftInfo = styled.div`
   font-size: 14px;
   font-weight: 700;
 
-  hr:first-child {
+  hr:first-of-type {
     margin-bottom: 14px;
   }
 
-  hr:last-child {
+  hr:last-of-type {
     margin-top: 14px;
   }
 `;

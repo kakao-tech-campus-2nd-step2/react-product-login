@@ -18,26 +18,35 @@ export interface ThemeProductsResponse {
 }
 
 export interface ProductDetailResponse {
-  detail: ProductData & {
+  detail: {
+    brandInfo: {
+      id: number;
+      name: string;
+      imageURL: string;
+    };
+    id: number;
+    imageURL: string;
     isAccessableProductPage: boolean;
-    review: {
-      averageRating: number;
-      totalReviewCount: number;
+    name: string;
+    price: {
+      basicPrice: number;
+      discountRate: number;
+      sellingPrice: number;
     };
     productDescription: {
       displayImage: string;
     };
     productDetailInfo: {
-      announcements: {
-        name: string;
-        value: string;
-        displayOrder: number;
-      }[];
-      terms: {
-        displayCode: string;
-        title: string;
-        description: string;
-      }[];
+      announcements: [];
+      terms: [];
+    };
+    review: {
+      averageRating: number;
+      totalReviewCount: number;
+    };
+    wish: {
+      isWished: boolean;
+      wishCount: number;
     };
   };
 }

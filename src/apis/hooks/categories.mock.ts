@@ -3,9 +3,7 @@ import { rest } from 'msw';
 import { getCategoriesPath } from './useGetCategorys';
 
 export const categoriesMockHandler = [
-  rest.get(getCategoriesPath(), (_, res, ctx) => {
-    return res(ctx.json(CATEGORIES_RESPONSE_DATA));
-  }),
+  rest.get(getCategoriesPath(), (_, res, ctx) => res(ctx.json(CATEGORIES_RESPONSE_DATA))),
 ];
 
 const CATEGORIES_RESPONSE_DATA = [

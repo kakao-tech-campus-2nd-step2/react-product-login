@@ -1,10 +1,7 @@
 import React from 'react';
 import styled from '@emotion/styled';
 import { Image } from '@chakra-ui/react';
-import { useQuery } from '@tanstack/react-query';
-import { ProductDetailResponse } from '@internalTypes/responseTypes';
-import { AxiosError } from 'axios';
-import { getProductsDetail } from '@apis/products';
+import { useGetProductsDetail } from '@apis/products/hooks/useGetProductsDetail';
 
 const IMAGE_SIZE = 86;
 
@@ -14,10 +11,7 @@ export default function Gift() {
   const productId = parsedData?.id;
   const count = parsedData?.count;
 
-  const { data: productDetailData } = useQuery<ProductDetailResponse, AxiosError>({
-    queryKey: ['productDetail', productId],
-    queryFn: () => getProductsDetail({ productId }),
-  });
+  const { data: productDetailData } = useGetProductsDetail({ productId });
 
   return (
     <GiftContainer>

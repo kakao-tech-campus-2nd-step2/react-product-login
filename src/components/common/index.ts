@@ -10,3 +10,5 @@ export { default as Container } from './Layout/Container';
 export { default as Grid } from './Layout/Grid';
 export { default as CenteredContainer } from './Layout/CenteredContainer';
 export { default as StatusHandler } from './StatusHandler';
+export { default as Spinner } from './StatusHandler/Spinner';
+export { default as ErrorMessage } from './StatusHandler/ErrorMessage';

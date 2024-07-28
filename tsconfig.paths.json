@@ -12,6 +12,7 @@
       "@context/*": ["./src/context/*"],
       "@internalTypes/*": ["./src/types/*"],
       "@apis/*": ["./src/apis/*"],
+      "@mocks/*": ["./src/mocks/*"],
     }
   }
 }

@@ -56,7 +56,8 @@
           ["@utils", "./src/utils"],
           ["@context", "./src/context"],
           ["@internalTypes", "./src/types"],
-          ["@apis", "./src/apis"]
+          ["@apis", "./src/apis"],
+          ["@mocks", "./src/mocks"]
         ],
         "extensions": [".js", ".jsx", ".ts", ".tsx"]
       }

@@ -1,4 +1,4 @@
 import { setupServer } from 'msw/node';
-import { productsMockHandler } from '@apis/hooks/products.mock';
+import { productsMockHandler } from '@apis/products/index.mock';
 
 export const server = setupServer(...productsMockHandler);

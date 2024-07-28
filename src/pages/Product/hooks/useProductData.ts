@@ -1,8 +1,7 @@
 import { useParams } from 'react-router-dom';
-import { useQuery } from '@tanstack/react-query';
-import { getProductsDetail, getProductsOptions } from '@apis/products';
 import { ProductDetailResponse, ProductOptionResponse } from '@internalTypes/responseTypes';
-import { AxiosError } from 'axios';
+import { useGetProductsDetail } from '@apis/products/hooks/useGetProductsDetail';
+import { useGetProductsOption } from '@apis/products/hooks/useGetProductsOption';
 
 interface UseProductDataResult {
   productDetailData?: ProductDetailResponse;
@@ -12,15 +11,9 @@ interface UseProductDataResult {
 export default function useProductData(): UseProductDataResult {
   const { productId } = useParams<{ productId: string }>();
 
-  const { data: productDetailData } = useQuery<ProductDetailResponse, AxiosError>({
-    queryKey: ['productDetail', productId],
-    queryFn: () => getProductsDetail({ productId }),
-  });
+  const { data: productDetailData } = useGetProductsDetail({ productId });
 
-  const { data: productOptionData } = useQuery<ProductOptionResponse, AxiosError>({
-    queryKey: ['productOption', productId],
-    queryFn: () => getProductsOptions({ productId }),
-  });
+  const { data: productOptionData } = useGetProductsOption({ productId });
 
   return { productDetailData, productOptionData };
 }
