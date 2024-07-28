@@ -13,8 +13,6 @@ async function deferRender() {
     const { worker } = await import('./mocks/browser');
     await worker.start();
   }
-
-  // return;
 }
 
 deferRender().then(() => {

@@ -1,7 +1,6 @@
 import React from 'react';
 import { render, screen, waitFor, fireEvent } from '@testing-library/react';
 import { QueryClientProvider } from '@tanstack/react-query';
-import { ChakraProvider } from '@chakra-ui/react';
 import App from '@/App';
 import { RouterProvider, createMemoryRouter } from 'react-router-dom';
 import { queryClient } from '@apis/instance';
@@ -64,11 +63,9 @@ test('수량 증가 버튼을 클릭하면 숫자가 증가하는지 확인', as
 
   // When: ProductOrder 페이지 컴포넌트 렌더링시 모의 데이터를 가져온다.
   render(
-    <ChakraProvider>
-      <QueryClientProvider client={queryClient}>
-        <RouterProvider router={router} />
-      </QueryClientProvider>
-    </ChakraProvider>,
+    <QueryClientProvider client={queryClient}>
+      <RouterProvider router={router} />
+    </QueryClientProvider>,
   );
 
   const incrementButton = screen.getByTestId('increment-button');
@@ -89,11 +86,9 @@ test('수량 감소 버튼을 클릭하면 숫자가 감소하는지 확인', as
 
   // When: ProductOrder 페이지 컴포넌트 렌더링시 모의 데이터를 가져온다.
   render(
-    <ChakraProvider>
-      <QueryClientProvider client={queryClient}>
-        <RouterProvider router={router} />
-      </QueryClientProvider>
-    </ChakraProvider>,
+    <QueryClientProvider client={queryClient}>
+      <RouterProvider router={router} />
+    </QueryClientProvider>,
   );
 
   const decrementButton = screen.getByTestId('decrement-button');
