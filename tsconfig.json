@@ -25,6 +25,6 @@
       "@/mocks/*": ["src/mocks/*"]
     }
   },
-  "include": ["src", "setupTests.ts", "jest.config.js"],
+  "include": ["src", "setupTests.ts"],
   "exclude": ["node_modules", "build", "public"]
 }
