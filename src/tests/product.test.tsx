@@ -89,4 +89,6 @@ test('Add to wishlist', async () => {
   await waitFor(() => {
     expect(window.alert).toHaveBeenCalledWith('관심 등록 완료');
   });
+
+  localStorage.removeItem('token');
 });
