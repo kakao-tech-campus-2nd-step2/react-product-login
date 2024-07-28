@@ -42,6 +42,22 @@ export const MyAccountPage = () => {
     }, [authInfo, pageSize]
   );
 
+  const deleteInterest = async (productId: number) => {
+    if (!authInfo) return;
+
+    try {
+      await axios.delete(`/api/wishes/${productId}`, {
+        headers: {
+          Authorization: `Bearer ${authInfo.token}`,
+        },
+      });
+      // 삭제 후 상태 업데이트
+      setInterestList((prevList) => prevList.filter((interest) => interest.productId !== productId));
+    } catch (error) {
+      console.error('관심 상품 삭제에 실패하였습니다.');
+    }
+  };
+
   useEffect(() => {
     fetchInterest(currentPage);
   }, [fetchInterest, currentPage]);
@@ -68,6 +84,9 @@ export const MyAccountPage = () => {
             <CardContent>
               <ProductName>{interest.product.name}</ProductName>
               <ProductPrice>{interest.product.price.toLocaleString()}원</ProductPrice>
+              <DeleteButton onClick={() => deleteInterest(interest.productId)}>
+                관심상품 삭제
+              </DeleteButton>
             </CardContent>
           </WishListCard>
         ))}
@@ -143,6 +162,22 @@ const ProductName = styled.h3`
 const ProductPrice = styled.p`
   margin: 5px 0 0;
   color: #888;
+`;
+
+const DeleteButton = styled.button`
+  margin-top: 10px;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 4px;
+  background-color: #f44336;
+  color: #fff;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+
+  &:hover {
+    background-color: #d32f2f;
+  }
 `;
 
 const Pagination = styled.div`

@@ -49,5 +49,18 @@ export const interestHandlers = [
         empty: content.length === 0,
       }),
     );
+  }),
+
+  // 관심 상품 목록에서 삭제
+  rest.delete('/api/wishes/:wishId', (req, res, ctx) => {
+    const { wishId } = req.params;
+    const interestIndex = interestDatabase.findIndex((interest) => interest.productId === Number(wishId));
+
+    if (interestIndex === -1) {
+      return res(ctx.status(404), ctx.json({ message: 'Interest Not found' }));
+    }
+    
+    interestDatabase.splice(interestIndex, 1);
+    return res(ctx.status(204));
   })
 ];
