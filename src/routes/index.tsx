@@ -1,13 +1,12 @@
 import { createBrowserRouter, Navigate, RouterProvider } from 'react-router-dom';
 
 import { Layout } from '@/components/features/Layout';
+import { AccountPage } from '@/pages/Account';
 import { CategoryPage } from '@/pages/Category';
 import { GoodsDetailPage } from '@/pages/Goods/Detail';
 import { HomePage } from '@/pages/Home';
 import { LoginPage } from '@/pages/Login';
 import { MyAccountPage } from '@/pages/MyAccount';
-import { AccountPage } from '@/pages/Account';
-
 import { OrderPage } from '@/pages/Order';
 
 import { PrivateRoute } from './components/PrivateRoute';

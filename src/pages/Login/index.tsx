@@ -1,13 +1,14 @@
 import styled from '@emotion/styled';
 import { useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
-import { RouterPath } from '@/routes/path';
+
 import KAKAO_LOGO from '@/assets/kakao_logo.svg';
 import { Button } from '@/components/common/Button';
 import { UnderlineTextField } from '@/components/common/Form/Input/UnderlineTextField';
 import { Spacing } from '@/components/common/layouts/Spacing';
+import { RouterPath } from '@/routes/path';
 import { breakpoints } from '@/styles/variants';
-
+import { authSessionStorage } from '@/utils/storage';
 export const LoginPage = () => {
   const [id, setId] = useState('');
   const [password, setPassword] = useState('');
@@ -18,17 +19,15 @@ export const LoginPage = () => {
       alert('아이디와 비밀번호를 입력해주세요.');
       return;
     }
+    authSessionStorage.set(id);
 
-    // 로컬 스토리지에서 사용자 정보 확인
     const storedUsers = JSON.parse(localStorage.getItem('users') || '[]');
-    const user = storedUsers.find((user: { id: string; password:string;}) => user.id === id && user.password === password);
+    const currentuser = storedUsers.find((user: { id: string; password:string;}) => user.id === id && user.password === password);
 
-    if (!user) {
+    if (!currentuser) {
       alert('아이디가 틀렸습니다.');
       return;
     }
-
-    // 로그인 성공 시 세션 스토리지에 저장
     sessionStorage.setItem('id', id);
 
     const redirectUrl = queryParams.get('redirect') ?? `${window.location.origin}/`;

@@ -1,9 +1,12 @@
-import React from 'react'; // React를 명시적으로 가져옵니다
-import { render, screen, RenderResult, waitFor } from '@testing-library/react';
-import { server } from '@/mocks/server';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { GoodsDetail } from './index';
+import type { RenderResult} from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
+import React from 'react'; // React를 명시적으로 가져옵니다
+
+import { server } from '@/mocks/server';
+
 import { GoodsDetailHeader } from './Header';
+import { GoodsDetail } from './index';
 
 beforeAll(() => server.listen());
 afterEach(() => server.resetHandlers());
