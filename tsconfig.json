@@ -21,9 +21,10 @@
     "incremental": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@/mocks/*": ["src/mocks/*"]
     }
   },
-  "include": ["src"],
+  "include": ["src", "setupTests.ts"],
   "exclude": ["node_modules", "build", "public"]
 }
