@@ -2,14 +2,14 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { render, screen, waitForElementToBeRemoved } from '@testing-library/react';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 
-import { worker } from '@/mocks/server';
+import { server } from '@/mocks/server';
 import { GoodsDetailPage } from '@/pages/Goods/Detail';
 
 const queryClient = new QueryClient();
 
-beforeAll(() => worker.listen());
-afterEach(() => worker.resetHandlers());
-afterAll(() => worker.close());
+beforeAll(() => server.listen());
+afterEach(() => server.resetHandlers());
+afterAll(() => server.close());
 
 // TODO : 상품 상세 페이지 관련된 통합 테스트 코드
 // 상품 로딩 되는지
