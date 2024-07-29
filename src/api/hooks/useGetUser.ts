@@ -12,8 +12,7 @@ export const getUserPath = (id: string) => `${BASE_URL}/api/users/${id}`;
 
 export const getLogin = async (id: string, password: string) => {
     try{
-        const response = await axios.post(getUsersPath(), {
-            id,
+        const response = await axios.post(getUserPath(id), {
             password,
         });
         if (Math.floor(response.status/100) === 2) {
