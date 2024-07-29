@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import { useForm } from 'react-hook-form';
 
 import KAKAO_LOGO from '@/assets/kakao_logo.svg';
 import { Button } from '@/components/common/Button';
@@ -7,13 +8,37 @@ import { Spacing } from '@/components/common/layouts/Spacing';
 import { breakpoints } from '@/styles/variants';
 
 export default () => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm();
+
+  const onSubmit = () => {
+    if (errors.id || errors.password) {
+      alert('아이디와 비밀번호를 입력해주세요.');
+      return;
+    }
+
+    // TODO: API 연동
+  };
+
   return (
     <Wrapper>
       <Logo src={KAKAO_LOGO} alt="카카고 CI" />
-      <FormWrapper>
-        <UnderlineTextField placeholder="이름" />
+      <FormWrapper onSubmit={handleSubmit(onSubmit)}>
+        <UnderlineTextField
+          placeholder="이름"
+          {...register('id', { required: true })}
+          disabled={isSubmitting}
+        />
         <Spacing />
-        <UnderlineTextField type="password" placeholder="비밀번호" />
+        <UnderlineTextField
+          type="password"
+          placeholder="비밀번호"
+          {...register('password', { required: true })}
+          disabled={isSubmitting}
+        />
 
         <Spacing
           height={{
