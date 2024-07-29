@@ -16,7 +16,6 @@ export const fetchProductDetail = async ({
     const response = await BACKEND_API.get<ProductDetailResponse>(
       getProductDetailPath(productId)
     );
-    console.log(response.data);
 
     return response.data;
   } catch (error) {

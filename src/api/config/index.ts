@@ -24,13 +24,15 @@ export const AUTHROIZATION_API = initInstance({
   baseURL: tempBaseUrl,
   withCredentials: true,
 });
-AUTHROIZATION_API.interceptors.request.use((request) => {
-  const authInfo = authLocalStorage.get();
-  if (!authInfo) {
-    return Promise.reject(new Error('다시 로그인 해주세요.'));
+AUTHROIZATION_API.interceptors.request.use(
+  (request) => {
+    const authInfo = authLocalStorage.get();
+    if (authInfo) {
+      request.headers.Authorization = `Bearer ${authInfo.token}`;
+    }
+    return request;
+  },
+  (error) => {
+    return Promise.reject(error);
   }
-
-  request.headers.Authorization = `Bearer ${authInfo.token}`;
-
-  return request;
-});
+);

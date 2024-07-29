@@ -18,6 +18,13 @@ export const wishMockHandler = [
       (item) => item.product.id === Number(productId)
     );
 
+    if (!request.headers.has('Authorization')) {
+      return HttpResponse.json(
+        { error: 'Invalid or missing token' },
+        { status: 401, statusText: 'Unauthorized' }
+      );
+    }
+
     if (!productId) {
       return HttpResponse.json(
         { error: 'Invalid input' },
@@ -27,19 +34,11 @@ export const wishMockHandler = [
 
     if (index !== -1) {
       return HttpResponse.json(
-        { error: 'already exists product' },
+        { error: 'Already exists product' },
         { status: 400, statusText: 'Duplicate Product' }
       );
     }
 
-    if (!request.headers.has('Authorization')) {
-      return HttpResponse.json(
-        { error: 'Invalid or missing token' },
-        { status: 401, statusText: 'Unauthorized' }
-      );
-    }
-
-    const id = WISH_LIST_MOCK_DATA.content.length + 1;
     const product = PRODUCTS_MOCK_DATA.content.find(
       (item) => item.id === Number(productId)
     );
@@ -60,6 +59,7 @@ export const wishMockHandler = [
       id,
       product,
     });
+    id += 1;
 
     return HttpResponse.json(response);
   }),
@@ -68,7 +68,7 @@ export const wishMockHandler = [
     if (!request.headers.has('Authorization')) {
       return HttpResponse.json(
         { error: 'Invalid or missing token' },
-        { status: 401 }
+        { status: 401, statusText: 'Unauthorized' }
       );
     }
 
@@ -79,9 +79,7 @@ export const wishMockHandler = [
     if (!request.headers.has('Authorization')) {
       return HttpResponse.json(
         { error: 'Invalid or missing token' },
-        {
-          status: 401,
-        }
+        { status: 401, statusText: 'Unauthorized' }
       );
     }
 
@@ -94,10 +92,8 @@ export const wishMockHandler = [
 
     if (index === -1) {
       return HttpResponse.json(
-        { error: 'Wish not found' },
-        {
-          status: 404,
-        }
+        { error: `Not Found ${wishId}` },
+        { status: 404, statusText: 'Wish not Found' }
       );
     }
 
@@ -107,10 +103,11 @@ export const wishMockHandler = [
   }),
 ];
 
+let id = 2;
 let WISH_LIST_MOCK_DATA = {
   content: [
     {
-      id: 1,
+      id: 0,
       product: {
         id: 3245119,
         name: '[단독각인] 피렌체 1221 에디션 오드코롱 50ml (13종 택1)',
@@ -120,7 +117,7 @@ let WISH_LIST_MOCK_DATA = {
       },
     },
     {
-      id: 2,
+      id: 1,
       product: {
         id: 2263833,
         name: '외식 통합권 10만원권',
