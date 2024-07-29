@@ -36,7 +36,7 @@ export const ThemeCategorySection = () => {
         {categories?.map(({ id, name, imageUrl }: CategoryData) => (
           <Link
             key={id}
-            to={getDynamicPath.category(id.toString())}
+            to={getDynamicPath.category(id)}
             css={itemContainerStyle}
           >
             <ThemeCategoryItem label={name} imageURL={imageUrl} />

@@ -4,7 +4,7 @@ import { API_ERROR_MESSAGES } from '@/constants/errorMessage';
 import { ProductData } from '@/types/productType';
 
 export interface ProductDetailRequestParams {
-  productId: string;
+  productId: number;
 }
 
 export type ProductDetailResponse = ProductData;
@@ -14,7 +14,7 @@ export const fetchProductDetail = async ({
 }: ProductDetailRequestParams) => {
   try {
     const response = await BACKEND_API.get<ProductDetailResponse>(
-      getProductDetailPath(productId)
+      getProductDetailPath(productId.toString())
     );
 
     return response.data;

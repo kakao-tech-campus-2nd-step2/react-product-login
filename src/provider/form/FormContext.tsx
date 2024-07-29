@@ -11,3 +11,11 @@ type FormFieldContextValue<
 export const FormFieldContext = createContext<FormFieldContextValue>(
   {} as FormFieldContextValue
 );
+
+type FormItemContextValue = {
+  id: string;
+};
+
+export const FormItemContext = createContext<FormItemContextValue>(
+  {} as FormItemContextValue
+);

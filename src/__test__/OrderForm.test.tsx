@@ -39,7 +39,7 @@ const renderWithProviders = (ui: ReactElement) => {
 };
 
 const orderHistory: OrderHistory = {
-  productId: '1',
+  productId: 1,
   productQuantity: 1,
 };
 

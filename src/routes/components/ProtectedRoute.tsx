@@ -4,7 +4,7 @@ import { useAuth } from '@/provider/auth/useAuth';
 import { ROUTER_PATH } from '@/routes/path';
 
 export const ProtectedRoute = () => {
-  const { isLoggedIn } = useAuth();
+  const { authInfo } = useAuth();
 
-  return isLoggedIn ? <Outlet /> : <Navigate to={ROUTER_PATH.LOGIN} replace />;
+  return authInfo ? <Outlet /> : <Navigate to={ROUTER_PATH.LOGIN} replace />;
 };

@@ -1,15 +1,17 @@
-import loginLogo from '@/assets/login-logo.svg';
-import LoginLayout from '@/layouts/LoginLayout';
+import AuthLayout from '@/layouts/AuthLayout';
+import { LogoText } from '@/layouts/AuthLayout/LogoText';
+import { ROUTER_PATH } from '@/routes/path';
 
-import { Logo } from '@/components/Logo';
+import { LinkButton } from '@/components/LinkButton';
 
 import { LoginForm } from './components/LoginForm';
 
 export const LoginPage = () => {
   return (
-    <LoginLayout>
-      <Logo src={loginLogo} alt="카카오 로그인 로고" width="86" />
+    <AuthLayout>
+      <LogoText text="로그인" />
       <LoginForm />
-    </LoginLayout>
+      <LinkButton label="회원가입하기" linkTo={ROUTER_PATH.REGISTER} />
+    </AuthLayout>
   );
 };

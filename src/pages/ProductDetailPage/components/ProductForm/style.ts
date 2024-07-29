@@ -8,3 +8,9 @@ export const containerStyle = css({
     maxWidth: '22rem',
   },
 });
+
+export const submitButton = css({
+  flex: 1,
+  height: '5rem',
+  fontSize: '1.2rem',
+});

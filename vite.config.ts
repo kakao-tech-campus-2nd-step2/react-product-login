@@ -1,13 +1,9 @@
 import react from '@vitejs/plugin-react';
-import { defineConfig, loadEnv } from 'vite';
+import { defineConfig } from 'vite';
 import tsconfigPaths from 'vite-tsconfig-paths';
 
 // https://vitejs.dev/config/
-export default defineConfig((props) => {
-  const env = loadEnv(props.mode, process.cwd(), 'VITE_');
-  const envWithProcessPrefix = {
-    'process.env': `${JSON.stringify(env)}`,
-  };
+export default defineConfig(() => {
   return {
     plugins: [
       react({
@@ -15,6 +11,5 @@ export default defineConfig((props) => {
       }),
       tsconfigPaths(),
     ],
-    define: envWithProcessPrefix,
   };
 });

@@ -5,11 +5,12 @@ import {
   getProductOptionsPath,
   getProductsPath,
 } from '@/api/services/path';
+import { ProductData } from '@/types/productType';
 
 export const productsMockHandler = [
   http.get(
     getProductsPath({
-      categoryId: '2920',
+      categoryId: 2920,
     }),
     () => {
       return HttpResponse.json(PRODUCTS_MOCK_DATA);
@@ -17,14 +18,30 @@ export const productsMockHandler = [
   ),
   http.get(
     getProductsPath({
-      categoryId: '2930',
+      categoryId: 2930,
     }),
     () => {
       return HttpResponse.json(PRODUCTS_MOCK_DATA);
     }
   ),
-  http.get(getProductDetailPath(':productId'), () => {
-    return HttpResponse.json(PRODUCTS_MOCK_DATA.content[0]);
+  http.get(getProductDetailPath(':productId'), ({ request }) => {
+    const url = new URL(request.url);
+    const productId = url.pathname.split('/').pop();
+
+    const product = PRODUCTS_MOCK_DATA.content.find(
+      (item) => item.id === Number(productId)
+    );
+
+    if (!product) {
+      return HttpResponse.json(
+        { error: `Product not found ${productId}` },
+        {
+          status: 404,
+        }
+      );
+    }
+
+    return HttpResponse.json(product as ProductData);
   }),
   http.get(getProductOptionsPath(':productId'), () => {
     return HttpResponse.json([

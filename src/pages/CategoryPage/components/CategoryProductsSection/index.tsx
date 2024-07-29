@@ -13,7 +13,7 @@ import { Grid } from '@/components/ui/Layout/Grid';
 import { gridStyle } from './styles';
 
 type CategoryProductsSectionProps = {
-  categoryId: string;
+  categoryId: number;
 };
 
 export const CategoryProductsSection = ({

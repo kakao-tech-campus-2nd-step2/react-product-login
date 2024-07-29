@@ -4,7 +4,7 @@
     "^@emotion/(.*)$",
     "^react(.*)$",
     "<THIRD_PARTY_MODULES>",
-    "^@/(api|assets|constants|layouts|mocks|pages|provider|routes|schema|styles|types)/(.*)$",
+    "^@/(api|assets|constants|layouts|mocks|pages|provider|routes|schema|styles|types|utils)/(.*)$",
     "^@/components/(.*)$",
     "^[./]"
   ],

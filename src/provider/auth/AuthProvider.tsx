@@ -1,43 +1,55 @@
 import { ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
-import { useLocation } from 'react-router-dom';
 
-import { AuthContext } from './AuthContext';
+import { LoginResponse } from '@/api/services/auth/login';
+import { authLocalStorage } from '@/utils/storage';
+
+import { UpDownDots } from '@/components/Loading/UpDownDots';
+
+import { AuthContext, AuthInfo } from './AuthContext';
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const location = useLocation();
+  const currentAuthToken = authLocalStorage.get();
+  const [isReady, setIsReady] = useState(false);
 
-  const [user, setUser] = useState(
-    sessionStorage.getItem('authToken') || undefined
-  );
+  const [authInfo, setAuthInfo] = useState<AuthInfo | undefined>(undefined);
+
+  const updateAuthInfo = useCallback((authToken?: LoginResponse) => {
+    if (!authToken) {
+      setAuthInfo(undefined);
+      return;
+    }
+
+    setAuthInfo({
+      email: authToken.email,
+      name: getUsernameFromEmail(authToken.email),
+      token: authToken.token,
+    });
+  }, []);
 
   useEffect(() => {
-    const storedUser = sessionStorage.getItem('authToken') || undefined;
-    setUser(storedUser);
-  }, [location]);
-
-  const isLoggedIn = !!user;
-
-  const login = useCallback((username: string) => {
-    sessionStorage.setItem('authToken', username);
-    setUser(username);
-  }, []);
-
-  const logout = useCallback(() => {
-    sessionStorage.clear();
-    setUser(undefined);
-  }, []);
+    if (currentAuthToken && !authInfo) {
+      updateAuthInfo(currentAuthToken);
+    }
+    setIsReady(true);
+  }, [currentAuthToken, authInfo, updateAuthInfo]);
 
   const contextValue = useMemo(
     () => ({
-      user,
-      isLoggedIn,
-      login,
-      logout,
+      authInfo,
+      updateAuthInfo,
     }),
-    [user, isLoggedIn, login, logout]
+    [authInfo, updateAuthInfo]
   );
+
+  if (!isReady) return <UpDownDots />;
 
   return (
     <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>
   );
 };
+
+function getUsernameFromEmail(email: string) {
+  const index = email.indexOf('@');
+
+  return email.slice(0, index);
+}

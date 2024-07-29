@@ -24,10 +24,10 @@ export const CategoryPage = () => {
     <BaseLayout>
       <ErrorBoundary FallbackComponent={ThemeErrorFallback}>
         <Suspense fallback={<Skeleton width="100vw" height="13rem" />}>
-          <CategoryHeroSection categoryId={categoryId} />
+          <CategoryHeroSection categoryId={Number(categoryId)} />
         </Suspense>
       </ErrorBoundary>
-      <CategoryProductsSection categoryId={categoryId} />
+      <CategoryProductsSection categoryId={Number(categoryId)} />
     </BaseLayout>
   );
 };

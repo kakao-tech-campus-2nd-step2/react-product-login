@@ -2,18 +2,16 @@ import { HTMLAttributes } from 'react';
 
 import { Container } from '@/components/ui/Layout/Container';
 
-import { containerStyle } from './styles';
+interface AuthLayoutProp extends HTMLAttributes<HTMLDivElement> {}
 
-interface LoginLayoutProp extends HTMLAttributes<HTMLDivElement> {}
-
-const LoginLayout = ({ children, ...props }: LoginLayoutProp) => {
+const AuthLayout = ({ children, ...props }: AuthLayoutProp) => {
   return (
     <Container
       flexDirection="column"
       justifyContent="center"
       alignItems="center"
       gap="1rem"
-      css={containerStyle}
+      css={{ height: '100vh' }}
       {...props}
     >
       {children}
@@ -21,4 +19,4 @@ const LoginLayout = ({ children, ...props }: LoginLayoutProp) => {
   );
 };
 
-export default LoginLayout;
+export default AuthLayout;

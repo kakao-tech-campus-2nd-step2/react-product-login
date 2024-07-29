@@ -30,7 +30,11 @@ const renderWithProviders = (ui: ReactElement, { route = '/' } = {}) => {
 describe('Product Page 렌더링 테스트', () => {
   beforeEach(() => {
     (useAuth as jest.Mock).mockReturnValue({
-      isLoggedIn: true,
+      authInfo: {
+        email: 'test@kakao.com',
+        name: 'test',
+        token: 'token_test',
+      },
     });
   });
 
