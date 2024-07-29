@@ -50,7 +50,12 @@ export const OrderForm = ({ orderHistory }: Props) => {
 
   return (
     <FormProvider {...methods}>
-      <form action="" onSubmit={handleSubmit(handleForm)} onKeyDown={preventEnterKeySubmission}>
+      <form
+        role="form"
+        action=""
+        onSubmit={handleSubmit(handleForm)}
+        onKeyDown={preventEnterKeySubmission}
+      >
         <SplitLayout sidebar={<OrderFormOrderInfo orderHistory={orderHistory} />}>
           <Wrapper>
             <OrderFormMessageCard />
