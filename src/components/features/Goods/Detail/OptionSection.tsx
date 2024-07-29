@@ -52,9 +52,14 @@ export const OptionSection = ({ productId }: Props) => {
         <PricingWrapper>
           총 결제 금액 <span>{totalPrice}원</span>
         </PricingWrapper>
-        <Button theme="black" size="large" onClick={handleClick}>
-          나에게 선물하기
-        </Button>
+        <ButtonWrapper>
+          <Button theme="kakao" size="large" onClick={handleClick}>
+            ❤️ 관심 상품 등록
+            </Button>
+          <Button theme="black" size="large" onClick={handleClick}>
+            나에게 선물하기
+          </Button>
+        </ButtonWrapper>
       </BottomWrapper>
     </Wrapper>
   );
@@ -90,4 +95,11 @@ const PricingWrapper = styled.div`
     font-size: 20px;
     letter-spacing: -0.02em;
   }
+`;
+
+const ButtonWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+  gap: 12px;
 `;
