@@ -20,10 +20,15 @@ export const OptionSection = ({ productId }: Props) => {
   const { data: detail, error: detailError } = useGetProductDetail({ productId });
   const { data: options, error: optionsError } = useGetProductOptions({ productId });
 
+  const [selectedOptionId, setSelectedOptionId] = useState<number | null>(null);
   const [countAsString, setCountAsString] = useState('1');
 
+  const selectedOption = useMemo(() => {
+    return options?.find((option) => option.id === selectedOptionId);
+  }, [options, selectedOptionId]);
+
   const totalPrice = useMemo(() => {
-    const price = detail?.price ?? 0; // Provide default value of 0 if price is undefined
+    const price = detail?.price ?? 0;
     return price * Number(countAsString);
   }, [detail?.price, countAsString]);
 
@@ -40,34 +45,52 @@ export const OptionSection = ({ productId }: Props) => {
       return navigate(getDynamicPath.login());
     }
 
+    if (!selectedOption) {
+      alert('옵션을 선택해주세요.');
+      return;
+    }
+
     orderHistorySessionStorage.set({
-      id: parseInt(productId),
+      id: productId,
+      optionId: selectedOption.id,
       count: parseInt(countAsString),
     });
 
     navigate(RouterPath.order);
   };
 
-  if (!detail) {
-    return <div>Loading...</div>; // Handle loading state
+  if (!detail || !options) {
+    return <div>Loading...</div>;
   }
 
   if (optionsError || detailError) {
-    return <div>Error loading product details or options.</div>; // Handle errors
+    return <div>Error loading product details or options.</div>;
   }
 
   return (
     <Wrapper>
-      <CountOptionItem
-        name={options && options.length > 0 ? options[0].name : ''}
-        value={countAsString}
-        onChange={setCountAsString}
-      />
+      <select onChange={(e) => setSelectedOptionId(Number(e.target.value))}>
+        <option value="">옵션을 선택하세요</option>
+        {options.map((option) => (
+          <option key={option.id} value={option.id}>
+            {option.name} (재고: {option.quantity})
+          </option>
+        ))}
+      </select>
+      {selectedOption && (
+        <CountOptionItem
+          name={selectedOption.name}
+          value={countAsString}
+          onChange={setCountAsString}
+          minValues={1}
+          maxValues={selectedOption.quantity}
+        />
+      )}
       <BottomWrapper>
         <PricingWrapper>
           총 결제 금액 <span>{totalPrice}원</span>
         </PricingWrapper>
-        <Button theme="black" size="large" onClick={handleClick}>
+        <Button theme="black" size="large" onClick={handleClick} disabled={!selectedOption}>
           나에게 선물하기
         </Button>
       </BottomWrapper>
