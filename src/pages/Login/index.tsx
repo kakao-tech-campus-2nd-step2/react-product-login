@@ -7,6 +7,7 @@ import { Button } from '@/components/common/Button';
 import { UnderlineTextField } from '@/components/common/Form/Input/UnderlineTextField';
 import { Spacing } from '@/components/common/layouts/Spacing';
 import { breakpoints } from '@/styles/variants';
+import { login, signUp } from '@/utils/auth';
 import { authSessionStorage } from '@/utils/storage';
 
 export const LoginPage = () => {
@@ -15,30 +16,44 @@ export const LoginPage = () => {
   const [queryParams] = useSearchParams();
   const [isSignUp, setIsSignUp] = useState(false);
 
-  const handleConfirm = () => {
+  const handleConfirm = async () => {
     if (!id || !password) {
       alert('아이디와 비밀번호를 입력해주세요.');
       return;
     }
 
-    // TODO: API 연동
-
-    // 회원가입 또는 로그인 처리
-    if (isSignUp) {
-      alert('회원가입이 완료되었습니다.');
-    } else {
-      alert('로그인이 완료되었습니다.');
+    try {
+      let response;
+      if (isSignUp) {
+        response = await signUp(id, password);
+        if (response.success) {
+          alert('회원가입이 완료되었습니다. 로그인 해주세요.');
+          setIsSignUp(false);
+        } else {
+          throw new Error(response.message);
+        }
+      } else {
+        response = await login(id, password);
+        if (response.success) {
+          authSessionStorage.set(response.token);
+          const redirectUrl = queryParams.get('redirect') ?? `${window.location.origin}/`;
+          window.location.replace(redirectUrl);
+        } else {
+          throw new Error(response.message);
+        }
+      }
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        alert(error.message);
+      } else {
+        alert('An unknown error occurred.');
+      }
     }
-
-    authSessionStorage.set(id);
-    const redirectUrl = queryParams.get('redirect') ?? `${window.location.origin}/`;
-    return window.location.replace(redirectUrl);
   };
 
   const toggleSignUp = () => {
     setIsSignUp((prev) => !prev);
   };
-
 
   return (
     <Wrapper>
@@ -59,13 +74,13 @@ export const LoginPage = () => {
             sm: 60,
           }}
         />
-        <Button onClick={handleConfirm}>로그인</Button>
+        <Button onClick={handleConfirm}>{isSignUp ? '회원가입' : '로그인'}</Button>
         <Spacing
           height={{
             initial: 20,
             sm: 40,
           }} />
-        <Button onClick={toggleSignUp}>회원가입</Button>
+        <Button onClick={toggleSignUp}>{isSignUp ? '로그인' : '회원가입'}</Button>
       </FormWrapper>
     </Wrapper>
   );
