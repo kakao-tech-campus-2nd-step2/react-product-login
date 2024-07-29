@@ -1,6 +1,8 @@
 module.exports = {
   moduleFileExtensions: ['js', 'mjs', 'cjs', 'jsx', 'ts', 'tsx', 'json', 'node'],
   moduleNameMapper: {
+    '\\.svg$': '<rootDir>/__mocks__/svgMock.js',
+    '\\.css$': 'identity-obj-proxy',
     '^@/(.*)$': '<rootDir>/src/$1',
   },
   testEnvironment: 'jsdom',
