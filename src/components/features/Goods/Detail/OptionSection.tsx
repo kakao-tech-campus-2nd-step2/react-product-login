@@ -8,9 +8,9 @@ import {
 } from '@/api/hooks/useGetProductDetail';
 import { useGetProductOptions } from '@/api/hooks/useGetProductOptions';
 import { Button } from '@/components/common/Button';
-import { useAuth } from '@/provider/Auth';
-import { getDynamicPath, RouterPath } from '@/routes/path';
+import { RouterPath } from '@/routes/path';
 import type { WishList, WishListItem } from '@/types';
+import { useRedirectToLoginByAuth } from '@/utils/auth';
 import { orderHistorySessionStorage, wishListSessionStorage } from '@/utils/storage';
 
 import { CountOptionItem } from './OptionItem/CountOptionItem';
@@ -25,20 +25,8 @@ export const OptionSection = ({ productId }: Props) => {
   const totalPrice = useMemo(() => {
     return detail.price * Number(countAsString);
   }, [detail, countAsString]);
-
+  const checkAuthAndRedirect = useRedirectToLoginByAuth();
   const navigate = useNavigate();
-  const authInfo = useAuth();
-
-  const redirectToLoginPageByAuth = () => {
-    if (!authInfo) {
-      const isConfirm = window.confirm(
-        '로그인이 필요한 메뉴입니다.\n로그인 페이지로 이동하시겠습니까?',
-      );
-
-      if (!isConfirm) return;
-      return navigate(getDynamicPath.login());
-    }
-  };
 
   const isProductInWishList = (wishList: WishList) => {
     const productIdNumber = parseInt(productId, 10);
@@ -61,9 +49,8 @@ export const OptionSection = ({ productId }: Props) => {
   };
 
   const handleWishItem = () => {
+    if (!checkAuthAndRedirect()) return;
     const currentWishList: WishList = wishListSessionStorage.get() || [];
-
-    redirectToLoginPageByAuth();
 
     if (isProductInWishList(currentWishList)) {
       alert('이미 위시리스트에 등록된 상품입니다.');
@@ -73,8 +60,7 @@ export const OptionSection = ({ productId }: Props) => {
   };
 
   const handleClick = () => {
-    redirectToLoginPageByAuth();
-
+    if (!checkAuthAndRedirect()) return;
     orderHistorySessionStorage.set({
       id: parseInt(productId),
       count: parseInt(countAsString),
