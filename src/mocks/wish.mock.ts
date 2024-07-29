@@ -52,7 +52,7 @@ export const wishMockHandler = [
 
     const response: WishResponse = {
       id,
-      productId: product.toString(),
+      productId,
     };
 
     WISH_LIST_MOCK_DATA.content.push({

@@ -8,7 +8,7 @@ export const OrderValidationErrorMessages = {
 };
 export const OrderSchema = z
   .object({
-    productId: z.string(),
+    productId: z.number(),
     productQuantity: z.number(),
     gitfMessage: z
       .string()

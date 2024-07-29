@@ -32,8 +32,8 @@ export const ProductsDetailPage = () => {
             padding="0 3rem"
             css={{ padding: '2rem 0' }}
           >
-            <ProductDetail productId={productId} />
-            <ProductForm productId={productId} />
+            <ProductDetail productId={Number(productId)} />
+            <ProductForm productId={Number(productId)} />
           </Content>
         </Suspense>
       </ErrorBoundary>

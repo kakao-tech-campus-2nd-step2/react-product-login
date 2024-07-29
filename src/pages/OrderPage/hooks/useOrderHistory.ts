@@ -6,7 +6,7 @@ import { OrderHistory } from '@/types/orderType';
 
 export const useOrderHistory = () => {
   const [orderHistory, setOrderHistory] = useState<OrderHistory>({
-    productId: '1',
+    productId: 1,
     productQuantity: 1,
   });
   const location = useLocation();

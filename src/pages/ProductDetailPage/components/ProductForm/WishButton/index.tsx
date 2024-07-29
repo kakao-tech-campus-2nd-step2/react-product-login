@@ -9,7 +9,7 @@ import heart from '@/assets/icons/heart-regular.svg';
 import { Alert } from '@/components/ui/Dialog/Alert';
 import { Container } from '@/components/ui/Layout/Container';
 
-export const WishButton = ({ productId }: { productId: string }) => {
+export const WishButton = ({ productId }: { productId: number }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const [alertMessage, setAlertMessage] = useState('');

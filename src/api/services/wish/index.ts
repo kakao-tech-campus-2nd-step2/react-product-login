@@ -15,7 +15,7 @@ import {
 } from './types';
 
 export type WishRequestBody = {
-  productId: string;
+  productId: number;
 };
 export type WishResponse = Wish;
 export const addWish = async ({ productId }: WishRequestBody) => {

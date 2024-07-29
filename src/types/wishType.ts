@@ -2,7 +2,7 @@ import { ProductData } from './productType';
 
 export type Wish = {
   id: number;
-  productId: string;
+  productId: number;
 };
 
 export type WishData = {

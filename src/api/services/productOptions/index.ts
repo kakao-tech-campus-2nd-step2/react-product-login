@@ -14,7 +14,7 @@ export const fetchProductOptions = async ({
 }: ProductOptionsRequestParams) => {
   try {
     const response = await BACKEND_API.get<ProductOptionsResponse>(
-      getProductOptionsPath(productId)
+      getProductOptionsPath(productId.toString())
     );
     return response.data;
   } catch (error) {
