@@ -1,7 +1,6 @@
-// src/pages/Login/index.tsx
 import styled from '@emotion/styled';
 import { useState } from 'react';
-import { useSearchParams, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import KAKAO_LOGO from '@/assets/kakao_logo.svg';
 import { Button } from '@/components/common/Button';
@@ -10,38 +9,37 @@ import { Spacing } from '@/components/common/layouts/Spacing';
 import { breakpoints } from '@/styles/variants';
 import { authSessionStorage } from '@/utils/storage';
 
-export const LoginPage = () => {
-  const [id, setId] = useState('');
+export const RegisterPage = () => {
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [queryParams] = useSearchParams();
   const navigate = useNavigate();
 
-  const handleConfirm = async () => {
-    if (!id || !password) {
-      alert('아이디와 비밀번호를 입력해주세요.');
+  const handleRegister = async () => {
+    if (!email || !password) {
+      alert('이메일과 비밀번호를 입력해주세요.');
       return;
     }
 
     try {
-      const response = await fetch('https://api.example.com/api/members/login', {
+      const response = await fetch('https://api.example.com/api/members/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: id, password }),
+        body: JSON.stringify({ email, password }),
       });
 
       if (response.ok) {
         const data = await response.json();
-        authSessionStorage.set({ email: id, token: data.token });
+        authSessionStorage.set(data.token);
+        localStorage.setItem('user', JSON.stringify({ email: data.email, token: data.token }));
 
-        const redirectUrl = queryParams.get('redirect') ?? '/';
-        navigate(redirectUrl);
+        navigate('/');
         window.location.reload();
       } else {
-        alert('로그인 실패, 아이디와 비밀번호를 다시 확인해주세요.');
+        alert('회원가입 실패. 다시 시도해주세요.');
       }
     } catch (error) {
-      console.error('로그인 요청 중 오류 발생: ', error);
-      alert('로그인 요청 중 오류가 발생하였습니다.');
+      console.error('회원가입 요청 중 오류 발생:', error);
+      alert('회원가입 요청 중 오류가 발생했습니다.');
     }
   };
 
@@ -49,7 +47,7 @@ export const LoginPage = () => {
     <Wrapper>
       <Logo src={KAKAO_LOGO} alt="카카오 CI" />
       <FormWrapper>
-        <UnderlineTextField placeholder="이메일" value={id} onChange={(e) => setId(e.target.value)} />
+        <UnderlineTextField placeholder="이메일" value={email} onChange={(e) => setEmail(e.target.value)} />
         <Spacing />
         <UnderlineTextField
           type="password"
@@ -58,9 +56,9 @@ export const LoginPage = () => {
           onChange={(e) => setPassword(e.target.value)}
         />
         <Spacing height={{ initial: 40, sm: 60 }} />
-        <Button onClick={handleConfirm}>로그인</Button>
+        <Button onClick={handleRegister}>회원가입</Button>
         <Spacing height={20} />
-        <Button onClick={() => navigate('/register')}>회원가입</Button>
+        <Button onClick={() => navigate('/login')}>로그인</Button>
       </FormWrapper>
     </Wrapper>
   );

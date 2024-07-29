@@ -1,14 +1,31 @@
-import { Divider } from '@chakra-ui/react';
+import { Divider, Button } from '@chakra-ui/react';
 import styled from '@emotion/styled';
-
+import { useAuth } from '@/provider/Auth';
 import type { ProductDetailRequestParams } from '@/api/hooks/useGetProductDetail';
 import { useGetProductDetail } from '@/api/hooks/useGetProductDetail';
 import { breakpoints } from '@/styles/variants';
+import { addWish } from '@/api/hooks/useWish';
 
 type Props = ProductDetailRequestParams;
 
 export const GoodsDetailHeader = ({ productId }: Props) => {
   const { data: detail } = useGetProductDetail({ productId });
+  const authInfo = useAuth();
+
+  const handleAddWish = async () => {
+    if (!authInfo?.token) {
+      alert('로그인이 필요합니다.');
+      return;
+    }
+
+    try {
+      await addWish({ productId: Number(productId), token: authInfo.token });
+      alert('관심 등록 완료');
+    } catch (error) {
+      alert('관심 등록 실패');
+      console.log(error);
+    }
+  };
 
   return (
     <Wrapper>
@@ -19,6 +36,7 @@ export const GoodsDetailHeader = ({ productId }: Props) => {
         <Divider color="#f5f5f5" />
         <Notice>카톡 친구가 아니어도 선물 코드로 선물 할 수 있어요!</Notice>
         <Divider color="#f5f5f5" />
+        <Button colorScheme="teal" onClick={handleAddWish}>관심 등록</Button>
       </InfoWrapper>
     </Wrapper>
   );
