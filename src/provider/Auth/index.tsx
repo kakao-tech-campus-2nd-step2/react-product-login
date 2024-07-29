@@ -3,7 +3,7 @@ import { createContext, useContext, useEffect, useState } from 'react';
 
 import { authSessionStorage } from '@/utils/storage';
 
-type AuthInfo = {
+export type AuthInfo = {
   id: string;
   name: string;
   token: string;

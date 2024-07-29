@@ -29,40 +29,7 @@ export const OptionSection = ({ productId }: Props) => {
   const navigate = useNavigate();
   const authInfo = useAuth();
 
-  const handleWishItem = () => {
-    if (!authInfo) {
-      const isConfirm = window.confirm('로그인이 필요합니다.\n로그인 페이지로 이동하시겠습니까?');
-
-      if (!isConfirm) return;
-      return navigate(getDynamicPath.login());
-    }
-
-    const productIdNumber = parseInt(productId, 10);
-    const currentWishList: WishList = wishListSessionStorage.get() || [];
-
-    const isProductInWishList = currentWishList.some((item) => item.product.id === productIdNumber);
-
-    if (!isProductInWishList) {
-      const newWishListItem: WishListItem = {
-        id: detail.id,
-        product: {
-          id: detail.id,
-          name: detail.name,
-          price: detail.price,
-          imageUrl: detail.imageUrl,
-        },
-      };
-
-      const updatedWishList = [...currentWishList, newWishListItem];
-      wishListSessionStorage.set(updatedWishList);
-
-      alert('관심 등록 완료');
-    } else {
-      alert('이미 위시리스트에 등록된 상품입니다.');
-    }
-  };
-
-  const handleClick = () => {
+  const redirectToLoginPageByAuth = () => {
     if (!authInfo) {
       const isConfirm = window.confirm(
         '로그인이 필요한 메뉴입니다.\n로그인 페이지로 이동하시겠습니까?',
@@ -71,6 +38,42 @@ export const OptionSection = ({ productId }: Props) => {
       if (!isConfirm) return;
       return navigate(getDynamicPath.login());
     }
+  };
+
+  const isProductInWishList = (wishList: WishList) => {
+    const productIdNumber = parseInt(productId, 10);
+    return wishList.some((item: WishListItem) => item.product.id === productIdNumber);
+  };
+
+  const addProductToWishList = (wishList: WishList) => {
+    const newWishListItem: WishListItem = {
+      id: detail.id,
+      product: {
+        id: detail.id,
+        name: detail.name,
+        price: detail.price,
+        imageUrl: detail.imageUrl,
+      },
+    };
+    const updatedWishList = [...wishList, newWishListItem];
+    wishListSessionStorage.set(updatedWishList);
+    alert('관심 등록 완료');
+  };
+
+  const handleWishItem = () => {
+    const currentWishList: WishList = wishListSessionStorage.get() || [];
+
+    redirectToLoginPageByAuth();
+
+    if (isProductInWishList(currentWishList)) {
+      alert('이미 위시리스트에 등록된 상품입니다.');
+    } else {
+      addProductToWishList(currentWishList);
+    }
+  };
+
+  const handleClick = () => {
+    redirectToLoginPageByAuth();
 
     orderHistorySessionStorage.set({
       id: parseInt(productId),
