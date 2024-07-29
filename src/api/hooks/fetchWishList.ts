@@ -1,4 +1,4 @@
-import type { UseQueryOptions } from '@tanstack/react-query';
+import type { UseMutationOptions, UseQueryOptions } from '@tanstack/react-query';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 
@@ -50,11 +50,11 @@ export const useWishList = (
   });
 };
 
-export const useRemoveWish = () => {
+export const useRemoveWish = (options?: UseMutationOptions<void, Error, number>) => {
   const queryClient = useQueryClient();
 
-  return useMutation({
-    mutationFn: (wishId: number) => {
+  return useMutation<void, Error, number>({
+    mutationFn: async (wishId: number) => {
       return axios.delete(`${API_URL}/wishes/${wishId}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -64,6 +64,7 @@ export const useRemoveWish = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['wishList'] });
     },
+    ...options,
   });
 };
 
