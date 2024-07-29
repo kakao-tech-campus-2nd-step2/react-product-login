@@ -2,7 +2,7 @@ import { rest } from 'msw';
 
 const API_URL = 'http://localhost:3000/api';
 
-export const wishesMockHandler = [
+export const handlers = [
   rest.get(`${API_URL}/wishes`, (req, res, ctx) => {
     const page = req.url.searchParams.get('page')
       ? parseInt(req.url.searchParams.get('page')!, 10)
@@ -18,7 +18,8 @@ export const wishesMockHandler = [
           id: 1,
           name: 'Product A',
           price: 100,
-          imageUrl: 'http://example.com/product-a.jpg',
+          imageUrl:
+            'https://img1.daumcdn.net/thumb/S104x104/?fname=https%3A%2F%2Ft1.daumcdn.net%2Fgift%2Fhome%2Ftheme%2F292020231106_MXMUB.png',
         },
       },
       {
@@ -27,7 +28,8 @@ export const wishesMockHandler = [
           id: 2,
           name: 'Product B',
           price: 150,
-          imageUrl: 'http://example.com/product-b.jpg',
+          imageUrl:
+            'https://img1.daumcdn.net/thumb/S104x104/?fname=https%3A%2F%2Ft1.daumcdn.net%2Fgift%2Fhome%2Ftheme%2F292020231106_MXMUB.png',
         },
       },
     ];

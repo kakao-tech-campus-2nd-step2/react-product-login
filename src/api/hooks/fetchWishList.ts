@@ -1,3 +1,4 @@
+import type { UseQueryOptions } from '@tanstack/react-query';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 
@@ -34,14 +35,18 @@ const fetchWishList = async (
       sort: 'createdDate,desc',
     },
   });
-
   return response.data;
 };
 
-export const useWishList = (page: number = 0, size: number = 10) => {
+export const useWishList = (
+  page: number = 0,
+  size: number = 10,
+  options?: UseQueryOptions<WishListResponse, Error>,
+) => {
   return useQuery<WishListResponse, Error>({
     queryKey: ['wishList', page, size],
     queryFn: () => fetchWishList(localStorage.getItem('token') || '', page, size),
+    ...options,
   });
 };
 
@@ -82,5 +87,3 @@ export const useAddWish = () => {
     },
   });
 };
-
-export default fetchWishList;
