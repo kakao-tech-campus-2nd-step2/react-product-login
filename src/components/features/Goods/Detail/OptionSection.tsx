@@ -21,6 +21,7 @@ export const OptionSection = ({ productId }: Props) => {
   const { data: options } = useGetProductOptions({ productId });
 
   const [countAsString, setCountAsString] = useState('1');
+  const [interestAdded, setInterestAdded] = useState(false);
   const totalPrice = useMemo(() => {
     return detail.price * Number(countAsString);
   }, [detail, countAsString]);
@@ -45,6 +46,30 @@ export const OptionSection = ({ productId }: Props) => {
     navigate(RouterPath.order);
   };
 
+  const handleAddInterest = async () => {
+    if (!authInfo) {
+      const isConfirm = window.confirm(
+        '로그인이 필요한 메뉴입니다.\n로그인 페이지로 이동하시겠습니까?',
+      );
+
+      if (!isConfirm) return;
+      return navigate(getDynamicPath.login());
+    }
+    try {
+      await fetch('/api/wishes', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ productId }),
+      });
+      setInterestAdded(true);
+      alert('관심 등록 완료');
+    } catch (error) {
+      console.error('관심 등록 실패', error);
+    }
+  };
+
   return (
     <Wrapper>
       <CountOptionItem name={options[0].name} value={countAsString} onChange={setCountAsString} />
@@ -52,6 +77,9 @@ export const OptionSection = ({ productId }: Props) => {
         <PricingWrapper>
           총 결제 금액 <span>{totalPrice}원</span>
         </PricingWrapper>
+        <Button onClick={handleAddInterest} disabled={interestAdded}>
+          {interestAdded ? '관심 등록 완료' : '관심 등록'}
+        </Button>
         <Button theme="black" size="large" onClick={handleClick}>
           나에게 선물하기
         </Button>
