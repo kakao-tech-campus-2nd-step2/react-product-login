@@ -6,6 +6,7 @@ import KAKAO_LOGO from '@/assets/kakao_logo.svg';
 import { Button } from '@/components/common/Button';
 import { UnderlineTextField } from '@/components/common/Form/Input/UnderlineTextField';
 import { Spacing } from '@/components/common/layouts/Spacing';
+import { RouterPath } from '@/routes/path';
 import { breakpoints } from '@/styles/variants';
 import { authSessionStorage } from '@/utils/storage';
 
@@ -27,7 +28,7 @@ export const SignUpPage = () => {
 
     //회원정보가 저장되면
     if (storedAuth) {
-      navigate(-1); //이전 로그인페이지로 이동
+      navigate(RouterPath.login);
     } else {
       alert('회원가입에 실패했습니다.');
     }
