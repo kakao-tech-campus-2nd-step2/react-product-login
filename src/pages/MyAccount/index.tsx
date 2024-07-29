@@ -1,11 +1,8 @@
-import styled from '@emotion/styled';
+import { Box, Button, Flex, Image, Text, VStack } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-import { Button } from '@/components/common/Button';
-import { Spacing } from '@/components/common/layouts/Spacing';
-import { useAuth } from '@/provider/Auth';
-import { RouterPath } from '@/routes/path';
-import { authSessionStorage } from '@/utils/storage';
+import { useAuth } from '@/provider/Auth'; // assuming you have this hook to get auth info
 
 type FavoriteItem = {
   id: number;
@@ -14,93 +11,58 @@ type FavoriteItem = {
   imageUrl: string;
 };
 
-
 export const MyAccountPage = () => {
-  const authInfo = useAuth();
   const [favorites, setFavorites] = useState<FavoriteItem[]>([]);
+  const navigate = useNavigate();
+  const authInfo = useAuth();
 
   useEffect(() => {
     const savedFavorites = JSON.parse(localStorage.getItem('favorites') || '[]');
     setFavorites(savedFavorites);
   }, []);
 
-  const handleLogout = () => {
-    authSessionStorage.set(undefined);
+  const handleRemove = (id: number) => {
+    const updatedFavorites = favorites.filter((item) => item.id !== id);
+    setFavorites(updatedFavorites);
+    localStorage.setItem('favorites', JSON.stringify(updatedFavorites));
+  };
 
-    const redirectURL = `${window.location.origin}${RouterPath.home}`;
-    window.location.replace(redirectURL);
+  const handleLogout = () => {
+    localStorage.removeItem('authToken'); // Assuming you store the auth token in localStorage
+    navigate('/login'); // Redirect to login page after logging out
   };
 
   return (
-    <Wrapper>
-      {authInfo?.name}님 안녕하세요! <Spacing height={64} />
-      <Button
-        size="small"
-        theme="darkGray"
-        onClick={handleLogout}
-        style={{
-          maxWidth: '200px',
-        }}
-      >
-        로그아웃
-      </Button>
-      <Spacing height={20} />
-      <h2>나의 관심 상품</h2>
+    <Box p="20px">
+      <Flex justifyContent="space-between" alignItems="center" mb="4">
+        <Text fontSize="2xl" fontWeight="bold">
+          {authInfo ? `안녕하세요, ${authInfo.name}님!` : '안녕하세요!'}
+        </Text>
+        <Button colorScheme="blue" onClick={handleLogout}>
+          로그아웃
+        </Button>
+      </Flex>
+      <Text fontSize="2xl" fontWeight="bold" mb="4">
+        나의 관심 상품
+      </Text>
       {favorites.length === 0 ? (
-        <p>관심 상품이 없습니다.</p>
+        <Text>관심 상품이 없습니다.</Text>
       ) : (
-        <FavoritesList>
+        <VStack spacing={4} align="stretch">
           {favorites.map((item) => (
-            <FavoriteItems key={item.id}>
-              <img src={item.imageUrl} alt={item.name} />
-              <div>
-                <h3>{item.name}</h3>
-                <p>{item.price}원</p>
-              </div>
-            </FavoriteItems>
+            <Flex key={item.id} borderWidth="1px" borderRadius="lg" overflow="hidden" p="4" justifyContent="space-between" alignItems="center">
+              <Flex alignItems="center">
+                <Image src={item.imageUrl} alt={item.name} boxSize="100px" objectFit="cover" mr="4" />
+                <Box>
+                  <Text fontSize="lg" fontWeight="semibold">{item.name}</Text>
+                  <Text>{item.price}원</Text>
+                </Box>
+              </Flex>
+              <Button colorScheme="red" onClick={() => handleRemove(item.id)}>삭제</Button>
+            </Flex>
           ))}
-        </FavoritesList>
+        </VStack>
       )}
-    </Wrapper>
+    </Box>
   );
 };
-
-const Wrapper = styled.div`
-  width: 100%;
-  padding: 80px 0 120px;
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-weight: 700;
-  font-size: 36px;
-`;
-
-const FavoritesList = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-`;
-
-const FavoriteItems = styled.div`
-  width: 200px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  overflow: hidden;
-  img {
-    width: 100%;
-    height: auto;
-  }
-  div {
-    padding: 10px;
-    h3 {
-      font-size: 16px;
-      margin: 0 0 10px;
-    }
-    p {
-      font-size: 14px;
-      margin: 0;
-    }
-  }
-`;
