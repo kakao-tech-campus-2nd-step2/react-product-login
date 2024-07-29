@@ -11,6 +11,7 @@ export const MessageCardFields = () => {
       <TextMessageWrapper>
         <Textarea
           {...register('messageCardTextMessage')}
+          data-testid="message-card-input"
           placeholder="선물과 함께 보낼 메시지를 적어보세요"
           resize="none"
           height="100"

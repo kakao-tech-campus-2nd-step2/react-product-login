@@ -8,7 +8,7 @@ export const categoriesMockHandler = [
   }),
 ];
 
-const CATEGORIES_RESPONSE_DATA = [
+export const CATEGORIES_RESPONSE_DATA = [
   {
     id: 2920,
     name: '생일',
