@@ -56,33 +56,33 @@ export type MessageCardTemplateData = {
 
 //  https://eastroots.notion.site/API-c78c990bf1264a5a91c4421e125a28c8 해당 페이지 참고하였습니다.
 export type WishlistData = {
-  "content": {
-    "id": number,
-    "product": {
-      "id": number,
-      "name": string,
-      "price": number,
-      "imageUrl": string,
+  content: {
+    id: number,
+    product: {
+      id: number,
+      name: string,
+      price: number,
+      imageUrl: string,
     },
   },
-  "pageable": {
-    "sort": {
-      "sorted": boolean,
-      "unsorted": boolean,
-      "empty": boolean,
+  pageable: {
+    sort: {
+      sorted: boolean,
+      unsorted: boolean,
+      empty: boolean,
     },
-    "pageNumber": number,
-    "pageSize": number,
-    "offset": number,
-    "unpaged": boolean,
-    "paged": boolean,
+    pageNumber: number,
+    pageSize: number,
+    offset: number,
+    unpaged: boolean,
+    paged: boolean,
   },
-  "totalPages": number,
-  "totalElements": number,
-  "last": boolean,
-  "number": number,
-  "size": number,
-  "numberOfElements": number,
-  "first": boolean,
-  "empty": boolean,
+  totalPages: number,
+  totalElements: number,
+  last: boolean,
+  number: number,
+  size: number,
+  numberOfElements: number,
+  first: boolean,
+  empty: boolean,
 }
