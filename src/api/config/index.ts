@@ -6,7 +6,7 @@ import { getErrorMessage } from './errorHandler';
 import { initInstance } from './instance';
 
 export const BACKEND_API = initInstance({
-  baseURL: process.env.VITE_API_BASE_URL,
+  baseURL: import.meta.env.VITE_API_BASE_URL,
 });
 
 BACKEND_API.interceptors.response.use(
@@ -18,7 +18,7 @@ BACKEND_API.interceptors.response.use(
 );
 
 export const AUTHROIZATION_API = initInstance({
-  baseURL: process.env.VITE_API_BASE_URL,
+  baseURL: import.meta.env.VITE_API_BASE_URL,
   withCredentials: true,
 });
 AUTHROIZATION_API.interceptors.request.use(

@@ -28,6 +28,7 @@
     ".eslintrc.cjs",
     "vite.config.ts",
     "jest.config.ts",
-    "jest.setup.ts"
+    "jest.setup.ts",
+    "jest.setup-after-env.ts"
   ]
 }
