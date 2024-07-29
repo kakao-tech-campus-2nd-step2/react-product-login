@@ -2,7 +2,7 @@ import { rest } from 'msw';
 
 import { getUserPath, getUsersPath } from './useGetUser';
 
-export const userMockHandler = [
+export const usersMockHandler = [
   rest.post(getUsersPath(), async (req, res, ctx) => {
     try{
         const { id, password } = await req.json();

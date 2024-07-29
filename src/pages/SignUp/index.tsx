@@ -1,39 +1,41 @@
+import { Input } from '@chakra-ui/react';
 import styled from '@emotion/styled';
 import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
 
+import type { User } from '@/api/hooks/useGetUser';
+import { getSignUp } from '@/api/hooks/useGetUser';
 import KAKAO_LOGO from '@/assets/kakao_logo.svg';
 import { Button } from '@/components/common/Button';
-import { UnderlineTextField } from '@/components/common/Form/Input/UnderlineTextField';
 import { Spacing } from '@/components/common/layouts/Spacing';
 import { breakpoints } from '@/styles/variants';
 
 export default () => {
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
-  } = useForm();
+    formState: { isSubmitting },
+  } = useForm<User>();
 
-  const onSubmit = () => {
-    if (errors.id || errors.password) {
-      alert('아이디와 비밀번호를 입력해주세요.');
-      return;
-    }
-
-    // TODO: API 연동
+  const onSubmit = (data: User) => {
+    getSignUp(data.id, data.password).then((result) => {
+      if (result) {
+        alert('회원가입이 완료되었습니다.');
+        navigate('/login', { replace: true });
+      } else {
+        alert('회원가입에 실패했습니다.');
+      }
+    });
   };
 
   return (
     <Wrapper>
       <Logo src={KAKAO_LOGO} alt="카카고 CI" />
       <FormWrapper onSubmit={handleSubmit(onSubmit)}>
-        <UnderlineTextField
-          placeholder="이름"
-          {...register('id', { required: true })}
-          disabled={isSubmitting}
-        />
+        <Input placeholder="이름" {...register('id', { required: true })} disabled={isSubmitting} />
         <Spacing />
-        <UnderlineTextField
+        <Input
           type="password"
           placeholder="비밀번호"
           {...register('password', { required: true })}
@@ -46,7 +48,7 @@ export default () => {
             sm: 60,
           }}
         />
-        <Button>회원가입</Button>
+        <Button type="submit">회원가입</Button>
       </FormWrapper>
     </Wrapper>
   );
