@@ -6,4 +6,10 @@ module.exports = {
       '@': path.resolve(__dirname, 'src'),
     },
   },
+  jest: {
+    configure: {
+      setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
+      testEnvironment: 'jsdom',
+    },
+  },
 };
