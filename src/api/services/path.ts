@@ -18,7 +18,7 @@ export const getProductsPath = ({
 }: ProductsRequestParams) => {
   const params = new URLSearchParams();
 
-  params.append('categoryId', categoryId);
+  params.append('categoryId', categoryId.toString());
   params.append('sort', 'name,asc');
   if (pageToken) params.append('page', pageToken);
   if (maxResults) params.append('size', maxResults.toString());

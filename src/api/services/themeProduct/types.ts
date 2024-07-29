@@ -1,7 +1,7 @@
 import { ProductData } from '@/types/productType';
 
 export type ProductsRequestParams = {
-  categoryId: string;
+  categoryId: number;
   pageToken?: string;
   maxResults?: number;
 };

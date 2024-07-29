@@ -6,7 +6,7 @@ import { OneTextContainer } from '@/components/OneTextContainer';
 import { heroStyle, textStyle } from './styles';
 
 type CategoryHeroSectionProps = {
-  categoryId: string;
+  categoryId: number;
 };
 
 export const CategoryHeroSection = ({

@@ -10,7 +10,7 @@ import { ProductData } from '@/types/productType';
 export const productsMockHandler = [
   http.get(
     getProductsPath({
-      categoryId: '2920',
+      categoryId: 2920,
     }),
     () => {
       return HttpResponse.json(PRODUCTS_MOCK_DATA);
@@ -18,7 +18,7 @@ export const productsMockHandler = [
   ),
   http.get(
     getProductsPath({
-      categoryId: '2930',
+      categoryId: 2930,
     }),
     () => {
       return HttpResponse.json(PRODUCTS_MOCK_DATA);

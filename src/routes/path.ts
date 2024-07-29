@@ -10,8 +10,8 @@ export const ROUTER_PATH = {
 };
 
 export const getDynamicPath = {
-  category: (categoryId: string) =>
-    ROUTER_PATH.CATEGORY.replace(':categoryId', categoryId),
+  category: (categoryId: number) =>
+    ROUTER_PATH.CATEGORY.replace(':categoryId', categoryId.toString()),
   productsDetail: (productId: number) =>
     ROUTER_PATH.PRODUCTSDETAIL.replace(':productId', productId.toString()),
 };
