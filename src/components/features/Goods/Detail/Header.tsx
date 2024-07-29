@@ -22,6 +22,10 @@ export const GoodsDetailHeader = ({ productId }: Props) => {
     return <div>No data available</div>;
   }
 
+  if (!detail) {
+    return <div>Loading...</div>; // 또는 에러 메시지
+  }
+
   return (
     <Wrapper>
       <GoodsImage src={detail.imageUrl} alt={detail.name} />

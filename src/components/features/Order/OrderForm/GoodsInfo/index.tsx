@@ -45,6 +45,24 @@ export const GoodsInfo = ({ orderHistory }: Props) => {
 
   const totalPrice = detail.price * count;
 
+  // Use a conditional check to handle the case where detail might be null or undefined
+  if (!detail) {
+    return (
+      <Wrapper>
+        <LabelText>선물내역</LabelText>
+        <Spacing />
+        <GoodsWrapper>
+          <GoodsInfoWrapper>
+            <div>Loading...</div> {/* Or any fallback content */}
+          </GoodsInfoWrapper>
+        </GoodsWrapper>
+      </Wrapper>
+    );
+  }
+
+  // Now TypeScript understands that detail is not null here
+  const totalPrice = (detail.price ?? 0) * count; // Use optional chaining to safely access properties
+
   return (
     <Wrapper>
       <LabelText>선물내역</LabelText>
