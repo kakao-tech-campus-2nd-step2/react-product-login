@@ -55,15 +55,17 @@ export const EnrollForm = ({
     <form>
       <GrayLabel>
         회원가입을 위한 이메일을 입력해 주세요.
-        <Checkmark show={email !== '' && isValidEmail(email)}>✅</Checkmark>
-        <Checkmark show={email !== '' && !isValidEmail(email)}>❌</Checkmark>
+        <Checkmark data-testid="emailValidation" show={email !== ''}>
+          {isValidEmail(email) ? '✅' : '❌'}
+        </Checkmark>
         <UnderlineTextField placeholder="이메일" value={email} onChange={setEmail} />
       </GrayLabel>
       <Spacing />
       <GrayLabel>
         회원가입을 위한 비밀번호를 입력해 주세요.
-        <Checkmark show={password !== '' && isValidPassword(password)}>✅</Checkmark>
-        <Checkmark show={password !== '' && !isValidPassword(password)}>❌</Checkmark>
+        <Checkmark data-testid="passwordValidation" show={password !== ''}>
+          {isValidPassword(password) ? '✅' : '❌'}
+        </Checkmark>
         <UnderlineTextField
           type="password"
           placeholder="비밀번호"

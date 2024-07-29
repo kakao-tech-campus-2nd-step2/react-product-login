@@ -36,9 +36,8 @@ const renderWithProviders = (ui: ReactElement, { route = '/' } = {}) => {
   );
 };
 
-test('Test on request success', async () => {
+test('유효한 상품 아이디를 제공했을 때, 데이터 잘 불러와서 렌더링 잘 되는지', async () => {
   renderWithProviders(<GoodsDetailPage />, { route: '/products/3245119' });
-
   await waitForElementToBeRemoved(() => screen.queryByRole('spinner'), { timeout: 5000 });
 
   expect(
@@ -50,7 +49,7 @@ test('Test on request success', async () => {
   ).toBeInTheDocument();
 });
 
-test('Is ErrorBoundary working', async () => {
+test('유효하지 않은 상품 아이디를 제공했을 때, 에러 잘 발생시키고 잡는지.', async () => {
   renderWithProviders(<GoodsDetailPage />, { route: '/products/3245119zz' });
 
   await waitForElementToBeRemoved(() => screen.queryByRole('spinner'), { timeout: 5000 });
@@ -58,7 +57,7 @@ test('Is ErrorBoundary working', async () => {
   expect(screen.getByText('에러 페이지')).toBeInTheDocument();
 });
 
-test('Counting buttons', async () => {
+test('상품 개수 증가 및 감소 버튼 잘 동작 및 UI에 잘 반영 되는지.', async () => {
   const user = userEvent.setup();
   renderWithProviders(<GoodsDetailPage />, { route: '/products/3245119' });
 
@@ -77,8 +76,9 @@ test('Counting buttons', async () => {
   expect(totalPrice).toHaveTextContent('145000');
 });
 
-test('Add to wishlist', async () => {
-  authSessionStorage.set('mock-token');
+test('로그인 했을 때, 상품 위시리스트에 잘 추가 되며 성공 여부 알러트로 잘 나타나는지.', async () => {
+  authSessionStorage.set('qqqq@qqq.com');
+  localStorage.setItem('token', 'mock-token');
   const user = userEvent.setup();
   renderWithProviders(<GoodsDetailPage />, { route: '/products/3245119' });
   const addButton = screen.getByText('위시리스트에 추가');
@@ -88,4 +88,6 @@ test('Add to wishlist', async () => {
   await waitFor(() => {
     expect(window.alert).toHaveBeenCalledWith('관심 등록 완료');
   });
+
+  localStorage.removeItem('token');
 });

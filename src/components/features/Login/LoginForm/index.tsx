@@ -26,6 +26,10 @@ export const LoginForm = ({
   });
 
   const handleLogin = () => {
+    if (email.trim().length === 0 || password.trim().length === 0) {
+      alert('이메일과 비밀번호 모두 입력해주세요.');
+      return;
+    }
     loginMutation.mutate({ email, password });
   };
 
