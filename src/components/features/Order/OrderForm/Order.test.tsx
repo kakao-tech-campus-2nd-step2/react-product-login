@@ -37,7 +37,7 @@ describe('OrderForm', () => {
     });
   });
 
-  test('폼이 초기 값으로 렌더링 되는지 확인', async () => {
+  test('초기 렌더링 : 폼에 "선물내역" 과 "결제 장보" 가 표시된다', async () => {
     // When: Orderform 랜더링 될 때
     render(
       <Wrapper>
@@ -52,7 +52,7 @@ describe('OrderForm', () => {
     });
   });
 
-  test('폼을 유효성 검사하고 오류 메시지를 표시하는지 확인', async () => {
+  test('폼 유효성 검사 : 필수 입력 필드가 비어있을 때 오류 메시지가 표시된다', async () => {
     // When: Order Component rendering, 제출 폼 눌렀을 때
     render(
       <Wrapper>
@@ -67,7 +67,7 @@ describe('OrderForm', () => {
     expect(errorMessage).toBeInTheDocument();
   });
 
-  test('폼이 올바르게 제출되는지 확인', async () => {
+  test('폼 제출 : 메시지를 입력한 후 폼이 올바르게 제출된다.', async () => {
     // Given: Mock window.alert
     const alertMock = jest.spyOn(window, 'alert').mockImplementation(() => {});
 
@@ -95,7 +95,7 @@ describe('OrderForm', () => {
     alertMock.mockRestore();
   });
 
-  test('현금영수증 Checkbox가 false인 경우, 현금영수증 종류와 현금영수증 번호 필드가 비활성화 되는지 확인', async () => {
+  test('현금영수증 : 체크박스가 선택되지 않은 경우 현금영수증 필드가 비활성화 된다.', async () => {
     // When: OrderForm 컴포넌트를 렌더링
     render(
       <Wrapper>
@@ -119,7 +119,7 @@ describe('OrderForm', () => {
     });
   });
 
-  test('현금영수증 Checkbox가 true인 경우, 현금영수증 종류와 현금영수증 번호 필드가 활성화 되고 값이 입력되는지 확인', async () => {
+  test('현금영수증: 체크박스가 선택된 경우 현금영수증 필드가 활성화 되고 값이 입력된다.', async () => {
     // When: OrderForm 컴포넌트를 렌더링
     render(
       <Wrapper>
@@ -151,7 +151,7 @@ describe('OrderForm', () => {
     });
   });
 
-  test('폼의 유효성 검사 로직이 정상적으로 동작하는지 확인', async () => {
+  test('폼 유효성 검사: 잘못된 현금영수증 번호나 메시지 입력 시 오류 메시지가 발생한다.', async () => {
     // When: OrderForm 컴포넌트를 렌더링하고 값 입력
     render(
       <Wrapper>
