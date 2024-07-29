@@ -1,15 +1,14 @@
 import { ProductsRequestParams } from './themeProduct/types';
 import { WishListRequestParams } from './wish/types';
 
-const BASE_URL = 'https://api.example.com';
-
-export const getCategoriesPath = () => `${BASE_URL}/api/categories`;
+export const getCategoriesPath = () =>
+  `${process.env.VITE_API_BASE_URL}/api/categories`;
 
 export const getProductDetailPath = (productId: string) =>
-  `${BASE_URL}/api/products/${productId}`;
+  `${process.env.VITE_API_BASE_URL}/api/products/${productId}`;
 
 export const getProductOptionsPath = (productId: string) =>
-  `${BASE_URL}/api/products/${productId}/options`;
+  `${process.env.VITE_API_BASE_URL}/api/products/${productId}/options`;
 
 export const getProductsPath = ({
   categoryId,
@@ -23,15 +22,18 @@ export const getProductsPath = ({
   if (pageToken) params.append('page', pageToken);
   if (maxResults) params.append('size', maxResults.toString());
 
-  return `${BASE_URL}/api/products?${params.toString()}`;
+  return `${process.env.VITE_API_BASE_URL}/api/products?${params.toString()}`;
 };
 
-export const getLoginPath = () => `${BASE_URL}/api/members/login`;
-export const getRegisterPath = () => `${BASE_URL}/api/members/register`;
+export const getLoginPath = () =>
+  `${process.env.VITE_API_BASE_URL}/api/members/login`;
+export const getRegisterPath = () =>
+  `${process.env.VITE_API_BASE_URL}/api/members/register`;
 
-export const getWishAddPath = () => `${BASE_URL}/api/wishes`;
+export const getWishAddPath = () =>
+  `${process.env.VITE_API_BASE_URL}/api/wishes`;
 export const getWishDeletePath = (wishId: string) =>
-  `${BASE_URL}/api/wishes/${wishId}`;
+  `${process.env.VITE_API_BASE_URL}/api/wishes/${wishId}`;
 export const getWishListPath = ({
   pageToken,
   maxResults,
@@ -42,5 +44,5 @@ export const getWishListPath = ({
   if (pageToken) params.append('page', pageToken);
   if (maxResults) params.append('size', maxResults.toString());
 
-  return `${BASE_URL}/api/wishes?${params.toString()}`;
+  return `${process.env.VITE_API_BASE_URL}/api/wishes?${params.toString()}`;
 };
