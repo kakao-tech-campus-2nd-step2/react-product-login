@@ -1,23 +1,23 @@
+import { Button } from '@chakra-ui/react';
 import styled from '@emotion/styled';
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
-import { usePostLogin } from '@/api/hooks/usePostLogin';
+import { usePostMembership } from '@/api/hooks/usePostMembership';
 import KAKAO_LOGO from '@/assets/kakao_logo.svg';
-import { Button } from '@/components/common/Button';
 import { UnderlineTextField } from '@/components/common/Form/Input/UnderlineTextField';
-import { Spacing } from '@/components/common/layouts/Spacing';
 import { useAuth } from '@/provider/Auth';
 import { RouterPath } from '@/routes/path';
 import { breakpoints } from '@/styles/variants';
 
-export const LoginPage = () => {
+export const Membership = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const { mutate } = usePostLogin();
-  const { handleAuthInfo } = useAuth();
   const navigate = useNavigate();
+
+  const { mutate } = usePostMembership();
+  const { handleAuthInfo } = useAuth();
 
   const handleConfirm = () => {
     if (!email || !password) {
@@ -40,29 +40,16 @@ export const LoginPage = () => {
     <Wrapper>
       <Logo src={KAKAO_LOGO} alt="카카고 CI" />
       <FormWrapper>
+        <Title>회원가입</Title>
         <UnderlineTextField
-          placeholder="이름"
-          value={email}
+          placeholder="email"
           onChange={(e) => setEmail(e.target.value)}
-        />
-        <Spacing />
+        ></UnderlineTextField>
         <UnderlineTextField
-          type="password"
-          placeholder="비밀번호"
-          value={password}
+          placeholder="password"
           onChange={(e) => setPassword(e.target.value)}
-        />
-
-        <Spacing
-          height={{
-            initial: 40,
-            sm: 60,
-          }}
-        />
-        <Button onClick={handleConfirm}>로그인</Button>
-        <Link to={RouterPath.membership}>
-          <Button style={{ marginTop: 20 }}>회원 가입</Button>
-        </Link>
+        ></UnderlineTextField>
+        <Button onClick={handleConfirm}>가입하기</Button>
       </FormWrapper>
     </Wrapper>
   );
@@ -77,18 +64,25 @@ const Wrapper = styled.div`
   flex-direction: column;
 `;
 
+const FormWrapper = styled.article`
+  width: 100%;
+  max-width: 580px;
+  padding: 16px;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  @media screen and (min-width: ${breakpoints.sm}) {
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    padding: 60px 52px;
+  }
+`;
+
 const Logo = styled.img`
   width: 88px;
   color: #333;
 `;
 
-const FormWrapper = styled.article`
-  width: 100%;
-  max-width: 580px;
-  padding: 16px;
-
-  @media screen and (min-width: ${breakpoints.sm}) {
-    border: 1px solid rgba(0, 0, 0, 0.12);
-    padding: 60px 52px;
-  }
+const Title = styled.div`
+  font-size: 20px;
 `;

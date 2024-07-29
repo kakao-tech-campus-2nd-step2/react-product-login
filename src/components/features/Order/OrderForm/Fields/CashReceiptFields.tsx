@@ -8,7 +8,8 @@ import { useOrderFormContext } from '@/hooks/useOrderFormContext';
 import { LabelText } from '../Common/LabelText';
 
 export const CashReceiptFields = () => {
-  const { register, control } = useOrderFormContext();
+  const { register, control, watch } = useOrderFormContext();
+  const hasCashReceipt = watch('hasCashReceipt', false); // hasCashReceipt 값을 가져옵니다.
 
   return (
     <Wrapper>
@@ -16,7 +17,18 @@ export const CashReceiptFields = () => {
         control={control}
         name="hasCashReceipt"
         render={({ field: { onChange, value, ref } }) => (
-          <Checkbox ref={ref} onChange={onChange} isChecked={value} colorScheme="yellow" size="lg">
+          <Checkbox
+            ref={ref}
+            onChange={() => {
+              onChange(!value);
+            }}
+            isChecked={value}
+            data-testid="cashReceiptCheckbox"
+            colorScheme="yellow"
+            size="lg"
+            type="checkbox"
+            aria-checked={value}
+          >
             <LabelText>현금영수증 신청</LabelText>
           </Checkbox>
         )}
@@ -27,14 +39,18 @@ export const CashReceiptFields = () => {
         control={control}
         name="cashReceiptType"
         render={({ field }) => (
-          <Select {...field}>
+          <Select {...field} isDisabled={!hasCashReceipt} data-testid="cashReceiptType">
             <option value="PERSONAL">개인소득공제</option>
             <option value="BUSINESS">사업자증빙용</option>
           </Select>
         )}
       />
       <Spacing height={8} />
-      <Input {...register('cashReceiptNumber')} placeholder="(-없이) 숫자만 입력해주세요." />
+      <Input
+        {...register('cashReceiptNumber')}
+        isDisabled={!hasCashReceipt}
+        placeholder="(-없이) 숫자만 입력해주세요."
+      />
     </Wrapper>
   );
 };

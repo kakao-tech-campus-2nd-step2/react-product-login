@@ -28,15 +28,15 @@ export const OrderForm = ({ orderHistory }: Props) => {
   });
   const { handleSubmit } = methods;
 
-  const handleForm = (values: OrderFormData) => {
-    const { errorMessage, isValid } = validateOrderForm(values);
+  const handleForm = (data: OrderFormData) => {
+    const { errorMessage, isValid } = validateOrderForm(data);
 
     if (!isValid) {
       alert(errorMessage);
       return;
     }
 
-    console.log('values', values);
+    console.log('values', data);
     alert('주문이 완료되었습니다.');
   };
 

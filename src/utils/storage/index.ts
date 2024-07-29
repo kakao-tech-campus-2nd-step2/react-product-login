@@ -1,4 +1,5 @@
 import type { OrderHistory } from '@/types';
+import type { LoginResponseData } from '@/types';
 
 const initStorage = <T extends keyof StorageKey>(key: T, storage: Storage) => {
   const storageKey = `${key}`;
@@ -25,6 +26,6 @@ export const authSessionStorage = initStorage('authToken', sessionStorage);
 export const orderHistorySessionStorage = initStorage('orderHistory', sessionStorage);
 
 interface StorageKey {
-  authToken?: string;
+  authToken?: LoginResponseData;
   orderHistory?: OrderHistory;
 }
