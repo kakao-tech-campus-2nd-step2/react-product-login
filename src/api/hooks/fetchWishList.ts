@@ -3,6 +3,8 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 
 const API_URL = 'http://localhost:3000/api';
+const LOCAL_STORAGE_TOKEN_KEY = 'token';
+const QUERY_KEY_WISHLIST = 'wishList';
 
 export interface WishItem {
   id: number;
@@ -44,8 +46,8 @@ export const useWishList = (
   options?: UseQueryOptions<WishListResponse, Error>,
 ) => {
   return useQuery<WishListResponse, Error>({
-    queryKey: ['wishList', page, size],
-    queryFn: () => fetchWishList(localStorage.getItem('token') || '', page, size),
+    queryKey: [QUERY_KEY_WISHLIST, page, size],
+    queryFn: () => fetchWishList(localStorage.getItem(LOCAL_STORAGE_TOKEN_KEY) || '', page, size),
     ...options,
   });
 };
@@ -57,12 +59,12 @@ export const useRemoveWish = (options?: UseMutationOptions<void, Error, number>)
     mutationFn: async (wishId: number) => {
       return axios.delete(`${API_URL}/wishes/${wishId}`, {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
+          Authorization: `Bearer ${localStorage.getItem(LOCAL_STORAGE_TOKEN_KEY)}`,
         },
       });
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['wishList'] });
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEY_WISHLIST] });
     },
     ...options,
   });
@@ -78,13 +80,13 @@ export const useAddWish = () => {
         { productId },
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`,
+            Authorization: `Bearer ${localStorage.getItem(LOCAL_STORAGE_TOKEN_KEY)}`,
           },
         },
       );
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['wishList'] });
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEY_WISHLIST] });
     },
   });
 };
