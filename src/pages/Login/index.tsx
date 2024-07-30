@@ -1,11 +1,12 @@
 import styled from '@emotion/styled';
 import { useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import KAKAO_LOGO from '@/assets/kakao_logo.svg';
 import { Button } from '@/components/common/Button';
 import { UnderlineTextField } from '@/components/common/Form/Input/UnderlineTextField';
 import { Spacing } from '@/components/common/layouts/Spacing';
+import { RouterPath } from '@/routes/path';
 import { breakpoints } from '@/styles/variants';
 import { authSessionStorage } from '@/utils/storage';
 
@@ -13,6 +14,7 @@ export const LoginPage = () => {
   const [id, setId] = useState('');
   const [password, setPassword] = useState('');
   const [queryParams] = useSearchParams();
+  const navigate = useNavigate();
 
   const handleConfirm = () => {
     if (!id || !password) {
@@ -26,7 +28,11 @@ export const LoginPage = () => {
     authSessionStorage.set(id);
 
     const redirectUrl = queryParams.get('redirect') ?? `${window.location.origin}/`;
-    return window.location.replace(redirectUrl);
+    window.location.replace(redirectUrl);
+  };
+
+  const handleSignUp = () => {
+    navigate(RouterPath.signup);
   };
 
   return (
@@ -41,7 +47,6 @@ export const LoginPage = () => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-
         <Spacing
           height={{
             initial: 40,
@@ -49,6 +54,8 @@ export const LoginPage = () => {
           }}
         />
         <Button onClick={handleConfirm}>로그인</Button>
+        <Spacing height={26} />
+        <SignUpButton onClick={handleSignUp}>회원가입</SignUpButton>
       </FormWrapper>
     </Wrapper>
   );
@@ -77,4 +84,11 @@ const FormWrapper = styled.article`
     border: 1px solid rgba(0, 0, 0, 0.12);
     padding: 60px 52px;
   }
+`;
+
+const SignUpButton = styled.p`
+  float: left;
+  font-size: 12px;
+  color: #191919;
+  cursor: pointer;
 `;
