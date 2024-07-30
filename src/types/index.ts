@@ -53,3 +53,10 @@ export type MessageCardTemplateData = {
   thumbUrl: string;
   imageUrl: string;
 };
+
+export interface WishListItem {
+  id: number;
+  product: Omit<ProductData, 'categoryId'>;
+}
+
+export type WishList = WishListItem[];

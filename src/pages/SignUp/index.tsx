@@ -8,16 +8,12 @@ import { UnderlineTextField } from '@/components/common/Form/Input/UnderlineText
 import { Spacing } from '@/components/common/layouts/Spacing';
 import { RouterPath } from '@/routes/path';
 import { breakpoints } from '@/styles/variants';
-import { handleLogin } from '@/utils/login';
+import { authSessionStorage } from '@/utils/storage';
 
-export const LoginPage = () => {
+export const SignUpPage = () => {
   const [id, setId] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
-
-  const navigateToSignUp = () => {
-    navigate(RouterPath.signup);
-  };
 
   const handleConfirm = () => {
     if (!id || !password) {
@@ -25,7 +21,17 @@ export const LoginPage = () => {
       return;
     }
 
-    handleLogin(id, password);
+    //세션 스토리지에 회원정보 저장
+    authSessionStorage.set({ id: id, pwd: password });
+
+    const storedAuth = authSessionStorage.get();
+
+    //회원정보가 저장되면
+    if (storedAuth) {
+      navigate(RouterPath.login);
+    } else {
+      alert('회원가입에 실패했습니다.');
+    }
   };
 
   return (
@@ -47,12 +53,7 @@ export const LoginPage = () => {
             sm: 60,
           }}
         />
-        <ButtonWrapper>
-          <Button onClick={handleConfirm}>로그인</Button>
-          <Button theme="lightGray" onClick={navigateToSignUp}>
-            회원가입
-          </Button>
-        </ButtonWrapper>
+        <Button onClick={handleConfirm}>회원가입</Button>
       </FormWrapper>
     </Wrapper>
   );
@@ -81,10 +82,4 @@ const FormWrapper = styled.article`
     border: 1px solid rgba(0, 0, 0, 0.12);
     padding: 60px 52px;
   }
-`;
-
-const ButtonWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
 `;

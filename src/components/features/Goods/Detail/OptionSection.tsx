@@ -8,9 +8,10 @@ import {
 } from '@/api/hooks/useGetProductDetail';
 import { useGetProductOptions } from '@/api/hooks/useGetProductOptions';
 import { Button } from '@/components/common/Button';
-import { useAuth } from '@/provider/Auth';
-import { getDynamicPath, RouterPath } from '@/routes/path';
-import { orderHistorySessionStorage } from '@/utils/storage';
+import { RouterPath } from '@/routes/path';
+import type { WishList, WishListItem } from '@/types';
+import { useRedirectToLoginByAuth } from '@/utils/auth';
+import { orderHistorySessionStorage, wishListSessionStorage } from '@/utils/storage';
 
 import { CountOptionItem } from './OptionItem/CountOptionItem';
 
@@ -24,19 +25,42 @@ export const OptionSection = ({ productId }: Props) => {
   const totalPrice = useMemo(() => {
     return detail.price * Number(countAsString);
   }, [detail, countAsString]);
-
+  const checkAuthAndRedirect = useRedirectToLoginByAuth();
   const navigate = useNavigate();
-  const authInfo = useAuth();
-  const handleClick = () => {
-    if (!authInfo) {
-      const isConfirm = window.confirm(
-        '로그인이 필요한 메뉴입니다.\n로그인 페이지로 이동하시겠습니까?',
-      );
 
-      if (!isConfirm) return;
-      return navigate(getDynamicPath.login());
+  const isProductInWishList = (wishList: WishList) => {
+    const productIdNumber = parseInt(productId, 10);
+    return wishList.some((item: WishListItem) => item.product.id === productIdNumber);
+  };
+
+  const addProductToWishList = (wishList: WishList) => {
+    const newWishListItem: WishListItem = {
+      id: detail.id,
+      product: {
+        id: detail.id,
+        name: detail.name,
+        price: detail.price,
+        imageUrl: detail.imageUrl,
+      },
+    };
+    const updatedWishList = [...wishList, newWishListItem];
+    wishListSessionStorage.set(updatedWishList);
+    alert('관심 등록 완료');
+  };
+
+  const handleWishItem = () => {
+    if (!checkAuthAndRedirect()) return;
+    const currentWishList: WishList = wishListSessionStorage.get() || [];
+
+    if (isProductInWishList(currentWishList)) {
+      alert('이미 위시리스트에 등록된 상품입니다.');
+    } else {
+      addProductToWishList(currentWishList);
     }
+  };
 
+  const handleClick = () => {
+    if (!checkAuthAndRedirect()) return;
     orderHistorySessionStorage.set({
       id: parseInt(productId),
       count: parseInt(countAsString),
@@ -52,9 +76,14 @@ export const OptionSection = ({ productId }: Props) => {
         <PricingWrapper>
           총 결제 금액 <span>{totalPrice}원</span>
         </PricingWrapper>
-        <Button theme="black" size="large" onClick={handleClick}>
-          나에게 선물하기
-        </Button>
+        <ButtonWrapper>
+          <Button theme="darkGray" size="responsive" onClick={handleWishItem}>
+            ♥️ 관심 ♥️
+          </Button>
+          <Button theme="black" size="large" onClick={handleClick}>
+            나에게 선물하기
+          </Button>
+        </ButtonWrapper>
       </BottomWrapper>
     </Wrapper>
   );
@@ -73,6 +102,11 @@ const BottomWrapper = styled.div`
   padding: 12px 0 0;
 `;
 
+const ButtonWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+`;
 const PricingWrapper = styled.div`
   margin-bottom: 20px;
   padding: 18px 20px;
