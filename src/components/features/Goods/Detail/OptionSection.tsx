@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import { useMutation } from '@tanstack/react-query';
 import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -7,7 +8,9 @@ import {
   useGetProductDetail,
 } from '@/api/hooks/useGetProductDetail';
 import { useGetProductOptions } from '@/api/hooks/useGetProductOptions';
+import { fetchInstance } from '@/api/instance';
 import { Button } from '@/components/common/Button';
+import { Spacing } from '@/components/common/layouts/Spacing';
 import { useAuth } from '@/provider/Auth';
 import { getDynamicPath, RouterPath } from '@/routes/path';
 import { orderHistorySessionStorage } from '@/utils/storage';
@@ -45,6 +48,27 @@ export const OptionSection = ({ productId }: Props) => {
     navigate(RouterPath.order);
   };
 
+  const { mutate } = useMutation({
+    mutationFn: () => fetchInstance.post('/api/wishlist', { productId: productId }),
+    onSuccess: () => {
+      alert('관심 등록 완료');
+    },
+    onError: () => {
+      alert('관심 등록 실패');
+    },
+  });
+
+  const wishlist = () => {
+    if (!authInfo) {
+      const isConfirm = window.confirm(
+        '로그인이 필요한 메뉴입니다.\n로그인 페이지로 이동하시겠습니까?',
+      );
+
+      if (!isConfirm) return;
+      return navigate(getDynamicPath.login());
+    }
+    mutate();
+  };
   return (
     <Wrapper>
       <CountOptionItem name={options[0].name} value={countAsString} onChange={setCountAsString} />
@@ -52,6 +76,10 @@ export const OptionSection = ({ productId }: Props) => {
         <PricingWrapper>
           총 결제 금액 <span>{totalPrice}원</span>
         </PricingWrapper>
+        <Button theme="outline" size="large" onClick={wishlist}>
+          관심 상품 담기
+        </Button>
+        <Spacing />
         <Button theme="black" size="large" onClick={handleClick}>
           나에게 선물하기
         </Button>

@@ -7,6 +7,8 @@ import { HomePage } from '@/pages/Home';
 import { LoginPage } from '@/pages/Login';
 import { MyAccountPage } from '@/pages/MyAccount';
 import { OrderPage } from '@/pages/Order';
+import { SignUp } from '@/pages/SignUp';
+import { WishList } from '@/pages/WishList';
 
 import { PrivateRoute } from './components/PrivateRoute';
 import { RouterPath } from './path';
@@ -23,6 +25,10 @@ const router = createBrowserRouter([
       {
         path: RouterPath.category,
         element: <CategoryPage />,
+      },
+      {
+        path: RouterPath.wishlist,
+        element: <WishList />,
       },
       {
         path: RouterPath.productsDetail,
@@ -57,6 +63,10 @@ const router = createBrowserRouter([
   {
     path: RouterPath.login,
     element: <LoginPage />,
+  },
+  {
+    path: RouterPath.signUp,
+    element: <SignUp />,
   },
 ]);
 
