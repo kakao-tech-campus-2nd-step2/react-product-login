@@ -10,34 +10,39 @@ import { RouterPath } from '@/routes/path';
 import { breakpoints } from '@/styles/variants';
 import { authSessionStorage } from '@/utils/storage';
 
-export const LoginPage = () => {
+export const SignUpPage = () => {
   const [id, setId] = useState('');
   const [password, setPassword] = useState('');
   const [queryParams] = useSearchParams();
   const navigate = useNavigate();
 
-  const handleConfirm = () => {
+  const handleLogoClick = () => {
+    navigate(RouterPath.home);
+  };
+
+  const handleConfirm = async () => {
     if (!id || !password) {
       alert('아이디와 비밀번호를 입력해주세요.');
       return;
     }
 
-    // TODO: API 연동
+    try {
+      // TODO: 실제 회원가입 API 호출
 
-    // TODO: API 연동 전까지 임시 로그인 처리
-    authSessionStorage.set(id);
+      // 임시 회원가입 처리
+      authSessionStorage.set(id);
 
-    const redirectUrl = queryParams.get('redirect') ?? `${window.location.origin}/`;
-    window.location.replace(redirectUrl);
-  };
-
-  const handleSignUp = () => {
-    navigate(RouterPath.signup);
+      const redirectUrl = queryParams.get('redirect') ?? RouterPath.home;
+      navigate(redirectUrl);
+    } catch (error) {
+      console.error('failed to sign up:', error);
+      alert('회원가입을 다시 시도해주세요.');
+    }
   };
 
   return (
     <Wrapper>
-      <Logo src={KAKAO_LOGO} alt="카카오 CI" />
+      <Logo src={KAKAO_LOGO} alt="카카오 CI" onClick={handleLogoClick} />
       <FormWrapper>
         <UnderlineTextField placeholder="이름" value={id} onChange={(e) => setId(e.target.value)} />
         <Spacing />
@@ -53,9 +58,7 @@ export const LoginPage = () => {
             sm: 60,
           }}
         />
-        <Button onClick={handleConfirm}>로그인</Button>
-        <Spacing height={26} />
-        <SignUpButton onClick={handleSignUp}>회원가입</SignUpButton>
+        <Button onClick={handleConfirm}>회원가입</Button>
       </FormWrapper>
     </Wrapper>
   );
@@ -84,11 +87,4 @@ const FormWrapper = styled.article`
     border: 1px solid rgba(0, 0, 0, 0.12);
     padding: 60px 52px;
   }
-`;
-
-const SignUpButton = styled.p`
-  float: left;
-  font-size: 12px;
-  color: #191919;
-  cursor: pointer;
 `;

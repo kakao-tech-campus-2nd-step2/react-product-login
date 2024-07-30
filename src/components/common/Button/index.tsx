@@ -5,15 +5,15 @@ import { breakpoints } from '@/styles/variants';
 type Props = {
   theme?: 'kakao' | 'outline' | 'black' | 'lightGray' | 'darkGray';
   size?: 'large' | 'small' | 'responsive';
+  width?: string;
 } & React.ButtonHTMLAttributes<HTMLButtonElement>;
 
-export const Button: React.FC<Props> = ({ ...props }: Props) => {
-  return <Wrapper {...props} />;
+export const Button: React.FC<Props> = ({ width, ...props }: Props) => {
+  return <Wrapper width={width} {...props} />;
 };
 
-const Wrapper = styled.button<Pick<Props, 'theme' | 'size'>>(
+const Wrapper = styled.button<Pick<Props, 'theme' | 'size' | 'width'>>(
   {
-    width: '100%',
     borderRadius: '4px',
     display: 'flex',
     justifyContent: 'center',
@@ -100,4 +100,7 @@ const Wrapper = styled.button<Pick<Props, 'theme' | 'size'>>(
       },
     };
   },
+  ({ width = '100%' }) => ({
+    width,
+  }),
 );
