@@ -36,10 +36,11 @@ export const wishlistMockHandler = [
         return res(ctx.status(204));
     }),
     rest.get(getWishlistPath({}), (req, res, ctx) => {
-        const userId = req.url.searchParams.get('userId');
-        const page = req.url.searchParams.get('page');
-        const size = req.url.searchParams.get('size');
-        const sort = req.url.searchParams.get('sort');
+        const url = new URL(req.url);
+        const userId = url.searchParams.get('userId');
+        const page = url.searchParams.get('page');
+        const size = url.searchParams.get('size');
+        const sort = url.searchParams.get('sort');
 
         const result = wishlistMockData.filter((wish) => wish.userId === userId)
         if(page && size)

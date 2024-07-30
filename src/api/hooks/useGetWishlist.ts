@@ -1,4 +1,8 @@
+import { useQuery } from "@tanstack/react-query";
+
 import type { ProductData } from "@/types";
+
+import { BASE_URL, fetchInstance } from "../instance";
 
 interface RequestParams {
     userId?: string;
@@ -14,8 +18,8 @@ export interface WishResponseData {
     userId: string;
 }
 
-export const postWishlistPath = () => `/api/wishes`;
-export const deleteWishlistPath = (wishId: string) => `/api/wishes/${wishId}`;
+export const postWishlistPath = () => `${BASE_URL}/api/wishes`;
+export const deleteWishlistPath = (wishId: string) => `${BASE_URL}/api/wishes/${wishId}`;
 export const getWishlistPath = ({userId, page, size, sort}: RequestParams) => {
     const params = new URLSearchParams();
 
@@ -24,5 +28,18 @@ export const getWishlistPath = ({userId, page, size, sort}: RequestParams) => {
     if(size) params.append('size', size.toString());
     if(sort) params.append('sort', sort);
 
-    return `/api/wishes?${params.toString()}`;
+    if(params.size === 0) return `${BASE_URL}/api/wishes`;
+
+    return `${BASE_URL}/api/wishes?${params.toString()}`;
 } 
+
+
+const getWishlist = async (params: RequestParams) => {
+    const response = await fetchInstance.get<WishResponseData[]>(getWishlistPath(params));
+    return response.data;
+}
+export const useGetWishlist = (params: RequestParams) => 
+    useQuery({
+        queryKey: ['wishlist', params],
+        queryFn: () => getWishlist(params),
+    }) 
