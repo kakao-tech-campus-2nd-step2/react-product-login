@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
 
 import type { ProductData } from "@/types";
 
@@ -33,6 +34,20 @@ export const getWishlistPath = ({userId, page, size, sort}: RequestParams) => {
     return `${BASE_URL}/api/wishes?${params.toString()}`;
 } 
 
+export const addWishlist = async (productId: number, userId: string) => {
+    try{
+        const response = await axios.post(postWishlistPath(), {
+            productId,
+            userId,
+        });
+        if(Math.floor(response.status/100) === 2)
+            return true;
+        return false;
+    } catch (e) {
+        console.error(e);
+        return false;
+    }
+}
 
 const getWishlist = async (params: RequestParams) => {
     const response = await fetchInstance.get<WishResponseData[]>(getWishlistPath(params));
