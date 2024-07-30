@@ -1,14 +1,14 @@
 import styled from '@emotion/styled';
 import { FormProvider, useForm } from 'react-hook-form';
 
-import { Spacing } from '@/components/common/layouts/Spacing';
-import { SplitLayout } from '@/components/common/layouts/SplitLayout';
-import type { OrderFormData, OrderHistory } from '@/types';
-
 import { HEADER_HEIGHT } from '../../Layout/Header';
 import { GoodsInfo } from './GoodsInfo';
 import { OrderFormMessageCard } from './MessageCard';
 import { OrderFormOrderInfo } from './OrderInfo';
+
+import { Spacing } from '@/components/common/layouts/Spacing';
+import { SplitLayout } from '@/components/common/layouts/SplitLayout';
+import type { OrderFormData, OrderHistory } from '@/types';
 
 type Props = {
   orderHistory: OrderHistory;
@@ -50,7 +50,7 @@ export const OrderForm = ({ orderHistory }: Props) => {
 
   return (
     <FormProvider {...methods}>
-      <form action="" onSubmit={handleSubmit(handleForm)} onKeyDown={preventEnterKeySubmission}>
+      <form action="" onSubmit={handleSubmit(handleForm)} onKeyDown={preventEnterKeySubmission} role="form">
         <SplitLayout sidebar={<OrderFormOrderInfo orderHistory={orderHistory} />}>
           <Wrapper>
             <OrderFormMessageCard />
@@ -62,7 +62,6 @@ export const OrderForm = ({ orderHistory }: Props) => {
     </FormProvider>
   );
 };
-
 const validateOrderForm = (values: OrderFormData): { errorMessage?: string; isValid: boolean } => {
   if (values.hasCashReceipt) {
     if (!values.cashReceiptNumber) {

@@ -1,14 +1,14 @@
 import { Divider } from '@chakra-ui/react';
 import styled from '@emotion/styled';
 
+import { HeadingText } from '../Common/HeadingText';
+import { LabelText } from '../Common/LabelText';
+import { CashReceiptFields } from '../Fields/CashReceiptFields';
+
 import { useGetProductDetail } from '@/api/hooks/useGetProductDetail';
 import { Button } from '@/components/common/Button';
 import { Spacing } from '@/components/common/layouts/Spacing';
 import type { OrderHistory } from '@/types';
-
-import { HeadingText } from '../Common/HeadingText';
-import { LabelText } from '../Common/LabelText';
-import { CashReceiptFields } from '../Fields/CashReceiptFields';
 
 type Props = {
   orderHistory: OrderHistory;

@@ -1,8 +1,8 @@
 import styled from '@emotion/styled';
 
-import { breakpoints } from '@/styles/variants';
-
 import { DefaultGoodsItems, type DefaultGoodsItemsProps } from './Default';
+
+import { breakpoints } from '@/styles/variants';
 
 type Props = {
   rankingIndex: number;

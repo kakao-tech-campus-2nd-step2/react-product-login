@@ -17,6 +17,7 @@
     "sourceMap": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
+    "types": ["@emotion/react/types/css-prop", "jest", "@testing-library/jest-dom"],
     "noFallthroughCasesInSwitch": true,
     "incremental": true,
     "baseUrl": ".",
@@ -24,6 +25,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["src"],
+  "include": ["src", ".eslintrc.js"],
   "exclude": ["node_modules", "build", "public"]
 }

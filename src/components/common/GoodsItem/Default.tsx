@@ -9,13 +9,7 @@ export type DefaultGoodsItemsProps = {
   amount: number;
 } & React.HTMLAttributes<HTMLDivElement>;
 
-export const DefaultGoodsItems = ({
-  imageSrc,
-  subtitle,
-  title,
-  amount,
-  ...props
-}: DefaultGoodsItemsProps) => {
+export const DefaultGoodsItems = ({ imageSrc, subtitle, title, amount, ...props }: DefaultGoodsItemsProps) => {
   return (
     <Wrapper {...props}>
       <Image src={imageSrc} alt={`${title} 소개`} width="100%" ratio="square" radius={4} />
