@@ -18,7 +18,13 @@ export default ({ id, imageURL, name, price }: Props) => {
     });
   };
   return (
-    <Card direction={{ base: 'column', sm: 'row' }} overflow="hidden" variant="outline">
+    <Card
+      width="100%"
+      marginBottom="10px"
+      direction={{ base: 'column', sm: 'row' }}
+      overflow="hidden"
+      variant="outline"
+    >
       <Image
         objectFit="cover"
         maxW={{ base: '100%', sm: '200px' }}
