@@ -53,3 +53,16 @@ export type MessageCardTemplateData = {
   thumbUrl: string;
   imageUrl: string;
 };
+
+// 관심 상품 기능 관련 타입 정의
+type Product = {
+  id: number;
+  name: string;
+  price: number;
+  imageUrl: string;
+}
+
+export type InterestItem = {
+  productId: number;
+  product: Product;
+}

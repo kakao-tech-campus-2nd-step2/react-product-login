@@ -44,7 +44,7 @@ export const productsMockHandler = [
   }),
 ];
 
-const PRODUCTS_MOCK_DATA = {
+export const PRODUCTS_MOCK_DATA = {
   content: [
     {
       id: 3245119,

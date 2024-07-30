@@ -1,15 +1,14 @@
 import styled from '@emotion/styled';
+import axios from 'axios';
 import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import {
-  type ProductDetailRequestParams,
-  useGetProductDetail,
-} from '@/api/hooks/useGetProductDetail';
+import { type ProductDetailRequestParams, useGetProductDetail } from '@/api/hooks/useGetProductDetail';
 import { useGetProductOptions } from '@/api/hooks/useGetProductOptions';
 import { Button } from '@/components/common/Button';
 import { useAuth } from '@/provider/Auth';
 import { getDynamicPath, RouterPath } from '@/routes/path';
+import { type InterestItem } from '@/types';
 import { orderHistorySessionStorage } from '@/utils/storage';
 
 import { CountOptionItem } from './OptionItem/CountOptionItem';
@@ -30,7 +29,7 @@ export const OptionSection = ({ productId }: Props) => {
   const handleClick = () => {
     if (!authInfo) {
       const isConfirm = window.confirm(
-        '로그인이 필요한 메뉴입니다.\n로그인 페이지로 이동하시겠습니까?',
+        '로그인이 필요한 메뉴입니다. 로그인 페이지로 이동하시겠습니까?',
       );
 
       if (!isConfirm) return;
@@ -45,6 +44,48 @@ export const OptionSection = ({ productId }: Props) => {
     navigate(RouterPath.order);
   };
 
+  const handleInterestClick = async () => {
+    if (!authInfo) {
+      const isConfirm = window.confirm(
+        '로그인이 필요한 메뉴입니다.\n로그인 페이지로 이동하시겠습니까?',
+      );
+
+    if (!isConfirm) return;
+      return navigate(getDynamicPath.login());
+    };
+
+    try {
+      const interestItem: InterestItem = {
+        productId: parseInt(productId),
+        product: {
+          id: detail.id,
+          name: detail.name,
+          price: detail.price,
+          imageUrl: detail.imageUrl,
+        }
+      };
+
+      const response = await axios.post('/api/wishes', interestItem, {
+        headers: {
+          Authorization: `Bearer ${authInfo.token}`,
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (response.status === 201) {
+        alert('관심 상품으로 등록되었습니다.');
+      }
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        if (error.response) {
+          alert(error.response.data.message);
+        } else {
+          alert('알 수 없는 오류가 발생했습니다.');
+        }
+      }
+    }
+  };
+
   return (
     <Wrapper>
       <CountOptionItem name={options[0].name} value={countAsString} onChange={setCountAsString} />
@@ -52,9 +93,14 @@ export const OptionSection = ({ productId }: Props) => {
         <PricingWrapper>
           총 결제 금액 <span>{totalPrice}원</span>
         </PricingWrapper>
-        <Button theme="black" size="large" onClick={handleClick}>
-          나에게 선물하기
-        </Button>
+        <ButtonWrapper>
+          <Button theme="black" size="small" onClick={handleInterestClick} >
+            관심 상품 추가
+          </Button>
+          <Button theme="black" size="large" onClick={handleClick}>
+            나에게 선물하기
+          </Button>
+        </ButtonWrapper>
       </BottomWrapper>
     </Wrapper>
   );
@@ -90,4 +136,10 @@ const PricingWrapper = styled.div`
     font-size: 20px;
     letter-spacing: -0.02em;
   }
+`;
+
+const ButtonWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 `;

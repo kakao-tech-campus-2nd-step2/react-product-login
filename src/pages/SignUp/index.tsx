@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { useState } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import { BASE_URL } from '@/api/instance';
 import KAKAO_LOGO from '@/assets/kakao_logo.svg';
@@ -10,37 +10,34 @@ import { Spacing } from '@/components/common/layouts/Spacing';
 import { breakpoints } from '@/styles/variants';
 import { authSessionStorage } from '@/utils/storage';
 
-export const LoginPage = () => {
+export const SignUpPage = () => {
   const [id, setId] = useState('');
   const [password, setPassword] = useState('');
-  const [queryParams] = useSearchParams();
   const navigate = useNavigate();
 
-  const handleLogin = async () => {
+  const handleSignUp = async () => {
     if (!id || !password) {
-      alert('아이디와 비밀번호를 입력해주세요.');
+      alert('이메일과 비밀번호를 입력해주세요.');
       return;
     }
 
     try {
-      const response = await fetch(`${BASE_URL}/api/members/login`, {
+      const response = await fetch(`${BASE_URL}/api/members/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        // JSON 형식의 문자열로 변환
-        body: JSON.stringify({ id: id, password }),
+        body: JSON.stringify({ id, password }),
       });
 
       if (!response.ok) {
-        throw new Error('로그인에 실패했습니다. 아이디나 비밀번호를 확인해주세요.');
+        const errorData = await response.json();
+        throw new Error(errorData.message || '회원가입에 실패했습니다.');
       }
 
       const data = await response.json();
       authSessionStorage.set(data.id);
-
-      const redirectUrl = queryParams.get('redirect') ?? `${window.location.origin}/`;
-      return window.location.replace(redirectUrl);
+      window.location.replace('/');
     } 
     
     catch (error) {
@@ -52,11 +49,15 @@ export const LoginPage = () => {
     <Wrapper>
       <Logo src={KAKAO_LOGO} alt="카카고 CI" />
       <FormWrapper>
-        <UnderlineTextField placeholder="아이디" value={id} onChange={(e) => setId(e.target.value)} />
+        <UnderlineTextField
+          placeholder="사용할 아이디를 입력해주세요."
+          value={id}
+          onChange={(e) => setId(e.target.value)}
+        />
         <Spacing />
         <UnderlineTextField
           type="password"
-          placeholder="비밀번호"
+          placeholder="사용할 비밀번호를 입력해주세요."
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
@@ -67,9 +68,8 @@ export const LoginPage = () => {
             sm: 60,
           }}
         />
-        <Button onClick={handleLogin}>로그인</Button>
-        <Spacing height={20} />
-        <Button onClick={() => navigate('/signup')}>회원 가입</Button>
+        <ButtonStyled onClick={handleSignUp}>회원가입</ButtonStyled>
+        <LoginButton onClick={() => navigate('/login')}>로그인 페이지로 이동</LoginButton>
       </FormWrapper>
     </Wrapper>
   );
@@ -82,20 +82,53 @@ const Wrapper = styled.div`
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  background-color: #f7f9fc;
 `;
 
 const Logo = styled.img`
-  width: 88px;
+  width: 100px;
+  margin-bottom: 20px;
   color: #333;
 `;
 
 const FormWrapper = styled.article`
   width: 100%;
-  max-width: 580px;
-  padding: 16px;
+  max-width: 480px;
+  padding: 40px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 
   @media screen and (min-width: ${breakpoints.sm}) {
     border: 1px solid rgba(0, 0, 0, 0.12);
-    padding: 60px 52px;
+  }
+`;
+
+const ButtonStyled = styled(Button)`
+  width: 100%;
+  background-color: #fee500;
+  color: #000;
+  padding: 12px 0;
+  border-radius: 4px;
+  font-size: 16px;
+  font-weight: bold;
+
+  &:hover {
+    background-color: #fee50067;
+  }
+`;
+
+const LoginButton = styled(Button)`
+  width: 100%;
+  background-color: #eaeaea;
+  color: #333;
+  margin-top: 20px;
+  padding: 12px 0;
+  border-radius: 4px;
+  font-size: 16px;
+  font-weight: bold;
+
+  &:hover {
+    background-color: #d5d5d5;
   }
 `;
