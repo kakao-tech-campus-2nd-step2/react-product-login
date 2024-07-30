@@ -20,6 +20,7 @@ export const OptionSection = ({ productId }: Props) => {
   const { data: detail } = useGetProductDetail({ productId });
   const { data: options } = useGetProductOptions({ productId });
 
+  const [isWish, setIsWish] = useState(false);
   const [countAsString, setCountAsString] = useState('1');
   const totalPrice = useMemo(() => {
     return detail.price * Number(countAsString);
@@ -30,8 +31,17 @@ export const OptionSection = ({ productId }: Props) => {
   const authInfo = useAuth();
 
   const handleWishClick = () => {
-    // 위시 색깔 바꾸고
-    // 위시 등록/삭제 api 요청
+    if (!isWish) {
+      // 위시 등록 api 요청
+
+      alert('위시에 담았어요!');
+    } else {
+      // 위시 삭제 api 요청
+
+      alert('취소! 위시에서 삭제할게요.');
+    }
+
+    setIsWish(!isWish);
   };
 
   const handleOrderClick = () => {
