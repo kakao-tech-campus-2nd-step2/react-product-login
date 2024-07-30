@@ -8,6 +8,7 @@ import { LoginPage } from '@/pages/Login';
 import { MyAccountPage } from '@/pages/MyAccount';
 import { OrderPage } from '@/pages/Order';
 import { SignUpPage } from '@/pages/SignUp';
+import { WishPage } from '@/pages/Wish';
 
 import { PrivateRoute } from './components/PrivateRoute';
 import { RouterPath } from './path';
@@ -46,6 +47,16 @@ const router = createBrowserRouter([
           {
             path: RouterPath.order,
             element: <OrderPage />,
+          },
+        ],
+      },
+      {
+        path: RouterPath.wish,
+        element: <PrivateRoute />,
+        children: [
+          {
+            path: RouterPath.wish,
+            element: <WishPage />,
           },
         ],
       },
