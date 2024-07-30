@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import KAKAO_LOGO from '@/assets/kakao_logo.svg';
 import { Button } from '@/components/common/Button';
@@ -13,6 +13,7 @@ export const LoginPage = () => {
   const [id, setId] = useState('');
   const [password, setPassword] = useState('');
   const [queryParams] = useSearchParams();
+  const navigate = useNavigate();
 
   const handleConfirm = () => {
     if (!id || !password) {
@@ -23,15 +24,20 @@ export const LoginPage = () => {
     // TODO: API 연동
 
     // TODO: API 연동 전까지 임시 로그인 처리
+    alert('로그인 성공!');
     authSessionStorage.set(id);
 
     const redirectUrl = queryParams.get('redirect') ?? `${window.location.origin}/`;
     return window.location.replace(redirectUrl);
   };
 
+  const handleSignUp = () => {
+    navigate('/signUp');
+  };
+
   return (
     <Wrapper>
-      <Logo src={KAKAO_LOGO} alt="카카고 CI" />
+      <Logo src={KAKAO_LOGO} alt="카카오 CI" />
       <FormWrapper>
         <UnderlineTextField placeholder="이름" value={id} onChange={(e) => setId(e.target.value)} />
         <Spacing />
@@ -49,6 +55,8 @@ export const LoginPage = () => {
           }}
         />
         <Button onClick={handleConfirm}>로그인</Button>
+        <Spacing height={20} />
+        <Button onClick={handleSignUp}>회원가입</Button>
       </FormWrapper>
     </Wrapper>
   );

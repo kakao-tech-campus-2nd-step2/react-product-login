@@ -2,11 +2,13 @@ import { createBrowserRouter, Navigate, RouterProvider } from 'react-router-dom'
 
 import { Layout } from '@/components/features/Layout';
 import { CategoryPage } from '@/pages/Category';
+import FavoritesPage from '@/pages/FavoritesPage'; // 올바르게 import
 import { GoodsDetailPage } from '@/pages/Goods/Detail';
 import { HomePage } from '@/pages/Home';
 import { LoginPage } from '@/pages/Login';
 import { MyAccountPage } from '@/pages/MyAccount';
 import { OrderPage } from '@/pages/Order';
+import SignUpPage from '@/pages/SignUp';
 
 import { PrivateRoute } from './components/PrivateRoute';
 import { RouterPath } from './path';
@@ -49,6 +51,16 @@ const router = createBrowserRouter([
         ],
       },
       {
+        path: RouterPath.favorites, // favorites 경로 추가
+        element: <PrivateRoute />,
+        children: [
+          {
+            path: RouterPath.favorites,
+            element: <FavoritesPage />,
+          },
+        ],
+      },
+      {
         path: RouterPath.notFound,
         element: <Navigate to={RouterPath.home} />,
       },
@@ -57,6 +69,10 @@ const router = createBrowserRouter([
   {
     path: RouterPath.login,
     element: <LoginPage />,
+  },
+  {
+    path: RouterPath.signUp,
+    element: <SignUpPage />,
   },
 ]);
 
