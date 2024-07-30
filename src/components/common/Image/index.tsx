@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import React from 'react';
 
 type Props = {
   radius?: 'circle' | number;

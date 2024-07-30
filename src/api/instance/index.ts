@@ -22,6 +22,14 @@ export const fetchInstance = initInstance({
   baseURL: 'https://api.example.com',
 });
 
+export const fetchInstanceWithAuth = (token?: string) =>
+  initInstance({
+    baseURL: 'https://api.example.com',
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
 export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
