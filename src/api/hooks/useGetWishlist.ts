@@ -3,7 +3,7 @@ import axios from "axios";
 
 import type { ProductData } from "@/types";
 
-import { BASE_URL, fetchInstance } from "../instance";
+import { BASE_URL, fetchInstance, queryClient } from "../instance";
 
 interface RequestParams {
     userId?: string;
@@ -42,6 +42,19 @@ export const addWishlist = async (productId: number, userId: string) => {
         });
         if(Math.floor(response.status/100) === 2)
             return true;
+        return false;
+    } catch (e) {
+        console.error(e);
+        return false;
+    }
+}
+export const deleteWishlist = async (wishId: string) => {
+    try{
+        const response = await axios.delete(deleteWishlistPath(wishId));
+        if(Math.floor(response.status/100) === 2){
+            queryClient.invalidateQueries({ queryKey: ['wishlist'] });
+            return true;
+        }
         return false;
     } catch (e) {
         console.error(e);

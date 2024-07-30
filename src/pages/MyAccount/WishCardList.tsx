@@ -29,6 +29,7 @@ export default () => {
         {data.map(({ id, product }) => (
           <WishCard
             key={id}
+            id={id}
             imageURL={product.imageUrl}
             name={product.name}
             price={product.price}

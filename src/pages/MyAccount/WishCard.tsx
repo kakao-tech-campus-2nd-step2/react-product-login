@@ -1,12 +1,22 @@
-import { Card, CardBody, Heading, Image, Text } from '@chakra-ui/react';
+import { DeleteIcon } from '@chakra-ui/icons';
+import { Button, Card, CardBody, CardFooter, Heading, Image, Text } from '@chakra-ui/react';
+
+import { deleteWishlist } from '@/api/hooks/useGetWishlist';
 
 interface Props {
+  id: number;
   imageURL: string;
   name: string;
   price: number;
 }
 
-export default ({ imageURL, name, price }: Props) => {
+export default ({ id, imageURL, name, price }: Props) => {
+  const deleteWish = () => {
+    deleteWishlist(String(id)).then((result) => {
+      if (result) alert('관심 삭제 완료');
+      else alert('관심 삭제 실패');
+    });
+  };
   return (
     <Card direction={{ base: 'column', sm: 'row' }} overflow="hidden" variant="outline">
       <Image
@@ -21,6 +31,11 @@ export default ({ imageURL, name, price }: Props) => {
 
         <Text py="2">{price}원</Text>
       </CardBody>
+      <CardFooter>
+        <Button onClick={deleteWish} colorScheme="red" size="sm">
+          <DeleteIcon />
+        </Button>
+      </CardFooter>
     </Card>
   );
 };

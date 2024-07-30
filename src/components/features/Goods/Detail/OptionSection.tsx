@@ -47,7 +47,7 @@ export const OptionSection = ({ productId }: Props) => {
     navigate(RouterPath.order);
   };
 
-  const handleAddWish = () => {
+  const addWish = () => {
     if (!authInfo) return;
     addWishlist(Number(productId), authInfo.id).then((result) => {
       if (result) alert('관심 등록 완료');
@@ -63,7 +63,7 @@ export const OptionSection = ({ productId }: Props) => {
           총 결제 금액 <span>{totalPrice}원</span>
         </PricingWrapper>
         <ButtonWrapper>
-          <Button theme="darkGray" onClick={handleAddWish}>
+          <Button theme="darkGray" onClick={addWish}>
             <StarIcon />
           </Button>
           <Button theme="black" size="large" onClick={handleClick}>
