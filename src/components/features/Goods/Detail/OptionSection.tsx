@@ -26,8 +26,15 @@ export const OptionSection = ({ productId }: Props) => {
   }, [detail, countAsString]);
 
   const navigate = useNavigate();
+
   const authInfo = useAuth();
-  const handleClick = () => {
+
+  const handleWishClick = () => {
+    // 위시 색깔 바꾸고
+    // 위시 등록/삭제 api 요청
+  };
+
+  const handleOrderClick = () => {
     if (!authInfo) {
       const isConfirm = window.confirm(
         '로그인이 필요한 메뉴입니다.\n로그인 페이지로 이동하시겠습니까?',
@@ -52,9 +59,14 @@ export const OptionSection = ({ productId }: Props) => {
         <PricingWrapper>
           총 결제 금액 <span>{totalPrice}원</span>
         </PricingWrapper>
-        <Button theme="black" size="large" onClick={handleClick}>
-          나에게 선물하기
-        </Button>
+        <ButtonBox>
+          <Button theme="darkGray" width="60px" onClick={handleWishClick}>
+            하트
+          </Button>
+          <Button theme="black" size="large" onClick={handleOrderClick}>
+            나에게 선물하기
+          </Button>
+        </ButtonBox>
       </BottomWrapper>
     </Wrapper>
   );
@@ -90,4 +102,11 @@ const PricingWrapper = styled.div`
     font-size: 20px;
     letter-spacing: -0.02em;
   }
+`;
+
+const ButtonBox = styled.div`
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+  gap: 2px;
 `;
