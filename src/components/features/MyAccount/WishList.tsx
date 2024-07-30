@@ -1,6 +1,5 @@
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
-import { useEffect, useState } from 'react';
 
 import { useDeleteWishs } from '@/api/hooks/useDeleteWish';
 import { useGetWishList } from '@/api/hooks/useGetWishList';
@@ -9,30 +8,18 @@ import { DefaultGoodsItems } from '@/components/common/GoodsItem/Default';
 import { Container } from '@/components/common/layouts/Container';
 import { Grid } from '@/components/common/layouts/Grid';
 import { LoadingView } from '@/components/common/View/LoadingView';
-import { VisibilityLoader } from '@/components/common/VisibilityLoader';
 import { breakpoints } from '@/styles/variants';
-import type { WishListData } from '@/types';
-import { wishListSessionStorage } from '@/utils/storage';
 
 export const WishList = () => {
-  const { data, isError, isLoading, hasNextPage, fetchNextPage, isFetchingNextPage } = useGetWishList({
+  const { data, isError, isLoading } = useGetWishList({
     maxResults: 10,
     initPageToken: 'undefined',
   });
   const { mutate: deleteWish } = useDeleteWishs();
-  const [wishList, setWishList] = useState<WishListData[]>([]);
-
-  useEffect(() => {
-    const wishListStorage = wishListSessionStorage.get() || [];
-    setWishList(wishListStorage);
-  }, []);
 
   const handleDeleteWish = (id: number) => {
     deleteWish(id, {
       onSuccess: () => {
-        const deleteList = wishList.filter((item) => item.id !== id);
-        setWishList(deleteList);
-        wishListSessionStorage.set(deleteList);
         alert('삭제 완료');
       },
       onError: (error) => {
@@ -44,7 +31,7 @@ export const WishList = () => {
   if (isError) return <TextView>에러가 발생했습니다.</TextView>;
   if (!data) return <></>;
   if (data.pages[0].products.length <= 0) return <TextView>위시리스트가 없어요.</TextView>;
-
+  const flattenWishList = data.pages.map((page) => page?.products ?? []).flat();
   return (
     <Wrapper>
       <Title>Wish List</Title>
@@ -56,7 +43,7 @@ export const WishList = () => {
           }}
           gap={16}
         >
-          {wishList.map(({ id, product }) => (
+          {flattenWishList.map(({ id, product }) => (
             <div
               key={id}
               css={css`
@@ -76,15 +63,6 @@ export const WishList = () => {
             </div>
           ))}
         </Grid>
-        {hasNextPage && (
-          <VisibilityLoader
-            callback={() => {
-              if (!isFetchingNextPage) {
-                fetchNextPage();
-              }
-            }}
-          />
-        )}
       </Container>
     </Wrapper>
   );

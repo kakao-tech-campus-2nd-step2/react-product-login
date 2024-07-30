@@ -11,8 +11,7 @@ import { usePostWishs } from '@/api/hooks/usePostWishs';
 import { Button } from '@/components/common/Button';
 import { useAuth } from '@/provider/Auth';
 import { getDynamicPath, RouterPath } from '@/routes/path';
-import type { WishListData } from '@/types';
-import { orderHistorySessionStorage, wishListSessionStorage } from '@/utils/storage';
+import { orderHistorySessionStorage } from '@/utils/storage';
 
 type Props = ProductDetailRequestParams;
 
@@ -27,8 +26,6 @@ export const OptionSection = ({ productId }: Props) => {
 
   const navigate = useNavigate();
   const authInfo = useAuth();
-
-  const likeCount = 36293;
   const { mutate: postWishs } = usePostWishs();
 
   const handleClick = () => {
@@ -54,20 +51,8 @@ export const OptionSection = ({ productId }: Props) => {
       if (!isConfirm) return;
       return navigate(getDynamicPath.login());
     }
-    const currentWishList: WishListData[] = wishListSessionStorage.get() || [];
-    const newWishItem: WishListData = {
-      id: detail.id,
-      product: {
-        id: detail.id,
-        name: detail.name,
-        price: detail.price,
-        imageUrl: detail.imageUrl,
-      },
-    };
     postWishs(Number(productId), {
       onSuccess: () => {
-        const addWishList = [...currentWishList, newWishItem];
-        wishListSessionStorage.set(addWishList);
         alert('관심 등록 완료');
       },
       onError: (error) => {
@@ -75,7 +60,6 @@ export const OptionSection = ({ productId }: Props) => {
       },
     });
   };
-
   return (
     <Wrapper>
       <CountOptionItem name={options[0].name} value={countAsString} onChange={setCountAsString} />
@@ -86,7 +70,6 @@ export const OptionSection = ({ productId }: Props) => {
         <ButtonWrapper>
           <CustomButton onClick={handleWishClick}>
             <VscHeart size={30} />
-            <span>{likeCount}</span>
           </CustomButton>
           <Button theme="black" size="large" onClick={handleClick}>
             나에게 선물하기
