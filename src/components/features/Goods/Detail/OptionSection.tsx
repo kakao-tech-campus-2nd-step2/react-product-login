@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import { useMemo, useState } from 'react';
+import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
 import { useNavigate } from 'react-router-dom';
 
 import {
@@ -27,7 +28,6 @@ export const OptionSection = ({ productId }: Props) => {
   }, [detail, countAsString]);
 
   const navigate = useNavigate();
-
   const authInfo = useAuth();
 
   const handleWishClick = () => {
@@ -71,7 +71,11 @@ export const OptionSection = ({ productId }: Props) => {
         </PricingWrapper>
         <ButtonBox>
           <Button theme="darkGray" width="60px" onClick={handleWishClick}>
-            하트
+            {isWish ? (
+              <AiFillHeart style={{ color: 'rgb(241, 42, 36)', fontSize: '24px' }} />
+            ) : (
+              <AiOutlineHeart style={{ color: '#fff', fontSize: '24px' }} />
+            )}
           </Button>
           <Button theme="black" size="large" onClick={handleOrderClick}>
             나에게 선물하기
