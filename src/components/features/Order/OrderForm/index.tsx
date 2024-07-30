@@ -1,4 +1,6 @@
 import styled from '@emotion/styled';
+import React from 'react';
+//import { useFormContext } from 'react-hook-form';
 import { FormProvider, useForm } from 'react-hook-form';
 
 import { Spacing } from '@/components/common/layouts/Spacing';
@@ -26,7 +28,9 @@ export const OrderForm = ({ orderHistory }: Props) => {
       hasCashReceipt: false,
     },
   });
-  const { handleSubmit } = methods;
+  const { handleSubmit, register, watch } = methods;
+
+  const hasCashReceipt = watch('hasCashReceipt');
 
   const handleForm = (values: OrderFormData) => {
     const { errorMessage, isValid } = validateOrderForm(values);
@@ -40,7 +44,6 @@ export const OrderForm = ({ orderHistory }: Props) => {
     alert('주문이 완료되었습니다.');
   };
 
-  // Submit 버튼을 누르면 form이 제출되는 것을 방지하기 위한 함수
   const preventEnterKeySubmission = (e: React.KeyboardEvent<HTMLFormElement>) => {
     const target = e.target as HTMLFormElement;
     if (e.key === 'Enter' && !['TEXTAREA'].includes(target.tagName)) {
@@ -56,6 +59,26 @@ export const OrderForm = ({ orderHistory }: Props) => {
             <OrderFormMessageCard />
             <Spacing height={8} backgroundColor="#ededed" />
             <GoodsInfo orderHistory={orderHistory} />
+
+            <label>
+              <input type="checkbox" {...register('hasCashReceipt')} />
+              현금영수증
+            </label>
+            <label>
+              <select {...register('cashReceiptType')} disabled={!hasCashReceipt}>
+                <option value="">현금영수증 종류</option>
+                <option value="PERSONAL">개인</option>
+                <option value="BUSINESS">사업자</option>
+              </select>
+            </label>
+            <label>
+              <input
+                type="text"
+                {...register('cashReceiptNumber')}
+                disabled={!hasCashReceipt}
+                placeholder="현금영수증 번호"
+              />
+            </label>
           </Wrapper>
         </SplitLayout>
       </form>
