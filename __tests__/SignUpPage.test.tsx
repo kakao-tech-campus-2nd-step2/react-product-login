@@ -1,7 +1,10 @@
-import { fireEvent,render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import { SignUpPage } from '@/pages/SignUp';
+
+const queryClient = new QueryClient();
 
 beforeAll(() => {
   global.alert = jest.fn();
@@ -14,7 +17,9 @@ afterAll(() => {
 test('id 미입력 시 alert 창 뜨는지', () => {
   render(
     <MemoryRouter>
-      <SignUpPage />
+      <QueryClientProvider client={queryClient}>
+        <SignUpPage />
+      </QueryClientProvider>
     </MemoryRouter>,
   );
 
