@@ -7,6 +7,7 @@ import KAKAO_LOGO from '@/assets/kakao_logo.svg';
 import { Button } from '@/components/common/Button';
 import { UnderlineTextField } from '@/components/common/Form/Input/UnderlineTextField';
 import { Spacing } from '@/components/common/layouts/Spacing';
+import { useAuth } from '@/provider/Auth';
 import { RouterPath } from '@/routes/path';
 import { breakpoints } from '@/styles/variants';
 import { authSessionStorage } from '@/utils/storage';
@@ -15,6 +16,7 @@ export const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [queryParams] = useSearchParams();
+  const { login } = useAuth()
 
   const handleConfirm = async () => {
     if (!email || !password) {
@@ -28,7 +30,8 @@ export const LoginPage = () => {
         email, password
       });
       const { token } = response.data;
-      authSessionStorage.set(token);
+      await login(token, email, password)
+      // authSessionStorage.set(token);
 
       const redirectUrl = queryParams.get('redirect') ?? `${window.location.origin}/`;
       return window.location.replace(redirectUrl);
