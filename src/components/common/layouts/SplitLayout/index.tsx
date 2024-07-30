@@ -8,15 +8,25 @@ import { Container } from '../Container';
 type Props = {
   children: React.ReactNode;
   sidebar: React.ReactNode;
+  isSidebarOnLeft?: boolean;
 };
 
-export const SplitLayout = ({ children, sidebar }: Props) => {
+export const SplitLayout = ({ children, sidebar, isSidebarOnLeft = false }: Props) => {
   return (
     <Wrapper>
       <Container maxWidth={breakpoints.lg}>
         <Inner>
-          <Main>{children}</Main>
-          <Sidebar>{sidebar}</Sidebar>
+          {isSidebarOnLeft ? (
+            <>
+              <Sidebar>{sidebar}</Sidebar>
+              <Main>{children}</Main>
+            </>
+          ) : (
+            <>
+              <Main>{children}</Main>
+              <Sidebar>{sidebar}</Sidebar>
+            </>
+          )}
         </Inner>
       </Container>
     </Wrapper>
