@@ -1,5 +1,6 @@
-import { render, screen, fireEvent } from '@testing-library/react';
+import { fireEvent,render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
+
 import { SignUpPage } from '@/pages/SignUp';
 
 beforeAll(() => {

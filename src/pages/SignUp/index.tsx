@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import { useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
+import { useSignupUser } from '@/api/hooks/useSignupUser';
 import KAKAO_LOGO from '@/assets/kakao_logo.svg';
 import { Button } from '@/components/common/Button';
 import { UnderlineTextField } from '@/components/common/Form/Input/UnderlineTextField';
@@ -10,10 +11,11 @@ import { breakpoints } from '@/styles/variants';
 import { authSessionStorage } from '@/utils/storage';
 
 export const SignUpPage = () => {
-  const [id, SetId] = useState('');
+  const [id, setId] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [queryParams] = useSearchParams();
+  const mutation = useSignupUser();
 
   const handleConfirm = () => {
     if (!id) {
@@ -25,10 +27,19 @@ export const SignUpPage = () => {
       return;
     }
 
-    authSessionStorage.set(id);
-
-    const redirectUrl = queryParams.get('redirect') ?? `${window.location.origin}/`;
-    return window.location.replace(redirectUrl);
+    mutation.mutate(
+      { id, email, password },
+      {
+        onSuccess: () => {
+          authSessionStorage.set(id);
+          const redirectUrl = queryParams.get('redirect') ?? `${window.location.origin}/`;
+          window.location.replace(redirectUrl);
+        },
+        onError: () => {
+          alert('회원가입 중 오류가 발생했습니다.');
+        },
+      },
+    );
   };
 
   return (
@@ -38,7 +49,7 @@ export const SignUpPage = () => {
         <UnderlineTextField
           placeholder="아이디"
           value={id}
-          onChange={(e) => SetId(e.target.value)}
+          onChange={(e) => setId(e.target.value)}
         />
         <UnderlineTextField
           placeholder="이메일"
@@ -52,13 +63,7 @@ export const SignUpPage = () => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-
-        <Spacing
-          height={{
-            initial: 40,
-            sm: 60,
-          }}
-        />
+        <Spacing height={{ initial: 40, sm: 60 }} />
         <Button onClick={handleConfirm}>회원가입</Button>
       </FormWrapper>
     </Wrapper>

@@ -7,6 +7,7 @@ import {
   useGetProductDetail,
 } from '@/api/hooks/useGetProductDetail';
 import { useGetProductOptions } from '@/api/hooks/useGetProductOptions';
+import { usePostWish } from '@/api/hooks/usePostWish';
 import { Button } from '@/components/common/Button';
 import { useAuth } from '@/provider/Auth';
 import { getDynamicPath, RouterPath } from '@/routes/path';
@@ -28,6 +29,8 @@ export const OptionSection = ({ productId }: Props) => {
 
   const navigate = useNavigate();
   const authInfo = useAuth();
+  const { mutate: postWish } = usePostWish();
+
   const handleClick = () => {
     if (!authInfo) {
       const isConfirm = window.confirm(
@@ -56,17 +59,12 @@ export const OptionSection = ({ productId }: Props) => {
       return navigate(getDynamicPath.login());
     }
     try {
-      await fetch('/api/wishes', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ productId }),
-      });
+      await postWish({ productId });
       setWishAdded(true);
       alert('관심 등록 완료');
     } catch (error) {
       console.error('관심 등록 실패', error);
+      alert('관심 등록 실패');
     }
   };
 
