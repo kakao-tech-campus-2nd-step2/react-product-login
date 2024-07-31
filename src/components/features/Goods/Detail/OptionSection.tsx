@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import { useMemo, useState } from 'react';
+import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
 import { useNavigate } from 'react-router-dom';
 
 import {
@@ -8,6 +9,7 @@ import {
 } from '@/api/hooks/useGetProductDetail';
 import { useGetProductOptions } from '@/api/hooks/useGetProductOptions';
 import { Button } from '@/components/common/Button';
+import { useWish } from '@/hooks/useWish';
 import { useAuth } from '@/provider/Auth';
 import { getDynamicPath, RouterPath } from '@/routes/path';
 import { orderHistorySessionStorage } from '@/utils/storage';
@@ -26,8 +28,12 @@ export const OptionSection = ({ productId }: Props) => {
   }, [detail, countAsString]);
 
   const navigate = useNavigate();
+
   const authInfo = useAuth();
-  const handleClick = () => {
+
+  const { isWish, handleWishClick } = useWish();
+
+  const handleOrderClick = () => {
     if (!authInfo) {
       const isConfirm = window.confirm(
         '로그인이 필요한 메뉴입니다.\n로그인 페이지로 이동하시겠습니까?',
@@ -52,9 +58,18 @@ export const OptionSection = ({ productId }: Props) => {
         <PricingWrapper>
           총 결제 금액 <span>{totalPrice}원</span>
         </PricingWrapper>
-        <Button theme="black" size="large" onClick={handleClick}>
-          나에게 선물하기
-        </Button>
+        <ButtonBox>
+          <Button theme="darkGray" width="60px" onClick={handleWishClick}>
+            {isWish ? (
+              <AiFillHeart style={{ color: 'rgb(241, 42, 36)', fontSize: '24px' }} />
+            ) : (
+              <AiOutlineHeart style={{ color: '#fff', fontSize: '24px' }} />
+            )}
+          </Button>
+          <Button theme="black" size="large" onClick={handleOrderClick}>
+            나에게 선물하기
+          </Button>
+        </ButtonBox>
       </BottomWrapper>
     </Wrapper>
   );
@@ -90,4 +105,11 @@ const PricingWrapper = styled.div`
     font-size: 20px;
     letter-spacing: -0.02em;
   }
+`;
+
+const ButtonBox = styled.div`
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+  gap: 2px;
 `;

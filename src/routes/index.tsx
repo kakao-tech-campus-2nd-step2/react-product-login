@@ -7,6 +7,8 @@ import { HomePage } from '@/pages/Home';
 import { LoginPage } from '@/pages/Login';
 import { MyAccountPage } from '@/pages/MyAccount';
 import { OrderPage } from '@/pages/Order';
+import { SignUpPage } from '@/pages/SignUp';
+import { WishPage } from '@/pages/Wish';
 
 import { PrivateRoute } from './components/PrivateRoute';
 import { RouterPath } from './path';
@@ -49,6 +51,16 @@ const router = createBrowserRouter([
         ],
       },
       {
+        path: RouterPath.wish,
+        element: <PrivateRoute />,
+        children: [
+          {
+            path: RouterPath.wish,
+            element: <WishPage />,
+          },
+        ],
+      },
+      {
         path: RouterPath.notFound,
         element: <Navigate to={RouterPath.home} />,
       },
@@ -58,6 +70,7 @@ const router = createBrowserRouter([
     path: RouterPath.login,
     element: <LoginPage />,
   },
+  { path: RouterPath.signup, element: <SignUpPage /> },
 ]);
 
 export const Routes = () => {
