@@ -16,7 +16,14 @@ export const CashReceiptFields = () => {
         control={control}
         name="hasCashReceipt"
         render={({ field: { onChange, value, ref } }) => (
-          <Checkbox ref={ref} onChange={onChange} isChecked={value} colorScheme="yellow" size="lg">
+          <Checkbox
+            ref={ref}
+            onChange={onChange}
+            isChecked={value}
+            colorScheme="yellow"
+            size="lg"
+            data-testid="cash-receipt-checkbox" // 확인
+          >
             <LabelText>현금영수증 신청</LabelText>
           </Checkbox>
         )}
@@ -27,14 +34,20 @@ export const CashReceiptFields = () => {
         control={control}
         name="cashReceiptType"
         render={({ field }) => (
-          <Select {...field}>
+          <Select {...field} data-testid="cash-receipt-type">
+            {' '}
+            // 확인
             <option value="PERSONAL">개인소득공제</option>
             <option value="BUSINESS">사업자증빙용</option>
           </Select>
         )}
       />
       <Spacing height={8} />
-      <Input {...register('cashReceiptNumber')} placeholder="(-없이) 숫자만 입력해주세요." />
+      <Input
+        {...register('cashReceiptNumber')}
+        placeholder="(-없이) 숫자만 입력해주세요."
+        data-testid="cash-receipt-number" // 확인
+      />
     </Wrapper>
   );
 };

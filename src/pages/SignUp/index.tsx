@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { useState } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import { BASE_URL } from '@/api/instance';
 import KAKAO_LOGO from '@/assets/kakao_logo.svg';
@@ -9,54 +9,49 @@ import { UnderlineTextField } from '@/components/common/Form/Input/UnderlineText
 import { Spacing } from '@/components/common/layouts/Spacing';
 import { breakpoints } from '@/styles/variants';
 import { authSessionStorage } from '@/utils/storage';
-export const LoginPage = () => {
-  const [id, setId] = useState('');
-  const [password, setPassword] = useState('');
-  const [queryParams] = useSearchParams();
 
+export const SignUpPage = () => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
-  const handleConfirm = async () => {
-    if (!id || !password) {
-      alert('아이디와 비밀번호를 입력해주세요.');
+  const handleSignUp = async () => {
+    if (!email || !password) {
+      alert('이메일과 비밀번호를 입력해주세요.');
       return;
     }
 
     try {
-      const response = await fetch(`${BASE_URL}/api/members/login`, {
+      const response = await fetch(`${BASE_URL}/api/members/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email: id, password }),
+        body: JSON.stringify({ email, password }),
       });
 
       if (!response.ok) {
-        throw new Error('로그인에 실패했습니다. 아이디나 비밀번호를 확인해주세요.');
+        const errorData = await response.json();
+        throw new Error(errorData.message || '회원가입에 실패했습니다.');
       }
 
       const data = await response.json();
-      authSessionStorage.set(data.token); // 로그인 성공 시 토큰 저장
-
-      const redirectUrl = queryParams.get('redirect') ?? `${window.location.origin}/`;
-      return window.location.replace(redirectUrl);
+      authSessionStorage.set(data.token); // 회원가입 성공 시 토큰 저장
+      window.location.replace('/'); // 메인 페이지로 리다이렉트
     } catch (error) {
       alert(error);
     }
   };
 
-  const handleSignup = () => {
-    navigate('/signup');
-  };
-
   return (
     <Wrapper>
+      <h6>회원가입 페이지</h6>
       <Logo src={KAKAO_LOGO} alt="카카고 CI" />
       <FormWrapper>
         <UnderlineTextField
-          placeholder="이메일" // ID를 이메일로 변경
-          value={id}
-          onChange={(e) => setId(e.target.value)}
+          placeholder="이메일"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
         />
         <Spacing />
         <UnderlineTextField
@@ -72,8 +67,8 @@ export const LoginPage = () => {
             sm: 60,
           }}
         />
-        <Button onClick={handleConfirm}>로그인</Button>
-        <RegButton onClick={handleSignup}>회원가입</RegButton>
+        <Button onClick={handleSignUp}>회원가입</Button>
+        <RegButton onClick={() => navigate('/login')}>로그인 페이지로 이동</RegButton>
       </FormWrapper>
     </Wrapper>
   );
