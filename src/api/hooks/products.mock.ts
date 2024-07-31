@@ -7,18 +7,16 @@ import { getProductsPath } from './useGetProducts';
 export const productsMockHandler = [
   rest.get(getProductsPath({ categoryId: '2920' }), (req, res, ctx) => {
     const categoryId = req.url.searchParams.get('categoryId');
-    const maxResults = req.url.searchParams.get('size') || '20';
 
-    if (categoryId === '2920' && maxResults === '20') {
+    if (categoryId === '2920') {
       return res(ctx.json(PRODUCTS_MOCK_DATA));
     }
     return res(ctx.status(404));
   }),
   rest.get(getProductsPath({ categoryId: '2930' }), (req, res, ctx) => {
     const categoryId = req.url.searchParams.get('categoryId');
-    const maxResults = req.url.searchParams.get('size') || '20';
 
-    if (categoryId === '2930' && maxResults === '20') {
+    if (categoryId === '2930') {
       return res(ctx.json(PRODUCTS_MOCK_DATA));
     }
     return res(ctx.status(404));
