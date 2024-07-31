@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import React from 'react';
 
 import { HEADER_HEIGHT } from '@/components/features/Layout/Header';
 import { breakpoints } from '@/styles/variants';

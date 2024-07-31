@@ -4,6 +4,7 @@ import type { ProductDetailRequestParams } from '@/api/hooks/useGetProductDetail
 import { breakpoints } from '@/styles/variants';
 
 import { GoodsDetailHeader } from './Header';
+//import { InterestButton } from './InterestButton';
 
 type Props = ProductDetailRequestParams;
 

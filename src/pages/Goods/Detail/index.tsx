@@ -5,6 +5,7 @@ import { AsyncBoundary } from '@/components/common/AsyncBoundary';
 import { SplitLayout } from '@/components/common/layouts/SplitLayout';
 import { LoadingView } from '@/components/common/View/LoadingView';
 import { GoodsDetail } from '@/components/features/Goods/Detail';
+//import { InterestButton } from '@/components/features/Goods/Detail/InterestButton';
 import { OptionSection } from '@/components/features/Goods/Detail/OptionSection';
 
 export const GoodsDetailPage = () => {
