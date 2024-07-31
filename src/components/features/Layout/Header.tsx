@@ -55,7 +55,7 @@ export const Header = () => {
   );
 };
 
-export const HEADER_HEIGHT = '54px';
+export const HEADER_HEIGHT = '74px';
 
 export const Wrapper = styled.header`
   position: fixed;
@@ -69,7 +69,7 @@ export const Wrapper = styled.header`
 
 const LogoWrapper = styled.div`
   padding-right: 50px;
-  height: ${HEADER_HEIGHT};
+  height: auto;
 `;
 
 const Logo = styled.img`
