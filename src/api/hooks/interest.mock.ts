@@ -6,6 +6,7 @@ const wishesDatabase: WishItem[] = []; // WishItem 형식으로 변경
 let nextId = 1;
 
 export const interestHandlers = [
+  // 관심 목록에 추가
   rest.post('/api/wishes', (req, res, ctx) => {
     const newWish = req.body as WishItem;
 
