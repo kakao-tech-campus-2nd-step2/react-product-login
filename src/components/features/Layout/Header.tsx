@@ -76,18 +76,6 @@ const Logo = styled.img`
   height: ${HEADER_HEIGHT};
 `;
 
-const RightWrapper = styled.div`
-  margin-left: auto;
-`;
-
-const LinkButton = styled.p`
-  align-items: center;
-  font-size: 14px;
-  color: #000;
-  text-decoration: none;
-  cursor: pointer;
-`;
-
 const NavBarWrapper = styled.nav`
   padding: 20px 20px 20px 0;
 `;
@@ -119,4 +107,16 @@ const NavButtonText = styled(Link)`
     background-color: #000;
     content: '';
   }
+`;
+
+const RightWrapper = styled.div`
+  margin-left: auto;
+`;
+
+const LinkButton = styled.p`
+  align-items: center;
+  font-size: 14px;
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
 `;
