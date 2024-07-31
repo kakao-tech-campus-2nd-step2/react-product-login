@@ -1,3 +1,4 @@
+import { StarIcon } from '@chakra-ui/icons';
 import styled from '@emotion/styled';
 import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -7,6 +8,7 @@ import {
   useGetProductDetail,
 } from '@/api/hooks/useGetProductDetail';
 import { useGetProductOptions } from '@/api/hooks/useGetProductOptions';
+import { addWishlist } from '@/api/hooks/useGetWishlist';
 import { Button } from '@/components/common/Button';
 import { useAuth } from '@/provider/Auth';
 import { getDynamicPath, RouterPath } from '@/routes/path';
@@ -45,6 +47,14 @@ export const OptionSection = ({ productId }: Props) => {
     navigate(RouterPath.order);
   };
 
+  const addWish = () => {
+    if (!authInfo) return;
+    addWishlist(Number(productId), authInfo.id).then((result) => {
+      if (result) alert('관심 등록 완료');
+      else alert('관심 등록 실패');
+    });
+  };
+
   return (
     <Wrapper>
       <CountOptionItem name={options[0].name} value={countAsString} onChange={setCountAsString} />
@@ -52,9 +62,14 @@ export const OptionSection = ({ productId }: Props) => {
         <PricingWrapper>
           총 결제 금액 <span>{totalPrice}원</span>
         </PricingWrapper>
-        <Button theme="black" size="large" onClick={handleClick}>
-          나에게 선물하기
-        </Button>
+        <ButtonWrapper>
+          <Button theme="darkGray" onClick={addWish}>
+            <StarIcon />
+          </Button>
+          <Button theme="black" size="large" onClick={handleClick}>
+            나에게 선물하기
+          </Button>
+        </ButtonWrapper>
       </BottomWrapper>
     </Wrapper>
   );
@@ -71,6 +86,11 @@ const Wrapper = styled.div`
 
 const BottomWrapper = styled.div`
   padding: 12px 0 0;
+`;
+const ButtonWrapper = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 3fr;
+  gap: 10px;
 `;
 
 const PricingWrapper = styled.div`

@@ -1,7 +1,8 @@
 import styled from '@emotion/styled';
 import { useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
+import { getLogin } from '@/api/hooks/useGetUser';
 import KAKAO_LOGO from '@/assets/kakao_logo.svg';
 import { Button } from '@/components/common/Button';
 import { UnderlineTextField } from '@/components/common/Form/Input/UnderlineTextField';
@@ -10,6 +11,7 @@ import { breakpoints } from '@/styles/variants';
 import { authSessionStorage } from '@/utils/storage';
 
 export const LoginPage = () => {
+  const navigate = useNavigate();
   const [id, setId] = useState('');
   const [password, setPassword] = useState('');
   const [queryParams] = useSearchParams();
@@ -20,13 +22,17 @@ export const LoginPage = () => {
       return;
     }
 
-    // TODO: API 연동
+    getLogin(id, password).then((result) => {
+      if (result) {
+        authSessionStorage.set(id);
 
-    // TODO: API 연동 전까지 임시 로그인 처리
-    authSessionStorage.set(id);
-
-    const redirectUrl = queryParams.get('redirect') ?? `${window.location.origin}/`;
-    return window.location.replace(redirectUrl);
+        const redirectUrl = queryParams.get('redirect') ?? `${window.location.origin}/`;
+        return window.location.replace(redirectUrl);
+      } else {
+        alert('아이디와 비밀번호를 확인해주세요.');
+        return;
+      }
+    });
   };
 
   return (
@@ -49,6 +55,10 @@ export const LoginPage = () => {
           }}
         />
         <Button onClick={handleConfirm}>로그인</Button>
+        <Spacing />
+        <Button onClick={() => navigate('/signUp')} theme="lightGray" size="small">
+          회원가입하기
+        </Button>
       </FormWrapper>
     </Wrapper>
   );

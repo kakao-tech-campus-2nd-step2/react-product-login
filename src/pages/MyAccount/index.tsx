@@ -6,6 +6,8 @@ import { useAuth } from '@/provider/Auth';
 import { RouterPath } from '@/routes/path';
 import { authSessionStorage } from '@/utils/storage';
 
+import WishCardList from './WishCardList';
+
 export const MyAccountPage = () => {
   const authInfo = useAuth();
 
@@ -29,6 +31,8 @@ export const MyAccountPage = () => {
       >
         로그아웃
       </Button>
+      <Spacing height={64} />
+      <WishCardList />
     </Wrapper>
   );
 };
