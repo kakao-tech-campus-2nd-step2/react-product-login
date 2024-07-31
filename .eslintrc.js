@@ -13,7 +13,11 @@ module.exports = {
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
-    project: './tsconfig.json',
+    project: [
+      './tsconfig.json',
+      './jest.config.js',
+      './babel.config.js'
+    ],
     ecmaFeatures: {
       jsx: true,
     },

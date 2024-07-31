@@ -7,6 +7,8 @@ import { HomePage } from '@/pages/Home';
 import { LoginPage } from '@/pages/Login';
 import { MyAccountPage } from '@/pages/MyAccount';
 import { OrderPage } from '@/pages/Order';
+import { RegisterPage } from '@/pages/Register';
+import WishListPage from '@/pages/WishList';
 
 import { PrivateRoute } from './components/PrivateRoute';
 import { RouterPath } from './path';
@@ -38,6 +40,7 @@ const router = createBrowserRouter([
           },
         ],
       },
+      
       {
         path: RouterPath.order,
         element: <PrivateRoute />,
@@ -45,6 +48,16 @@ const router = createBrowserRouter([
           {
             path: RouterPath.order,
             element: <OrderPage />,
+          },
+        ],
+      },
+      {
+        path: RouterPath.wishlist, // 위시리스트 경로 추가
+        element: <PrivateRoute />,
+        children: [
+          {
+            path: RouterPath.wishlist,
+            element: <WishListPage />,
           },
         ],
       },
@@ -57,6 +70,10 @@ const router = createBrowserRouter([
   {
     path: RouterPath.login,
     element: <LoginPage />,
+  },
+  {
+    path: RouterPath.register,
+    element: <RegisterPage />,
   },
 ]);
 

@@ -22,8 +22,8 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
-    }
+    },
   },
-  "include": ["src"],
+  "include": ["src", "jest.config.js", "babel.config.js"],
   "exclude": ["node_modules", "build", "public"]
 }
