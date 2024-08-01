@@ -1,13 +1,10 @@
-import styled from '@emotion/styled';
+import { Box, Button, Flex, Text, useToast } from '@chakra-ui/react';
 import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import {
-  type ProductDetailRequestParams,
-  useGetProductDetail,
-} from '@/api/hooks/useGetProductDetail';
+import type { ProductDetailRequestParams} from '@/api/hooks/useGetProductDetail';
+import {useGetProductDetail } from '@/api/hooks/useGetProductDetail';
 import { useGetProductOptions } from '@/api/hooks/useGetProductOptions';
-import { Button } from '@/components/common/Button';
 import { useAuth } from '@/provider/Auth';
 import { getDynamicPath, RouterPath } from '@/routes/path';
 import { orderHistorySessionStorage } from '@/utils/storage';
@@ -27,6 +24,36 @@ export const OptionSection = ({ productId }: Props) => {
 
   const navigate = useNavigate();
   const authInfo = useAuth();
+  const toast = useToast();
+
+  const handleFavoriteClick = () => {
+    if (!authInfo) {
+      const isConfirm = window.confirm(
+        '로그인이 필요한 메뉴입니다.\n로그인 페이지로 이동하시겠습니까?',
+      );
+
+      if (!isConfirm) return;
+      return navigate(getDynamicPath.login());
+    }
+
+    const favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
+    const newFavorite = {
+      id: parseInt(productId),
+      name: detail.name,
+      price: detail.price,
+      imageUrl: detail.imageUrl,
+    };
+
+    localStorage.setItem('favorites', JSON.stringify([...favorites, newFavorite]));
+
+    toast({
+      title: '관심 상품이 등록되었습니다.',
+      status: 'success',
+      duration: 3000,
+      isClosable: true,
+    });
+  };
+
   const handleClick = () => {
     if (!authInfo) {
       const isConfirm = window.confirm(
@@ -46,48 +73,22 @@ export const OptionSection = ({ productId }: Props) => {
   };
 
   return (
-    <Wrapper>
+    <Box p="30px 12px 30px 30px" h="100%" display="flex" flexDirection="column" justifyContent="space-between">
       <CountOptionItem name={options[0].name} value={countAsString} onChange={setCountAsString} />
-      <BottomWrapper>
-        <PricingWrapper>
-          총 결제 금액 <span>{totalPrice}원</span>
-        </PricingWrapper>
-        <Button theme="black" size="large" onClick={handleClick}>
-          나에게 선물하기
-        </Button>
-      </BottomWrapper>
-    </Wrapper>
+      <Box mt="auto">
+        <Flex justifyContent="space-between" mb="20px" p="18px 20px" borderRadius="4px" bg="#f5f5f5">
+          <Text fontSize="14px" fontWeight="700" lineHeight="14px" color="#111">총 결제 금액</Text>
+          <Text fontSize="20px" letterSpacing="-0.02em">{totalPrice}원</Text>
+        </Flex>
+        <Flex justifyContent="space-between" mt="20px" gap="12px">
+          <Button colorScheme="yellow" size="lg" onClick={handleFavoriteClick}>
+            ❤️ 관심 상품 등록
+          </Button>
+          <Button colorScheme="blackAlpha" size="lg" onClick={handleClick}>
+            나에게 선물하기
+          </Button>
+        </Flex>
+      </Box>
+    </Box>
   );
 };
-
-const Wrapper = styled.div`
-  width: 100%;
-  padding: 30px 12px 30px 30px;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-`;
-
-const BottomWrapper = styled.div`
-  padding: 12px 0 0;
-`;
-
-const PricingWrapper = styled.div`
-  margin-bottom: 20px;
-  padding: 18px 20px;
-  border-radius: 4px;
-  background-color: #f5f5f5;
-  display: flex;
-  justify-content: space-between;
-
-  font-size: 14px;
-  font-weight: 700;
-  line-height: 14px;
-  color: #111;
-
-  & span {
-    font-size: 20px;
-    letter-spacing: -0.02em;
-  }
-`;
