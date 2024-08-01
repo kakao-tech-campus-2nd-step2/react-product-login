@@ -7,6 +7,7 @@ import {
   useGetProductDetail,
 } from '@/api/hooks/useGetProductDetail';
 import { useGetProductOptions } from '@/api/hooks/useGetProductOptions';
+import { usePostWish } from '@/api/hooks/usePostWish';
 import { Button } from '@/components/common/Button';
 import { useAuth } from '@/provider/Auth';
 import { getDynamicPath, RouterPath } from '@/routes/path';
@@ -21,12 +22,15 @@ export const OptionSection = ({ productId }: Props) => {
   const { data: options } = useGetProductOptions({ productId });
 
   const [countAsString, setCountAsString] = useState('1');
+  const [wishAdded, setWishAdded] = useState(false);
   const totalPrice = useMemo(() => {
     return detail.price * Number(countAsString);
   }, [detail, countAsString]);
 
   const navigate = useNavigate();
   const authInfo = useAuth();
+  const { mutate: postWish } = usePostWish();
+
   const handleClick = () => {
     if (!authInfo) {
       const isConfirm = window.confirm(
@@ -45,6 +49,25 @@ export const OptionSection = ({ productId }: Props) => {
     navigate(RouterPath.order);
   };
 
+  const handleAddWish = async () => {
+    if (!authInfo) {
+      const isConfirm = window.confirm(
+        '로그인이 필요한 메뉴입니다.\n로그인 페이지로 이동하시겠습니까?',
+      );
+
+      if (!isConfirm) return;
+      return navigate(getDynamicPath.login());
+    }
+    try {
+      await postWish({ productId });
+      setWishAdded(true);
+      alert('관심 등록 완료');
+    } catch (error) {
+      console.error('관심 등록 실패', error);
+      alert('관심 등록 실패');
+    }
+  };
+
   return (
     <Wrapper>
       <CountOptionItem name={options[0].name} value={countAsString} onChange={setCountAsString} />
@@ -52,6 +75,9 @@ export const OptionSection = ({ productId }: Props) => {
         <PricingWrapper>
           총 결제 금액 <span>{totalPrice}원</span>
         </PricingWrapper>
+        <Button onClick={handleAddWish} disabled={wishAdded}>
+          {wishAdded ? '관심 등록 완료' : '관심 등록'}
+        </Button>
         <Button theme="black" size="large" onClick={handleClick}>
           나에게 선물하기
         </Button>

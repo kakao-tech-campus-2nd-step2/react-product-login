@@ -1,45 +1,61 @@
 import styled from '@emotion/styled';
 import { useState } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 
+import { useSignupUser } from '@/api/hooks/useSignupUser';
 import KAKAO_LOGO from '@/assets/kakao_logo.svg';
 import { Button } from '@/components/common/Button';
 import { UnderlineTextField } from '@/components/common/Form/Input/UnderlineTextField';
 import { Spacing } from '@/components/common/layouts/Spacing';
-import { RouterPath } from '@/routes/path';
 import { breakpoints } from '@/styles/variants';
 import { authSessionStorage } from '@/utils/storage';
 
-export const LoginPage = () => {
-  const navigate = useNavigate();
+export const SignUpPage = () => {
   const [id, setId] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [queryParams] = useSearchParams();
+  const mutation = useSignupUser();
 
   const handleConfirm = () => {
-    if (!id || !password) {
-      alert('아이디와 비밀번호를 입력해주세요.');
+    if (!id) {
+      alert('아이디를 입력해주세요.');
+      return;
+    }
+    if (!email || !password) {
+      alert('이메일과 비밀번호를 입력해주세요.');
       return;
     }
 
-    // TODO: API 연동
-
-    // TODO: API 연동 전까지 임시 로그인 처리
-    authSessionStorage.set(id);
-
-    const redirectUrl = queryParams.get('redirect') ?? `${window.location.origin}/`;
-    return window.location.replace(redirectUrl);
-  };
-
-  const handleSignUp = () => {
-    navigate(RouterPath.signup);
+    mutation.mutate(
+      { id, email, password },
+      {
+        onSuccess: () => {
+          authSessionStorage.set(id);
+          const redirectUrl = queryParams.get('redirect') ?? `${window.location.origin}/`;
+          window.location.replace(redirectUrl);
+        },
+        onError: () => {
+          alert('회원가입 중 오류가 발생했습니다.');
+        },
+      },
+    );
   };
 
   return (
     <Wrapper>
       <Logo src={KAKAO_LOGO} alt="카카고 CI" />
       <FormWrapper>
-        <UnderlineTextField placeholder="이름" value={id} onChange={(e) => setId(e.target.value)} />
+        <UnderlineTextField
+          placeholder="아이디"
+          value={id}
+          onChange={(e) => setId(e.target.value)}
+        />
+        <UnderlineTextField
+          placeholder="이메일"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
         <Spacing />
         <UnderlineTextField
           type="password"
@@ -47,16 +63,9 @@ export const LoginPage = () => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-
-        <Spacing
-          height={{
-            initial: 40,
-            sm: 60,
-          }}
-        />
-        <Button onClick={handleConfirm}>로그인</Button>
+        <Spacing height={{ initial: 40, sm: 60 }} />
+        <Button onClick={handleConfirm}>회원가입</Button>
       </FormWrapper>
-      <LinkButton onClick={handleSignUp}>회원가입</LinkButton>
     </Wrapper>
   );
 };
@@ -84,12 +93,4 @@ const FormWrapper = styled.article`
     border: 1px solid rgba(0, 0, 0, 0.12);
     padding: 60px 52px;
   }
-`;
-
-const LinkButton = styled.p`
-  align-items: center;
-  font-size: 14px;
-  color: #000;
-  text-decoration: none;
-  cursor: pointer;
 `;
